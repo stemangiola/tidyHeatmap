@@ -1,0 +1,36 @@
+Package: ttBulk
+Type: Package
+Title: Friendly tidy wrappers for streamlined bulk transcriptional analysis
+Version: 0.99.6
+Author: person("Stefano", "Mangiola", email=mangiolastefano@gmail.com, role=c("cre", aut"), comment = c(ORCID = "0000-0001-7474-836X")).
+Maintainer: Stefano Mangiola <mangiolastefano@gmail.com>
+Description: This is a collection of utility function that allow to perform exploration of and calculations to RNA sequencing data, in a tidy and pipe-friendly fashion.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder: knitr
+RoxygenNote: 7.0.2
+biocViews: AssayDomain, Infrastructure
+Biarch: true
+Depends: R (>= 4.0)
+Imports: tibble, dplyr, magrittr, tidyr, widyr, rlang, purrr, ggplot2,	preprocessCore, stats, parallel
+Suggests:
+    parallel,
+    testthat,
+    AnnotationDbi,
+    BiocManager,
+    Rsubread,
+    e1071,
+    edgeR,
+    limma,
+    org.Hs.eg.db,
+    sva,
+    GGally,
+    utils,
+    knitr,
+    qpdf,
+    covr,
+    Seurat,
+    KernSmooth,
+    Rtsne,
+    EGSEA

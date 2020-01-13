@@ -1,0 +1,51 @@
+---
+title: "Overview of the ttBulk package"
+author: "Stefano Mangiola"
+date: "`r Sys.Date()`"
+package: ttBulk
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteIndexEntry{Overview of the ttBulk package}
+  %\usepackage[UTF-8]{inputenc}
+---
+
+<!-- <style type="text/css"> -->
+<!-- .main-container { -->
+<!--   max-width: 2800px;!important -->
+<!--   margin-left: auto; -->
+<!--   margin-right: auto; -->
+<!-- } -->
+<!-- </style> -->
+
+<style>
+.column-left{
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+.column-right{
+  float: right;
+  width: 50%;
+  text-align: right;
+}
+</style>
+
+```{r, echo=FALSE, include=FALSE}
+library(knitr)
+#library(kableExtra)
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, 
+                      message = FALSE, cache.lazy = FALSE)
+#options(width = 120)
+options(pillar.min_title_chars = Inf)
+
+
+```
+
+# Appendix
+
+```{r}
+sessionInfo()
+```

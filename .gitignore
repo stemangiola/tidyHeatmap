@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+ttBulk.Rproj
+README_cache/*
+vignettes/introduction_cache*
+*.Rproj
+Meta
+doc
+dev

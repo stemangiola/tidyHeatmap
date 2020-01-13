@@ -1,0 +1,471 @@
+---
+title: "Overview of the ttBulk package"
+author: "Stefano Mangiola"
+date: "`r Sys.Date()`"
+package: ttBulk
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteIndexEntry{Overview of the ttBulk package}
+  %\usepackage[UTF-8]{inputenc}
+---
+
+<!-- <style type="text/css"> -->
+<!-- .main-container { -->
+<!--   max-width: 2800px;!important -->
+<!--   margin-left: auto; -->
+<!--   margin-right: auto; -->
+<!-- } -->
+<!-- </style> -->
+
+<style>
+.column-left{
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+.column-right{
+  float: right;
+  width: 50%;
+  text-align: right;
+}
+</style>
+
+```{r, echo=FALSE, include=FALSE}
+library(knitr)
+#library(kableExtra)
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, 
+                      message = FALSE, cache.lazy = FALSE)
+#options(width = 120)
+options(pillar.min_title_chars = Inf)
+
+
+library(tibble)
+library(dplyr)
+library(magrittr) 
+library(tidyr)
+library(ggplot2)
+library(readr)
+library(widyr) 
+library(foreach)
+library(rlang) 
+library(purrr)
+library(ttBulk)
+
+my_theme = 	
+	theme_bw() +
+	theme(
+		panel.border = element_blank(),
+		axis.line = element_line(),
+		panel.grid.major = element_line(size = 0.2),
+		panel.grid.minor = element_line(size = 0.1),
+		text = element_text(size=12),
+		legend.position="bottom",
+		aspect.ratio=1,
+		strip.background = element_blank(),
+		axis.title.x  = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
+		axis.title.y  = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10))
+	)
+
+# counts_mini = 
+# 	ttBulk::counts %>% 
+# 	filter(transcript %in% (ttBulk::X_cibersort %>% rownames)) %>% 
+# 	filter(sample %in% c("SRR1740034", "SRR1740035", "SRR1740058", "SRR1740043", "SRR1740067")) %>%
+# 	mutate(condition = ifelse(sample %in% c("SRR1740034", "SRR1740035", "SRR1740058"), TRUE, FALSE))
+
+```
+
+<img src="../inst/logo.png" height="139px" width="120px" />
+
+# Introduction
+
+ttBulk is a collection of wrapper functions for bulk tanscriptomic analyses that follows the "tidy" paradigm. The data structure is a tibble with columns for 
+
++ sample identifier column
++ transcript identifier column
++ count column
++ annotation (and other info) columns
+
+```{r}
+counts = ttBulk(ttBulk::counts_mini, sample, transcript, count)
+counts 
+```
+
+In brief you can:
++ Going from BAM/SAM to a tidy data frame of counts (FeatureCounts)
++ Adding gene symbols from ensembl IDs
++ Aggregating duplicated gene symbols
++ Adding normalised counts
++ Adding principal components
++ Adding MDS components
++ Rotating principal component or MDS dimensions
++ Running differential transcript abunance analyses (edgeR)
++ Adding batch adjusted counts (Combat) 
++ Eliminating redunant samples and/or genes
++ Clustering samples and/or genes with kmeans
++ Adding tissue composition (Cibersort)
+
+# Aggregate `transcripts`
+
+ttBulk provide the `aggregate_duplicates` function to aggregate duplicated transcripts (e.g., isoforms, ensembl). For example, we often have to convert ensembl symbols to gene/transcript symbol, but in doing so we have to deal with duplicates. `aggregate_duplicates` takes a tibble and column names (as symbols; for `sample`, `transcript` and `count`) as arguments and returns a tibble with aggregate transcript with the same name. All the rest of the column are appended, and factors and boolean are appended as characters.
+
+```{r aggregate, cache=TRUE}
+counts.aggr =  counts %>% aggregate_duplicates( 	aggregation_function = sum )
+
+counts.aggr 
+
+
+```
+
+# Normalise `counts`
+
+We may want to calculate the normalised counts for library size (e.g., with TMM algorithm, Robinson and Oshlack doi.org/10.1186/gb-2010-11-3-r25). `scale_abundance` takes a tibble, column names (as symbols; for `sample`, `transcript` and `count`) and a method as arguments and returns a tibble with additional columns with normalised data as `<NAME OF COUNT COLUMN> normalised`.
+
+```{r normalise, cache=TRUE}
+counts.norm =  counts.aggr %>% scale_abundance(method="TMM")
+
+counts.norm %>% select(`count`, `count normalised`, `filter out low counts`, everything())
+```
+
+We can easily plot the normalised density to check the normalisation outcome. On the x axis we have the log scaled counts, on the y axes we have the density, data is grouped by sample and coloured by cell type. 
+
+```{r plot_normalise, cache=TRUE}
+counts.norm %>% 
+	ggplot(aes(`count normalised` + 1, group=sample, color=`Cell type`)) +
+	geom_density() + 
+	scale_x_log10() +
+	my_theme
+```
+
+# Reduce `dimensions`
+
+We may want to reduce the dimensions of our data, for example using PCA or MDS algorithms. `reduce_dimensions` takes a tibble, column names (as symbols; for `sample`, `transcript` and `count`) and a method (e.g., MDS or PCA) as arguments and returns a tibble with additional columns for the reduced dimensions.
+
+**MDS** (Robinson et al., 10.1093/bioinformatics/btp616)
+
+```{r mds, cache=TRUE}
+counts.norm.MDS =  counts.norm %>% reduce_dimensions(.abundance = `count normalised`, method="MDS", .dims = 3)
+
+counts.norm.MDS %>% select(sample, contains("Dim"), `Cell type`, time ) %>% distinct()
+```
+
+On the x and y axes axis we have the reduced dimensions 1 to 3, data is coloured by cell type. 
+
+```{r plot_mds, cache=TRUE}
+counts.norm.MDS %>%
+	select(contains("Dim"), sample, `Cell type`) %>%
+  distinct() %>%
+  GGally::ggpairs(columns = 1:3, ggplot2::aes(colour=`Cell type`))
+
+
+```
+
+**PCA**
+
+```{r pca, cache=TRUE}
+counts.norm.PCA = counts.norm %>% reduce_dimensions(.abundance = `count normalised`, method="PCA" ,  .dims = 3)
+
+counts.norm.PCA %>% select(sample, contains("PC"), `Cell type`, time ) %>% distinct()
+```
+
+On the x and y axes axis we have the reduced dimensions 1 to 3, data is coloured by cell type. 
+
+```{r plot_pca, cache=TRUE}
+counts.norm.PCA %>%
+	select(contains("PC"), sample, `Cell type`) %>%
+  distinct() %>%
+  GGally::ggpairs(columns = 1:3, ggplot2::aes(colour=`Cell type`))
+```
+
+**tSNE**
+
+```{r tsne, cache=TRUE}
+counts.norm.tSNE =
+	ttBulk::breast_tcga_mini %>%
+	ttBulk(sample, ens, `count`) %>%
+	reduce_dimensions(
+		.abundance = `count normalised`, 
+		method = "tSNE", 
+		top = 500, 
+		perplexity=10, 
+		pca_scale =TRUE
+	) 
+
+counts.norm.tSNE %>% 
+	select(contains("tSNE", ignore.case = FALSE), sample, Call) %>%
+	distinct()
+
+counts.norm.tSNE %>% 
+	select(contains("tSNE", ignore.case = FALSE), sample, Call) %>%
+	distinct() %>%
+	ggplot(aes(x = `tSNE1`, y = `tSNE2`, color=Call)) + geom_point() + my_theme
+```
+
+# Rotate `dimensions`
+
+We may want to rotate the reduced dimensions (or any two numeric columns really) of our data, of a set angle. `rotate_dimensions` takes a tibble, column names (as symbols; for `sample`, `transcript` and `count`) and an angle as arguments and returns a tibble with additional columns for the rotated dimensions. The rotated dimensions will be added to the original data set as `<NAME OF DIMENSION> rotated <ANGLE>` by default, or as specified in the input arguments.
+
+```{r rotate, cache=TRUE}
+counts.norm.MDS.rotated =
+  counts.norm.MDS %>%
+	rotate_dimensions(`Dim 1`, `Dim 2`, rotation_degrees = 45, .element = sample)
+```
+
+**Original**
+On the x and y axes axis we have the first two reduced dimensions, data is coloured by cell type. 
+
+```{r plot_rotate_1, cache=TRUE}
+counts.norm.MDS.rotated %>%
+	distinct(sample, `Dim 1`,`Dim 2`, `Cell type`) %>%
+	ggplot(aes(x=`Dim 1`, y=`Dim 2`, color=`Cell type` )) +
+  geom_point() +
+  my_theme
+```
+
+**Rotated**
+On the x and y axes axis we have the first two reduced dimensions rotated of 45 degrees, data is coloured by cell type. 
+
+```{r plot_rotate_2, cache=TRUE}
+counts.norm.MDS.rotated %>%
+	distinct(sample, `Dim 1 rotated 45`,`Dim 2 rotated 45`, `Cell type`) %>%
+	ggplot(aes(x=`Dim 1 rotated 45`, y=`Dim 2 rotated 45`, color=`Cell type` )) +
+  geom_point() +
+  my_theme
+```
+
+# Annotate `differential transcription`
+
+We may want to test for differential transcription between sample-wise factors of interest (e.g., with edgeR). `test_differential_abundance` takes a tibble, column names (as symbols; for `sample`, `transcript` and `count`) and a formula representing the desired linear model as arguments and returns a tibble with additional columns for the statistics from the hypothesis test (e.g.,  log fold change, p-value and false discovery rate). 
+
+```{r de, cache=TRUE}
+counts %>%	test_differential_abundance(  ~ condition,  action="get")
+```
+
+# Adjust `counts`
+
+We may want to adjust `counts` for (known) unwanted variation. `adjust_abundance` takes as arguments a tibble, column names (as symbols; for `sample`, `transcript` and `count`) and a formula representing the desired linear model where the first covariate is the factor of interest and the second covariate is the unwanted variation, and returns a tibble with additional columns for the adjusted counts as `<COUNT COLUMN> adjusted`. At the moment just an unwanted covariated is allowed at a time.
+
+```{r adjust, cache=TRUE}
+counts.norm.adj =
+	counts.norm %>%
+
+	  # Add fake batch and factor of interest
+	  left_join(
+	  	(.) %>%
+	  		distinct(sample) %>%
+	  		mutate(batch = c(0,1,0,1,1))
+	  ) %>%
+	 	mutate(factor_of_interest = `Cell type` == "b_cell") %>%
+
+	  # Add covariate
+	  adjust_abundance(
+	  	~ factor_of_interest + batch,
+	  	.abundance = `count normalised`,
+	  	action = "get"
+	  )
+
+counts.norm.adj
+```
+
+# Annotate `Cell type composition`
+
+We may want to infer the cell type composition of our samples (with the algorithm Cibersort; Newman et al., 10.1038/nmeth.3337). `deconvolve_cellularity` takes as arguments a tibble, column names (as symbols; for `sample`, `transcript` and `count`) and returns a tibble with additional columns for the adjusted  cell type proportions.
+
+**columns truncated**
+```{r cibersort, cache=TRUE}
+counts.cibersort =
+	counts %>%
+	deconvolve_cellularity(action="add", cores=2)
+
+counts.cibersort %>% select(sample, contains("type:")) %>% distinct()
+```
+
+With the new annotated data frame, we can plot the distributions of cell types across samples, and compare them with the nominal cell type labels to check for the purity of isolation. On the x axis we have the cell types inferred by Cibersort, on the y axis we have the inferred proportions. The data is facetted and coloured by nominal cell types (annotation given by the researcher after FACS sorting).
+
+```{r plot_cibersort, cache=TRUE}
+counts.cibersort %>%
+	select(contains("type:"), everything()) %>%
+	gather(`Cell type inferred`, `proportion`, 1:22) %>%
+  distinct(sample, `Cell type`, `Cell type inferred`, proportion) %>%
+  ggplot(aes(x=`Cell type inferred`, y=proportion, fill=`Cell type`)) +
+  geom_boxplot() +
+  facet_wrap(~`Cell type`) +
+  my_theme +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5), aspect.ratio=1/5)
+```
+
+# Annotate `clusters` 
+
+We may want to cluster our data (e.g., using k-means sample-wise). `cluster_elements` takes as arguments a tibble, column names (as symbols; for `sample`, `transcript` and `count`) and returns a tibble with additional columns for the cluster annotation. At the moment only k-means clustering is supported, the plan is to introduce more clustering methods.
+
+**k-means**
+
+```{r cluster, cache=TRUE}
+counts.norm.cluster = counts.norm %>%
+  cluster_elements(.abundance = `count normalised`, method="kmeans",	centers = 2 )
+
+counts.norm.cluster
+```
+
+We can add cluster annotation to the MDS dimesion reduced data set and plot.
+
+```{r plot_cluster, cache=TRUE}
+ counts.norm.MDS %>%
+  cluster_elements(
+  	.abundance = `count normalised`,
+  	method="kmeans",
+  	centers = 2
+  ) %>%
+	distinct(sample, `Dim 1`, `Dim 2`, `cluster kmeans`) %>%
+	ggplot(aes(x=`Dim 1`, y=`Dim 2`, color=`cluster kmeans`)) +
+  geom_point() +
+  my_theme
+```
+
+
+**SNN**
+
+```{r SNN, cache=TRUE}
+counts.norm.SNN =	counts.norm.tSNE %>%	cluster_elements(.abundance= `count normalised`, method = "SNN")
+
+counts.norm.SNN %>% 
+	select(contains("tSNE", ignore.case = FALSE), `cluster SNN`, sample) %>%
+	distinct()
+
+counts.norm.SNN %>% 
+	select(contains("tSNE", ignore.case = FALSE), `cluster SNN`, sample, Call) %>%
+	gather(source, Call, c("cluster SNN", "Call")) %>%
+	distinct() %>%
+	ggplot(aes(x = `tSNE1`, y = `tSNE2`, color=Call)) + geom_point() + facet_grid(~source) + my_theme
+
+
+# Do differential transcription between clusters
+counts.norm.SNN %>%
+	mutate(factor_of_interest = `cluster SNN` == 3) %>%
+	test_differential_abundance(
+    ~ factor_of_interest,
+    action="get"
+   )
+```
+
+# Drop `redundant`
+
+We may want to remove redundant elements from the original data set (e.g., samples or transcripts), for example if we want to define cell-type specific signatures with low sample redundancy. `remove_redundancy` takes as arguments a tibble, column names (as symbols; for `sample`, `transcript` and `count`) and returns a tibble dropped recundant elements (e.g., samples). Two redundancy estimation approaches are supported: 
+
++ removal of highly correlated clusters of elements (keeping a representative) with method="correlation"
++ removal of most proximal element pairs in a reduced dimensional space.
+
+**Approach 1**
+
+```{r drop, cache=TRUE}
+counts.norm.non_redundant = counts.norm.MDS %>%  remove_redundancy(	method = "correlation" )
+```
+
+We can visualise how the reduced redundancy with the reduced dimentions look like
+
+```{r plot_drop, cache=TRUE}
+counts.norm.non_redundant %>%
+	distinct(sample, `Dim 1`, `Dim 2`, `Cell type`) %>%
+	ggplot(aes(x=`Dim 1`, y=`Dim 2`, color=`Cell type`)) +
+  geom_point() +
+  my_theme
+
+```
+
+**Approach 2**
+
+```{r drop2, cache=TRUE}
+counts.norm.non_redundant =
+	counts.norm.MDS %>%
+  remove_redundancy(
+  	method = "reduced_dimensions",
+  	.element = sample,
+  	.feature = transcript,
+  	Dim_a_column = `Dim 1`,
+  	Dim_b_column = `Dim 2`
+  )
+```
+
+We can visualise MDS reduced dimensions of the samples with the closest pair removed.
+
+```{r plot_drop2, cache=TRUE}
+counts.norm.non_redundant %>%
+	distinct(sample, `Dim 1`, `Dim 2`, `Cell type`) %>%
+	ggplot(aes(x=`Dim 1`, y=`Dim 2`, color=`Cell type`)) +
+  geom_point() +
+  my_theme
+
+```
+
+# Other useful wrappers
+
+The above wrapper streamline the most common processing of bulk RNA sequencing data. Other useful wrappers are listed above.
+
+## From BAM/SAM to tibble of gene counts
+
+We can calculate gene counts (using FeatureCounts; Liao Y et al., 10.1093/nar/gkz114) from a list of BAM/SAM files and format them into a tidy structure (similar to counts).
+
+```{r eval=FALSE}
+counts = bam_sam_to_featureCounts_tibble(
+	file_names, 
+	genome = "hg38",
+	isPairedEnd = TRUE,
+	requireBothEndsMapped = TRUE,
+	checkFragLength = FALSE,
+	useMetaFeatures = TRUE
+)
+```
+
+## From ensembl IDs to gene symbol IDs
+
+We can add gene symbols from ensembl identifiers. This is useful since different resources use ensembl IDs while others use gene symbol IDs.
+
+```{r ensembl, cache=TRUE}
+counts_ensembl %>% annotate_symbol(ens)
+```
+
+# ADD versus GET modes
+
+Every function takes this structure as input, and outputs either (i) the new information joint to the original input data frame (default), or (ii) just the new information, setting action="add" or action="get" respectively. For example, from this data set
+
+```{r, cache=TRUE}
+  counts.norm 
+```
+
+**action="add"** (Default)
+We can add the MDS dimensions to the original data set
+
+```{r, cache=TRUE}
+  counts.norm %>%
+    reduce_dimensions(
+    	.abundance = `count normalised`, 
+    	method="MDS" , 
+    	.element = sample, 
+    	.feature = transcript, 
+    	.dims = 3, 
+    	action="add"
+    )
+```
+
+**action="get"**
+We can get just the MDS dimensions relative to each sample
+
+```{r, cache=TRUE}
+  counts.norm %>%
+    reduce_dimensions(
+    	.abundance = `count normalised`, 
+    	method="MDS" , 
+    	.element = sample, 
+    	.feature = transcript, 
+    	.dims = 3, 
+    	action="get"
+    )
+```
+
+# Appendix
+
+```{r}
+sessionInfo()
+```

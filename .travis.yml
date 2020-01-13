@@ -1,0 +1,16 @@
+# Adapted from https://github.com/hadley/testthat/blob/master/.travis.yml
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+language: r
+cache: packages
+r:
+ - bioc-release
+ - bioc-devel
+env:
+- R_QPDF=true
+
+r_github_packages:
+  - r-lib/covr
+
+after_success:
+    - tar -C .. -xf $PKG_TARBALL
+    - xvfb-run Rscript -e 'covr::codecov(type=c("tests", "vignettes", "examples"))'

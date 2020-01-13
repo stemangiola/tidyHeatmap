@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^vignettes/introduction_cache
+^doc$
+^Meta$
+^codecov\.yml$
+^dev
+^README_cache
+^.git
