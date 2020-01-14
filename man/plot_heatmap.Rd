@@ -4,7 +4,7 @@
 \alias{plot_heatmap}
 \title{plot_heatmap}
 \usage{
-plot_heatmap(.data, .horizontal, .vertical, .abundance, annotation)
+plot_heatmap(.data, .horizontal, .vertical, .abundance, annotation = NULL)
 }
 \arguments{
 \item{.data}{A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |}

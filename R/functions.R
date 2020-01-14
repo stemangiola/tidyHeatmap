@@ -14,6 +14,8 @@
 #' @importFrom grid gpar
 #' @importFrom purrr map
 #' @importFrom magrittr equals
+#' @importFrom rlang quo_is_symbol
+#' @importFrom RColorBrewer brewer.pal
 #'
 #' @name plot_heatmap
 #' @rdname plot_heatmap
@@ -39,13 +41,15 @@
 #' 
 #'
 #' 
-plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation){
+plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = NULL){
 	
 	# Make col names
 	.horizontal = enquo(.horizontal)
 	.vertical = enquo(.vertical)
 	.abundance = enquo(.abundance)
-
+	annotation = enquo(annotation)
+	
+	# Get abundance matrix
 	abundance_tbl = 
 		.data %>% 
 		ungroup() %>%
@@ -59,15 +63,23 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation){
 		apply(2, function(y) (y - mean(y)) / sd(y) ^ as.logical(sd(y))) %>%
 		t() 
 	
+	# Colors
 	palette_abundance = viridis(3)[1:2] %>% c("#fefada")
+	palette_annotation_continuous = colorRampPalette(brewer.pal(11,"Spectral") %>% rev)
+	palette_annotation_discrete = brewer.pal(8,"Dark2")
+	
 	colors = colorRamp2(c(-2, 0, 2), palette_abundance )
+	
+	# Get x and y anntation columns
+	x_y_annot_cols =
+		.data %>% 
+		ungroup() %>%
+		get_x_y_annotation_columns(!!.horizontal, !!.vertical, !!.abundance)
 	
 	# See if I have grouping and setup framework
 	if("groups" %in%  (.data %>% attributes %>% names)) {
 		x_y_annotation_cols = 
-			.data %>% 
-			ungroup() %>%
-			get_x_y_annotation_columns(!!.horizontal, !!.vertical, !!.abundance) %>%
+			x_y_annot_cols %>%
 			map(
 				~ .x %>% intersect( .data %>% attr("groups") %>% select(-.rows) %>% colnames())
 			)
@@ -97,7 +109,45 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation){
 		left_annotation =	NULL
 	}
 	
-
+	# See if there is annotation
+	if(annotation %>% quo_is_symbol()) {
+		x_y_annotation_cols = 
+			x_y_annot_cols %>%
+			map(
+				~ .x %>% intersect( quo_name(annotation))
+			)
+		
+		# Col annot
+		col_annot = 
+			.data %>%
+			ungroup() %>%
+			distinct(!!.horizontal, !!as.symbol(x_y_annotation_cols$horizontal)) %>%
+			arrange(!!.horizontal) %>%
+			pull(!!as.symbol(x_y_annotation_cols$horizontal))
+		
+		col_annot_cont = 
+			.data %>% 
+			ungroup() %>%
+			select(!!as.symbol(x_y_annotation_cols$horizontal)) %>%
+			ifelse_pipe(
+				(.) %>%
+					pull(1) %>% 
+					class %in% c("factor", "character"),
+				~ palette_annotation_discrete[1:length(unique(col_annot))] %>% setNames(unique(col_annot)),
+				~ colorRamp2(0:7, palette_annotation_continuous(8))
+			)
+		
+		left_annotation_args = 
+			list(
+				df = col_annot,
+				col = list(	df  = col_annot_cont )
+			)
+		
+		top_annotation = do.call("HeatmapAnnotation", as.list(left_annotation_args))
+		
+	} else {
+		top_annotation = NULL
+	}
 	
 	abundance_mat %>%
 		Heatmap(
@@ -109,6 +159,7 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation){
 		row_split = row_split,
 		left_annotation =	left_annotation,
 		cluster_row_slices = F,
+		row_names_gp = gpar(fontsize = 320 / dim(abundance_mat)[1]),
 		#,
 		#	clustering_distance_columns = robust_dist,
 				# ,
@@ -119,13 +170,7 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation){
 				# )
 
 
-		# top_annotation  =
-		# 	HeatmapAnnotation(  # <<< IF i HAVE GROUPING THIS IS AUTOMATIC
-		# 		df = 
-		# 		`CAPRA-S` =  .data %>% distinct(UBR, CAPRA_TOTAL) %>%
-		# 			arrange(UBR) %>% pull(CAPRA_TOTAL) ,
-		# 		col = list(	`CAPRA-S`  = circlize::colorRamp2(0:7, colorRampPalette(RColorBrewer ::brewer.pal(11,"Spectral") %>% rev)(8)))
-		# 	)
+		top_annotation  = top_annotation
 	)
 	
 	
