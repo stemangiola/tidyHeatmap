@@ -4,16 +4,18 @@
 \alias{plot_heatmap}
 \title{plot_heatmap}
 \usage{
-plot_heatmap(.data, .x, .y, .abundance)
+plot_heatmap(.data, .horizontal, .vertical, .abundance, annotation)
 }
 \arguments{
 \item{.data}{A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |}
 
-\item{.x}{The name of the column horizontally presented in the heatmap}
+\item{.horizontal}{The name of the column horizontally presented in the heatmap}
 
-\item{.y}{The name of the column vertically presented in the heatmap}
+\item{.vertical}{The name of the column vertically presented in the heatmap}
 
 \item{.abundance}{The name of the transcript/gene abundance column}
+
+\item{annotation}{Vector of quotes}
 }
 \value{
 A `ComplexHeatmap` object
