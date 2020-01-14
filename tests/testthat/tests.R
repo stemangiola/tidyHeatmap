@@ -69,7 +69,7 @@ test_that("grouped and annotated plot",{
 	
 })
 
-test_that("pasilla",{
+test_that("pasilla one annotation",{
 	
 	p = 
 		tidyHeatmap::plot_heatmap(
@@ -85,5 +85,19 @@ test_that("pasilla",{
 	
 })
 
-
+test_that("pasilla 2 annotations",{
+	
+	p = 
+		tidyHeatmap::plot_heatmap(
+			tidyHeatmap::pasilla,
+			.horizontal = sample,
+			.vertical = transcript,
+			.abundance = `Log adj count`,
+			annotation = c(condition, type)
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+})
 

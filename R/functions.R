@@ -13,8 +13,9 @@
 #' @importFrom grid unit
 #' @importFrom grid gpar
 #' @importFrom purrr map
+#' @importFrom purrr map2
 #' @importFrom magrittr equals
-#' @importFrom rlang quo_is_symbol
+#' @importFrom rlang quo_is_symbolic
 #' @importFrom RColorBrewer brewer.pal
 #'
 #' @name plot_heatmap
@@ -110,38 +111,50 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = 
 	}
 	
 	# See if there is annotation
-	if(annotation %>% quo_is_symbol()) {
+	if(annotation %>% quo_is_symbolic()) {
+		annot_col_names = .data %>% ungroup() %>% select(!!annotation) %>% colnames
+		
 		x_y_annotation_cols = 
 			x_y_annot_cols %>%
 			map(
-				~ .x %>% intersect( quo_name(annotation))
+				~ .x %>% intersect( annot_col_names)
 			)
 		
 		# Col annot
 		col_annot = 
-			.data %>%
-			ungroup() %>%
-			distinct(!!.horizontal, !!as.symbol(x_y_annotation_cols$horizontal)) %>%
-			arrange(!!.horizontal) %>%
-			pull(!!as.symbol(x_y_annotation_cols$horizontal))
+			x_y_annotation_cols$horizontal %>%
+				map(
+					~ {
+						.data %>%
+							ungroup() %>%
+							distinct(!!.horizontal, !!as.symbol(.x)) %>%
+							arrange(!!.horizontal) %>%
+							pull(!!as.symbol(.x))
+					}
+				)
 		
 		col_annot_cont = 
-			.data %>% 
-			ungroup() %>%
-			select(!!as.symbol(x_y_annotation_cols$horizontal)) %>%
-			ifelse_pipe(
-				(.) %>%
-					pull(1) %>% 
-					class %in% c("factor", "character"),
-				~ palette_annotation_discrete[1:length(unique(col_annot))] %>% setNames(unique(col_annot)),
-				~ colorRamp2(0:7, palette_annotation_continuous(8))
+			col_annot %>%
+			map2(
+				col_annot %>% map(~ length(levels(.x))) %>% unlist %>% cumsum %>% prepend(0) %>% `[` (-length(.)) %>% as.list,
+				~ {
+					if(.x %>% class %in% c("factor", "character"))
+						palette_annotation_discrete[(.y+1):(.y+length(unique(.x)))] %>% setNames(unique(.x))
+					else
+						colorRamp2(0:7, palette_annotation_continuous(8))
+		
+				}
+			)
+			
+
+		left_annotation_args = 
+			col_annot %>% 
+			setNames(annot_col_names) %>%
+			c(
+				col = list(col_annot_cont %>% setNames(annot_col_names))
 			)
 		
-		left_annotation_args = 
-			list(
-				df = col_annot,
-				col = list(	df  = col_annot_cont )
-			)
+
 		
 		top_annotation = do.call("HeatmapAnnotation", as.list(left_annotation_args))
 		
