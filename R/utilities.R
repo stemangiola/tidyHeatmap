@@ -19,7 +19,7 @@ ifelse_pipe = function(.x, .p, .f1, .f2 = NULL) {
            as_mapper(.f2)(.x)
          else
            .x)
-
+  
 }
 
 #' This is a generalisation of ifelse that acceots an object and return an objects
@@ -39,16 +39,16 @@ ifelse2_pipe = function(.x, .p1, .p2, .f1, .f2, .f3 = NULL) {
   # Nested switch
   switch(# First condition
     .p1 %>% `!` %>% sum(1),
-
+    
     # First outcome
     as_mapper(.f1)(.x),
     switch(
       # Second condition
       .p2 %>% `!` %>% sum(1),
-
+      
       # Second outcome
       as_mapper(.f2)(.x),
-
+      
       # Third outcome - if there is not .f3 just return the original data frame
       if (.f3 %>% is.null %>% `!`)
         as_mapper(.f3)(.x)
@@ -80,7 +80,7 @@ as_matrix <- function(tbl,
                       do_check = TRUE) {
   rownames = enquo(rownames)
   tbl %>%
-
+    
     # Through warning if data frame is not numerical beside the rownames column (if present)
     ifelse_pipe(
       do_check &&
@@ -98,7 +98,7 @@ as_matrix <- function(tbl,
       }
     ) %>%
     as.data.frame() %>%
-
+    
     # Deal with rownames column if present
     ifelse_pipe(
       !quo_is_null(rownames),
@@ -106,7 +106,7 @@ as_matrix <- function(tbl,
         magrittr::set_rownames(tbl %>% pull(!!rownames)) %>%
         select(-1)
     ) %>%
-
+    
     # Convert to matrix
     as.matrix()
 }
@@ -119,7 +119,7 @@ as_matrix <- function(tbl,
 #' @return NA
 error_if_log_transformed <- function(x, .abundance) {
   .abundance = enquo(.abundance)
-
+  
   if (x %>% nrow %>% `>` (0))
     if (x %>% summarise(m = !!.abundance %>% max) %>% pull(m) < 50)
       stop(
@@ -147,13 +147,13 @@ error_if_duplicated_genes <- function(.data,
   .sample = enquo(.sample)
   .transcript = enquo(.transcript)
   .abundance = enquo(.abundance)
-
+  
   duplicates <-
     distinct( .data, !!.sample,!!.transcript,!!.abundance) %>%
     count(!!.sample,!!.transcript) %>%
     filter(n > 1) %>%
     arrange(n %>% desc())
-
+  
   if (duplicates %>% nrow() > 0) {
     writeLines("Those are the duplicated genes")
     duplicates %>% print()
@@ -161,9 +161,9 @@ error_if_duplicated_genes <- function(.data,
       "Your dataset include duplicated sample/gene pairs. Please, remove redundancies before proceeding."
     )
   }
-
+  
   .data
-
+  
 }
 
 #' Check whether there are NA counts
@@ -179,11 +179,11 @@ error_if_duplicated_genes <- function(.data,
 #'
 error_if_counts_is_na = function(.data, .abundance) {
   .abundance = enquo(.abundance)
-
+  
   # Do the check
   if (.data %>% filter(!!.abundance %>% is.na) %>% nrow %>% `>` (0))
     stop("You have NA values in your counts")
-
+  
   # If all good return original data frame
   .data
 }
@@ -203,10 +203,10 @@ error_if_counts_is_na = function(.data, .abundance) {
 #' @return A tbl
 #'
 error_if_wrong_input = function(.data, list_input, expected_type) {
-
-
-
-
+  
+  
+  
+  
   # Do the check
   if (
     list_input %>%
@@ -216,7 +216,7 @@ error_if_wrong_input = function(.data, list_input, expected_type) {
     `!`
   )
     stop("You have passed the wrong argument to the function. Please check again.")
-
+  
   # If all good return original data frame
   .data
 }
@@ -317,9 +317,9 @@ prepend = function (x, values, before = 1)
 #'
 #' @return A tibble with an additional attribute
 add_class = function(var, name) {
-
+  
   class(var) <- prepend(class(var),name)
-
+  
   var
 }
 
@@ -334,33 +334,33 @@ add_class = function(var, name) {
 #'
 #' @return A list of column enquo or error
 get_sample_transcript_counts = function(.data, .sample, .transcript, .abundance){
-
-
-    my_stop = function() {
-      stop("
+  
+  
+  my_stop = function() {
+    stop("
         The fucntion does not know what your sample, transcript and counts columns are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
-    }
-
-    if( .sample %>% quo_is_symbol() ) .sample = .sample
-    else if(".sample" %in% (.data %>% attr("parameters") %>% names))
-      .sample =  attr(.data, "parameters")$.sample
-    else my_stop()
-
-    if( .transcript %>% quo_is_symbol() ) .transcript = .transcript
-    else if(".transcript" %in% (.data %>% attr("parameters") %>% names))
-      .transcript =  attr(.data, "parameters")$.transcript
-    else my_stop()
-
-    if( .abundance %>% quo_is_symbol() ) .abundance = .abundance
-    else if(".abundance" %in% (.data %>% attr("parameters") %>% names))
-      .abundance = attr(.data, "parameters")$.abundance
-    else my_stop()
-
-    list(.sample = .sample, .transcript = .transcript, .abundance = .abundance)
-
+  }
+  
+  if( .sample %>% quo_is_symbol() ) .sample = .sample
+  else if(".sample" %in% (.data %>% attr("parameters") %>% names))
+    .sample =  attr(.data, "parameters")$.sample
+  else my_stop()
+  
+  if( .transcript %>% quo_is_symbol() ) .transcript = .transcript
+  else if(".transcript" %in% (.data %>% attr("parameters") %>% names))
+    .transcript =  attr(.data, "parameters")$.transcript
+  else my_stop()
+  
+  if( .abundance %>% quo_is_symbol() ) .abundance = .abundance
+  else if(".abundance" %in% (.data %>% attr("parameters") %>% names))
+    .abundance = attr(.data, "parameters")$.abundance
+  else my_stop()
+  
+  list(.sample = .sample, .transcript = .transcript, .abundance = .abundance)
+  
 }
 
 #' Get column names either from user or from attributes
@@ -373,8 +373,8 @@ get_sample_transcript_counts = function(.data, .sample, .transcript, .abundance)
 #'
 #' @return A list of column enquo or error
 get_sample_counts = function(.data, .sample, .abundance){
-
-
+  
+  
   my_stop = function() {
     stop("
         The fucntion does not know what your sample, transcript and counts columns are.\n
@@ -382,19 +382,19 @@ get_sample_counts = function(.data, .sample, .abundance){
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
   }
-
+  
   if( .sample %>% quo_is_symbol() ) .sample = .sample
   else if(".sample" %in% (.data %>% attr("parameters") %>% names))
     .sample =  attr(.data, "parameters")$.sample
   else my_stop()
-
+  
   if( .abundance %>% quo_is_symbol() ) .abundance = .abundance
   else if(".abundance" %in% (.data %>% attr("parameters") %>% names))
     .abundance = attr(.data, "parameters")$.abundance
   else my_stop()
-
+  
   list(.sample = .sample, .abundance = .abundance)
-
+  
 }
 
 #' Get column names either from user or from attributes
@@ -407,8 +407,8 @@ get_sample_counts = function(.data, .sample, .abundance){
 #'
 #' @return A list of column enquo or error
 get_sample_transcript = function(.data, .sample, .transcript){
-
-
+  
+  
   my_stop = function() {
     stop("
         The fucntion does not know what your sample, transcript and counts columns are.\n
@@ -416,20 +416,20 @@ get_sample_transcript = function(.data, .sample, .transcript){
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
   }
-
+  
   if( .sample %>% quo_is_symbol() ) .sample = .sample
   else if(".sample" %in% (.data %>% attr("parameters") %>% names))
     .sample =  attr(.data, "parameters")$.sample
   else my_stop()
-
+  
   if( .transcript %>% quo_is_symbol() ) .transcript = .transcript
   else if(".transcript" %in% (.data %>% attr("parameters") %>% names))
     .transcript =  attr(.data, "parameters")$.transcript
   else my_stop()
-
-
+  
+  
   list(.sample = .sample, .transcript = .transcript)
-
+  
 }
 
 
@@ -445,7 +445,7 @@ get_sample_transcript = function(.data, .sample, .transcript){
 #' @return A list of column enquo or error
 #'
 get_elements_features = function(.data, .element, .feature, of_samples = TRUE){
-
+  
   # If setted by the user, enquo those
   if(
     .element %>% quo_is_symbol() &
@@ -455,13 +455,13 @@ get_elements_features = function(.data, .element, .feature, of_samples = TRUE){
       .element = .element,
       .feature = .feature
     ))
-
+  
   # Otherwise check if attribute exists
   else {
-
+    
     # If so, take them from the attribute
     if(.data %>% attr("parameters") %>% is.null %>% `!`)
-
+      
       return(list(
         .element =  switch(
           of_samples %>% `!` %>% sum(1),
@@ -498,7 +498,7 @@ get_elements_features = function(.data, .element, .feature, of_samples = TRUE){
 #' @return A list of column enquo or error
 #'
 get_elements_features_abundance = function(.data, .element, .feature, .abundance, of_samples = TRUE){
-
+  
   my_stop = function() {
     stop("
         The fucntion does not know what your elements (e.g., sample) and features (e.g., transcripts) are.\n
@@ -506,26 +506,26 @@ get_elements_features_abundance = function(.data, .element, .feature, .abundance
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
   }
-
+  
   if( .element %>% quo_is_symbol() ) .element = .element
   else if(of_samples & ".sample" %in% (.data %>% attr("parameters") %>% names))
     .element =  attr(.data, "parameters")$.sample
   else if((!of_samples) & ".transcript" %in% (.data %>% attr("parameters") %>% names))
-     .element =  attr(.data, "parameters")$.transcript
+    .element =  attr(.data, "parameters")$.transcript
   else my_stop()
-
+  
   if( .feature %>% quo_is_symbol() ) .feature = .feature
   else if(of_samples & ".transcript" %in% (.data %>% attr("parameters") %>% names))
     .feature =  attr(.data, "parameters")$.transcript
   else if((!of_samples) & ".sample" %in% (.data %>% attr("parameters") %>% names))
     .feature =  attr(.data, "parameters")$.sample
   else my_stop()
-
+  
   if( .abundance %>% quo_is_symbol() ) .abundance = .abundance
   else if(".abundance" %in% (.data %>% attr("parameters") %>% names))
     .abundance = attr(.data, "parameters")$.abundance
   else my_stop()
-
+  
   list(.element = .element, .feature = .feature, .abundance = .abundance)
 }
 
@@ -539,7 +539,7 @@ get_elements_features_abundance = function(.data, .element, .feature, .abundance
 #'
 #' @return A list of column enquo or error
 get_elements = function(.data, .element, of_samples = TRUE){
-
+  
   # If setted by the user, enquo those
   if(
     .element %>% quo_is_symbol()
@@ -547,13 +547,13 @@ get_elements = function(.data, .element, of_samples = TRUE){
     return(list(
       .element = .element
     ))
-
+  
   # Otherwise check if attribute exists
   else {
-
+    
     # If so, take them from the attribute
     if(.data %>% attr("parameters") %>% is.null %>% `!`)
-
+      
       return(list(
         .element =  switch(
           of_samples %>% `!` %>% sum(1),
@@ -580,7 +580,7 @@ get_elements = function(.data, .element, of_samples = TRUE){
 #'
 #' @return A list of column enquo or error
 get_abundance_norm_if_exists = function(.data, .abundance){
-
+  
   # If setted by the user, enquo those
   if(
     .abundance %>% quo_is_symbol()
@@ -588,18 +588,18 @@ get_abundance_norm_if_exists = function(.data, .abundance){
     return(list(
       .abundance = .abundance
     ))
-
+  
   # Otherwise check if attribute exists
   else {
-
+    
     # If so, take them from the attribute
     if(.data %>% attr("parameters") %>% is.null %>% `!`)
-
+      
       return(list(
         .abundance =  switch(
           (".abundance_norm" %in% (.data %>% attr("parameters") %>% names) &
              quo_name(.data %>% attr("parameters") %$% .abundance_norm) %in% (.data %>% colnames)
-           ) %>% `!` %>% sum(1),
+          ) %>% `!` %>% sum(1),
           attr(.data, "parameters")$.abundance_norm,
           attr(.data, "parameters")$.abundance
         )
@@ -624,7 +624,7 @@ get_abundance_norm_if_exists = function(.data, .abundance){
 #' @return A tibble with pairs to drop
 select_closest_pairs = function(df) {
   couples <- df %>% head(n = 0)
-
+  
   while (df %>% nrow() > 0) {
     pair <- df %>%
       arrange(dist) %>%
@@ -636,9 +636,9 @@ select_closest_pairs = function(df) {
           !`sample 2` %in% (pair %>% select(1:2) %>% as.character())
       )
   }
-
+  
   couples
-
+  
 }
 
 
@@ -715,3 +715,126 @@ ct_colors = function(ct)
     )
   )
 
+
+get_top_annotation = function(.data, .horizontal, .vertical, .abundance, annotation, x_y_annot_cols, palette_annotation){
+  
+  # Make col names
+  .horizontal = enquo(.horizontal)
+  .vertical = enquo(.vertical)
+  .abundance = enquo(.abundance)
+  annotation = enquo(annotation)
+  
+  if(annotation %>% quo_is_symbolic()) {
+    annot_col_names = .data %>% ungroup() %>% select(!!annotation) %>% colnames
+    
+    x_y_annotation_cols = 
+      x_y_annot_cols %>%
+      map(
+        ~ .x %>% intersect( annot_col_names)
+      )
+    
+    # Col annot
+    col_annot = 
+      x_y_annotation_cols$horizontal %>%
+      map(
+        ~ {
+          .data %>%
+            ungroup() %>%
+            distinct(!!.horizontal, !!as.symbol(.x)) %>%
+            arrange(!!.horizontal) %>%
+            pull(!!as.symbol(.x))
+        }
+      )
+    
+    # Stop if annotations discrete bigger than palette
+    if(
+      col_annot %>% map_chr(~ .x %>% class) %in% 
+      c("factor", "character") %>% which %>% length %>%
+      `>` (palette_annotation$discrete %>% length)
+    ) stop("Your discrete annotaton columns are bigger than the palette available")
+    
+    # Stop if annotations continuous bigger than palette
+    if(
+      col_annot %>% map_chr(~ .x %>% class) %in% 
+      c("int", "dbl") %>% which %>% length %>%
+      `>` (palette_annotation$continuous %>% length)
+    ) stop("Your continuous annotaton columns are bigger than the palette available")
+    
+    col_annot_cont = 
+      col_annot %>%
+      map2(
+        1:length(col_annot) %>% as.list,
+        ~ {
+          if(.x %>% class %in% c("factor", "character"))
+            palette_annotation$discrete[[.y]][1:length(unique(.x))] %>% setNames(unique(.x))
+          else
+            palette_annotation$continuous[[.y]](length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
+          
+        }
+      )
+    
+    
+    left_annotation_args = 
+      col_annot %>% 
+      setNames(annot_col_names) %>%
+      c(
+        col = list(col_annot_cont %>% setNames(annot_col_names))
+      )
+    
+    top_annotation = do.call("HeatmapAnnotation", as.list(left_annotation_args))
+    
+  } else {
+    top_annotation = NULL
+  }
+  
+  # Return
+  top_annotation
+}
+
+
+get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annotation, x_y_annot_cols){
+  
+  # Make col names
+  .horizontal = enquo(.horizontal)
+  .vertical = enquo(.vertical)
+  .abundance = enquo(.abundance)
+  annotation = enquo(annotation)
+  
+  if("groups" %in%  (.data %>% attributes %>% names)) {
+    x_y_annotation_cols = 
+      x_y_annot_cols %>%
+      map(
+        ~ .x %>% intersect( .data %>% attr("groups") %>% select(-.rows) %>% colnames())
+      )
+    
+    # Row split
+    row_split = 
+      .data %>%
+      ungroup() %>%
+      distinct(!!.vertical, !!as.symbol(x_y_annotation_cols$vertical)) %>%
+      arrange(!!.vertical) %>%
+      pull(`Cell type`)
+    
+    left_annotation_args = 
+      list(
+        ct = anno_block(  #<<< IF i HAVE GROUPING THIS IS AUTOMATIC
+          gp = gpar(fill = ct_colors(	row_split %>% unique %>% sort	)),
+          labels = row_split %>% unique %>% sort,
+          labels_gp = gpar(col = "white"),
+          which = "row"
+        )
+      )
+    
+    left_annotation = do.call("rowAnnotation", as.list(left_annotation_args))
+    
+  } else {
+    row_split = NULL
+    left_annotation =	NULL
+  }
+  
+  # Return
+  list(
+    left_annotation = left_annotation,
+    row_split = row_split
+  )
+}

@@ -17,7 +17,9 @@
 #' @importFrom magrittr equals
 #' @importFrom rlang quo_is_symbolic
 #' @importFrom RColorBrewer brewer.pal
-#'
+#' @importFrom viridis viridis
+#' @importFrom viridis magma
+#' 
 #' @name plot_heatmap
 #' @rdname plot_heatmap
 #'
@@ -34,8 +36,15 @@
 #'
 #' @examples
 #'
-#'
-#' print(1)
+#' library(tidyverse)
+#' tidyHeatmap::N52 %>%
+#' group_by( `Cell type`) %>%
+#' tidyHeatmap::plot_heatmap(
+#'  .horizontal = UBR, 
+#'  .vertical = symbol_ct, 
+#'  .abundance = `read count normalised log`,
+#'  annotation = CAPRA_TOTAL
+#' )
 #'
 #'
 #' @export
@@ -64,12 +73,15 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = 
 		apply(2, function(y) (y - mean(y)) / sd(y) ^ as.logical(sd(y))) %>%
 		t() 
 	
-	# Colors
+	# Colors tiles
 	palette_abundance = viridis(3)[1:2] %>% c("#fefada")
-	palette_annotation_continuous = colorRampPalette(brewer.pal(11,"Spectral") %>% rev)
-	palette_annotation_discrete = brewer.pal(8,"Dark2")
-	
 	colors = colorRamp2(c(-2, 0, 2), palette_abundance )
+	
+	# Colors annotations
+	palette_annotation = list(
+		discrete = list( brewer.pal(9,"Set1"), brewer.pal(8,"Dark2"), brewer.pal(8,"Accent"), brewer.pal(12,"Set3"), brewer.pal(8,"Set2"), brewer.pal(8,"Pastel2") ),
+		continuous = list(colorRampPalette(brewer.pal(11,"Spectral") %>% rev), colorRampPalette(viridis(n=5)), colorRampPalette(magma(n=5)),   colorRampPalette(brewer.pal(11,"PRGn")), colorRampPalette(brewer.pal(11,"BrBG") )  )
+	)
 	
 	# Get x and y anntation columns
 	x_y_annot_cols =
@@ -77,114 +89,47 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = 
 		ungroup() %>%
 		get_x_y_annotation_columns(!!.horizontal, !!.vertical, !!.abundance)
 	
+	# Check if annotation is compatible with your dataset
+	.data %>% 
+		select(!!annotation) %>% 
+		colnames %>% 
+		setdiff(x_y_annot_cols %>% unlist) %>%
+		ifelse_pipe(
+			length(.) > 0, 
+			~ stop(sprintf(
+				"Your annotation \"%s\" is not unique to vertical nor horizontal dimentions", 
+				.x %>% paste(collapse=", ")
+			))
+		)
+	
 	# See if I have grouping and setup framework
-	if("groups" %in%  (.data %>% attributes %>% names)) {
-		x_y_annotation_cols = 
-			x_y_annot_cols %>%
-			map(
-				~ .x %>% intersect( .data %>% attr("groups") %>% select(-.rows) %>% colnames())
-			)
-		
-		# Row split
-		row_split = 
-			.data %>%
-			ungroup() %>%
-			distinct(!!.vertical, !!as.symbol(x_y_annotation_cols$vertical)) %>%
-			arrange(!!.vertical) %>%
-			pull(`Cell type`)
-		
-		left_annotation_args = 
-			list(
-				ct = anno_block(  #<<< IF i HAVE GROUPING THIS IS AUTOMATIC
-					gp = gpar(fill = ct_colors(	row_split %>% unique %>% sort	)),
-					labels = row_split %>% unique %>% sort,
-					labels_gp = gpar(col = "white"),
-					which = "row"
-				)
-			)
-		
-		left_annotation = do.call("rowAnnotation", as.list(left_annotation_args))
-		
-	} else {
-		row_split = NULL
-		left_annotation =	NULL
-	}
+	group_annotation = get_group_annotation(.data, !!.horizontal, !!.vertical, !!.abundance, !!annotation, x_y_annot_cols)
 	
 	# See if there is annotation
-	if(annotation %>% quo_is_symbolic()) {
-		annot_col_names = .data %>% ungroup() %>% select(!!annotation) %>% colnames
-		
-		x_y_annotation_cols = 
-			x_y_annot_cols %>%
-			map(
-				~ .x %>% intersect( annot_col_names)
-			)
-		
-		# Col annot
-		col_annot = 
-			x_y_annotation_cols$horizontal %>%
-				map(
-					~ {
-						.data %>%
-							ungroup() %>%
-							distinct(!!.horizontal, !!as.symbol(.x)) %>%
-							arrange(!!.horizontal) %>%
-							pull(!!as.symbol(.x))
-					}
-				)
-		
-		col_annot_cont = 
-			col_annot %>%
-			map2(
-				col_annot %>% map(~ length(levels(.x))) %>% unlist %>% cumsum %>% prepend(0) %>% `[` (-length(.)) %>% as.list,
-				~ {
-					if(.x %>% class %in% c("factor", "character"))
-						palette_annotation_discrete[(.y+1):(.y+length(unique(.x)))] %>% setNames(unique(.x))
-					else
-						colorRamp2(0:7, palette_annotation_continuous(8))
-		
-				}
-			)
-			
-
-		left_annotation_args = 
-			col_annot %>% 
-			setNames(annot_col_names) %>%
-			c(
-				col = list(col_annot_cont %>% setNames(annot_col_names))
-			)
-		
-
-		
-		top_annotation = do.call("HeatmapAnnotation", as.list(left_annotation_args))
-		
-	} else {
-		top_annotation = NULL
-	}
+	top_annotation = get_top_annotation(.data, !!.horizontal, !!.vertical, !!.abundance, !!annotation, x_y_annot_cols, palette_annotation)
 	
 	abundance_mat %>%
 		Heatmap(
-		column_title = quo_name(.horizontal),
-		row_title = quo_name(.vertical),
-		# width = unit(0.5 * 13, "cm"),
-		# height = unit(0.5 * .data %>% distinct(!!.vertical) %>% nrow, "cm"),
-		col = colors,
-		row_split = row_split,
-		left_annotation =	left_annotation,
-		cluster_row_slices = F,
-		row_names_gp = gpar(fontsize = 320 / dim(abundance_mat)[1]),
-		#,
-		#	clustering_distance_columns = robust_dist,
-				# ,
-				# 
-				# inflection =  anno_points( << THIS CAN ALSO BE AUTOMATIC GIVING COLUMN DISTINCT WITH .vertical AND TYPE anno_POINTS
-				# 	tbl %>% distinct(symbol_ct, inflection) %>%
-				# 		arrange(symbol_ct) %>% pull(inflection)
-				# )
+			column_title = quo_name(.horizontal),
+			row_title = quo_name(.vertical),
+			# width = unit(0.5 * 13, "cm"),
+			# height = unit(0.5 * .data %>% distinct(!!.vertical) %>% nrow, "cm"),
+			col = colors,
+			row_split = group_annotation$row_split,
+			left_annotation =	group_annotation$left_annotation,
+			cluster_row_slices = F,
+			row_names_gp = gpar(fontsize = 320 / dim(abundance_mat)[1]),
+			#,
+			#	clustering_distance_columns = robust_dist,
+			# ,
+			# 
+			# inflection =  anno_points( << THIS CAN ALSO BE AUTOMATIC GIVING COLUMN DISTINCT WITH .vertical AND TYPE anno_POINTS
+			# 	tbl %>% distinct(symbol_ct, inflection) %>%
+			# 		arrange(symbol_ct) %>% pull(inflection)
+			# )
 
-
-		top_annotation  = top_annotation
-	)
+			top_annotation  = top_annotation
+		)
 	
 	
 } 
