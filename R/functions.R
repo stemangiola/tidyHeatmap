@@ -1,6 +1,6 @@
 #' plot_heatmap
 #'
-#' @description plot_heatmap() creates a `tt` object from a `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |
+#' @description plot_heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
 #'
 #' @import dplyr
 #' @import tidyr
@@ -28,6 +28,7 @@
 #' @param .vertical The name of the column vertically presented in the heatmap
 #' @param .abundance The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
+#' @param log_transform A boolean, whether the value should be log-transformed (e.g., TRUE for RNA sequencing data)
 #'
 #' @details To be added.
 #'
@@ -47,11 +48,10 @@
 #' )
 #'
 #'
-#' @export
 #' 
 #'
 #' 
-plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = NULL){
+plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = NULL, log_transform = F){
 	
 	# Make col names
 	.horizontal = enquo(.horizontal)
@@ -59,10 +59,17 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = 
 	.abundance = enquo(.abundance)
 	annotation = enquo(annotation)
 	
+	# Check if you have more than one grouping, at the moment just one is accepted
+	if(length(get_grouping_columns(.data)) > 1) stop("At the moment just one grouping is supported")
+	
 	# Get abundance matrix
 	abundance_tbl = 
 		.data %>% 
 		ungroup() %>%
+		
+		# Check if log tranfrom is needed
+		ifelse_pipe(log_transform, ~ .x %>% mutate(!!.abundance := !!.abundance %>%  `+`(1) %>%  log())) %>%
+		
 		distinct(!!.vertical, !!.horizontal, !!.abundance) %>% 
 		spread(!!.horizontal, !!.abundance) 
 	
@@ -79,8 +86,25 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = 
 	
 	# Colors annotations
 	palette_annotation = list(
-		discrete = list( brewer.pal(9,"Set1"), brewer.pal(8,"Dark2"), brewer.pal(8,"Accent"), brewer.pal(12,"Set3"), brewer.pal(8,"Set2"), brewer.pal(8,"Pastel2") ),
-		continuous = list(colorRampPalette(brewer.pal(11,"Spectral") %>% rev), colorRampPalette(viridis(n=5)), colorRampPalette(magma(n=5)),   colorRampPalette(brewer.pal(11,"PRGn")), colorRampPalette(brewer.pal(11,"BrBG") )  )
+		
+		# Discrete pellets
+		discrete = list( 
+			brewer.pal(9,"Set1"),
+			brewer.pal(8,"Set2"), 
+			brewer.pal(12,"Set3"),
+			brewer.pal(8,"Dark2"),
+			brewer.pal(8,"Accent"),
+			brewer.pal(8,"Pastel2") 
+		),
+		
+		# Continuous pellets
+		continuous = list(
+			colorRampPalette(brewer.pal(11,"Spectral") %>% rev), 
+			colorRampPalette(viridis(n=5)), 
+			colorRampPalette(magma(n=5)),  
+			colorRampPalette(brewer.pal(11,"PRGn")), 
+			colorRampPalette(brewer.pal(11,"BrBG") ) 
+		)
 	)
 	
 	# Get x and y anntation columns
@@ -103,8 +127,13 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = 
 		)
 	
 	# See if I have grouping and setup framework
-	group_annotation = get_group_annotation(.data, !!.horizontal, !!.vertical, !!.abundance, !!annotation, x_y_annot_cols)
+	group_annotation = get_group_annotation(.data, !!.horizontal, !!.vertical, !!.abundance, !!annotation, x_y_annot_cols, palette_annotation)
 	
+	# If I have grouping, eliminate the first discrete palette
+	palette_annotation$discrete = 
+		palette_annotation$discrete %>%
+		ifelse_pipe( length(get_grouping_columns(.data)) > 0, ~ .x[-1] )
+		
 	# See if there is annotation
 	top_annotation = get_top_annotation(.data, !!.horizontal, !!.vertical, !!.abundance, !!annotation, x_y_annot_cols, palette_annotation)
 	
