@@ -1,49 +1,85 @@
 ---
-title: "Overview of the ttBulk package"
+title: "Overview of the tidyHeatmap package"
 author: "Stefano Mangiola"
 date: "`r Sys.Date()`"
-package: ttBulk
+package: tidyHeatmap
 output:
   BiocStyle::html_document:
     toc_float: true
 vignette: >
   %\VignetteEngine{knitr::knitr}
-  %\VignetteIndexEntry{Overview of the ttBulk package}
+  %\VignetteIndexEntry{Overview of the tidyHeatmap package}
   %\usepackage[UTF-8]{inputenc}
 ---
 
-<!-- <style type="text/css"> -->
-<!-- .main-container { -->
-<!--   max-width: 2800px;!important -->
-<!--   margin-left: auto; -->
-<!--   margin-right: auto; -->
-<!-- } -->
-<!-- </style> -->
+[![Build Status](https://travis-ci.org/stemangiola/tidyHeatmap.svg?branch=master)](https://travis-ci.org/stemangiola/tidyHeatmap) [![Coverage Status](https://coveralls.io/repos/github/stemangiola/tidyHeatmap/badge.svg?branch=master)](https://coveralls.io/github/stemangiola/tidyHeatmap?branch=master)
 
-<style>
-.column-left{
-  float: left;
-  width: 50%;
-  text-align: left;
-}
-.column-right{
-  float: right;
-  width: 50%;
-  text-align: right;
-}
-</style>
 
-```{r, echo=FALSE, include=FALSE}
+
+```{r, echo=FALSE, include=FALSE, }
 library(knitr)
-#library(kableExtra)
 knitr::opts_chunk$set(cache = TRUE, warning = FALSE, 
                       message = FALSE, cache.lazy = FALSE)
-#options(width = 120)
-options(pillar.min_title_chars = Inf)
 
+library(tidyverse)
+library(tidyHeatmap)
 
 ```
 
+This package is a tidy wrapper of the package [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html). The goal of this package is to interface a tidy data frame with this powerful tool.
+
+Some of the advantages are:
+
+- Row and/or columns colour annotations are easy to integrate just specifying one parameter (column names). 
+- Custom grouping of rows is easy to specify providing a grouped tbl. For example `df %>% grup_by(...)`
+- Labels size adjusted by row and column total number
+- Default use of Brewer and Viridis palettes
+
+## Input data frame
+
+The input data frameha sto be a tidy `tbl` of this form
+
+```{r}
+pasilla
+```
+
+Where mandatory column are `sample`, `transcript`, count (named as you wish)
+
+
+## Plot
+
+For plotting, you simply pipe the input data frame into heatmap, specifying:
+
+- The horizontal, vertical relative column names (mandatory)
+- The abundance column name (mandatory)
+- The annotations column name(s)
+
+```{r}
+pasilla %>%
+	heatmap(
+		.horizontal = sample,
+		.vertical = symbol,
+		.abundance = `count normalised adjusted`,
+		annotation = c(condition, type),
+		log_transform = T
+	)
+```
+
+## Grouping
+
+We can easily group the data (one group per dimension maximum, at the moment only the vertical dimension is supported) with dplyr, and the heatmap will be grouped accordingly
+
+```{r}
+pasilla %>%
+	group_by(location) %>%
+	heatmap(
+		.horizontal = sample,
+		.vertical = symbol,
+		.abundance = `count normalised adjusted`,
+		annotation = c(condition, type),
+		log_transform = T
+	)
+```
 # Appendix
 
 ```{r}
