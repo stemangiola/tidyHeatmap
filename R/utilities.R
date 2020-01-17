@@ -792,7 +792,7 @@ get_top_annotation = function(.data, .horizontal, .vertical, .abundance, annotat
 }
 
 
-get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annotation, x_y_annot_cols){
+get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annotation, x_y_annot_cols, palette_annotation){
   
   # Make col names
   .horizontal = enquo(.horizontal)
@@ -800,11 +800,14 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
   .abundance = enquo(.abundance)
   annotation = enquo(annotation)
   
+  # Column groups
+  col_group = get_grouping_columns(.data)
+  
   if("groups" %in%  (.data %>% attributes %>% names)) {
     x_y_annotation_cols = 
       x_y_annot_cols %>%
       map(
-        ~ .x %>% intersect( .data %>% attr("groups") %>% select(-.rows) %>% colnames())
+        ~ .x %>% intersect(col_group)
       )
     
     # Row split
@@ -813,12 +816,15 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
       ungroup() %>%
       distinct(!!.vertical, !!as.symbol(x_y_annotation_cols$vertical)) %>%
       arrange(!!.vertical) %>%
-      pull(`Cell type`)
+      pull(!!as.symbol(col_group))
+    
+    # Create array of colors
+    palette_fill = palette_annotation$discrete[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
     
     left_annotation_args = 
       list(
-        ct = anno_block(  #<<< IF i HAVE GROUPING THIS IS AUTOMATIC
-          gp = gpar(fill = ct_colors(	row_split %>% unique %>% sort	)),
+        ct = anno_block(  
+          gp = gpar(fill = palette_fill ),
           labels = row_split %>% unique %>% sort,
           labels_gp = gpar(col = "white"),
           which = "row"
@@ -837,4 +843,10 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
     left_annotation = left_annotation,
     row_split = row_split
   )
+}
+
+get_grouping_columns = function(.data){
+  if("groups" %in%  (.data %>% attributes %>% names))
+    .data %>% attr("groups") %>% select(-.rows) %>% colnames()
+  else c()
 }
