@@ -4,7 +4,7 @@ context('tests')
 test_that("basic plot",{
 
 	p = 
-		tidyHeatmap::plot_heatmap(
+		tidyHeatmap::heatmap(
 			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
@@ -19,7 +19,7 @@ test_that("basic plot",{
 test_that("grouped plot",{
 	
 	p = 
-		tidyHeatmap::plot_heatmap(
+		tidyHeatmap::heatmap(
 			dplyr::group_by(
 				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 				`Cell type`
@@ -37,7 +37,7 @@ test_that("grouped plot",{
 test_that("annotated plot numerical continuous intereg nominal annot",{
 	
 	p = 
-		tidyHeatmap::plot_heatmap(
+		tidyHeatmap::heatmap(
 				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
@@ -54,7 +54,7 @@ test_that("annotated plot continuous annot MUST ERROR",{
 	my_df = dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis")
 	
 	expect_error(
-		tidyHeatmap::plot_heatmap(
+		tidyHeatmap::heatmap(
 			 left_join(my_df,  dplyr::mutate(dplyr::distinct(my_df, sample), a = rnorm(n()))), 
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
@@ -69,7 +69,7 @@ test_that("annotated plot continuous annot as well",{
 	my_df = dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis")
 	
 	p = 
-		tidyHeatmap::plot_heatmap(
+		tidyHeatmap::heatmap(
 			left_join(my_df,  dplyr::mutate(dplyr::distinct(my_df, UBR), a = rnorm(n(), sd=5))), 
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
@@ -84,7 +84,7 @@ test_that("annotated plot continuous annot as well",{
 test_that("grouped and annotated plot",{
 	
 	p = 
-		tidyHeatmap::plot_heatmap(
+		tidyHeatmap::heatmap(
 			dplyr::group_by(
 				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 				`Cell type`
@@ -103,12 +103,13 @@ test_that("grouped and annotated plot",{
 test_that("pasilla one annotation",{
 	
 	p = 
-		tidyHeatmap::plot_heatmap(
+		tidyHeatmap::heatmap(
 			tidyHeatmap::pasilla,
 			.horizontal = sample,
 			.vertical = transcript,
-			.abundance = `Log adj count`,
-			annotation = condition
+			.abundance = `count normalised adjusted`,
+			annotation = condition,
+			log_transform = T
 		)
 	
 	
@@ -119,12 +120,13 @@ test_that("pasilla one annotation",{
 test_that("pasilla 2 annotations",{
 	
 	p = 
-		tidyHeatmap::plot_heatmap(
+		tidyHeatmap::heatmap(
 			tidyHeatmap::pasilla,
 			.horizontal = sample,
 			.vertical = transcript,
-			.abundance = `Log adj count`,
-			annotation = c(condition, type)
+			.abundance = `count normalised adjusted`,
+			annotation = c(condition, type),
+			log_transform = T
 		)
 	
 	
