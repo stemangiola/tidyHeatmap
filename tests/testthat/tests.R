@@ -106,7 +106,7 @@ test_that("pasilla one annotation",{
 		tidyHeatmap::heatmap(
 			tidyHeatmap::pasilla,
 			.horizontal = sample,
-			.vertical = transcript,
+			.vertical = symbol,
 			.abundance = `count normalised adjusted`,
 			annotation = condition,
 			log_transform = T
@@ -123,7 +123,7 @@ test_that("pasilla 2 annotations",{
 		tidyHeatmap::heatmap(
 			tidyHeatmap::pasilla,
 			.horizontal = sample,
-			.vertical = transcript,
+			.vertical = symbol,
 			.abundance = `count normalised adjusted`,
 			annotation = c(condition, type),
 			log_transform = T

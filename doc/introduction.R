@@ -3,7 +3,8 @@ library(knitr)
 knitr::opts_chunk$set(cache = TRUE, warning = FALSE, 
                       message = FALSE, cache.lazy = FALSE)
 
-library(tidyverse)
+library(magrittr)
+library(dplyr)
 library(tidyHeatmap)
 
 
@@ -30,7 +31,4 @@ pasilla %>%
 		annotation = c(condition, type),
 		log_transform = T
 	)
-
-## -----------------------------------------------------------------------------
-sessionInfo()
 

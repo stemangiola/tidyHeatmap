@@ -35,18 +35,6 @@
 #' @return A `ComplexHeatmap` object
 #'
 #'
-#' @examples
-#'
-#' library(tidyverse)
-#' tidyHeatmap::N52 %>%
-#' group_by( `Cell type`) %>%
-#' tidyHeatmap::plot_heatmap(
-#'  .horizontal = UBR, 
-#'  .vertical = symbol_ct, 
-#'  .abundance = `read count normalised log`,
-#'  annotation = CAPRA_TOTAL
-#' )
-#'
 #'
 #' 
 #'

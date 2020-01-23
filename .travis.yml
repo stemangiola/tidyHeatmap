@@ -3,8 +3,8 @@
 language: r
 cache: packages
 r:
- - bioc-release
- - bioc-devel
+ - devel
+ - release
 env:
 - R_QPDF=true
 

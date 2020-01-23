@@ -3,8 +3,6 @@ title: "tidyHeatmap"
 output: github_document
 ---
 
-[![Build Status](https://travis-ci.org/stemangiola/tidyHeatmap.svg?branch=master)](https://travis-ci.org/stemangiola/tidyHeatmap) [![Coverage Status](https://coveralls.io/repos/github/stemangiola/tidyHeatmap/badge.svg?branch=master)](https://coveralls.io/github/stemangiola/tidyHeatmap?branch=master)
-
 
 
 ```{r, echo=FALSE, include=FALSE, }
@@ -12,7 +10,8 @@ library(knitr)
 knitr::opts_chunk$set(cache = TRUE, warning = FALSE, 
                       message = FALSE, cache.lazy = FALSE)
 
-library(tidyverse)
+library(magrittr)
+library(dplyr)
 library(tidyHeatmap)
 
 ```

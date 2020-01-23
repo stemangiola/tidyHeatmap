@@ -9,24 +9,24 @@
 #' @rdname heatmap
 #'
 #' @param .data A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |
-#' @param .sample The name of the sample column
-#' @param .transcript The name of the transcript/gene column
+#' @param .horizontal The name of the column horizontally presented in the heatmap
+#' @param .vertical The name of the column vertically presented in the heatmap
 #' @param .abundance The name of the transcript/gene abundance column
+#' @param annotation Vector of quotes
+#' @param log_transform A boolean, whether the value should be log-transformed (e.g., TRUE for RNA sequencing data)
 #'
-#' @details This function created a heatmap object and is useful if you want
-#' to avoid to specify .sample, .transcript and .abundance arguments all the times.
-#' The heatmap object have an attribute called parameters where these three
-#' arguments are stored as metadata. They can be extracted as attr(<object>, "parameters").
+#' @details To be added.
 #'
-#' @return A `heatmap` object
+#' @return A `ComplexHeatmap` object
+#'
 #'
 #'
 #' @examples
 #'
-#' library(tidyverse)
+#' library(dplyr)
 #' tidyHeatmap::N52 %>%
 #' group_by( `Cell type`) %>%
-#' tidyHeatmap::plot_heatmap(
+#' tidyHeatmap::heatmap(
 #'  .horizontal = UBR,
 #'  .vertical = symbol_ct,
 #'  .abundance = `read count normalised log`,

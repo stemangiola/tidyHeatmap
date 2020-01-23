@@ -16,30 +16,31 @@ heatmap(
 \arguments{
 \item{.data}{A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |}
 
+\item{.horizontal}{The name of the column horizontally presented in the heatmap}
+
+\item{.vertical}{The name of the column vertically presented in the heatmap}
+
 \item{.abundance}{The name of the transcript/gene abundance column}
 
-\item{.sample}{The name of the sample column}
+\item{annotation}{Vector of quotes}
 
-\item{.transcript}{The name of the transcript/gene column}
+\item{log_transform}{A boolean, whether the value should be log-transformed (e.g., TRUE for RNA sequencing data)}
 }
 \value{
-A `heatmap` object
+A `ComplexHeatmap` object
 }
 \description{
 plot_heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
 }
 \details{
-This function created a heatmap object and is useful if you want
-to avoid to specify .sample, .transcript and .abundance arguments all the times.
-The heatmap object have an attribute called parameters where these three
-arguments are stored as metadata. They can be extracted as attr(<object>, "parameters").
+To be added.
 }
 \examples{
 
-library(tidyverse)
+library(dplyr)
 tidyHeatmap::N52 \%>\%
 group_by( `Cell type`) \%>\%
-tidyHeatmap::plot_heatmap(
+tidyHeatmap::heatmap(
  .horizontal = UBR,
  .vertical = symbol_ct,
  .abundance = `read count normalised log`,

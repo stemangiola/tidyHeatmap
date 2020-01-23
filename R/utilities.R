@@ -70,9 +70,6 @@ ifelse2_pipe = function(.x, .p1, .p2, .f1, .f2, .f3 = NULL) {
 #'
 #' @return A matrix
 #'
-#' @examples
-#'
-#' as_matrix(head(dplyr::select(ttBulk::counts_mini, transcript, count)), rownames=transcript)
 #'
 #' @export
 as_matrix <- function(tbl,
@@ -126,101 +123,6 @@ error_if_log_transformed <- function(x, .abundance) {
         "The input was log transformed, this algorithm requires raw (un-normalised) read counts"
       )
 }
-
-#' Check whether there are duplicated genes/transcripts
-#'
-#' @import dplyr
-#' @import tidyr
-#' @import tibble
-#'
-#'
-#' @param .data A tibble of read counts
-#' @param .sample A character name of the sample column
-#' @param .transcript A character name of the transcript/gene column
-#' @param .abundance A character name of the read count column
-#'
-#' @return A tbl
-error_if_duplicated_genes <- function(.data,
-                                      .sample = `sample`,
-                                      .transcript = `transcript`,
-                                      .abundance = `read count`) {
-  .sample = enquo(.sample)
-  .transcript = enquo(.transcript)
-  .abundance = enquo(.abundance)
-  
-  duplicates <-
-    distinct( .data, !!.sample,!!.transcript,!!.abundance) %>%
-    count(!!.sample,!!.transcript) %>%
-    filter(n > 1) %>%
-    arrange(n %>% desc())
-  
-  if (duplicates %>% nrow() > 0) {
-    writeLines("Those are the duplicated genes")
-    duplicates %>% print()
-    stop(
-      "Your dataset include duplicated sample/gene pairs. Please, remove redundancies before proceeding."
-    )
-  }
-  
-  .data
-  
-}
-
-#' Check whether there are NA counts
-#'
-#' @import dplyr
-#' @import tidyr
-#' @import tibble
-#'
-#' @param .data A tibble of read counts
-#' @param .abundance A character name of the read count column
-#'
-#' @return A tbl
-#'
-error_if_counts_is_na = function(.data, .abundance) {
-  .abundance = enquo(.abundance)
-  
-  # Do the check
-  if (.data %>% filter(!!.abundance %>% is.na) %>% nrow %>% `>` (0))
-    stop("You have NA values in your counts")
-  
-  # If all good return original data frame
-  .data
-}
-
-#' Check whether there are NA counts
-#'
-#' @import dplyr
-#' @import tidyr
-#' @import tibble
-#' @importFrom purrr map
-#'
-#'
-#' @param .data A tibble of read counts
-#' @param list_input A list
-#' @param expected_type A character string
-#'
-#' @return A tbl
-#'
-error_if_wrong_input = function(.data, list_input, expected_type) {
-  
-  
-  
-  
-  # Do the check
-  if (
-    list_input %>%
-    map(~ .x %>% class() %>% `[` (1)) %>%
-    unlist %>%
-    equals(expected_type) %>%
-    `!`
-  )
-    stop("You have passed the wrong argument to the function. Please check again.")
-  
-  # If all good return original data frame
-  .data
-}
-
 
 #' .formula parser
 #'
@@ -641,8 +543,6 @@ select_closest_pairs = function(df) {
   
 }
 
-
-
 get_x_y_annotation_columns = function(.data, .horizontal, .vertical, .abundance){
   # Make col names
   .horizontal = enquo(.horizontal)
@@ -850,3 +750,5 @@ get_grouping_columns = function(.data){
     .data %>% attr("groups") %>% select(-.rows) %>% colnames()
   else c()
 }
+
+

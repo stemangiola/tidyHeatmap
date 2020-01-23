@@ -1,4 +1,4 @@
 library(testthat)
-library(ttBulk)
+library(tidyHeatmap)
 
-test_check("ttBulk")
+test_check("tidyHeatmap")

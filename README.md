@@ -1,11 +1,6 @@
 tidyHeatmap
 ================
 
-[![Build
-Status](https://travis-ci.org/stemangiola/tidyHeatmap.svg?branch=master)](https://travis-ci.org/stemangiola/tidyHeatmap)
-[![Coverage
-Status](https://coveralls.io/repos/github/stemangiola/tidyHeatmap/badge.svg?branch=master)](https://coveralls.io/github/stemangiola/tidyHeatmap?branch=master)
-
 This package is a tidy wrapper of the package
 [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html).
 The goal of this package is to interface a tidy data frame with this

@@ -19,8 +19,3 @@ A matrix
 \description{
 Get matrix from tibble
 }
-\examples{
-
-as_matrix(head(dplyr::select(ttBulk::counts_mini, transcript, count)), rownames=transcript)
-
-}
