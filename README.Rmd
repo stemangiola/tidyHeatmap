@@ -21,7 +21,7 @@ This package is a tidy wrapper of the package [ComplexHeatmap](https://bioconduc
 Some of the advantages are:
 
 - Row and/or columns colour annotations are easy to integrate just specifying one parameter (column names). 
-- Custom grouping of rows is easy to specify providing a grouped tbl. For example `df %>% grup_by(...)`
+- Custom grouping of rows is easy to specify providing a grouped tbl. For example `df %>% group_by(...)`
 - Labels size adjusted by row and column total number
 - Default use of Brewer and Viridis palettes
 
@@ -30,7 +30,7 @@ Some of the advantages are:
 The input data frameha sto be a tidy `tbl` of this form
 
 ```{r}
-pasilla
+tidyHeatmap::pasilla
 ```
 
 Where mandatory column are `sample`, `transcript`, count (named as you wish)
@@ -45,7 +45,7 @@ For plotting, you simply pipe the input data frame into heatmap, specifying:
 - The annotations column name(s)
 
 ```{r}
-pasilla %>%
+tidyHeatmap::pasilla %>%
 	heatmap(
 		.horizontal = sample,
 		.vertical = symbol,
@@ -60,7 +60,7 @@ pasilla %>%
 We can easily group the data (one group per dimension maximum, at the moment only the vertical dimension is supported) with dplyr, and the heatmap will be grouped accordingly
 
 ```{r}
-pasilla %>%
+tidyHeatmap::pasilla %>%
 	group_by(location) %>%
 	heatmap(
 		.horizontal = sample,

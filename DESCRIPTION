@@ -10,7 +10,7 @@ Description: This is a tidy implementation for heatmap.
     The goal of this package is to interface a tidy data frame with this powerful tool. 
     Some of the advantages are:
     Row and/or columns colour annotations are easy to integrate just specifying one parameter (column names). 
-    Custom grouping of rows is easy to specify providing a grouped tbl. For example `df %>% grup_by(...)`.
+    Custom grouping of rows is easy to specify providing a grouped tbl. For example: df %>% group_by(...).
     Labels size adjusted by row and column total number.
     Default use of Brewer and Viridis palettes.
 License: GPL-3

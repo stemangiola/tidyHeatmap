@@ -11,7 +11,7 @@ Some of the advantages are:
   - Row and/or columns colour annotations are easy to integrate just
     specifying one parameter (column names).
   - Custom grouping of rows is easy to specify providing a grouped tbl.
-    For example `df %>% grup_by(...)`
+    For example `df %>% group_by(...)`
   - Labels size adjusted by row and column total number
   - Default use of Brewer and Viridis palettes
 
@@ -20,7 +20,7 @@ Some of the advantages are:
 The input data frameha sto be a tidy `tbl` of this form
 
 ``` r
-pasilla
+tidyHeatmap::pasilla
 ```
 
     ## # A tibble: 504 x 6
@@ -53,13 +53,13 @@ specifying:
 <!-- end list -->
 
 ``` r
-pasilla %>%
+tidyHeatmap::pasilla %>%
     heatmap(
         .horizontal = sample,
         .vertical = symbol,
         .abundance = `count normalised adjusted`,
         annotation = c(condition, type),
-        log_transform = T
+        log_transform = TRUE
     )
 ```
 
@@ -72,14 +72,14 @@ moment only the vertical dimension is supported) with dplyr, and the
 heatmap will be grouped accordingly
 
 ``` r
-pasilla %>%
+tidyHeatmap::pasilla %>%
     group_by(location) %>%
     heatmap(
         .horizontal = sample,
         .vertical = symbol,
         .abundance = `count normalised adjusted`,
         annotation = c(condition, type),
-        log_transform = T
+        log_transform = TRUE
     )
 ```
 

@@ -28,7 +28,7 @@ This package is a tidy wrapper of the package [ComplexHeatmap](https://bioconduc
 Some of the advantages are:
 
 - Row and/or columns colour annotations are easy to integrate just specifying one parameter (column names). 
-- Custom grouping of rows is easy to specify providing a grouped tbl. For example `df %>% grup_by(...)`
+- Custom grouping of rows is easy to specify providing a grouped tbl. For example `df %>% group_by(...)`
 - Labels size adjusted by row and column total number
 - Default use of Brewer and Viridis palettes
 
