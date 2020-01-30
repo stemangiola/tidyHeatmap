@@ -9,6 +9,7 @@
 #' @importFrom rlang enquo
 #' @importFrom rlang quo_name
 #' @importFrom circlize colorRamp2
+#' @importFrom grDevices colorRampPalette
 #' @importFrom viridis viridis
 #' @importFrom grid unit
 #' @importFrom grid gpar
@@ -39,7 +40,10 @@
 #' 
 #'
 #' 
-plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = NULL, log_transform = F){
+plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = NULL, log_transform = FALSE){
+	
+	# Comply with CRAN NOTES
+	. = NULL
 	
 	# Make col names
 	.horizontal = enquo(.horizontal)
@@ -134,7 +138,7 @@ plot_heatmap = function(.data, .horizontal, .vertical, .abundance, annotation = 
 			col = colors,
 			row_split = group_annotation$row_split,
 			left_annotation =	group_annotation$left_annotation,
-			cluster_row_slices = F,
+			cluster_row_slices = FALSE,
 			row_names_gp = gpar(fontsize = 320 / dim(abundance_mat)[1]),
 			#,
 			#	clustering_distance_columns = robust_dist,

@@ -4,6 +4,7 @@
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
+#' @importFrom stats sd
 #'
 #' @name heatmap
 #' @rdname heatmap
@@ -41,7 +42,7 @@ heatmap <-
 					 .vertical,
 					 .abundance,
 					 annotation = NULL,
-					 log_transform = F) {
+					 log_transform = FALSE) {
 		UseMethod("heatmap", .data)
 	}
 #' @export
@@ -51,7 +52,7 @@ heatmap.default <-
 					 .vertical,
 					 .abundance,
 					 annotation = NULL,
-					 log_transform = F)
+					 log_transform = FALSE)
 	{
 		print("tidyHeatmap::heatmap function cannot be applied to this object")
 	}
@@ -62,7 +63,7 @@ heatmap.tbl_df <-
 					 .vertical,
 					 .abundance,
 					 annotation = NULL,
-					 log_transform = F)
+					 log_transform = FALSE)
 	{
 		# Make col names
 		.horizontal = enquo(.horizontal)

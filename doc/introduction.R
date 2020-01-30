@@ -18,7 +18,7 @@ pasilla %>%
 		.vertical = symbol,
 		.abundance = `count normalised adjusted`,
 		annotation = c(condition, type),
-		log_transform = T
+		log_transform = TRUE
 	)
 
 ## -----------------------------------------------------------------------------
@@ -29,6 +29,6 @@ pasilla %>%
 		.vertical = symbol,
 		.abundance = `count normalised adjusted`,
 		annotation = c(condition, type),
-		log_transform = T
+		log_transform = TRUE
 	)
 

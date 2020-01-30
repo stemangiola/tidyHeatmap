@@ -71,10 +71,13 @@ ifelse2_pipe = function(.x, .p1, .p2, .f1, .f2, .f3 = NULL) {
 #' @return A matrix
 #'
 #'
-#' @export
 as_matrix <- function(tbl,
                       rownames = NULL,
                       do_check = TRUE) {
+  
+  # Comply with CRAN NOTES
+  variable = NULL
+  
   rownames = enquo(rownames)
   tbl %>%
     
@@ -115,6 +118,10 @@ as_matrix <- function(tbl,
 #'
 #' @return NA
 error_if_log_transformed <- function(x, .abundance) {
+  
+  # Comply with CRAN NOTES
+  m = NULL
+  
   .abundance = enquo(.abundance)
   
   if (x %>% nrow %>% `>` (0))
@@ -151,6 +158,10 @@ parse_formula <- function(fm) {
 #'
 #'
 scale_design = function(df, .formula) {
+  
+  # Comply with CRAN NOTES
+  value = sample_idx = `(Intercept)` =  NULL
+  
   df %>%
     setNames(c("sample_idx", "(Intercept)", parse_formula(.formula))) %>%
     gather(cov, value,-sample_idx) %>%
@@ -476,12 +487,16 @@ get_elements = function(.data, .element, of_samples = TRUE){
 #' Get column names either from user or from attributes
 #'
 #' @importFrom rlang quo_is_symbol
+#' @importFrom magrittr %$%
 #'
 #' @param .data A tibble
 #' @param .abundance A character name of the abundance column
 #'
 #' @return A list of column enquo or error
 get_abundance_norm_if_exists = function(.data, .abundance){
+  
+  # Comply with CRAN NOTES
+  .abundance_norm = NULL
   
   # If setted by the user, enquo those
   if(
@@ -519,12 +534,17 @@ get_abundance_norm_if_exists = function(.data, .abundance){
 #' Sub function of remove_redundancy_elements_though_reduced_dimensions
 #'
 #' @importFrom stats dist
+#' @importFrom utils head
 #'
 #' @param df A tibble
 #'
 #'
 #' @return A tibble with pairs to drop
 select_closest_pairs = function(df) {
+  
+  # Comply with CRAN NOTES
+  `sample 1` = `sample 2` =  NULL
+  
   couples <- df %>% head(n = 0)
   
   while (df %>% nrow() > 0) {
@@ -544,6 +564,11 @@ select_closest_pairs = function(df) {
 }
 
 get_x_y_annotation_columns = function(.data, .horizontal, .vertical, .abundance){
+  
+  
+  # Comply with CRAN NOTES
+  . = NULL
+  
   # Make col names
   .horizontal = enquo(.horizontal)
   .vertical = enquo(.vertical)
@@ -746,6 +771,10 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
 }
 
 get_grouping_columns = function(.data){
+  
+  # Comply with CRAN NOTES
+  .rows = NULL
+  
   if("groups" %in%  (.data %>% attributes %>% names))
     .data %>% attr("groups") %>% select(-.rows) %>% colnames()
   else c()

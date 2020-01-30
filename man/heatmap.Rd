@@ -10,7 +10,7 @@ heatmap(
   .vertical,
   .abundance,
   annotation = NULL,
-  log_transform = F
+  log_transform = FALSE
 )
 }
 \arguments{

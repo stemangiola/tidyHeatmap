@@ -1,11 +1,18 @@
 Package: tidyHeatmap
 Type: Package
-Title: A Tidy Implementation Of Heatmap
-Version: 0.99.4
+Title: A Tidy Implementation of Heatmap
+Version: 0.99.7
 Authors@R: person("Stefano", "Mangiola", email = "mangiolastefano@gmail.com",
                   role = c("aut", "cre"))
 Maintainer: Stefano Mangiola <mangiolastefano@gmail.com>
-Description: This is a tidy implementation for heatmap. At the moment is based on the great package ComplexHeatmap.  The goal of this package is to interface a tidy data frame with this powerful tool. Some of the advantages are: - Row and/or columns colour annotations are easy to integrate just specifying one parameter (column names). - Custom grouping of rows is easy to specify providing a grouped tbl. For example `df %>% grup_by(...)` - Labels size adjusted by row and column total number - Default use of Brewer and Viridis palettes
+Description: This is a tidy implementation for heatmap. 
+    At the moment it is based on the (great) package ComplexHeatmap. 
+    The goal of this package is to interface a tidy data frame with this powerful tool. 
+    Some of the advantages are:
+    Row and/or columns colour annotations are easy to integrate just specifying one parameter (column names). 
+    Custom grouping of rows is easy to specify providing a grouped tbl. For example `df %>% grup_by(...)`.
+    Labels size adjusted by row and column total number.
+    Default use of Brewer and Viridis palettes.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -14,7 +21,7 @@ RoxygenNote: 7.0.2
 biocViews: AssayDomain, Infrastructure
 Biarch: true
 Depends: R (>= 3.6), ComplexHeatmap
-Imports: tibble, dplyr, magrittr, tidyr, rlang, purrr, ggplot2, stats, viridis, circlize, RColorBrewer
+Imports: dplyr, magrittr, tidyr, rlang, purrr, stats, viridis, circlize, RColorBrewer, grid
 Suggests:
     testthat,
     BiocManager,

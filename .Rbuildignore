@@ -7,3 +7,7 @@
 ^dev
 ^README_cache
 ^.git
+.coveralls.yml
+.travis.yml
+README.Rmd
+README_files$

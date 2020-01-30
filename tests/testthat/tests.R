@@ -109,7 +109,7 @@ test_that("pasilla one annotation",{
 			.vertical = symbol,
 			.abundance = `count normalised adjusted`,
 			annotation = condition,
-			log_transform = T
+			log_transform = TRUE
 		)
 	
 	
@@ -126,7 +126,7 @@ test_that("pasilla 2 annotations",{
 			.vertical = symbol,
 			.abundance = `count normalised adjusted`,
 			annotation = c(condition, type),
-			log_transform = T
+			log_transform = TRUE
 		)
 	
 	
