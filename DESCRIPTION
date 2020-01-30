@@ -21,7 +21,7 @@ RoxygenNote: 7.0.2
 biocViews: AssayDomain, Infrastructure
 Biarch: true
 Depends: R (>= 3.6), ComplexHeatmap
-Imports: dplyr, magrittr, tidyr, rlang, purrr, stats, viridis, circlize, RColorBrewer, grid
+Imports: dplyr, magrittr, tidyr, rlang, purrr, stats, viridis, circlize, RColorBrewer, grid, grDevices, utils
 Suggests:
     testthat,
     BiocManager,
