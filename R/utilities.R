@@ -563,6 +563,17 @@ select_closest_pairs = function(df) {
   
 }
 
+#' get_x_y_annotation_columns
+#' 
+#' @importFrom magrittr equals
+#' 
+#' @param .data A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |
+#' @param .horizontal The name of the column horizontally presented in the heatmap
+#' @param .vertical The name of the column vertically presented in the heatmap
+#' @param .abundance The name of the transcript/gene abundance column
+#' 
+#' @return A list
+#' 
 get_x_y_annotation_columns = function(.data, .horizontal, .vertical, .abundance){
   
   

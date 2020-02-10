@@ -25,7 +25,6 @@ Imports: dplyr, magrittr, tidyr, rlang, purrr, stats, viridis, circlize, RColorB
 Suggests:
     testthat,
     BiocManager,
-    utils,
     knitr,
     qpdf,
     covr
