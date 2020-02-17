@@ -54,7 +54,7 @@ heatmap.default <-
 					 annotation = NULL,
 					 log_transform = FALSE)
 	{
-		print("tidyHeatmap::heatmap function cannot be applied to this object")
+		message("tidyHeatmap::heatmap function cannot be applied to this object")
 	}
 #' @export
 heatmap.tbl_df <-

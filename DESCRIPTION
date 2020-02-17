@@ -6,7 +6,7 @@ Authors@R: person("Stefano", "Mangiola", email = "mangiolastefano@gmail.com",
                   role = c("aut", "cre"))
 Maintainer: Stefano Mangiola <mangiolastefano@gmail.com>
 Description: This is a tidy implementation for heatmap. 
-    At the moment it is based on the (great) package ComplexHeatmap. 
+    At the moment it is based on the (great) package 'ComplexHeatmap'. 
     The goal of this package is to interface a tidy data frame with this powerful tool. 
     Some of the advantages are:
     Row and/or columns colour annotations are easy to integrate just specifying one parameter (column names). 

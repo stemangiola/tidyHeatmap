@@ -251,7 +251,7 @@ get_sample_transcript_counts = function(.data, .sample, .transcript, .abundance)
   
   my_stop = function() {
     stop("
-        The fucntion does not know what your sample, transcript and counts columns are.\n
+        The function does not know what your sample, transcript and counts columns are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -290,7 +290,7 @@ get_sample_counts = function(.data, .sample, .abundance){
   
   my_stop = function() {
     stop("
-        The fucntion does not know what your sample, transcript and counts columns are.\n
+        The function does not know what your sample, transcript and counts columns are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -324,7 +324,7 @@ get_sample_transcript = function(.data, .sample, .transcript){
   
   my_stop = function() {
     stop("
-        The fucntion does not know what your sample, transcript and counts columns are.\n
+        The function does not know what your sample, transcript and counts columns are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -390,7 +390,7 @@ get_elements_features = function(.data, .element, .feature, of_samples = TRUE){
     # Else through error
     else
       stop("
-        The fucntion does not know what your elements (e.g., sample) and features (e.g., transcripts) are.\n
+        The function does not know what your elements (e.g., sample) and features (e.g., transcripts) are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -414,7 +414,7 @@ get_elements_features_abundance = function(.data, .element, .feature, .abundance
   
   my_stop = function() {
     stop("
-        The fucntion does not know what your elements (e.g., sample) and features (e.g., transcripts) are.\n
+        The function does not know what your elements (e.g., sample) and features (e.g., transcripts) are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -477,7 +477,7 @@ get_elements = function(.data, .element, of_samples = TRUE){
     # Else through error
     else
       stop("
-        The fucntion does not know what your elements (e.g., sample) are.\n
+        The function does not know what your elements (e.g., sample) are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -524,7 +524,7 @@ get_abundance_norm_if_exists = function(.data, .abundance){
     # Else through error
     else
       stop("
-        The fucntion does not know what your elements (e.g., sample) are.\n
+        The function does not know what your elements (e.g., sample) are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
