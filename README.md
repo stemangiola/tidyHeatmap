@@ -38,8 +38,6 @@ tidyHeatmap::pasilla
     ## 10 treated3   Ant2                        2575 treated   paired-end Intracellul…
     ## # … with 494 more rows
 
-Where mandatory column are `sample`, `transcript`, count (named as you
-wish)
 
 ## Plot
 
