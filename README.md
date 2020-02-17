@@ -1,7 +1,7 @@
 tidyHeatmap
 ================
 
-This package is a tidy wrapper of the package
+Tidy heatmap. This package is a tidy wrapper of the package
 [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html).
 The goal of this package is to interface a tidy data frame with this
 powerful tool.
