@@ -221,3 +221,22 @@ test_that("grouped and annotated plot both vertical and horizontal",{
 	expect_equal(as.character(class(p)), "Heatmap" )
 	
 })
+
+test_that("pass arguments with ...",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			dplyr::group_by(tidyHeatmap::pasilla,		location),
+			.horizontal = sample,
+			.vertical = symbol,
+			.abundance = `count normalised adjusted`,
+			annotation = c(condition, type, activation),
+			column_names_gp = gpar(fontsize = 8)
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+})
+
+
