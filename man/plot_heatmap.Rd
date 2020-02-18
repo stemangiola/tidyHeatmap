@@ -10,7 +10,10 @@ plot_heatmap(
   .vertical,
   .abundance,
   annotation = NULL,
-  log_transform = FALSE
+  log_transform = FALSE,
+  palette_abundance = c("#440154FF", "#21908CFF", "#fefada"),
+  palette_discrete = list(),
+  palette_continuous = list()
 )
 }
 \arguments{
@@ -25,6 +28,12 @@ plot_heatmap(
 \item{annotation}{Vector of quotes}
 
 \item{log_transform}{A boolean, whether the value should be log-transformed (e.g., TRUE for RNA sequencing data)}
+
+\item{palette_abundance}{A character vector This is the palette that will be used as gradient for abundance.}
+
+\item{palette_discrete}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
+
+\item{palette_continuous}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).}
 }
 \value{
 A `ComplexHeatmap` object

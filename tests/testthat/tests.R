@@ -134,3 +134,90 @@ test_that("pasilla 2 annotations",{
 	
 })
 
+test_that("pasilla custom color abundance",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			tidyHeatmap::pasilla,
+			.horizontal = sample,
+			.vertical = symbol,
+			.abundance = `count normalised adjusted`,
+			annotation = c(condition, type),
+			log_transform = TRUE, 
+			palette_abundance = c("#d80000", "#ffffff", "#283cea")
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+})
+
+
+test_that("pasilla custom color discrete",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			tidyHeatmap::pasilla,
+			.horizontal = sample,
+			.vertical = symbol,
+			.abundance = `count normalised adjusted`,
+			annotation = c(condition, type),
+			log_transform = TRUE, 
+			palette_discrete = list(c("#d80000", "#283cea"))
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+})
+
+test_that("pasilla custom color contunuous",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			tidyHeatmap::pasilla,
+			.horizontal = sample,
+			.vertical = symbol,
+			.abundance = `count normalised adjusted`,
+			annotation = c(activation),
+			log_transform = TRUE, 
+			palette_continuous = list(c("#d80000", "#283cea"))
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+})
+
+test_that("pasilla custom color contunuous AND discrete",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			tidyHeatmap::pasilla,
+			.horizontal = sample,
+			.vertical = symbol,
+			.abundance = `count normalised adjusted`,
+			annotation = c(condition, type, activation),
+			log_transform = TRUE
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+})
+
+test_that("grouped and annotated plot both vertical and horizontal",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			dplyr::group_by(tidyHeatmap::pasilla,		location),
+			.horizontal = sample,
+			.vertical = symbol,
+			.abundance = `count normalised adjusted`,
+			annotation = c(condition, type, activation)
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+})
