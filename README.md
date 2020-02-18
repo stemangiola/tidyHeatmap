@@ -1,7 +1,7 @@
 tidyHeatmap
 ================
 
-This package is a tidy wrapper of the package
+Tidy heatmap. This package is a tidy wrapper of the package
 [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html).
 The goal of this package is to interface a tidy data frame with this
 powerful tool.
@@ -38,8 +38,6 @@ tidyHeatmap::pasilla
     ## 10 treated3   Ant2                        2575 treated   paired-end Intracellul…
     ## # … with 494 more rows
 
-Where mandatory column are `sample`, `transcript`, count (named as you
-wish)
 
 ## Plot
 
