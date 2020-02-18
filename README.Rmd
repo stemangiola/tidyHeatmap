@@ -27,7 +27,7 @@ Some of the advantages are:
 
 ## Input data frame
 
-The input data frameha sto be a tidy `tbl` of this form
+Example of an input data frame
 
 ```{r}
 tidyHeatmap::pasilla

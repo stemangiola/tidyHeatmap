@@ -3,7 +3,7 @@ tidyHeatmap
 
 Tidy heatmap. This package is a tidy wrapper of the package
 [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html).
-The goal of this package is to interface a tidy data frame with this
+The goal of this package is to interface tidy data frames with this
 powerful tool.
 
 Some of the advantages are:
@@ -17,27 +17,26 @@ Some of the advantages are:
 
 ## Input data frame
 
-The input data frameha sto be a tidy `tbl` of this form
+Example of an input data frame
 
 ``` r
 tidyHeatmap::pasilla
 ```
 
-    ## # A tibble: 504 x 6
-    ##    sample     symbol `count normalised adjust… condition type       location    
-    ##    <chr>      <fct>                      <int> <fct>     <fct>      <chr>       
-    ##  1 treated1   Kal1                          37 treated   single-re… Secretory   
-    ##  2 treated2   Kal1                          41 treated   paired-end Secretory   
-    ##  3 treated3   Kal1                          50 treated   paired-end Secretory   
-    ##  4 untreated1 Kal1                        1127 untreated single-re… Secretory   
-    ##  5 untreated2 Kal1                        1046 untreated single-re… Secretory   
-    ##  6 untreated3 Kal1                         932 untreated paired-end Secretory   
-    ##  7 untreated4 Kal1                        1018 untreated paired-end Secretory   
-    ##  8 treated1   Ant2                        2331 treated   single-re… Intracellul…
-    ##  9 treated2   Ant2                        2478 treated   paired-end Intracellul…
-    ## 10 treated3   Ant2                        2575 treated   paired-end Intracellul…
+    ## # A tibble: 504 x 7
+    ##    sample   symbol `count normalised ad… condition type    location   activation
+    ##    <chr>    <fct>                  <int> <fct>     <fct>   <chr>           <dbl>
+    ##  1 treated1 Kal1                      37 treated   single… Secretory       1.10 
+    ##  2 treated2 Kal1                      41 treated   paired… Secretory       1.10 
+    ##  3 treated3 Kal1                      50 treated   paired… Secretory       1.10 
+    ##  4 untreat… Kal1                    1127 untreated single… Secretory       1.10 
+    ##  5 untreat… Kal1                    1046 untreated single… Secretory       1.10 
+    ##  6 untreat… Kal1                     932 untreated paired… Secretory       1.10 
+    ##  7 untreat… Kal1                    1018 untreated paired… Secretory       1.10 
+    ##  8 treated1 Ant2                    2331 treated   single… Intracell…      0.329
+    ##  9 treated2 Ant2                    2478 treated   paired… Intracell…      0.329
+    ## 10 treated3 Ant2                    2575 treated   paired… Intracell…      0.329
     ## # … with 494 more rows
-
 
 ## Plot
 
