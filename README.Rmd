@@ -16,7 +16,7 @@ library(tidyHeatmap)
 
 ```
 
-This package is a tidy wrapper of the package [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html). The goal of this package is to interface a tidy data frame with this powerful tool.
+Tidy heatmap. This package is a tidy wrapper of the package [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html). The goal of this package is to interface tidy data frames with this powerful tool.
 
 Some of the advantages are:
 
@@ -32,8 +32,6 @@ The input data frameha sto be a tidy `tbl` of this form
 ```{r}
 tidyHeatmap::pasilla
 ```
-
-Where mandatory column are `sample`, `transcript`, count (named as you wish)
 
 
 ## Plot
