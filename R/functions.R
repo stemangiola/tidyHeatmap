@@ -194,6 +194,7 @@ plot_heatmap = function(.data,
 
 	abundance_mat %>%
 		Heatmap(
+			name = "Abundance",
 			column_title = quo_name(.horizontal),
 			row_title = quo_name(.vertical),
 			# width = unit(0.5 * 13, "cm"),
