@@ -1,7 +1,7 @@
 Package: tidyHeatmap
 Type: Package
 Title: A Tidy Implementation of Heatmap
-Version: 0.99.8
+Version: 0.99.9
 Authors@R: person("Stefano", "Mangiola", email = "mangiolastefano@gmail.com",
                   role = c("aut", "cre"))
 Maintainer: Stefano Mangiola <mangiolastefano@gmail.com>
