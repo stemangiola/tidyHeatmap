@@ -900,3 +900,4 @@ get_grouping_columns = function(.data){
 list_drop_null = function(.data){
   .data[!sapply(.data, is.null)] 
 }
+

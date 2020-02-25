@@ -68,3 +68,18 @@ tidyHeatmap::pasilla %>%
 		log_transform = TRUE
 	)
 ```
+
+## Custom palettes
+
+We can easily use custom palette, chooinga hexadecimal color character vector, or a grid::colorRamp2 functionfor higher flexibility
+
+```{r}
+pasilla %>%
+	heatmap(
+		.horizontal = sample,
+		.vertical = symbol,
+		.abundance = `count normalised adjusted`,
+		log_transform = TRUE, 
+		palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+	)
+```

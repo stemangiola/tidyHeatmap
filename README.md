@@ -81,3 +81,22 @@ tidyHeatmap::pasilla %>%
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+## Custom palettes
+
+We can easily use custom palette, chooinga hexadecimal color character
+vector, or a grid::colorRamp2 functionfor higher flexibility
+
+``` r
+pasilla %>%
+    heatmap(
+        .horizontal = sample,
+        .vertical = symbol,
+        .abundance = `count normalised adjusted`,
+        annotation = c(condition, type),
+        log_transform = TRUE, 
+        palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+    )
+```
+
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->

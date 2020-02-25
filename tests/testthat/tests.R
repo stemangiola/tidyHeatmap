@@ -240,3 +240,18 @@ test_that("pass arguments with ...",{
 })
 
 
+test_that("Custom function for fill abundance palette",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+			.horizontal = UBR, 
+			.vertical = symbol_ct, 
+			.abundance = `read count normalised log`, 
+			palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+})
