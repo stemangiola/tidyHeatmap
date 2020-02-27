@@ -1,6 +1,6 @@
 #' Creates a  `ComplexHeatmap` plot from `tbl`
 #'
-#' @description plot_heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
+#' @description heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"

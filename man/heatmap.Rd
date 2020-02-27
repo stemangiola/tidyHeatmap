@@ -42,7 +42,7 @@ heatmap(
 A `ComplexHeatmap` object
 }
 \description{
-plot_heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
+heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
 }
 \details{
 To be added.
