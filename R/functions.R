@@ -15,6 +15,7 @@
 #' @importFrom grid gpar
 #' @importFrom purrr map
 #' @importFrom purrr map2
+#' @importFrom purrr negate
 #' @importFrom magrittr equals
 #' @importFrom rlang quo_is_symbolic
 #' @importFrom RColorBrewer brewer.pal
