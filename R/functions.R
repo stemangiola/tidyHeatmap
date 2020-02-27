@@ -66,7 +66,7 @@ plot_heatmap = function(.data,
 	
 	# Check if you have more than one grouping, at the moment just one is accepted
 	if (length(get_grouping_columns(.data)) > 1)
-		stop("At the moment just one grouping is supported")
+		stop("tidyHeatmap says: At the moment just one grouping is supported")
 	
 	# Check if palettes variables are correct
 	if( class(palette_discrete) != "list" | class(palette_continuous) != "list")
@@ -138,9 +138,14 @@ plot_heatmap = function(.data,
 			))
 	)
 	
+	# Check if there are nested column in the data frame
+	if(.data %>% lapply(class)  %>% equals("list") %>% any)
+		warning("tidyHeatmap says: nested/list column are present in your data frame and have been dropped as their unicity cannot be identified by dplyr.")
+	
 	# Get x and y anntation columns
 	x_y_annot_cols =
 		.data %>%
+		select_if(negate(is.list)) %>%
 		ungroup() %>%
 		get_x_y_annotation_columns(!!.horizontal,!!.vertical,!!.abundance)
 	
@@ -152,7 +157,7 @@ plot_heatmap = function(.data,
 		ifelse_pipe(length(.) > 0,
 								~ stop(
 									sprintf(
-										"Your annotation \"%s\" is not unique to vertical nor horizontal dimentions",
+										"tidyHeatmap says: Your annotation \"%s\" is not unique to vertical nor horizontal dimentions",
 										.x %>% paste(collapse = ", ")
 									)
 								))
