@@ -32,7 +32,7 @@ To install the most stable version (however please keep in mind that
 this package is under a maturing lifecycle stage)
 
 ``` r
-instll.packages("tidyHeatmap")
+install.packages("tidyHeatmap")
 ```
 
 # Input data frame

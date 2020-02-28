@@ -44,7 +44,7 @@ To install the most stable version (however please keep in mind that this packag
 
 ```{r, eval=FALSE}
 
-instll.packages("tidyHeatmap")
+install.packages("tidyHeatmap")
 
 ```
 
