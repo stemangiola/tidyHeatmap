@@ -1,6 +1,11 @@
 tidyHeatmap
 ================
 
+<!-- badges: start -->
+
+[![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+<!-- badges: end -->
+
 Tidy heatmap. This package is a tidy wrapper of the package
 [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html).
 The goal of this package is to interface tidy data frames with this
@@ -15,7 +20,22 @@ Some of the advantages are:
   - Labels size adjusted by row and column total number
   - Default use of Brewer and Viridis palettes
 
-## Input data frame
+# Installation
+
+To install the most up-to-date version
+
+``` r
+devtools::install_github("stemangiola/tidyHeatmap")
+```
+
+To install the most stable version (however please keep in mind that
+this package is under a maturing lifecycle stage)
+
+``` r
+instll.packages("tidyHeatmap")
+```
+
+# Input data frame
 
 Example of an input data frame
 
@@ -38,7 +58,7 @@ tidyHeatmap::pasilla
     ## 10 treated3 Ant2                    2575 treated   paired… Intracell…      0.329
     ## # … with 494 more rows
 
-## Plot
+# Plot
 
 For plotting, you simply pipe the input data frame into heatmap,
 specifying:
@@ -60,9 +80,9 @@ tidyHeatmap::pasilla %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-## Grouping
+# Grouping
 
 We can easily group the data (one group per dimension maximum, at the
 moment only the vertical dimension is supported) with dplyr, and the
@@ -70,19 +90,19 @@ heatmap will be grouped accordingly
 
 ``` r
 tidyHeatmap::pasilla %>%
-    group_by(location) %>%
+    group_by(location, condition) %>%
     heatmap(
         .horizontal = sample,
         .vertical = symbol,
         .abundance = `count normalised adjusted`,
-        annotation = c(condition, type),
+        annotation = c(type),
         log_transform = TRUE
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-## Custom palettes
+# Custom palettes
 
 We can easily use custom palette, chooinga hexadecimal color character
 vector, or a grid::colorRamp2 functionfor higher flexibility
@@ -93,10 +113,9 @@ pasilla %>%
         .horizontal = sample,
         .vertical = symbol,
         .abundance = `count normalised adjusted`,
-        annotation = c(condition, type),
         log_transform = TRUE, 
         palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->

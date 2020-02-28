@@ -3,9 +3,9 @@ title: "tidyHeatmap"
 output: github_document
 ---
 
-  <!-- badges: start -->
-  [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-  <!-- badges: end -->
+<!-- badges: start -->
+  [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+<!-- badges: end -->
 
 
 ```{r, echo=FALSE, include=FALSE, }
@@ -28,7 +28,27 @@ Some of the advantages are:
 - Labels size adjusted by row and column total number
 - Default use of Brewer and Viridis palettes
 
-## Input data frame
+
+
+# Installation
+
+To install the most up-to-date version
+
+```{r, eval=FALSE}
+
+devtools::install_github("stemangiola/tidyHeatmap")
+
+```
+
+To install the most stable version (however please keep in mind that this package is under a maturing lifecycle stage)
+
+```{r, eval=FALSE}
+
+instll.packages("tidyHeatmap")
+
+```
+
+# Input data frame
 
 Example of an input data frame
 
@@ -37,7 +57,7 @@ tidyHeatmap::pasilla
 ```
 
 
-## Plot
+# Plot
 
 For plotting, you simply pipe the input data frame into heatmap, specifying:
 
@@ -56,23 +76,23 @@ tidyHeatmap::pasilla %>%
 	)
 ```
 
-## Grouping
+# Grouping
 
 We can easily group the data (one group per dimension maximum, at the moment only the vertical dimension is supported) with dplyr, and the heatmap will be grouped accordingly
 
 ```{r}
 tidyHeatmap::pasilla %>%
-	group_by(location) %>%
+	group_by(location, condition) %>%
 	heatmap(
 		.horizontal = sample,
 		.vertical = symbol,
 		.abundance = `count normalised adjusted`,
-		annotation = c(condition, type),
+		annotation = c(type),
 		log_transform = TRUE
 	)
 ```
 
-## Custom palettes
+# Custom palettes
 
 We can easily use custom palette, chooinga hexadecimal color character vector, or a grid::colorRamp2 functionfor higher flexibility
 
