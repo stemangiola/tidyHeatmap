@@ -127,7 +127,7 @@ error_if_log_transformed <- function(x, .abundance) {
   if (x %>% nrow %>% `>` (0))
     if (x %>% summarise(m = !!.abundance %>% max) %>% pull(m) < 50)
       stop(
-        "The input was log transformed, this algorithm requires raw (un-normalised) read counts"
+        "tidyHeatmap says: The input was log transformed, this algorithm requires raw (un-normalised) read counts"
       )
 }
 
@@ -141,7 +141,7 @@ error_if_log_transformed <- function(x, .abundance) {
 #'
 parse_formula <- function(fm) {
   if (attr(terms(fm), "response") == 1)
-    stop("The .formula must be of the kind \"~ covariates\" ")
+    stop("tidyHeatmap says: The .formula must be of the kind \"~ covariates\" ")
   else
     as.character(attr(terms(fm), "variables"))[-1]
 }
@@ -251,7 +251,7 @@ get_sample_transcript_counts = function(.data, .sample, .transcript, .abundance)
   
   my_stop = function() {
     stop("
-        The function does not know what your sample, transcript and counts columns are.\n
+        tidyHeatmap says: The function does not know what your sample, transcript and counts columns are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -290,7 +290,7 @@ get_sample_counts = function(.data, .sample, .abundance){
   
   my_stop = function() {
     stop("
-        The function does not know what your sample, transcript and counts columns are.\n
+        tidyHeatmap says: The function does not know what your sample, transcript and counts columns are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -324,7 +324,7 @@ get_sample_transcript = function(.data, .sample, .transcript){
   
   my_stop = function() {
     stop("
-        The function does not know what your sample, transcript and counts columns are.\n
+        tidyHeatmap says: The function does not know what your sample, transcript and counts columns are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -390,7 +390,7 @@ get_elements_features = function(.data, .element, .feature, of_samples = TRUE){
     # Else through error
     else
       stop("
-        The function does not know what your elements (e.g., sample) and features (e.g., transcripts) are.\n
+        tidyHeatmap says: The function does not know what your elements (e.g., sample) and features (e.g., transcripts) are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -414,7 +414,7 @@ get_elements_features_abundance = function(.data, .element, .feature, .abundance
   
   my_stop = function() {
     stop("
-        The function does not know what your elements (e.g., sample) and features (e.g., transcripts) are.\n
+        tidyHeatmap says: The function does not know what your elements (e.g., sample) and features (e.g., transcripts) are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -477,7 +477,7 @@ get_elements = function(.data, .element, of_samples = TRUE){
     # Else through error
     else
       stop("
-        The function does not know what your elements (e.g., sample) are.\n
+        tidyHeatmap says: The function does not know what your elements (e.g., sample) are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -524,7 +524,7 @@ get_abundance_norm_if_exists = function(.data, .abundance){
     # Else through error
     else
       stop("
-        The function does not know what your elements (e.g., sample) are.\n
+        tidyHeatmap says: The function does not know what your elements (e.g., sample) are.\n
         You have to either enter those as symbols (e.g., `sample`), \n
         or use the funtion create_tt_from_tibble() to pass your column names that will be remembered.
       ")
@@ -684,14 +684,14 @@ get_top_annotation = function(.data, .horizontal, .vertical, .abundance, annotat
       col_annot %>% map_chr(~ .x %>% class) %in% 
       c("factor", "character") %>% which %>% length %>%
       `>` (palette_annotation$discrete %>% length)
-    ) stop("Your discrete annotaton columns are bigger than the palette available")
+    ) stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available")
     
     # Stop if annotations continuous bigger than palette
     if(
       col_annot %>% map_chr(~ .x %>% class) %in% 
       c("int", "dbl") %>% which %>% length %>%
       `>` ( palette_annotation$continuous %>% length)
-    ) stop("Your continuous annotaton columns are bigger than the palette available")
+    ) stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available")
     
     col_annot_cont = 
       col_annot %>%
@@ -775,14 +775,14 @@ get_top_left_annotation = function(.data, .horizontal, .vertical, .abundance, an
       c(col_annot_top, col_annot_left) %>% map_chr(~ .x %>% class) %in% 
       c("factor", "character") %>% which %>% length %>%
       `>` (palette_annotation$discrete %>% length)
-    ) stop("Your discrete annotaton columns are bigger than the palette available")
+    ) stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available")
     
     # Stop if annotations continuous bigger than palette
     if(
       c(col_annot_top, col_annot_left)  %>% map_chr(~ .x %>% class) %in% 
       c("int", "dbl", "numeric") %>% which %>% length %>%
       `>` ( palette_annotation$continuous %>% length)
-    ) stop("Your continuous annotaton columns are bigger than the palette available")
+    ) stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available")
     
     col_annot_top_colors = 
       col_annot_top %>%
@@ -842,6 +842,12 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
   .abundance = enquo(.abundance)
   annotation = enquo(annotation)
   
+  # Setup default NULL
+  top_annotation = NULL
+  left_annotation = NULL
+  row_split = NULL
+  col_split = NULL
+  
   # Column groups
   col_group = get_grouping_columns(.data)
   
@@ -851,22 +857,28 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
       map(
         ~ .x %>% intersect(col_group)
       )
+     
+    # Check if you have more than one grouping, at the moment just one is accepted
+    if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% `>` (1))
+      stop("tidyHeatmap says: At the moment just one grouping per dimension (vertical or orizontal) is supported.")
     
-    # Row split
+    if(length(x_y_annotation_cols$vertical) > 0){
+      
+      # Row split
     row_split = 
       .data %>%
       ungroup() %>%
       distinct(!!.vertical, !!as.symbol(x_y_annotation_cols$vertical)) %>%
       arrange(!!.vertical) %>%
-      pull(!!as.symbol(col_group))
+      pull(!!as.symbol(x_y_annotation_cols$vertical))
     
     # Create array of colors
-    palette_fill = palette_annotation$discrete[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
+    palette_fill_vertical = palette_annotation$discrete[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
     
     left_annotation_args = 
       list(
         ct = anno_block(  
-          gp = gpar(fill = palette_fill ),
+          gp = gpar(fill = palette_fill_vertical ),
           labels = row_split %>% unique %>% sort,
           labels_gp = gpar(col = "white"),
           which = "row"
@@ -875,16 +887,38 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
     
     left_annotation = as.list(left_annotation_args)
     
-  } else {
-    row_split = NULL
-    left_annotation =	NULL
+    }
+    
+    if(length(x_y_annotation_cols$horizontal) > 0){
+      # Col split
+      col_split = 
+        .data %>%
+        ungroup() %>%
+        distinct(!!.horizontal, !!as.symbol(x_y_annotation_cols$horizontal)) %>%
+        arrange(!!.horizontal) %>%
+        pull(!!as.symbol(x_y_annotation_cols$horizontal))
+      
+      # Create array of colors
+      palette_fill_horizontal = palette_annotation$discrete[[2]][1:length(unique(col_split))] %>% setNames(unique(col_split))
+      
+      
+  
+      top_annotation_args = 
+        list(
+          ct = anno_block(  
+            gp = gpar(fill = palette_fill_horizontal ),
+            labels = col_split %>% unique %>% sort,
+            labels_gp = gpar(col = "white"),
+            which = "column"
+          )
+        )
+      
+       top_annotation = as.list(top_annotation_args)
+    }
   }
   
   # Return
-  list(
-    left_annotation = left_annotation,
-    row_split = row_split
-  )
+  list( left_annotation = left_annotation, row_split = row_split, top_annotation = top_annotation, col_split = col_split )
 }
 
 get_grouping_columns = function(.data){

@@ -100,6 +100,40 @@ test_that("grouped and annotated plot",{
 	
 })
 
+test_that("grouped double and annotated plot",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			dplyr::group_by(tidyHeatmap::pasilla,		location, type),
+			.horizontal = sample,
+			.vertical = symbol,
+			.abundance = `count normalised adjusted`,
+			annotation = c(condition, activation)
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+	
+})
+
+test_that("grouping error",{
+	
+	expect_error(
+		
+		tidyHeatmap::heatmap(
+			dplyr::group_by(tidyHeatmap::pasilla,		location, type, condition),
+			.horizontal = sample,
+			.vertical = symbol,
+			.abundance = `count normalised adjusted`,
+			annotation = c(condition, activation)
+		),
+		regexp = "tidyHeatmap says: At the moment just one grouping per dimension*"
+	)
+	
+	
+})
+
 test_that("pasilla one annotation",{
 	
 	p = 

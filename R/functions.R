@@ -64,10 +64,6 @@ plot_heatmap = function(.data,
 	.abundance = enquo(.abundance)
 	annotation = enquo(annotation)
 	
-	# Check if you have more than one grouping, at the moment just one is accepted
-	if (length(get_grouping_columns(.data)) > 1)
-		stop("tidyHeatmap says: At the moment just one grouping is supported")
-	
 	# Check if palettes variables are correct
 	if( class(palette_discrete) != "list" | class(palette_continuous) != "list")
 		stop("tidyHeatmap says: palette discrete and continuous must be lists of character vectors.")
@@ -118,15 +114,6 @@ plot_heatmap = function(.data,
 				brewer.pal(8, "Pastel2")
 			)),
 		
-		# Continuous pellets
-		# continuous = list(
-		# 	colorRampPalette(brewer.pal(11, "Spectral") %>% rev),
-		# 	colorRampPalette(viridis(n = 5)),
-		# 	colorRampPalette(magma(n = 5)),
-		# 	colorRampPalette(brewer.pal(11, "PRGn")),
-		# 	colorRampPalette(brewer.pal(11, "BrBG"))
-		# )
-		
 		continuous = 
 			palette_continuous %>%
 			c(list(
@@ -176,7 +163,7 @@ plot_heatmap = function(.data,
 	# If I have grouping, eliminate the first discrete palette
 	palette_annotation$discrete =
 		palette_annotation$discrete %>%
-		ifelse_pipe(length(get_grouping_columns(.data)) > 0, ~ .x[-1])
+		ifelse_pipe(length(get_grouping_columns(.data)) > 0, ~ tail(.x, -length(get_grouping_columns(.data))))
 	
 	# See if there is annotation
 	top_left_annot = get_top_left_annotation(
@@ -191,10 +178,11 @@ plot_heatmap = function(.data,
 	
 
 	top_annot =  
-		top_left_annot$top_annotation %>%
+		c(group_annotation$top_annotation, top_left_annot$top_annotation) %>%
+		list_drop_null() %>%
 		ifelse_pipe(
 			(.) %>% is.null %>% `!`,
-			~ do.call("HeatmapAnnotation", .x),
+			~ do.call("columnAnnotation", .x ),
 			~ NULL
 		)
 	
@@ -217,8 +205,10 @@ plot_heatmap = function(.data,
 			# height = unit(0.5 * .data %>% distinct(!!.vertical) %>% nrow, "cm"),
 			col = colors,
 			row_split = group_annotation$row_split,
+			column_split = group_annotation$col_split,
 			left_annotation = left_annot,
-			cluster_row_slices = FALSE,
+			top_annotation  = top_annot,
+			#cluster_row_slices = FALSE,
 			row_names_gp = gpar(fontsize = 320 / dim(abundance_mat)[1]),
 			#,
 			#	clustering_distance_columns = robust_dist,
@@ -229,7 +219,6 @@ plot_heatmap = function(.data,
 			# 		arrange(symbol_ct) %>% pull(inflection)
 			# )
 			
-			top_annotation  = top_annot,
 			...
 		)
 	
