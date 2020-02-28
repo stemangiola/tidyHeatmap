@@ -265,7 +265,7 @@ test_that("pass arguments with ...",{
 			.vertical = symbol,
 			.abundance = `count normalised adjusted`,
 			annotation = c(condition, type, activation),
-			column_names_gp = gpar(fontsize = 8)
+			show_heatmap_legend = FALSE
 		)
 	
 	
