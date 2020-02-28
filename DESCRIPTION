@@ -1,32 +1,55 @@
-Package: tidyHeatmap
 Type: Package
+Package: tidyHeatmap
 Title: A Tidy Implementation of Heatmap
 Version: 0.99.9
-Authors@R: person("Stefano", "Mangiola", email = "mangiolastefano@gmail.com",
-                  role = c("aut", "cre"))
+Authors@R: 
+    person(given = "Stefano",
+           family = "Mangiola",
+           role = c("aut", "cre"),
+           email = "mangiolastefano@gmail.com")
 Maintainer: Stefano Mangiola <mangiolastefano@gmail.com>
-Description: This is a tidy implementation for heatmap. 
-    At the moment it is based on the (great) package 'ComplexHeatmap'. 
-    The goal of this package is to interface a tidy data frame with this powerful tool. 
-    Some of the advantages are:
-    Row and/or columns colour annotations are easy to integrate just specifying one parameter (column names). 
-    Custom grouping of rows is easy to specify providing a grouped tbl. For example: df %>% group_by(...).
-    Labels size adjusted by row and column total number.
-    Default use of Brewer and Viridis palettes.
+Description: This is a tidy implementation for heatmap.  At the
+    moment it is based on the (great) package 'ComplexHeatmap'.  The goal
+    of this package is to interface a tidy data frame with this powerful
+    tool.  Some of the advantages are: Row and/or columns colour
+    annotations are easy to integrate just specifying one parameter
+    (column names).  Custom grouping of rows is easy to specify providing
+    a grouped tbl. For example: df %>% group_by(...).  Labels size
+    adjusted by row and column total number.  Default use of Brewer and
+    Viridis palettes.
 License: GPL-3
-Encoding: UTF-8
-LazyData: true
-VignetteBuilder: knitr
-RoxygenNote: 7.0.2
-biocViews: AssayDomain, Infrastructure
-Biarch: true
-Depends: R (>= 3.6), ComplexHeatmap
-Imports: dplyr, magrittr, tidyr, rlang, purrr, stats, viridis, circlize, RColorBrewer, grid, grDevices, utils
+URL: https://www.r-project.org,
+    https://github.com/stemangiola/tidyHeatmap
+BugReports: https://github.com/stemangiola/tidyHeatmap
+Depends: 
+    R (>= 3.6),
+    ComplexHeatmap
+Imports: 
+    dplyr,
+    magrittr,
+    tidyr,
+    rlang,
+    purrr,
+    stats,
+    viridis,
+    circlize,
+    RColorBrewer,
+    grid,
+    grDevices,
+    utils,
+    lifecycle
 Suggests:
     testthat,
     BiocManager,
     knitr,
     qpdf,
     covr
-URL: https://www.r-project.org, https://github.com/stemangiola/tidyHeatmap
-BugReports: https://github.com/stemangiola/tidyHeatmap
+VignetteBuilder: 
+    knitr
+RdMacros: 
+    lifecycle
+Biarch: true
+biocViews: AssayDomain, Infrastructure
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2

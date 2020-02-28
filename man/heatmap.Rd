@@ -45,6 +45,8 @@ A `ComplexHeatmap` object
 heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
 }
 \details{
+\lifecycle{maturing}
+
 To be added.
 }
 \examples{

@@ -1,5 +1,7 @@
 #' Creates a  `ComplexHeatmap` plot from `tbl`
 #'
+#' \lifecycle{maturing}
+#'
 #' @description heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
 #'
 #' @importFrom rlang enquo
