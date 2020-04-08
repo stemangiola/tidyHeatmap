@@ -9,7 +9,7 @@ tidyHeatmap
 <!-- badges: end -->
 
 Tidy heatmap. This package is a tidy wrapper of the package
-[ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html).
+[ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) and in particular of the function Heatmap.
 The goal of this package is to interface tidy data frames with this
 powerful tool.
 
