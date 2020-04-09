@@ -281,11 +281,35 @@ test_that("Custom function for fill abundance palette",{
 			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
-			.abundance = `read count normalised log`, 
-			palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+			.abundance = `read count normalised log`
 		)
 	
 	
 	expect_equal(as.character(class(p)), "Heatmap" )
 	
+})
+
+test_that("Warning if data sparse",{
+	
+	expect_warning(
+		tidyHeatmap::heatmap(
+			dplyr::slice(dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"), -1),
+			.horizontal = UBR, 
+			.vertical = symbol_ct, 
+			.abundance = `read count normalised log`, 
+			palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+		),
+		"have been omitted from the analysis because not present in every sample"
+	)
+})
+
+test_that("eliminate sparse transcripts",{
+	
+	expect_equal(
+		nrow(tidyHeatmap:::eliminate_sparse_transcripts(
+			dplyr::slice(dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"), -1),
+			symbol_ct
+		)),
+		507
+	)
 })

@@ -89,8 +89,18 @@ heatmap.tbl_df <-
 		.abundance = enquo(.abundance)
 		annotation = enquo(annotation)
 		
+		# Validation
+		.data %>% validation(!!.horizontal, !!.vertical, !!.abundance)
+		
+		# Check if data is rectangular
+		.data %>% 
+			ifelse_pipe(
+				!check_if_data_rectangular((.), !!.horizontal, !!.vertical, !!.abundance),
+				~  eliminate_sparse_transcripts(.x, !!.vertical)
+			) %>%
+			
+		# Run plotting function
 		plot_heatmap(
-			.data = .data,
 			.horizontal = !!.horizontal,
 			.vertical = !!.vertical,
 			.abundance = !!.abundance,
