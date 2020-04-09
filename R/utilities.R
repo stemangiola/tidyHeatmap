@@ -860,7 +860,7 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
      
     # Check if you have more than one grouping, at the moment just one is accepted
     if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% `>` (1))
-      stop("tidyHeatmap says: At the moment just one grouping per dimension (vertical or orizontal) is supported.")
+      stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 vertical and 1 horizontal) is supported.")
     
     if(length(x_y_annotation_cols$vertical) > 0){
       
