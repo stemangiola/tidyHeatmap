@@ -16,7 +16,7 @@ pasilla %>%
 	heatmap(
 		.horizontal = sample,
 		.vertical = symbol,
-		.abundance = `count normalised adjusted`,
+		.value = `count normalised adjusted`,
 		annotation = c(condition, type),
 		log_transform = TRUE
 	)
@@ -27,7 +27,7 @@ pasilla %>%
 	heatmap(
 		.horizontal = sample,
 		.vertical = symbol,
-		.abundance = `count normalised adjusted`,
+		.value = `count normalised adjusted`,
 		annotation = c(condition, type),
 		log_transform = TRUE
 	)

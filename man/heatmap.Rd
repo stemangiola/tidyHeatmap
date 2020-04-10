@@ -8,12 +8,13 @@ heatmap(
   .data,
   .horizontal,
   .vertical,
-  .abundance,
+  .value,
   annotation = NULL,
   log_transform = FALSE,
   palette_abundance = c("#440154FF", "#21908CFF", "#fefada"),
   palette_discrete = list(),
   palette_continuous = list(),
+  .abundance = NULL,
   ...
 )
 }
@@ -24,7 +25,7 @@ heatmap(
 
 \item{.vertical}{The name of the column vertically presented in the heatmap}
 
-\item{.abundance}{The name of the transcript/gene abundance column}
+\item{.value}{The name of the transcript/gene abundance column}
 
 \item{annotation}{Vector of quotes}
 
@@ -35,6 +36,8 @@ heatmap(
 \item{palette_discrete}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
 
 \item{palette_continuous}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).}
+
+\item{.abundance}{DEPRECATED. Please use .value instead}
 
 \item{...}{Further arguments to be passed to ComplexHeatmap::Heatmap}
 }
@@ -57,7 +60,7 @@ group_by( `Cell type`) \%>\%
 tidyHeatmap::heatmap(
  .horizontal = UBR,
  .vertical = symbol_ct,
- .abundance = `read count normalised log`,
+ .value = `read count normalised log`,
  annotation = CAPRA_TOTAL
 )
 
