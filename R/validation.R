@@ -39,9 +39,9 @@ check_if_wrong_input = function(.data, list_input, expected_type) {
 #'
 #' @return A tbl
 check_if_duplicated_genes <- function(.data,
-																			.sample = `sample`,
-																			.transcript = `transcript`,
-																			.abundance = `read count`) {
+																			.sample,
+																			.transcript,
+																			.abundance ) {
 	.sample = enquo(.sample)
 	.transcript = enquo(.transcript)
 	.abundance = enquo(.abundance)
@@ -114,6 +114,9 @@ check_if_attribute_present = function(.data) {
 }
 
 eliminate_sparse_transcripts = function(.data, .transcript){
+	# Comply with CRAN NOTES
+	my_n = NULL
+	
 	# Parse column names
 	.transcript = enquo(.transcript)
 	
