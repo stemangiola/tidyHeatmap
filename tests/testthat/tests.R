@@ -8,7 +8,7 @@ test_that("basic plot",{
 			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
-			.abundance = `read count normalised log`
+			.value = `read count normalised log`
 		)
 	
 	
@@ -26,7 +26,7 @@ test_that("grouped plot",{
 				),
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
-			.abundance = `read count normalised log`
+			.value = `read count normalised log`
 		)
 	
 	
@@ -41,7 +41,7 @@ test_that("annotated plot numerical continuous intereg nominal annot",{
 				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
-			.abundance = `read count normalised log`,
+			.value = `read count normalised log`,
 			annotation = CAPRA_TOTAL
 		)
 	
@@ -58,7 +58,7 @@ test_that("annotated plot continuous annot MUST ERROR",{
 			 left_join(my_df,  dplyr::mutate(dplyr::distinct(my_df, sample), a = rnorm(n()))), 
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
-			.abundance = `read count normalised log`,
+			.value = `read count normalised log`,
 			annotation = a
 		), "Your annotation*", fixed=FALSE) 
 	
@@ -73,7 +73,7 @@ test_that("annotated plot continuous annot as well",{
 			left_join(my_df,  dplyr::mutate(dplyr::distinct(my_df, UBR), a = rnorm(n(), sd=5))), 
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
-			.abundance = `read count normalised log`,
+			.value = `read count normalised log`,
 			annotation = c(a, CAPRA_TOTAL)
 		)
 	
@@ -91,7 +91,7 @@ test_that("grouped and annotated plot",{
 			),
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
-			.abundance = `read count normalised log`,
+			.value = `read count normalised log`,
 			annotation = CAPRA_TOTAL
 		)
 	
@@ -107,7 +107,7 @@ test_that("grouped double and annotated plot",{
 			dplyr::group_by(tidyHeatmap::pasilla,		location, type),
 			.horizontal = sample,
 			.vertical = symbol,
-			.abundance = `count normalised adjusted`,
+			.value = `count normalised adjusted`,
 			annotation = c(condition, activation)
 		)
 	
@@ -125,7 +125,7 @@ test_that("grouping error",{
 			dplyr::group_by(tidyHeatmap::pasilla,		location, type, condition),
 			.horizontal = sample,
 			.vertical = symbol,
-			.abundance = `count normalised adjusted`,
+			.value = `count normalised adjusted`,
 			annotation = c(condition, activation)
 		),
 		regexp = "tidyHeatmap says: At the moment just one grouping per dimension*"
@@ -141,7 +141,7 @@ test_that("pasilla one annotation",{
 			tidyHeatmap::pasilla,
 			.horizontal = sample,
 			.vertical = symbol,
-			.abundance = `count normalised adjusted`,
+			.value = `count normalised adjusted`,
 			annotation = condition,
 			log_transform = TRUE
 		)
@@ -158,7 +158,7 @@ test_that("pasilla 2 annotations",{
 			tidyHeatmap::pasilla,
 			.horizontal = sample,
 			.vertical = symbol,
-			.abundance = `count normalised adjusted`,
+			.value = `count normalised adjusted`,
 			annotation = c(condition, type),
 			log_transform = TRUE
 		)
@@ -175,7 +175,7 @@ test_that("pasilla custom color abundance",{
 			tidyHeatmap::pasilla,
 			.horizontal = sample,
 			.vertical = symbol,
-			.abundance = `count normalised adjusted`,
+			.value = `count normalised adjusted`,
 			annotation = c(condition, type),
 			log_transform = TRUE, 
 			palette_abundance = c("#d80000", "#ffffff", "#283cea")
@@ -194,7 +194,7 @@ test_that("pasilla custom color discrete",{
 			tidyHeatmap::pasilla,
 			.horizontal = sample,
 			.vertical = symbol,
-			.abundance = `count normalised adjusted`,
+			.value = `count normalised adjusted`,
 			annotation = c(condition, type),
 			log_transform = TRUE, 
 			palette_discrete = list(c("#d80000", "#283cea"))
@@ -212,7 +212,7 @@ test_that("pasilla custom color contunuous",{
 			tidyHeatmap::pasilla,
 			.horizontal = sample,
 			.vertical = symbol,
-			.abundance = `count normalised adjusted`,
+			.value = `count normalised adjusted`,
 			annotation = c(activation),
 			log_transform = TRUE, 
 			palette_continuous = list(c("#d80000", "#283cea"))
@@ -230,7 +230,7 @@ test_that("pasilla custom color contunuous AND discrete",{
 			tidyHeatmap::pasilla,
 			.horizontal = sample,
 			.vertical = symbol,
-			.abundance = `count normalised adjusted`,
+			.value = `count normalised adjusted`,
 			annotation = c(condition, type, activation),
 			log_transform = TRUE
 		)
@@ -247,7 +247,7 @@ test_that("grouped and annotated plot both vertical and horizontal",{
 			dplyr::group_by(tidyHeatmap::pasilla,		location),
 			.horizontal = sample,
 			.vertical = symbol,
-			.abundance = `count normalised adjusted`,
+			.value = `count normalised adjusted`,
 			annotation = c(condition, type, activation)
 		)
 	
@@ -263,7 +263,7 @@ test_that("pass arguments with ...",{
 			dplyr::group_by(tidyHeatmap::pasilla,		location),
 			.horizontal = sample,
 			.vertical = symbol,
-			.abundance = `count normalised adjusted`,
+			.value = `count normalised adjusted`,
 			annotation = c(condition, type, activation),
 			show_heatmap_legend = FALSE
 		)
@@ -281,11 +281,35 @@ test_that("Custom function for fill abundance palette",{
 			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 			.horizontal = UBR, 
 			.vertical = symbol_ct, 
-			.abundance = `read count normalised log`, 
-			palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+			.value = `read count normalised log`
 		)
 	
 	
 	expect_equal(as.character(class(p)), "Heatmap" )
 	
+})
+
+test_that("Warning if data sparse",{
+	
+	expect_warning(
+		tidyHeatmap::heatmap(
+			dplyr::slice(dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"), -1),
+			.horizontal = UBR, 
+			.vertical = symbol_ct, 
+			.value = `read count normalised log`, 
+			palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+		),
+		"have been omitted from the analysis because not present in every sample"
+	)
+})
+
+test_that("eliminate sparse transcripts",{
+	
+	expect_equal(
+		nrow(tidyHeatmap:::eliminate_sparse_transcripts(
+			dplyr::slice(dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"), -1),
+			symbol_ct
+		)),
+		507
+	)
 })

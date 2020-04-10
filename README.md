@@ -76,7 +76,7 @@ tidyHeatmap::pasilla %>%
     heatmap(
         .horizontal = sample,
         .vertical = symbol,
-        .abundance = `count normalised adjusted`,
+        .value = `count normalised adjusted`,
         annotation = c(condition, type),
         log_transform = TRUE
     )
@@ -96,7 +96,7 @@ tidyHeatmap::pasilla %>%
     heatmap(
         .horizontal = sample,
         .vertical = symbol,
-        .abundance = `count normalised adjusted`,
+        .value = `count normalised adjusted`,
         annotation = c(type),
         log_transform = TRUE
     )
@@ -114,7 +114,7 @@ pasilla %>%
     heatmap(
         .horizontal = sample,
         .vertical = symbol,
-        .abundance = `count normalised adjusted`,
+        .value = `count normalised adjusted`,
         log_transform = TRUE, 
         palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
     )
