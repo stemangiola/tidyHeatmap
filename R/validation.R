@@ -136,24 +136,13 @@ check_if_data_rectangular = function(.data, .sample, .transcript, .abundance, ty
 	.transcript = enquo(.transcript)
 	.abundance = enquo(.abundance)
 	
-	is_rectangular =
-		.data %>%
+	.data %>%
+		ungroup() %>%
 		distinct(!!.sample, !!.transcript, !!.abundance) %>%
 		count(!!.sample) %>%
 		count(n) %>%
 		nrow %>%
 		equals(1)
-	
-	is_rectangular
-	
-	# if(!is_rectangular & type == "hard") stop("tidyHeatmap says: the data must have the same number of transcript per sample.")
-	#
-	# if(!is_rectangular & type == "soft") warning("tidyHeatmap says: the data should have the same number of transcript per sample.")
-	
-	
-	# # Eliminate sparse transcripts
-	# .data %>% eliminate_sparse_transcripts(!!.transcript)
-	
 	
 }
 
