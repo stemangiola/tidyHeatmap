@@ -247,8 +247,8 @@ hr {
 
 <pre><code class="r">pasilla %&gt;%
     heatmap(
-        .horizontal = sample,
-        .vertical = symbol,
+        .row = symbol,
+        .column = sample,
         .value = `count normalised adjusted`,
         annotation = c(condition, type),
         log_transform = TRUE
@@ -264,8 +264,8 @@ hr {
 <pre><code class="r">pasilla %&gt;%
     group_by(location) %&gt;%
     heatmap(
-        .horizontal = sample,
-        .vertical = symbol,
+        .row = symbol,
+        .column = sample,
         .value = `count normalised adjusted`,
         annotation = c(condition, type),
         log_transform = TRUE

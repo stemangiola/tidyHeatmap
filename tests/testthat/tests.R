@@ -6,8 +6,8 @@ test_that("basic plot",{
 	p = 
 		tidyHeatmap::heatmap(
 			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
-			.horizontal = UBR, 
-			.vertical = symbol_ct, 
+			.column = UBR, 
+			.row = symbol_ct, 
 			.value = `read count normalised log`
 		)
 	
@@ -24,8 +24,8 @@ test_that("grouped plot",{
 				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 				`Cell type`
 				),
-			.horizontal = UBR, 
-			.vertical = symbol_ct, 
+			.column = UBR, 
+			.row = symbol_ct, 
 			.value = `read count normalised log`
 		)
 	
@@ -39,8 +39,8 @@ test_that("annotated plot numerical continuous intereg nominal annot",{
 	p = 
 		tidyHeatmap::heatmap(
 				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
-			.horizontal = UBR, 
-			.vertical = symbol_ct, 
+			.column = UBR, 
+			.row = symbol_ct, 
 			.value = `read count normalised log`,
 			annotation = CAPRA_TOTAL
 		)
@@ -56,8 +56,8 @@ test_that("annotated plot continuous annot MUST ERROR",{
 	expect_error(
 		tidyHeatmap::heatmap(
 			 left_join(my_df,  dplyr::mutate(dplyr::distinct(my_df, sample), a = rnorm(n()))), 
-			.horizontal = UBR, 
-			.vertical = symbol_ct, 
+			.column = UBR, 
+			.row = symbol_ct, 
 			.value = `read count normalised log`,
 			annotation = a
 		), "Your annotation*", fixed=FALSE) 
@@ -71,8 +71,8 @@ test_that("annotated plot continuous annot as well",{
 	p = 
 		tidyHeatmap::heatmap(
 			left_join(my_df,  dplyr::mutate(dplyr::distinct(my_df, UBR), a = rnorm(n(), sd=5))), 
-			.horizontal = UBR, 
-			.vertical = symbol_ct, 
+			.column = UBR, 
+			.row = symbol_ct, 
 			.value = `read count normalised log`,
 			annotation = c(a, CAPRA_TOTAL)
 		)
@@ -89,8 +89,8 @@ test_that("grouped and annotated plot",{
 				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 				`Cell type`
 			),
-			.horizontal = UBR, 
-			.vertical = symbol_ct, 
+			.column = UBR, 
+			.row = symbol_ct, 
 			.value = `read count normalised log`,
 			annotation = CAPRA_TOTAL
 		)
@@ -105,8 +105,8 @@ test_that("grouped double and annotated plot",{
 	p = 
 		tidyHeatmap::heatmap(
 			dplyr::group_by(tidyHeatmap::pasilla,		location, type),
-			.horizontal = sample,
-			.vertical = symbol,
+			.column = sample,
+			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, activation)
 		)
@@ -123,8 +123,8 @@ test_that("grouping error",{
 		
 		tidyHeatmap::heatmap(
 			dplyr::group_by(tidyHeatmap::pasilla,		location, type, condition),
-			.horizontal = sample,
-			.vertical = symbol,
+			.column = sample,
+			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, activation)
 		),
@@ -139,8 +139,8 @@ test_that("pasilla one annotation",{
 	p = 
 		tidyHeatmap::heatmap(
 			tidyHeatmap::pasilla,
-			.horizontal = sample,
-			.vertical = symbol,
+			.column = sample,
+			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = condition,
 			log_transform = TRUE
@@ -156,8 +156,8 @@ test_that("pasilla 2 annotations",{
 	p = 
 		tidyHeatmap::heatmap(
 			tidyHeatmap::pasilla,
-			.horizontal = sample,
-			.vertical = symbol,
+			.column = sample,
+			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type),
 			log_transform = TRUE
@@ -173,8 +173,8 @@ test_that("pasilla custom color abundance",{
 	p = 
 		tidyHeatmap::heatmap(
 			tidyHeatmap::pasilla,
-			.horizontal = sample,
-			.vertical = symbol,
+			.column = sample,
+			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type),
 			log_transform = TRUE, 
@@ -192,8 +192,8 @@ test_that("pasilla custom color discrete",{
 	p = 
 		tidyHeatmap::heatmap(
 			tidyHeatmap::pasilla,
-			.horizontal = sample,
-			.vertical = symbol,
+			.column = sample,
+			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type),
 			log_transform = TRUE, 
@@ -210,8 +210,8 @@ test_that("pasilla custom color contunuous",{
 	p = 
 		tidyHeatmap::heatmap(
 			tidyHeatmap::pasilla,
-			.horizontal = sample,
-			.vertical = symbol,
+			.column = sample,
+			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(activation),
 			log_transform = TRUE, 
@@ -228,8 +228,8 @@ test_that("pasilla custom color contunuous AND discrete",{
 	p = 
 		tidyHeatmap::heatmap(
 			tidyHeatmap::pasilla,
-			.horizontal = sample,
-			.vertical = symbol,
+			.column = sample,
+			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type, activation),
 			log_transform = TRUE
@@ -245,8 +245,8 @@ test_that("grouped and annotated plot both vertical and horizontal",{
 	p = 
 		tidyHeatmap::heatmap(
 			dplyr::group_by(tidyHeatmap::pasilla,		location),
-			.horizontal = sample,
-			.vertical = symbol,
+			.column = sample,
+			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type, activation)
 		)
@@ -261,8 +261,8 @@ test_that("pass arguments with ...",{
 	p = 
 		tidyHeatmap::heatmap(
 			dplyr::group_by(tidyHeatmap::pasilla,		location),
-			.horizontal = sample,
-			.vertical = symbol,
+			.column = sample,
+			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type, activation),
 			show_heatmap_legend = FALSE
@@ -279,8 +279,8 @@ test_that("Custom function for fill abundance palette",{
 	p = 
 		tidyHeatmap::heatmap(
 			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
-			.horizontal = UBR, 
-			.vertical = symbol_ct, 
+			.column = UBR, 
+			.row = symbol_ct, 
 			.value = `read count normalised log`
 		)
 	
@@ -294,8 +294,8 @@ test_that("Warning if data sparse",{
 	expect_warning(
 		tidyHeatmap::heatmap(
 			dplyr::slice(dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"), -1),
-			.horizontal = UBR, 
-			.vertical = symbol_ct, 
+			.column = UBR, 
+			.row = symbol_ct, 
 			.value = `read count normalised log`, 
 			palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
 		),

@@ -2,12 +2,12 @@
 % Please edit documentation in R/methods.R
 \name{heatmap}
 \alias{heatmap}
-\title{Creates a  `ComplexHeatmap` plot from `tbl`}
+\title{Creates a  `ComplexHeatmap` plot from `tbl_df`}
 \usage{
 heatmap(
   .data,
-  .horizontal,
-  .vertical,
+  .row,
+  .column,
   .value,
   annotation = NULL,
   log_transform = FALSE,
@@ -15,21 +15,23 @@ heatmap(
   palette_discrete = list(),
   palette_continuous = list(),
   .abundance = NULL,
+  .horizontal = NULL,
+  .vertical = NULL,
   ...
 )
 }
 \arguments{
-\item{.data}{A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |}
+\item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}
 
-\item{.horizontal}{The name of the column horizontally presented in the heatmap}
+\item{.row}{The name of the column vertically presented in the heatmap}
 
-\item{.vertical}{The name of the column vertically presented in the heatmap}
+\item{.column}{The name of the column horizontally presented in the heatmap}
 
 \item{.value}{The name of the transcript/gene abundance column}
 
 \item{annotation}{Vector of quotes}
 
-\item{log_transform}{A boolean, whether the value should be log-transformed (e.g., TRUE for RNA sequencing data)}
+\item{log_transform}{A boolean, whether the value should be log-transformed}
 
 \item{palette_abundance}{A character vector This is the palette that will be used as gradient for abundance.}
 
@@ -38,6 +40,10 @@ heatmap(
 \item{palette_continuous}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).}
 
 \item{.abundance}{DEPRECATED. Please use .value instead}
+
+\item{.horizontal}{DEPRECATED. Please use .column instead}
+
+\item{.vertical}{DEPRECATED. Please use .row instead}
 
 \item{...}{Further arguments to be passed to ComplexHeatmap::Heatmap}
 }
