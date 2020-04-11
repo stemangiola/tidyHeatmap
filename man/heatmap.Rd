@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods.R
 \name{heatmap}
 \alias{heatmap}
-\title{Creates a  `ComplexHeatmap` plot from `tbl`}
+\title{Creates a  `ComplexHeatmap` plot from `tbl_df`}
 \usage{
 heatmap(
   .data,
@@ -21,7 +21,7 @@ heatmap(
 )
 }
 \arguments{
-\item{.data}{A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |}
+\item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}
 
 \item{.row}{The name of the column vertically presented in the heatmap}
 
@@ -31,7 +31,7 @@ heatmap(
 
 \item{annotation}{Vector of quotes}
 
-\item{log_transform}{A boolean, whether the value should be log-transformed (e.g., TRUE for RNA sequencing data)}
+\item{log_transform}{A boolean, whether the value should be log-transformed}
 
 \item{palette_abundance}{A character vector This is the palette that will be used as gradient for abundance.}
 
