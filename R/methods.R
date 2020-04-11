@@ -40,8 +40,8 @@
 #' tidyHeatmap::N52 %>%
 #' group_by( `Cell type`) %>%
 #' tidyHeatmap::heatmap(
-#'  .horizontal = UBR,
-#'  .vertical = symbol_ct,
+#'  .row = symbol_ct,
+#'  .column = UBR,
 #'  .value = `read count normalised log`,
 #'  annotation = CAPRA_TOTAL
 #' )
