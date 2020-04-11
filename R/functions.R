@@ -191,7 +191,7 @@ plot_heatmap = function(.data,
 		c(group_annotation$top_annotation, top_left_annot$top_annotation) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
-			(.) %>% is.null %>% `!`,
+			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("columnAnnotation", .x ),
 			~ NULL
 		)
@@ -200,7 +200,7 @@ plot_heatmap = function(.data,
 		c(group_annotation$left_annotation, top_left_annot$left_annotation) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
-			(.) %>% length %>% `>` (0),
+			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("rowAnnotation", .x),
 			~ NULL
 		)
