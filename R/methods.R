@@ -1,4 +1,4 @@
-#' Creates a  `ComplexHeatmap` plot from `tbl`
+#' Creates a  `ComplexHeatmap` plot from `tbl_df`
 #'
 #' \lifecycle{maturing}
 #'
@@ -13,12 +13,12 @@
 #' @name heatmap
 #' @rdname heatmap
 #'
-#' @param .data A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |
+#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .row The name of the column vertically presented in the heatmap
 #' @param .column The name of the column horizontally presented in the heatmap
 #' @param .value The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
-#' @param log_transform A boolean, whether the value should be log-transformed (e.g., TRUE for RNA sequencing data)
+#' @param log_transform A boolean, whether the value should be log-transformed
 #' @param palette_abundance A character vector This is the palette that will be used as gradient for abundance.
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
@@ -122,7 +122,7 @@ heatmap.tbl_df <-
 		if (is_present(.horizontal) & !quo_is_null(.horizontal)) {
 			
 			# Signal the deprecation to the user
-			deprecate_warn("0.99.11", "tidyHeatmap::heatmap(.horizontal = )", "tidyHeatmap::heatmap(.column = )")
+			deprecate_warn("0.99.12", "tidyHeatmap::heatmap(.horizontal = )", "tidyHeatmap::heatmap(.column = )")
 			
 			# Deal with the deprecated argument for compatibility
 			.column <- enquo(.horizontal)
@@ -133,7 +133,7 @@ heatmap.tbl_df <-
 		if (is_present(.vertical) & !quo_is_null(.vertical)) {
 			
 			# Signal the deprecation to the user
-			deprecate_warn("0.99.11", "tidyHeatmap::heatmap(.vertical = )", "tidyHeatmap::heatmap(.row = )")
+			deprecate_warn("0.99.12", "tidyHeatmap::heatmap(.vertical = )", "tidyHeatmap::heatmap(.row = )")
 			
 			# Deal with the deprecated argument for compatibility
 			.row <- enquo(.vertical)
