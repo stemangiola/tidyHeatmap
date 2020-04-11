@@ -14,14 +14,16 @@
 #' @rdname heatmap
 #'
 #' @param .data A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |
-#' @param .horizontal The name of the column horizontally presented in the heatmap
-#' @param .vertical The name of the column vertically presented in the heatmap
+#' @param .row The name of the column vertically presented in the heatmap
+#' @param .column The name of the column horizontally presented in the heatmap
 #' @param .value The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
 #' @param log_transform A boolean, whether the value should be log-transformed (e.g., TRUE for RNA sequencing data)
 #' @param palette_abundance A character vector This is the palette that will be used as gradient for abundance.
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
+#' @param .horizontal DEPRECATED. Please use .column instead
+#' @param .vertical DEPRECATED. Please use .row instead
 #' @param .abundance DEPRECATED. Please use .value instead
 #' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
 #'
@@ -47,8 +49,8 @@
 #' @export
 heatmap <-
 	function(.data,
-					 .horizontal,
-					 .vertical,
+					 .row, 
+					 .column,
 					 .value,
 					 annotation = NULL,
 					 log_transform = FALSE,
@@ -56,21 +58,25 @@ heatmap <-
 					 palette_discrete = list(),
 					 palette_continuous = list(),
 					 .abundance  = NULL,
+					 .horizontal = NULL,
+					 .vertical = NULL,
 					 ...) {
 		UseMethod("heatmap", .data)
 	}
 #' @export
 heatmap.default <-
 	function(.data,
-					 .horizontal,
-					 .vertical,
+					 .row, 
+					 .column,
 					 .value,
 					 annotation = NULL,
 					 log_transform = FALSE,
 					 palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
-					 .abundance = NULL,
+					 .abundance  = NULL,
+					 .horizontal = NULL,
+					 .vertical = NULL,
 					 ...)
 	{
 		message("tidyHeatmap::heatmap function cannot be applied to this object. Please input a tibble (tbl_df) object.")
@@ -78,24 +84,26 @@ heatmap.default <-
 #' @export
 heatmap.tbl_df <-
 	function(.data,
-					 .horizontal,
-					 .vertical,
+					 .row, 
+					 .column,
 					 .value,
 					 annotation = NULL,
 					 log_transform = FALSE,
 					 palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
-					 .abundance = NULL,
+					 .abundance  = NULL,
+					 .horizontal = NULL,
+					 .vertical = NULL,
 					 ...)
 	{
 		# Comply with CRAN NOTES
 		. = NULL
 		
 		# Make col names
-		.horizontal = enquo(.horizontal)
-		.vertical = enquo(.vertical)
-		.abundance = enquo(.abundance)
+		.horizontal = enquo(.horizontal) # DEPRECATED
+		.vertical = enquo(.vertical) # DEPRECATED
+		.abundance = enquo(.abundance) # DEPRECATED
 		annotation = enquo(annotation)
 		
 		# Deprecation .abundance
@@ -103,28 +111,52 @@ heatmap.tbl_df <-
 		if (is_present(.abundance) & !quo_is_null(.abundance)) {
 			
 			# Signal the deprecation to the user
-			deprecate_warn("0.99.11", "tidyHeatmap::heatmap(.abundance = )", "mypkg::foo(.value = )")
+			deprecate_warn("0.99.11", "tidyHeatmap::heatmap(.abundance = )", "tidyHeatmap::heatmap(.value = )")
 			
 			# Deal with the deprecated argument for compatibility
 			.value <- enquo(.abundance)
 		}
 		
-		.value <- enquo(.value)
+		# Deprecation .horizontal
+		# Check if user has supplied `baz` instead of `bar`
+		if (is_present(.horizontal) & !quo_is_null(.horizontal)) {
+			
+			# Signal the deprecation to the user
+			deprecate_warn("0.99.11", "tidyHeatmap::heatmap(.horizontal = )", "tidyHeatmap::heatmap(.column = )")
+			
+			# Deal with the deprecated argument for compatibility
+			.column <- enquo(.horizontal)
+		}
 		
+		# Deprecation .vertical
+		# Check if user has supplied `baz` instead of `bar`
+		if (is_present(.vertical) & !quo_is_null(.vertical)) {
+			
+			# Signal the deprecation to the user
+			deprecate_warn("0.99.11", "tidyHeatmap::heatmap(.vertical = )", "tidyHeatmap::heatmap(.row = )")
+			
+			# Deal with the deprecated argument for compatibility
+			.row <- enquo(.vertical)
+		}
+		
+		.row = enquo(.row)
+		.column = enquo(.column)
+		.value <- enquo(.value)
+
 		# Validation
-		.data %>% validation(!!.horizontal, !!.vertical, !!.value)
+		.data %>% validation(!!.column, !!.row, !!.value)
 		
 		# Check if data is rectangular
 		.data %>% 
 			ifelse_pipe(
-				!check_if_data_rectangular((.), !!.horizontal, !!.vertical, !!.value),
-				~  eliminate_sparse_transcripts(.x, !!.vertical)
+				!check_if_data_rectangular((.), !!.column, !!.row, !!.value),
+				~  eliminate_sparse_transcripts(.x, !!.row)
 			) %>%
 			
 		# Run plotting function
 		plot_heatmap(
-			.horizontal = !!.horizontal,
-			.vertical = !!.vertical,
+			.horizontal = !!.column,
+			.vertical = !!.row,
 			.abundance = !!.value,
 			annotation = !!annotation,
 			log_transform = log_transform,

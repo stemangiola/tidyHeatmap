@@ -122,8 +122,8 @@ eliminate_sparse_transcripts = function(.data, .transcript){
 	
 	warning("
 tidyHeatmap says: 
-Some .vertical features have been omitted from the analysis because not present in every sample.
-If you want to impute missing data use tidybulk::impute_abundance(~1, .horizontal, .vertical, .abundance)
+Some .row features have been omitted from the analysis because not present in every sample.
+If you want to impute missing data use tidybulk::impute_abundance(~1, .column, .row, .abundance)
 ")
 	
 	.data %>%

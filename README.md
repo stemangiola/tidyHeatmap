@@ -72,8 +72,8 @@ specifying:
 ``` r
 tidyHeatmap::pasilla %>%
     heatmap(
-        .horizontal = sample,
-        .vertical = symbol,
+        .row = symbol,
+        .column = sample,
         .value = `count normalised adjusted`,
         annotation = c(condition, type),
         log_transform = TRUE
@@ -92,8 +92,8 @@ heatmap will be grouped accordingly
 tidyHeatmap::pasilla %>%
     group_by(location, condition) %>%
     heatmap(
-        .horizontal = sample,
-        .vertical = symbol,
+        .row = symbol,
+        .column = sample,
         .value = `count normalised adjusted`,
         annotation = c(type),
         log_transform = TRUE
@@ -110,8 +110,8 @@ vector, or a grid::colorRamp2 functionfor higher flexibility
 ``` r
 pasilla %>%
     heatmap(
-        .horizontal = sample,
-        .vertical = symbol,
+        .row = symbol,
+        .column = sample,
         .value = `count normalised adjusted`,
         log_transform = TRUE, 
         palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))

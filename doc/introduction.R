@@ -14,8 +14,8 @@ pasilla
 ## -----------------------------------------------------------------------------
 pasilla %>%
 	heatmap(
-		.horizontal = sample,
-		.vertical = symbol,
+		.row = symbol,
+		.column = sample,
 		.value = `count normalised adjusted`,
 		annotation = c(condition, type),
 		log_transform = TRUE
@@ -25,8 +25,8 @@ pasilla %>%
 pasilla %>%
 	group_by(location) %>%
 	heatmap(
-		.horizontal = sample,
-		.vertical = symbol,
+		.row = symbol,
+		.column = sample,
 		.value = `count normalised adjusted`,
 		annotation = c(condition, type),
 		log_transform = TRUE

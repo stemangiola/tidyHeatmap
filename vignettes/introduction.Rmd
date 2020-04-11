@@ -52,8 +52,8 @@ For plotting, you simply pipe the input data frame into heatmap, specifying:
 ```{r}
 pasilla %>%
 	heatmap(
-		.horizontal = sample,
-		.vertical = symbol,
+		.row = symbol,
+		.column = sample,
 		.value = `count normalised adjusted`,
 		annotation = c(condition, type),
 		log_transform = TRUE
@@ -68,8 +68,8 @@ We can easily group the data (one group per dimension maximum, at the moment onl
 pasilla %>%
 	group_by(location) %>%
 	heatmap(
-		.horizontal = sample,
-		.vertical = symbol,
+		.row = symbol,
+		.column = sample,
 		.value = `count normalised adjusted`,
 		annotation = c(condition, type),
 		log_transform = TRUE

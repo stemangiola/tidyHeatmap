@@ -68,8 +68,8 @@ For plotting, you simply pipe the input data frame into heatmap, specifying:
 ```{r}
 tidyHeatmap::pasilla %>%
 	heatmap(
-		.horizontal = sample,
-		.vertical = symbol,
+		.row = symbol,
+		.column = sample,
 		.value = `count normalised adjusted`,
 		annotation = c(condition, type),
 		log_transform = TRUE
@@ -84,8 +84,8 @@ We can easily group the data (one group per dimension maximum, at the moment onl
 tidyHeatmap::pasilla %>%
 	group_by(location, condition) %>%
 	heatmap(
-		.horizontal = sample,
-		.vertical = symbol,
+		.row = symbol,
+		.column = sample,
 		.value = `count normalised adjusted`,
 		annotation = c(type),
 		log_transform = TRUE
@@ -99,8 +99,8 @@ We can easily use custom palette, chooinga hexadecimal color character vector, o
 ```{r}
 pasilla %>%
 	heatmap(
-		.horizontal = sample,
-		.vertical = symbol,
+		.row = symbol,
+		.column = sample,
 		.value = `count normalised adjusted`,
 		log_transform = TRUE, 
 		palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
