@@ -18,13 +18,14 @@
 #' @param .column The name of the column horizontally presented in the heatmap
 #' @param .value The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
-#' @param log_transform A boolean, whether the value should be log-transformed
+#' @param transform A function, used to tranform .value, for example log
 #' @param palette_abundance A character vector This is the palette that will be used as gradient for abundance.
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
 #' @param .horizontal DEPRECATED. Please use .column instead
 #' @param .vertical DEPRECATED. Please use .row instead
 #' @param .abundance DEPRECATED. Please use .value instead
+#' @param log_transform DEPRECATED. Please use transform instead
 #' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
 #'
 #' @details To be added.
@@ -53,13 +54,14 @@ heatmap <-
 					 .column,
 					 .value,
 					 annotation = NULL,
-					 log_transform = FALSE,
+					 transform = NULL,
 					 palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
 					 .abundance  = NULL,
 					 .horizontal = NULL,
 					 .vertical = NULL,
+					 log_transform = NULL,
 					 ...) {
 		UseMethod("heatmap", .data)
 	}
@@ -70,13 +72,14 @@ heatmap.default <-
 					 .column,
 					 .value,
 					 annotation = NULL,
-					 log_transform = FALSE,
+					 transform = NULL,
 					 palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
 					 .abundance  = NULL,
 					 .horizontal = NULL,
 					 .vertical = NULL,
+					 log_transform = NULL,
 					 ...)
 	{
 		message("tidyHeatmap::heatmap function cannot be applied to this object. Please input a tibble (tbl_df) object.")
@@ -88,13 +91,14 @@ heatmap.tbl_df <-
 					 .column,
 					 .value,
 					 annotation = NULL,
-					 log_transform = FALSE,
+					 transform = NULL,
 					 palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
 					 .abundance  = NULL,
 					 .horizontal = NULL,
 					 .vertical = NULL,
+					 log_transform = NULL,
 					 ...)
 	{
 		# Comply with CRAN NOTES
@@ -105,6 +109,9 @@ heatmap.tbl_df <-
 		.vertical = enquo(.vertical) # DEPRECATED
 		.abundance = enquo(.abundance) # DEPRECATED
 		annotation = enquo(annotation)
+		
+		# Check if transform is of correct type
+		if(!(is.null(transform) || is_function(transform))) stop("tidyHeatmap says: transform has to be a function. is_function(transform) == TRUE")
 		
 		# Deprecation .abundance
 		# Check if user has supplied `baz` instead of `bar`
@@ -139,6 +146,17 @@ heatmap.tbl_df <-
 			.row <- enquo(.vertical)
 		}
 		
+		# Deprecation log_transform
+		# Check if user has supplied `baz` instead of `bar`
+		if (is_present(log_transform) & !is.null(log_transform)) {
+			
+			# Signal the deprecation to the user
+			deprecate_warn("0.99.13", "tidyHeatmap::heatmap(log_transform = )", "tidyHeatmap::heatmap(tranform = )")
+			
+			# Deal with the deprecated argument for compatibility
+			if(log_transform) tranform <- log
+		}
+		
 		.row = enquo(.row)
 		.column = enquo(.column)
 		.value <- enquo(.value)
@@ -159,7 +177,7 @@ heatmap.tbl_df <-
 			.vertical = !!.row,
 			.abundance = !!.value,
 			annotation = !!annotation,
-			log_transform = log_transform,
+			transform = transform,
 			palette_abundance = palette_abundance,
 			palette_discrete = palette_discrete,
 			palette_continuous = palette_continuous,

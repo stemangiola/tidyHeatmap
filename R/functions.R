@@ -21,6 +21,7 @@
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom viridis viridis
 #' @importFrom viridis magma
+#' @importFrom rlang is_function
 #'
 #' @name plot_heatmap
 #' @rdname plot_heatmap
@@ -30,7 +31,7 @@
 #' @param .vertical The name of the column vertically presented in the heatmap
 #' @param .abundance The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
-#' @param log_transform A boolean, whether the value should be log-transformed (e.g., TRUE for RNA sequencing data)
+#' @param transform A function, used to tranform .value, for example log
 #' @param palette_abundance A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_abundance)`
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
@@ -50,7 +51,7 @@ plot_heatmap = function(.data,
 												.vertical,
 												.abundance,
 												annotation = NULL,
-												log_transform = FALSE,
+												transform = NULL,
 												palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
 												palette_discrete = list(),
 												palette_continuous = list(),
@@ -73,9 +74,18 @@ plot_heatmap = function(.data,
 		.data %>%
 		ungroup() %>%
 		
-		# Check if log tranfrom is needed
-		ifelse_pipe(log_transform,
-								~ .x %>% mutate(!!.abundance := !!.abundance %>%  `+`(1) %>%  log())) %>%
+		# Check if tranfrom is needed
+		ifelse_pipe(
+			is_function(transform),
+			~ .x %>% 
+				mutate(!!.abundance := !!.abundance %>%  transform()) %>%
+				
+				# Check is log introduced -Inf
+				ifelse_pipe(
+					pull(., !!.abundance) %>% min %>% equals(-Inf), 
+					~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p.")
+				)
+		) %>%
 		
 		distinct(!!.vertical,!!.horizontal,!!.abundance) %>%
 		spread(!!.horizontal,!!.abundance)

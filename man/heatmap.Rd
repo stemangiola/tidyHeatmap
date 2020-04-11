@@ -10,13 +10,14 @@ heatmap(
   .column,
   .value,
   annotation = NULL,
-  log_transform = FALSE,
+  transform = NULL,
   palette_abundance = c("#440154FF", "#21908CFF", "#fefada"),
   palette_discrete = list(),
   palette_continuous = list(),
   .abundance = NULL,
   .horizontal = NULL,
   .vertical = NULL,
+  log_transform = NULL,
   ...
 )
 }
@@ -31,7 +32,7 @@ heatmap(
 
 \item{annotation}{Vector of quotes}
 
-\item{log_transform}{A boolean, whether the value should be log-transformed}
+\item{transform}{A function, used to tranform .value, for example log}
 
 \item{palette_abundance}{A character vector This is the palette that will be used as gradient for abundance.}
 
@@ -44,6 +45,8 @@ heatmap(
 \item{.horizontal}{DEPRECATED. Please use .column instead}
 
 \item{.vertical}{DEPRECATED. Please use .row instead}
+
+\item{log_transform}{DEPRECATED. Please use transform instead}
 
 \item{...}{Further arguments to be passed to ComplexHeatmap::Heatmap}
 }
