@@ -78,7 +78,7 @@ tidyHeatmap::pasilla %>%
         .column = sample,
         .value = `count normalised adjusted`,
         annotation = c(condition, type),
-        log_transform = TRUE
+        transform = log1p
     )
 ```
 
@@ -98,7 +98,7 @@ tidyHeatmap::pasilla %>%
         .column = sample,
         .value = `count normalised adjusted`,
         annotation = c(type),
-        log_transform = TRUE
+        transform = log1p
     )
 ```
 
@@ -115,7 +115,7 @@ pasilla %>%
         .row = symbol,
         .column = sample,
         .value = `count normalised adjusted`,
-        log_transform = TRUE, 
+        transform = log1p, 
         palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
     )
 ```

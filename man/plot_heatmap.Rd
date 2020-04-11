@@ -10,7 +10,7 @@ plot_heatmap(
   .vertical,
   .abundance,
   annotation = NULL,
-  log_transform = FALSE,
+  transform = NULL,
   palette_abundance = c("#440154FF", "#21908CFF", "#fefada"),
   palette_discrete = list(),
   palette_continuous = list(),
@@ -28,7 +28,7 @@ plot_heatmap(
 
 \item{annotation}{Vector of quotes}
 
-\item{log_transform}{A boolean, whether the value should be log-transformed (e.g., TRUE for RNA sequencing data)}
+\item{transform}{A function, used to tranform .value, for example log}
 
 \item{palette_abundance}{A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_abundance)`}
 

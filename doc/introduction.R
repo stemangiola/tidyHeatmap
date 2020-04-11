@@ -18,7 +18,7 @@ pasilla %>%
 		.column = sample,
 		.value = `count normalised adjusted`,
 		annotation = c(condition, type),
-		log_transform = TRUE
+		transform = log1p
 	)
 
 ## -----------------------------------------------------------------------------
@@ -29,6 +29,6 @@ pasilla %>%
 		.column = sample,
 		.value = `count normalised adjusted`,
 		annotation = c(condition, type),
-		log_transform = TRUE
+		transform = log1p
 	)
 

@@ -143,7 +143,7 @@ test_that("pasilla one annotation",{
 			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = condition,
-			log_transform = TRUE
+			transform = log1p
 		)
 	
 	
@@ -160,7 +160,7 @@ test_that("pasilla 2 annotations",{
 			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type),
-			log_transform = TRUE
+			transform = log1p
 		)
 	
 	
@@ -177,7 +177,7 @@ test_that("pasilla custom color abundance",{
 			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type),
-			log_transform = TRUE, 
+			transform = log1p, 
 			palette_abundance = c("#d80000", "#ffffff", "#283cea")
 		)
 	
@@ -196,7 +196,7 @@ test_that("pasilla custom color discrete",{
 			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type),
-			log_transform = TRUE, 
+			transform = log1p, 
 			palette_discrete = list(c("#d80000", "#283cea"))
 		)
 	
@@ -214,7 +214,7 @@ test_that("pasilla custom color contunuous",{
 			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(activation),
-			log_transform = TRUE, 
+			transform = log1p, 
 			palette_continuous = list(c("#d80000", "#283cea"))
 		)
 	
@@ -232,7 +232,7 @@ test_that("pasilla custom color contunuous AND discrete",{
 			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type, activation),
-			log_transform = TRUE
+			transform = log1p
 		)
 	
 	
@@ -305,11 +305,40 @@ test_that("Warning if data sparse",{
 
 test_that("eliminate sparse transcripts",{
 	
-	expect_equal(
-		nrow(tidyHeatmap:::eliminate_sparse_transcripts(
-			dplyr::slice(dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"), -1),
-			symbol_ct
-		)),
-		507
+	expect_warning(
+		expect_equal(
+			nrow(tidyHeatmap:::eliminate_sparse_transcripts(
+				dplyr::slice(dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"), -1),
+				symbol_ct
+			)),
+			507
+		)
 	)
+})
+
+test_that("test log of 0",{
+	
+	expect_error(
+		tidyHeatmap::heatmap(
+			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+			.column = UBR, 
+			.row = symbol_ct, 
+			.value = `read count`, 
+			transform = log	
+		),
+		"you applied a transformation that introduced negative infinite .value"
+	)
+	
+	expect_equal(
+		class(
+			tidyHeatmap::heatmap(
+			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+			.column = UBR, 
+			.row = symbol_ct, 
+			.value = `read count`, 
+			transform = log1p	
+		))[1],
+		"Heatmap"
+	)
+	
 })
