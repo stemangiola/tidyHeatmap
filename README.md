@@ -1,7 +1,10 @@
 tidyHeatmap
 ================
 
-(part of tidy-transcriptomics suite, together with [tidybulk](github.com/stemangiola/tidybulk) for tidy and modular transcriptomics analyses. Try me!)
+(part of tidy-transcriptomics suite, together with
+[tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular
+transcriptomics analyses. Try
+me\!)
 
 <!-- badges: start -->
 
@@ -9,7 +12,7 @@ tidyHeatmap
 <!-- badges: end -->
 
 Tidy heatmap. This package is a tidy wrapper of the package
-[ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) and in particular of the function Heatmap.
+[ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html).
 The goal of this package is to interface tidy data frames with this
 powerful tool.
 

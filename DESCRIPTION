@@ -23,7 +23,7 @@ URL: https://www.r-project.org,
 BugReports: https://github.com/stemangiola/tidyHeatmap
 Depends: 
     R (>= 3.6),
-    ComplexHeatmap
+    ComplexHeatmap (>= 2.2.0)
 Imports: 
     dplyr,
     magrittr,
