@@ -169,7 +169,7 @@ heatmap.tbl_df <-
 			deprecate_warn("0.99.15", "tidyHeatmap::heatmap(palette_abundance = )", "tidyHeatmap::heatmap(palette_value = )")
 			
 			# Deal with the deprecated argument for compatibility
-			if(palette_abundance) palette_scale <- palette_abundance
+			if(palette_abundance) palette_value <- palette_abundance
 		}
 		
 		.row = enquo(.row)
@@ -193,7 +193,7 @@ heatmap.tbl_df <-
 			.abundance = !!.value,
 			annotation = !!annotation,
 			transform = transform,
-			palette_abundance = palette_scale,
+			palette_abundance = palette_value,
 			palette_discrete = palette_discrete,
 			palette_continuous = palette_continuous,
 			...
