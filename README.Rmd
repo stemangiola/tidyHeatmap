@@ -3,7 +3,7 @@ title: "tidyHeatmap"
 output: github_document
 ---
 
-(part of tidy-transcriptomics suite, together with [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular transcriptomics analyses. Try me!)
+(If you like tidyverse and RNA, try [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular transcriptomics analyses!)
 
 <!-- badges: start -->
   [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
@@ -12,11 +12,11 @@ output: github_document
 
 ```{r, echo=FALSE, include=FALSE, }
 library(knitr)
-knitr::opts_chunk$set(cache = TRUE, warning = FALSE, 
-                      message = FALSE, cache.lazy = FALSE)
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE)
 
 library(magrittr)
 library(dplyr)
+library(tidyr)
 library(tidyHeatmap)
 
 ```
@@ -52,10 +52,21 @@ install.packages("tidyHeatmap")
 
 # Input data frame
 
-Example of an input data frame
+Example of two input data frames.
+
 
 ```{r}
-tidyHeatmap::pasilla
+mtcars_tidy = 
+	mtcars %>% 
+	as_tibble(rownames="Car name") %>% 
+	
+	# Scale
+	mutate_at(vars(-`Car name`, -hp, -vs), scale) %>%
+	
+	# tidyfy
+	gather(Property, Value, -`Car name`, -hp, -vs)
+
+mtcars_tidy
 ```
 
 
@@ -63,18 +74,18 @@ tidyHeatmap::pasilla
 
 For plotting, you simply pipe the input data frame into heatmap, specifying:
 
-- The horizontal, vertical relative column names (mandatory)
-- The abundance column name (mandatory)
+- The rows, cols relative column names (mandatory)
+- The value column name (mandatory)
 - The annotations column name(s)
 
+mtcars
 ```{r}
-tidyHeatmap::pasilla %>%
+mtcars_tidy %>% 
 	heatmap(
-		.row = symbol,
-		.column = sample,
-		.value = `count normalised adjusted`,
-		annotation = c(condition, type),
-		transform = log1p
+		`Car name`, 
+		Property, 
+		Value,
+		annotation = hp
 	)
 ```
 
@@ -83,14 +94,13 @@ tidyHeatmap::pasilla %>%
 We can easily group the data (one group per dimension maximum, at the moment only the vertical dimension is supported) with dplyr, and the heatmap will be grouped accordingly
 
 ```{r}
-tidyHeatmap::pasilla %>%
-	group_by(location, condition) %>%
+mtcars_tidy %>% 
+	group_by(vs) %>%
 	heatmap(
-		.row = symbol,
-		.column = sample,
-		.value = `count normalised adjusted`,
-		annotation = c(type),
-		transform = log1p
+		`Car name`, 
+		Property, 
+		Value,
+		annotation = hp
 	)
 ```
 
@@ -99,12 +109,11 @@ tidyHeatmap::pasilla %>%
 We can easily use custom palette, chooinga hexadecimal color character vector, or a grid::colorRamp2 functionfor higher flexibility
 
 ```{r}
-pasilla %>%
+mtcars_tidy %>% 
 	heatmap(
-		.row = symbol,
-		.column = sample,
-		.value = `count normalised adjusted`,
-		transform = log1p, 
+		`Car name`, 
+		Property, 
+		Value,
 		palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
 	)
 ```

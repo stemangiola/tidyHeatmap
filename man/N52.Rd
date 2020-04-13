@@ -4,7 +4,9 @@
 \name{N52}
 \alias{N52}
 \title{Example data set N52}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 520 rows and 15 columns.}
+\format{
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 520 rows and 15 columns.
+}
 \usage{
 N52
 }
