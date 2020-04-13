@@ -19,13 +19,14 @@
 #' @param .value The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
 #' @param transform A function, used to tranform .value, for example log
-#' @param palette_abundance A character vector This is the palette that will be used as gradient for abundance.
+#' @param palette_value A character vector This is the palette that will be used as gradient for .value
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
 #' @param .horizontal DEPRECATED. Please use .column instead
 #' @param .vertical DEPRECATED. Please use .row instead
 #' @param .abundance DEPRECATED. Please use .value instead
 #' @param log_transform DEPRECATED. Please use transform instead
+#' @param palette_abundance DEPRECATED. Please use palette_value instead
 #' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
 #'
 #' @details To be added.
@@ -55,13 +56,14 @@ heatmap <-
 					 .value,
 					 annotation = NULL,
 					 transform = NULL,
-					 palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ),
+					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
 					 .abundance  = NULL,
 					 .horizontal = NULL,
 					 .vertical = NULL,
 					 log_transform = NULL,
+					 palette_abundance = NULL,
 					 ...) {
 		UseMethod("heatmap", .data)
 	}
@@ -73,13 +75,14 @@ heatmap.default <-
 					 .value,
 					 annotation = NULL,
 					 transform = NULL,
-					 palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ),
+					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
 					 .abundance  = NULL,
 					 .horizontal = NULL,
 					 .vertical = NULL,
 					 log_transform = NULL,
+					 palette_abundance = NULL,
 					 ...)
 	{
 		message("tidyHeatmap::heatmap function cannot be applied to this object. Please input a tibble (tbl_df) object.")
@@ -92,13 +95,14 @@ heatmap.tbl_df <-
 					 .value,
 					 annotation = NULL,
 					 transform = NULL,
-					 palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ),
+					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
 					 .abundance  = NULL,
 					 .horizontal = NULL,
 					 .vertical = NULL,
 					 log_transform = NULL,
+					 palette_abundance = NULL,
 					 ...)
 	{
 		# Comply with CRAN NOTES
@@ -114,7 +118,7 @@ heatmap.tbl_df <-
 		if(!(is.null(transform) || is_function(transform))) stop("tidyHeatmap says: transform has to be a function. is_function(transform) == TRUE")
 		
 		# Deprecation .abundance
-		# Check if user has supplied `baz` instead of `bar`
+		
 		if (is_present(.abundance) & !quo_is_null(.abundance)) {
 			
 			# Signal the deprecation to the user
@@ -125,7 +129,7 @@ heatmap.tbl_df <-
 		}
 		
 		# Deprecation .horizontal
-		# Check if user has supplied `baz` instead of `bar`
+		
 		if (is_present(.horizontal) & !quo_is_null(.horizontal)) {
 			
 			# Signal the deprecation to the user
@@ -136,7 +140,7 @@ heatmap.tbl_df <-
 		}
 		
 		# Deprecation .vertical
-		# Check if user has supplied `baz` instead of `bar`
+		
 		if (is_present(.vertical) & !quo_is_null(.vertical)) {
 			
 			# Signal the deprecation to the user
@@ -147,7 +151,7 @@ heatmap.tbl_df <-
 		}
 		
 		# Deprecation log_transform
-		# Check if user has supplied `baz` instead of `bar`
+		
 		if (is_present(log_transform) & !is.null(log_transform)) {
 			
 			# Signal the deprecation to the user
@@ -155,6 +159,17 @@ heatmap.tbl_df <-
 			
 			# Deal with the deprecated argument for compatibility
 			if(log_transform) tranform <- log
+		}
+		
+		# Deprecation palette_abundance
+		
+		if (is_present(palette_abundance) & !is.null(palette_abundance)) {
+			
+			# Signal the deprecation to the user
+			deprecate_warn("0.99.15", "tidyHeatmap::heatmap(palette_abundance = )", "tidyHeatmap::heatmap(palette_value = )")
+			
+			# Deal with the deprecated argument for compatibility
+			if(palette_abundance) palette_scale <- palette_abundance
 		}
 		
 		.row = enquo(.row)
@@ -178,7 +193,7 @@ heatmap.tbl_df <-
 			.abundance = !!.value,
 			annotation = !!annotation,
 			transform = transform,
-			palette_abundance = palette_abundance,
+			palette_abundance = palette_scale,
 			palette_discrete = palette_discrete,
 			palette_continuous = palette_continuous,
 			...
