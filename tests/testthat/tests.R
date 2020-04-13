@@ -178,7 +178,7 @@ test_that("pasilla custom color abundance",{
 			.value = `count normalised adjusted`,
 			annotation = c(condition, type),
 			transform = log1p, 
-			palette_abundance = c("#d80000", "#ffffff", "#283cea")
+			palette_value = c("#d80000", "#ffffff", "#283cea")
 		)
 	
 	
@@ -297,7 +297,7 @@ test_that("Warning if data sparse",{
 			.column = UBR, 
 			.row = symbol_ct, 
 			.value = `read count normalised log`, 
-			palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+			palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
 		),
 		"have been omitted from the analysis because not present in every sample"
 	)

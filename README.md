@@ -1,10 +1,10 @@
 tidyHeatmap
 ================
 
-(part of tidy-transcriptomics suite, together with
+(If you like tidyverse and RNA, try
 [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular
-transcriptomics analyses. Try
-me\!)
+transcriptomics
+analyses\!)
 
 <!-- badges: start -->
 
@@ -42,46 +42,55 @@ install.packages("tidyHeatmap")
 
 # Input data frame
 
-Example of an input data frame
+Example of two input data frames.
 
 ``` r
-tidyHeatmap::pasilla
+mtcars_tidy = 
+    mtcars %>% 
+    as_tibble(rownames="Car name") %>% 
+    
+    # Scale
+    mutate_at(vars(-`Car name`, -hp, -vs), scale) %>%
+    
+    # tidyfy
+    gather(Property, Value, -`Car name`, -hp, -vs)
+
+mtcars_tidy
 ```
 
-    ## # A tibble: 504 x 7
-    ##    sample   symbol `count normalised ad… condition type    location   activation
-    ##    <chr>    <fct>                  <int> <fct>     <fct>   <chr>           <dbl>
-    ##  1 treated1 Kal1                      37 treated   single… Secretory       1.10 
-    ##  2 treated2 Kal1                      41 treated   paired… Secretory       1.10 
-    ##  3 treated3 Kal1                      50 treated   paired… Secretory       1.10 
-    ##  4 untreat… Kal1                    1127 untreated single… Secretory       1.10 
-    ##  5 untreat… Kal1                    1046 untreated single… Secretory       1.10 
-    ##  6 untreat… Kal1                     932 untreated paired… Secretory       1.10 
-    ##  7 untreat… Kal1                    1018 untreated paired… Secretory       1.10 
-    ##  8 treated1 Ant2                    2331 treated   single… Intracell…      0.329
-    ##  9 treated2 Ant2                    2478 treated   paired… Intracell…      0.329
-    ## 10 treated3 Ant2                    2575 treated   paired… Intracell…      0.329
-    ## # … with 494 more rows
+    ## # A tibble: 288 x 5
+    ##    `Car name`           hp    vs Property  Value
+    ##    <chr>             <dbl> <dbl> <chr>     <dbl>
+    ##  1 Mazda RX4           110     0 mpg       0.151
+    ##  2 Mazda RX4 Wag       110     0 mpg       0.151
+    ##  3 Datsun 710           93     1 mpg       0.450
+    ##  4 Hornet 4 Drive      110     1 mpg       0.217
+    ##  5 Hornet Sportabout   175     0 mpg      -0.231
+    ##  6 Valiant             105     1 mpg      -0.330
+    ##  7 Duster 360          245     0 mpg      -0.961
+    ##  8 Merc 240D            62     1 mpg       0.715
+    ##  9 Merc 230             95     1 mpg       0.450
+    ## 10 Merc 280            123     1 mpg      -0.148
+    ## # … with 278 more rows
 
 # Plot
 
 For plotting, you simply pipe the input data frame into heatmap,
 specifying:
 
-  - The horizontal, vertical relative column names (mandatory)
-  - The abundance column name (mandatory)
+  - The rows, cols relative column names (mandatory)
+  - The value column name (mandatory)
   - The annotations column name(s)
 
-<!-- end list -->
+mtcars
 
 ``` r
-tidyHeatmap::pasilla %>%
+mtcars_tidy %>% 
     heatmap(
-        .row = symbol,
-        .column = sample,
-        .value = `count normalised adjusted`,
-        annotation = c(condition, type),
-        transform = log1p
+        `Car name`, 
+        Property, 
+        Value,
+        annotation = hp
     )
 ```
 
@@ -94,14 +103,13 @@ moment only the vertical dimension is supported) with dplyr, and the
 heatmap will be grouped accordingly
 
 ``` r
-tidyHeatmap::pasilla %>%
-    group_by(location, condition) %>%
+mtcars_tidy %>% 
+    group_by(vs) %>%
     heatmap(
-        .row = symbol,
-        .column = sample,
-        .value = `count normalised adjusted`,
-        annotation = c(type),
-        transform = log1p
+        `Car name`, 
+        Property, 
+        Value,
+        annotation = hp
     )
 ```
 
@@ -113,12 +121,11 @@ We can easily use custom palette, chooinga hexadecimal color character
 vector, or a grid::colorRamp2 functionfor higher flexibility
 
 ``` r
-pasilla %>%
+mtcars_tidy %>% 
     heatmap(
-        .row = symbol,
-        .column = sample,
-        .value = `count normalised adjusted`,
-        transform = log1p, 
+        `Car name`, 
+        Property, 
+        Value,
         palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
     )
 ```

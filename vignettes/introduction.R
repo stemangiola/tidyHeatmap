@@ -31,31 +31,3 @@ mtcars_tidy =
 
 mtcars_tidy
 
-## -----------------------------------------------------------------------------
-mtcars_tidy %>% 
-	heatmap(
-		`Car name`, 
-		Property, 
-		Value,
-		annotation = hp
-	)
-
-## -----------------------------------------------------------------------------
-mtcars_tidy %>% 
-	group_by(vs) %>%
-	heatmap(
-		`Car name`, 
-		Property, 
-		Value,
-		annotation = hp
-	)
-
-## -----------------------------------------------------------------------------
-mtcars_tidy %>% 
-	heatmap(
-		`Car name`, 
-		Property, 
-		Value,
-		palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
-	)
-

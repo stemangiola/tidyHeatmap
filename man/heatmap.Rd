@@ -11,13 +11,14 @@ heatmap(
   .value,
   annotation = NULL,
   transform = NULL,
-  palette_abundance = c("#440154FF", "#21908CFF", "#fefada"),
+  palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_discrete = list(),
   palette_continuous = list(),
   .abundance = NULL,
   .horizontal = NULL,
   .vertical = NULL,
   log_transform = NULL,
+  palette_abundance = NULL,
   ...
 )
 }
@@ -34,7 +35,7 @@ heatmap(
 
 \item{transform}{A function, used to tranform .value, for example log}
 
-\item{palette_abundance}{A character vector This is the palette that will be used as gradient for abundance.}
+\item{palette_value}{A character vector This is the palette that will be used as gradient for .value}
 
 \item{palette_discrete}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
 
@@ -47,6 +48,8 @@ heatmap(
 \item{.vertical}{DEPRECATED. Please use .row instead}
 
 \item{log_transform}{DEPRECATED. Please use transform instead}
+
+\item{palette_abundance}{DEPRECATED. Please use palette_value instead}
 
 \item{...}{Further arguments to be passed to ComplexHeatmap::Heatmap}
 }

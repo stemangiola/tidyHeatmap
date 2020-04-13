@@ -12,18 +12,19 @@ vignette: >
   %\usepackage[UTF-8]{inputenc}
 ---
 
+
 ```{r, echo=FALSE, include=FALSE, }
 library(knitr)
-knitr::opts_chunk$set(cache = TRUE, warning = FALSE, 
-                      message = FALSE, cache.lazy = FALSE)
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE)
 
 library(magrittr)
 library(dplyr)
+library(tidyr)
 library(tidyHeatmap)
 
 ```
 
-This package is a tidy wrapper of the package [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html). The goal of this package is to interface a tidy data frame with this powerful tool.
+Tidy heatmap. This package is a tidy wrapper of the package [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html). The goal of this package is to interface tidy data frames with this powerful tool.
 
 Some of the advantages are:
 
@@ -32,47 +33,90 @@ Some of the advantages are:
 - Labels size adjusted by row and column total number
 - Default use of Brewer and Viridis palettes
 
-## Input data frame
 
-Example of an input data frame
+
+# Installation
+
+To install the most up-to-date version
+
+```{r, eval=FALSE}
+
+devtools::install_github("stemangiola/tidyHeatmap")
+
+```
+
+To install the most stable version (however please keep in mind that this package is under a maturing lifecycle stage)
+
+```{r, eval=FALSE}
+
+install.packages("tidyHeatmap")
+
+```
+
+# Input data frame
+
+Example of two input data frames.
+
 
 ```{r}
-pasilla
+mtcars_tidy = 
+	mtcars %>% 
+	as_tibble(rownames="Car name") %>% 
+	
+	# Scale
+	mutate_at(vars(-`Car name`, -hp, -vs), scale) %>%
+	
+	# tidyfy
+	gather(Property, Value, -`Car name`, -hp, -vs)
+
+mtcars_tidy
 ```
 
 
-## Plot
+# Plot
 
 For plotting, you simply pipe the input data frame into heatmap, specifying:
 
-- The horizontal, vertical relative column names (mandatory)
-- The abundance column name (mandatory)
+- The rows, cols relative column names (mandatory)
+- The value column name (mandatory)
 - The annotations column name(s)
 
+mtcars
 ```{r}
-pasilla %>%
+mtcars_tidy %>% 
 	heatmap(
-		.row = symbol,
-		.column = sample,
-		.value = `count normalised adjusted`,
-		annotation = c(condition, type),
-		transform = log1p
+		`Car name`, 
+		Property, 
+		Value,
+		annotation = hp
 	)
 ```
 
-## Grouping
+# Grouping
 
 We can easily group the data (one group per dimension maximum, at the moment only the vertical dimension is supported) with dplyr, and the heatmap will be grouped accordingly
 
 ```{r}
-pasilla %>%
-	group_by(location) %>%
+mtcars_tidy %>% 
+	group_by(vs) %>%
 	heatmap(
-		.row = symbol,
-		.column = sample,
-		.value = `count normalised adjusted`,
-		annotation = c(condition, type),
-		transform = log1p
+		`Car name`, 
+		Property, 
+		Value,
+		annotation = hp
 	)
 ```
 
+# Custom palettes
+
+We can easily use custom palette, chooinga hexadecimal color character vector, or a grid::colorRamp2 functionfor higher flexibility
+
+```{r}
+mtcars_tidy %>% 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,
+		palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+	)
+```
