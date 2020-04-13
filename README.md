@@ -42,8 +42,6 @@ install.packages("tidyHeatmap")
 
 # Input data frame
 
-Example of two input data frames.
-
 ``` r
 mtcars_tidy = 
     mtcars %>% 
@@ -126,7 +124,7 @@ mtcars_tidy %>%
         `Car name`, 
         Property, 
         Value,
-        palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+        palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
     )
 ```
 
