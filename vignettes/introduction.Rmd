@@ -55,9 +55,6 @@ install.packages("tidyHeatmap")
 
 # Input data frame
 
-Example of two input data frames.
-
-
 ```{r}
 mtcars_tidy = 
 	mtcars %>% 

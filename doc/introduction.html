@@ -226,8 +226,6 @@ hr {
 
 <h1>Input data frame</h1>
 
-<p>Example of two input data frames.</p>
-
 <pre><code class="r">mtcars_tidy = 
     mtcars %&gt;% 
     as_tibble(rownames=&quot;Car name&quot;) %&gt;% 
@@ -305,7 +303,7 @@ mtcars_tidy
         `Car name`, 
         Property, 
         Value,
-        palette_abundance = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+        palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
     )
 </code></pre>
 
