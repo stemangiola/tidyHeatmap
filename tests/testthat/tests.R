@@ -184,6 +184,20 @@ test_that("pasilla custom color abundance",{
 	
 	expect_equal(as.character(class(p)), "Heatmap" )
 	
+	# Test deprecation
+	expect_warning(
+		tidyHeatmap::heatmap(
+			tidyHeatmap::pasilla,
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`,
+			annotation = c(condition, type),
+			transform = log1p, 
+			palette_abundance = c("#d80000", "#ffffff", "#283cea")
+		),
+		"Please use the `palette_value` argument instead"
+	)
+	
 })
 
 
@@ -342,3 +356,4 @@ test_that("test log of 0",{
 	)
 	
 })
+
