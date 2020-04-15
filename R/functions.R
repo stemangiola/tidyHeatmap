@@ -65,9 +65,9 @@ plot_heatmap = function(.data,
 	.abundance = enquo(.abundance)
 	annotation = enquo(annotation)
 	
-	# Check if palettes variables are correct
-	if( class(palette_discrete) != "list" | class(palette_continuous) != "list")
-		stop("tidyHeatmap says: palette discrete and continuous must be lists of character vectors.")
+	# Check if palette discrete and continuous are lists
+	if(!is.list(palette_discrete) | !is.list(palette_continuous))
+		stop("tidyHeatmap says: the arguments palette_discrete and palette_continuous must be lists. E.g., list(rep(\"#000000\", 20))")
 	
 	# Get abundance matrix
 	abundance_tbl =
