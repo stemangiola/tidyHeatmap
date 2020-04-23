@@ -95,7 +95,7 @@ plot_heatmap = function(.data,
 		as_matrix(rownames = quo_name(.vertical)) %>%
 		t() %>%
 		apply(2, function(y)
-			(y - mean(y)) / sd(y) ^ as.logical(sd(y))) %>%
+			(y - mean(y, na.rm=T)) / sd(y, na.rm=T) ^ as.logical(sd(y, na.rm=T))) %>%
 		t()
 	
 	# Colors tiles
