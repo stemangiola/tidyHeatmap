@@ -303,6 +303,22 @@ test_that("Custom function for fill abundance palette",{
 	
 })
 
+test_that("Warning if data sparse",{
+	
+	expect_equal(
+		class(tidyHeatmap::heatmap(
+			dplyr::slice(dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"), -1),
+			.column = UBR, 
+			.row = symbol_ct, 
+			.value = `read count normalised log`, 
+			palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+		))[1],
+		"Heatmap"
+	)
+})
+
+
+
 test_that("test log of 0",{
 	
 	expect_error(
