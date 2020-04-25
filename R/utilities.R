@@ -841,7 +841,7 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
   .vertical = enquo(.vertical)
   .abundance = enquo(.abundance)
   annotation = enquo(annotation)
-  
+   
   # Setup default NULL
   top_annotation = NULL
   left_annotation = NULL
@@ -887,6 +887,9 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
     
     left_annotation = as.list(left_annotation_args)
     
+    # Eliminate palette
+    palette_annotation$discrete = palette_annotation$discrete[-1]
+    
     }
     
     if(length(x_y_annotation_cols$horizontal) > 0){
@@ -899,9 +902,7 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
         pull(!!as.symbol(x_y_annotation_cols$horizontal))
       
       # Create array of colors
-      palette_fill_horizontal = palette_annotation$discrete[[2]][1:length(unique(col_split))] %>% setNames(unique(col_split))
-      
-      
+      palette_fill_horizontal = palette_annotation$discrete[[1]][1:length(unique(col_split))] %>% setNames(unique(col_split))
   
       top_annotation_args = 
         list(

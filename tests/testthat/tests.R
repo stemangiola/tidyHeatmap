@@ -184,6 +184,20 @@ test_that("pasilla custom color abundance",{
 	
 	expect_equal(as.character(class(p)), "Heatmap" )
 	
+	# Test deprecation
+	expect_warning(
+		tidyHeatmap::heatmap(
+			tidyHeatmap::pasilla,
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`,
+			annotation = c(condition, type),
+			transform = log1p, 
+			palette_abundance = c("#d80000", "#ffffff", "#283cea")
+		),
+		"Please use the `palette_value` argument instead"
+	)
+	
 })
 
 
@@ -291,30 +305,19 @@ test_that("Custom function for fill abundance palette",{
 
 test_that("Warning if data sparse",{
 	
-	expect_warning(
-		tidyHeatmap::heatmap(
+	expect_equal(
+		class(tidyHeatmap::heatmap(
 			dplyr::slice(dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"), -1),
 			.column = UBR, 
 			.row = symbol_ct, 
 			.value = `read count normalised log`, 
 			palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
-		),
-		"have been omitted from the analysis because not present in every sample"
+		))[1],
+		"Heatmap"
 	)
 })
 
-test_that("eliminate sparse transcripts",{
-	
-	expect_warning(
-		expect_equal(
-			nrow(tidyHeatmap:::eliminate_sparse_transcripts(
-				dplyr::slice(dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"), -1),
-				symbol_ct
-			)),
-			507
-		)
-	)
-})
+
 
 test_that("test log of 0",{
 	
@@ -342,3 +345,4 @@ test_that("test log of 0",{
 	)
 	
 })
+

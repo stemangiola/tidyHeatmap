@@ -169,7 +169,7 @@ heatmap.tbl_df <-
 			deprecate_warn("0.99.15", "tidyHeatmap::heatmap(palette_abundance = )", "tidyHeatmap::heatmap(palette_value = )")
 			
 			# Deal with the deprecated argument for compatibility
-			if(palette_abundance) palette_value <- palette_abundance
+			palette_value <- palette_abundance
 		}
 		
 		.row = enquo(.row)
@@ -179,12 +179,13 @@ heatmap.tbl_df <-
 		# Validation
 		.data %>% validation(!!.column, !!.row, !!.value)
 		
-		# Check if data is rectangular
 		.data %>% 
-			ifelse_pipe(
-				!check_if_data_rectangular((.), !!.column, !!.row, !!.value),
-				~  eliminate_sparse_transcripts(.x, !!.row)
-			) %>%
+			
+			# # Check if data is rectangular
+			# ifelse_pipe(
+			# 	!check_if_data_rectangular((.), !!.column, !!.row, !!.value),
+			# 	~  eliminate_sparse_transcripts(.x, !!.row)
+			# ) %>%
 			
 		# Run plotting function
 		plot_heatmap(
