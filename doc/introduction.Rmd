@@ -3,13 +3,11 @@ title: "Overview of the tidyHeatmap package"
 author: "Stefano Mangiola"
 date: "`r Sys.Date()`"
 package: tidyHeatmap
-output:
-  BiocStyle::html_document:
-    toc_float: true
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteEngine{knitr::knitr}
   %\VignetteIndexEntry{Overview of the tidyHeatmap package}
-  %\usepackage[UTF-8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 
