@@ -176,15 +176,21 @@ plot_heatmap = function(.data,
 		ifelse_pipe(length(get_grouping_columns(.data)) > 0, ~ tail(.x, -length(get_grouping_columns(.data))))
 	
 	# See if there is annotation
-	top_left_annot = get_top_left_annotation(
-		.data,
-		!!.horizontal,
-		!!.vertical,
-		!!.abundance,
-		!!annotation,
-		x_y_annot_cols,
-		palette_annotation
-	)
+	top_left_annot = 
+		.data %>%
+		
+		# Check if NA in annotations
+		mutate_at(vars(!!annotation), function(x) { replace_na(x, "NA")  } ) %>% 
+			
+		# Get annotation
+		 get_top_left_annotation(
+			!!.horizontal,
+			!!.vertical,
+			!!.abundance,
+			!!annotation,
+			x_y_annot_cols,
+			palette_annotation
+		)
 	
 
 	top_annot =  
