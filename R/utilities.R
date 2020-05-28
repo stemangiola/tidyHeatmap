@@ -790,7 +790,8 @@ get_top_left_annotation = function(.data, .horizontal, .vertical, .abundance, an
         1:length(col_annot_top) %>% as.list,
         ~ {
           if(.x %>% class %in% c("factor", "character"))
-            palette_annotation$discrete[[.y]][1:length(unique(.x))] %>% setNames(unique(.x))
+          	colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
+        	#palette_annotation$discrete[[.y]][1:length(unique(.x))] %>% setNames(unique(.x))
           else
             colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
           
@@ -803,7 +804,8 @@ get_top_left_annotation = function(.data, .horizontal, .vertical, .abundance, an
         1:length(col_annot_left) %>% as.list,
         ~ {
           if(.x %>% class %in% c("factor", "character"))
-            palette_annotation$discrete[[.y]][1:length(unique(.x))] %>% setNames(unique(.x))
+          	colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
+            #palette_annotation$discrete[[.y]][1:length(unique(.x))] %>% setNames(unique(.x))
           else
             colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
           
@@ -936,3 +938,7 @@ list_drop_null = function(.data){
   .data[!sapply(.data, is.null)] 
 }
 
+# This function does not fail if sd == 0
+scale_robust = function(y){
+  (y - mean(y, na.rm=T)) / ( sd(y, na.rm=T) ^ as.logical(sd(y, na.rm=T)) )
+}

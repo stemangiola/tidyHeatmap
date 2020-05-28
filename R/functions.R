@@ -51,7 +51,7 @@ plot_heatmap = function(.data,
 												.vertical,
 												.abundance,
 												annotation = NULL,
-												transform = NULL,
+												transform = scale_robust,
 												palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
 												palette_discrete = list(),
 												palette_continuous = list(),
@@ -77,10 +77,14 @@ plot_heatmap = function(.data,
 		# Check if tranfrom is needed
 		ifelse_pipe(
 			is_function(transform),
+			
+			# Transform rowwise
 			~ .x %>% 
-				mutate(!!.abundance := !!.abundance %>%  transform()) %>%
+				nest(data = -!!.vertical) %>%
+				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% transform()))) %>%
+				unnest(data) %>%
 				
-				# Check is log introduced -Inf
+				# Check if log introduced -Inf
 				ifelse_pipe(
 					pull(., !!.abundance) %>% min %>% equals(-Inf), 
 					~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p.")
@@ -92,12 +96,12 @@ plot_heatmap = function(.data,
 	
 	abundance_mat =
 		abundance_tbl %>%
-		as_matrix(rownames = quo_name(.vertical)) %>%
-		t() %>%
-		apply(2, function(y)
-			(y - mean(y, na.rm=T)) / sd(y, na.rm=T) ^ as.logical(sd(y, na.rm=T))) %>%
-		t()
-	
+		as_matrix(rownames = quo_name(.vertical)) 
+		# %>%
+		# t() %>%
+		# apply(2, scale_robust) %>%
+		# t()
+	 
 	# Colors tiles
 	# If palette_abundance is a function pass it directly, otherwise check if the character array is of length 3
 	colors = 

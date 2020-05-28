@@ -18,7 +18,7 @@
 #' @param .column The name of the column horizontally presented in the heatmap
 #' @param .value The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
-#' @param transform A function, used to tranform .value, for example log
+#' @param transform A function, used to tranform .value row-wise (e.g., transform = log \%>\% scale)
 #' @param palette_value A character vector This is the palette that will be used as gradient for .value
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
@@ -55,7 +55,7 @@ heatmap <-
 					 .column,
 					 .value,
 					 annotation = NULL,
-					 transform = NULL,
+					 transform = scale_robust,
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
@@ -67,6 +67,9 @@ heatmap <-
 					 ...) {
 		UseMethod("heatmap", .data)
 	}
+
+#' Creates a  `ComplexHeatmap` plot from `tbl_df`
+#' @inheritParams heatmap
 #' @export
 heatmap.default <-
 	function(.data,
@@ -74,7 +77,7 @@ heatmap.default <-
 					 .column,
 					 .value,
 					 annotation = NULL,
-					 transform = NULL,
+					 transform = scale_robust,
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
@@ -87,6 +90,9 @@ heatmap.default <-
 	{
 		message("tidyHeatmap::heatmap function cannot be applied to this object. Please input a tibble (tbl_df) object.")
 	}
+
+#' Creates a  `ComplexHeatmap` plot from `tbl_df`
+#' @inheritParams heatmap
 #' @export
 heatmap.tbl_df <-
 	function(.data,
@@ -94,7 +100,7 @@ heatmap.tbl_df <-
 					 .column,
 					 .value,
 					 annotation = NULL,
-					 transform = NULL,
+					 transform = scale_robust,
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
