@@ -25,19 +25,19 @@ Depends:
     R (>= 3.6),
     ComplexHeatmap (>= 2.2.0)
 Imports: 
-    dplyr,
-    magrittr,
-    tidyr,
-    rlang,
-    purrr,
     stats,
-    viridis,
-    circlize,
-    RColorBrewer,
+    utils,
+    dplyr (>= 0.8.5),
+    magrittr (>= 1.5),
+    tidyr (>= 1.0.3),
+    rlang (>= 0.4.5),
+    purrr (>= 0.3.3),
+    viridis (>= 0.5.1),
+    circlize (>= 0.4.8),
+    RColorBrewer (>= 1.1), 
     grid,
     grDevices,
-    utils,
-    lifecycle
+    lifecycle (>= 0.2.0)
 Suggests:
     testthat,
     BiocManager,

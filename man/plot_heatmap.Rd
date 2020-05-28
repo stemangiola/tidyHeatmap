@@ -10,7 +10,7 @@ plot_heatmap(
   .vertical,
   .abundance,
   annotation = NULL,
-  transform = NULL,
+  transform = scale_robust,
   palette_abundance = c("#440154FF", "#21908CFF", "#fefada"),
   palette_discrete = list(),
   palette_continuous = list(),
