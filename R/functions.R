@@ -22,6 +22,7 @@
 #' @importFrom viridis viridis
 #' @importFrom viridis magma
 #' @importFrom rlang is_function
+#' @importFrom purrr when
 #'
 #' @name plot_heatmap
 #' @rdname plot_heatmap
@@ -31,7 +32,8 @@
 #' @param .vertical The name of the column vertically presented in the heatmap
 #' @param .abundance The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
-#' @param transform A function, used to tranform .value, for example log
+#' @param transform A function, used to tranform .value, for example log1p
+#' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_abundance A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_abundance)`
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
@@ -51,7 +53,8 @@ plot_heatmap = function(.data,
 												.vertical,
 												.abundance,
 												annotation = NULL,
-												transform = scale_robust,
+												transform = NULL,
+												.scale = "row",
 												palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
 												palette_discrete = list(),
 												palette_continuous = list(),
@@ -80,15 +83,31 @@ plot_heatmap = function(.data,
 			
 			# Transform rowwise
 			~ .x %>% 
-				nest(data = -!!.vertical) %>%
-				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% transform()))) %>%
-				unnest(data) %>%
+				mutate(!!.abundance := !!.abundance %>% transform()) %>%
 				
 				# Check if log introduced -Inf
 				ifelse_pipe(
 					pull(., !!.abundance) %>% min %>% equals(-Inf), 
 					~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p.")
 				)
+		) %>%
+		
+		# If .scale row
+		when(
+			.scale %in% c("row", "both") ~ (.) %>%
+				nest(data = -!!.vertical) %>%
+				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% scale_robust()))) %>%
+				unnest(data),
+			~ (.)
+		) %>%
+		
+		# If .scale column
+		when(
+			.scale %in% c("column", "both") ~ (.) %>%
+				nest(data = -!!.horizontal) %>%
+				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% scale_robust()))) %>%
+				unnest(data),
+			~ (.)
 		) %>%
 		
 		distinct(!!.vertical,!!.horizontal,!!.abundance) %>%
@@ -111,7 +130,12 @@ plot_heatmap = function(.data,
 			length(palette_abundance) != 3,
 			~ .x,
 			~ stop("tidyHeatmap says: If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_abundance)\""	),
-			~ colorRamp2(c(-2, 0, 2), palette_abundance)
+			~ colorRamp2(
+				
+				# min and max and intermediates based on length of the palette
+				seq(from=min(abundance_mat), to=max(abundance_mat), length.out = length(palette_abundance)),
+				palette_abundance
+			)
 		)
 	
 	# Colors annotations
