@@ -207,6 +207,7 @@ heatmap.tbl_df <-
 			.abundance = !!.value,
 			annotation = !!annotation,
 			transform = transform,
+			.scale = .scale,
 			palette_abundance = palette_value,
 			palette_discrete = palette_discrete,
 			palette_continuous = palette_continuous,
