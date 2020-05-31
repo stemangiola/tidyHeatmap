@@ -111,7 +111,12 @@ plot_heatmap = function(.data,
 			length(palette_abundance) != 3,
 			~ .x,
 			~ stop("tidyHeatmap says: If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_abundance)\""	),
-			~ colorRamp2(c(-2, 0, 2), palette_abundance)
+			~ colorRamp2(
+				
+				# min and max and intermediates based on length of the palette
+				seq(from=min(abundance_mat), to=max(abundance_mat), length.out = length(palette_abundance)),
+				palette_abundance
+			)
 		)
 	
 	# Colors annotations
