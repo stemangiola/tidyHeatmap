@@ -346,3 +346,66 @@ test_that("test log of 0",{
 	
 })
 
+test_that("test scale",{
+	
+	expect_equal(
+		class(
+			tidyHeatmap::heatmap(
+				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+				.column = UBR, 
+				.row = symbol_ct, 
+				.value = `read count`, 
+				.scale = "row"
+			))[1],
+		"Heatmap"
+	)
+	
+	expect_equal(
+		class(
+			tidyHeatmap::heatmap(
+				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+				.column = UBR, 
+				.row = symbol_ct, 
+				.value = `read count`, 
+				.scale = "column"
+			))[1],
+		"Heatmap"
+	)
+	
+	expect_equal(
+		class(
+			tidyHeatmap::heatmap(
+				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+				.column = UBR, 
+				.row = symbol_ct, 
+				.value = `read count`, 
+				.scale = "both"
+			))[1],
+		"Heatmap"
+	)
+	
+	expect_equal(
+		class(
+			tidyHeatmap::heatmap(
+				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+				.column = UBR, 
+				.row = symbol_ct, 
+				.value = `read count`, 
+				.scale = "none"
+			))[1],
+		"Heatmap"
+	)
+	
+	expect_error(
+		class(
+			tidyHeatmap::heatmap(
+				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+				.column = UBR, 
+				.row = symbol_ct, 
+				.value = `read count`, 
+				.scale = "WRONG_INPUT"
+			))[1],
+		"the .scale parameter has to be one of"
+	)
+	
+})
