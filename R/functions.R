@@ -208,7 +208,10 @@ plot_heatmap = function(.data,
 		.data %>%
 		
 		# Check if NA in annotations
-		mutate_at(vars(!!annotation), function(x) { replace_na(x, "NA")  } ) %>% 
+		mutate_at(vars(!!annotation), function(x) {
+			if(any(is.na(x))) { warning("tidyHeatmap says: You have NAs into your annotation column"); replace_na(x, "NA"); } 
+			else { x } 
+		} ) %>% 
 			
 		# Get annotation
 		 get_top_left_annotation(
