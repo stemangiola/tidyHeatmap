@@ -3,6 +3,7 @@
 S3method(heatmap,default)
 S3method(heatmap,tbl_df)
 export(heatmap)
+export(scale_robust)
 import(ComplexHeatmap)
 import(dplyr)
 import(tidyr)

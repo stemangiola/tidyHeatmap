@@ -938,7 +938,13 @@ list_drop_null = function(.data){
   .data[!sapply(.data, is.null)] 
 }
 
-# This function does not fail if sd == 0
+#' Scale counts in a robust way against sd == 0 
+#' 
+#' @param y A numerical array
+#' 
+#' @return A scaled and centred numerical array
+#' 
+#' @export
 scale_robust = function(y){
   (y - mean(y, na.rm=T)) / ( sd(y, na.rm=T) ^ as.logical(sd(y, na.rm=T)) )
 }
