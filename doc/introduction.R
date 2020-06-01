@@ -56,6 +56,25 @@ mtcars_tidy %>%
 		`Car name`, 
 		Property, 
 		Value,
+		palette_value = c("red", "white", "blue")
+	)
+
+## -----------------------------------------------------------------------------
+mtcars_tidy %>% 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,
 		palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
 	)
+
+## -----------------------------------------------------------------------------
+tidyHeatmap::pasilla %>%
+	group_by(location, type) %>%
+	heatmap(
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`,
+			annotation = c(condition, activation)
+		)
 
