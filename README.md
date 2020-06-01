@@ -25,7 +25,7 @@ Some of the advantages are:
   - Labels size adjusted by row and column total number
   - Default use of Brewer and Viridis palettes
 
-# Installation
+## Installation
 
 To install the most up-to-date version
 
@@ -40,7 +40,7 @@ this package is under a maturing lifecycle stage)
 install.packages("tidyHeatmap")
 ```
 
-# Input data frame
+## Input data frame
 
 ``` r
 mtcars_tidy = 
@@ -71,7 +71,7 @@ mtcars_tidy
     ## 10 Merc 280            123     1 mpg      -0.148
     ## # … with 278 more rows
 
-# Plot
+## Plot
 
 For plotting, you simply pipe the input data frame into heatmap,
 specifying:
@@ -94,7 +94,7 @@ mtcars_tidy %>%
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-# Grouping
+## Grouping
 
 We can easily group the data (one group per dimension maximum, at the
 moment only the vertical dimension is supported) with dplyr, and the
@@ -113,10 +113,24 @@ mtcars_tidy %>%
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-# Custom palettes
+## Custom palettes
 
-We can easily use custom palette, chooinga hexadecimal color character
-vector, or a grid::colorRamp2 functionfor higher flexibility
+We can easily use custom palette, using strings, hexadecimal color
+character vector,
+
+``` r
+mtcars_tidy %>% 
+    heatmap(
+        `Car name`, 
+        Property, 
+        Value,
+        palette_value = c("red", "white", "blue")
+    )
+```
+
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+Or a grid::colorRamp2 functionfor higher flexibility
 
 ``` r
 mtcars_tidy %>% 
@@ -128,4 +142,19 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+## Multiple groupings and annotations
+
+``` r
+tidyHeatmap::pasilla %>%
+    group_by(location, type) %>%
+    heatmap(
+            .column = sample,
+            .row = symbol,
+            .value = `count normalised adjusted`,
+            annotation = c(condition, activation)
+        )
+```
+
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->

@@ -87,7 +87,7 @@ mtcars_tidy %>%
 	)
 ```
 
-# Grouping
+## Grouping
 
 We can easily group the data (one group per dimension maximum, at the moment only the vertical dimension is supported) with dplyr, and the heatmap will be grouped accordingly
 
@@ -102,9 +102,21 @@ mtcars_tidy %>%
 	)
 ```
 
-# Custom palettes
+## Custom palettes
 
-We can easily use custom palette, chooinga hexadecimal color character vector, or a grid::colorRamp2 functionfor higher flexibility
+We can easily use custom palette, using strings, hexadecimal color character vector, 
+
+```{r}
+mtcars_tidy %>% 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,
+		palette_value = c("red", "white", "blue")
+	)
+```
+
+Or a grid::colorRamp2 functionfor higher flexibility
 
 ```{r}
 mtcars_tidy %>% 
@@ -114,4 +126,17 @@ mtcars_tidy %>%
 		Value,
 		palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
 	)
+```
+
+## Multiple groupings and annotations
+
+```{r}
+tidyHeatmap::pasilla %>%
+	group_by(location, type) %>%
+	heatmap(
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`,
+			annotation = c(condition, activation)
+		)
 ```
