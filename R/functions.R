@@ -53,12 +53,16 @@ plot_heatmap = function(.data,
 												.vertical,
 												.abundance,
 												annotation = NULL,
+												annotation_function = NULL,
 												transform = NULL,
 												.scale = "row",
 												palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
 												palette_discrete = list(),
 												palette_continuous = list(),
 												...) {
+	
+	annotation_function = c(anno_points)
+	
 	# Comply with CRAN NOTES
 	. = NULL
 	
@@ -167,18 +171,13 @@ plot_heatmap = function(.data,
 	if(.data %>% lapply(class)  %>% equals("list") %>% any)
 		warning("tidyHeatmap says: nested/list column are present in your data frame and have been dropped as their unicity cannot be identified by dplyr.")
 	
-	# Get x and y anntation columns
-	x_y_annot_cols =
-		.data %>%
-		select_if(negate(is.list)) %>%
-		ungroup() %>%
-		get_x_y_annotation_columns(!!.horizontal,!!.vertical,!!.abundance)
+
 	
 	# Check if annotation is compatible with your dataset
 	.data %>%
 		select(!!annotation) %>%
 		colnames %>%
-		setdiff(x_y_annot_cols %>% unlist) %>%
+		setdiff(.data_annot %>% pull(col_name)) %>%
 		ifelse_pipe(length(.) > 0,
 								~ stop(
 									sprintf(
@@ -204,28 +203,44 @@ plot_heatmap = function(.data,
 		ifelse_pipe(length(get_grouping_columns(.data)) > 0, ~ tail(.x, -length(get_grouping_columns(.data))))
 	
 	# See if there is annotation
-	top_left_annot = 
-		.data %>%
+	# Annotation data frame
+	.data_annot = 
+		.data %>% 
+		select(!!annotation) %>% 
+		gather(col_name, value) %>%
+		nest(data = -col_name) %>% 
+		mutate(data = map(data, ~ .x %>% pull(1))) %>%
+		mutate(fx = annotation_function) %>%
 		
-		# Check if NA in annotations
-		mutate_at(vars(!!annotation), function(x) {
-			if(any(is.na(x))) { warning("tidyHeatmap says: You have NAs into your annotation column"); replace_na(x, "NA"); } 
-			else { x } 
-		} ) %>% 
+		# Apply annot function
+		mutate(annot = map2(data, fx, ~ if(is_function(.y)) .y(.x))) %>%
+		
+		# Add orientation
+		left_join(
+			.data %>%
+				select_if(negate(is.list)) %>%
+				ungroup() %>%
+				get_x_y_annotation_columns(!!.horizontal,!!.vertical,!!.abundance) ,
+			by = "col_name"
+		) %>%
+		
+		# # Check if NA in annotations
+		# mutate_at(vars(!!annotation), function(x) {
+		# 	if(any(is.na(x))) { warning("tidyHeatmap says: You have NAs into your annotation column"); replace_na(x, "NA"); } 
+		# 	else { x } 
+		# } ) %>% 
 			
 		# Get annotation
-		 get_top_left_annotation(
-			!!.horizontal,
-			!!.vertical,
-			!!.abundance,
-			!!annotation,
-			x_y_annot_cols,
-			palette_annotation
-		)
+		get_top_left_annotation(	palette_annotation)
 	
 
 	top_annot =  
-		c(group_annotation$top_annotation, top_left_annot$top_annotation) %>%
+		c(
+			group_annotation$top_annotation, 
+			.data_annot %>% 
+				filter(orientation == "horizontal") %>%
+				annot_to_list
+		) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
 			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
@@ -243,6 +258,9 @@ plot_heatmap = function(.data,
 		)
 	
 
+	
+
+	
 	abundance_mat %>%
 		Heatmap(
 			name = quo_name(.abundance),
