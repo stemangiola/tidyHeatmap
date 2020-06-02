@@ -9,6 +9,7 @@
 #' @importFrom stats sd
 #' @importFrom lifecycle is_present
 #' @importFrom lifecycle deprecate_warn
+#' 
 #'
 #' @name heatmap
 #' @rdname heatmap

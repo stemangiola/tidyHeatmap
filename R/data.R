@@ -12,7 +12,10 @@
 
 #' type_to_annot_function annot_*
 #' 
+#' @importFrom utils globalVariables
+#' 
 #'
 #'
 "type_to_annot_function"
 
+globalVariables(c("type_to_annot_function")) 

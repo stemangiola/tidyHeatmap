@@ -635,8 +635,8 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   
   #type_to_annot_function = list("tile" = NULL, "point" = anno_points, "bar" = anno_barplot, "line" = anno_lines)
   annotation_function = type_to_annot_function[type]
-    
-     
+  
+  # Create dataset
   quo_names(annotation) %>%
   as_tibble %>%
   rename(col_name = value) %>%
