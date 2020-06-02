@@ -567,6 +567,7 @@ select_closest_pairs = function(df) {
 #' 
 #' @importFrom magrittr equals
 #' @importFrom purrr pmap
+#' @importFrom nanny subset
 #' 
 #' @param .data A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |
 #' @param .column The name of the column horizontally presented in the heatmap
@@ -579,6 +580,9 @@ get_x_y_annotation_columns = function(.data, .column, .row, .abundance){
   
   # Comply with CRAN NOTES
   . = NULL
+  value = NULL
+  orientation = NULL
+  col_name = NULL
   
   # Make col names
   .column = enquo(.column)
@@ -591,8 +595,8 @@ get_x_y_annotation_columns = function(.data, .column, .row, .abundance){
     {
       # Rows
       bind_rows(
-        (.) %>% nanny::subset(!!.column) %>% colnames %>% as_tibble %>% rename(column = value) %>% gather(orientation, col_name),
-        (.) %>% nanny::subset(!!.row) %>% colnames %>% as_tibble %>% rename(row = value) %>% gather(orientation, col_name)
+        (.) %>% subset(!!.column) %>% colnames %>% as_tibble %>% rename(column = value) %>% gather(orientation, col_name),
+        (.) %>% subset(!!.row) %>% colnames %>% as_tibble %>% rename(row = value) %>% gather(orientation, col_name)
       )
     }
 }
@@ -612,6 +616,18 @@ ct_colors = function(ct)
   )
 
 get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation, palette_annotation, type, x_y_annot_cols){
+  
+  # Comply with CRAN NOTES
+  data = NULL
+  fx = NULL
+  annot = NULL
+  annot_type = NULL
+  idx = NULL
+  value = NULL
+  orientation = NULL
+  col_name = NULL
+  col_orientation = NULL
+  
   
   .column = enquo(.column) 
   .row = enquo(.row) 
@@ -707,6 +723,11 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 }
 
 get_group_annotation = function(.data, .column, .row, .abundance, annotation, x_y_annot_cols, palette_annotation){
+  
+  # Comply with CRAN NOTES
+  data = NULL
+  . = NULL
+  orientation = NULL
   
   # Make col names
   .column = enquo(.column)
@@ -843,6 +864,11 @@ quo_names <- function(v) {
 #' 
 #' @return A list
 annot_to_list = function(.data){
+  
+  # Comply with CRAN NOTES
+  col_name = NULL
+  annot = NULL
+  
   .data %>% pull(annot) %>% setNames(.data %>% pull(col_name))  %>%
     
     # If list is populated

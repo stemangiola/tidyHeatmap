@@ -64,6 +64,9 @@ plot_heatmap = function(.data,
 	
 	# Comply with CRAN NOTES
 	. = NULL
+	col_name = NULL
+	orientation = NULL
+	
 	
 	# Make col names
 	.horizontal = enquo(.horizontal)
@@ -226,7 +229,7 @@ plot_heatmap = function(.data,
 			group_annotation$top_annotation, 
 			.data_annot %>% 
 				filter(orientation == "column") %>%
-				annot_to_list
+				annot_to_list()
 		) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
@@ -239,7 +242,7 @@ plot_heatmap = function(.data,
 	left_annot = 
 		c(group_annotation$left_annotation, .data_annot %>% 
 				filter(orientation == "row") %>%
-				annot_to_list) %>%
+				annot_to_list()) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
 			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers

@@ -9,3 +9,10 @@
 #'
 #'
 "pasilla"
+
+#' type_to_annot_function annot_*
+#' 
+#'
+#'
+"type_to_annot_function"
+
