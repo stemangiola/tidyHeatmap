@@ -18,6 +18,7 @@
 #' @param .column The name of the column horizontally presented in the heatmap
 #' @param .value The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
+#' @param type A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")
 #' @param transform A function, used to tranform .value row-wise (e.g., transform = log1p)
 #' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_value A character vector This is the palette that will be used as gradient for .value
@@ -56,6 +57,7 @@ heatmap <-
 					 .column,
 					 .value,
 					 annotation = NULL,
+					 type = rep("tile", length(quo_names(annotation))),
 					 transform = NULL,
 					 .scale = "row",
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
@@ -79,6 +81,7 @@ heatmap.default <-
 					 .column,
 					 .value,
 					 annotation = NULL,
+					 type = rep("tile", length(quo_names(annotation))),
 					 transform = NULL,
 					 .scale = "row",
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
@@ -103,6 +106,7 @@ heatmap.tbl_df <-
 					 .column,
 					 .value,
 					 annotation = NULL,
+					 type = rep("tile", length(quo_names(annotation))),
 					 transform = NULL,
 					 .scale = "row",
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
@@ -130,6 +134,10 @@ heatmap.tbl_df <-
 		# Check if .scale is of correct type
 		if(.scale %in% c("none", "row", "column", "both") %>% `!`) stop("tidyHeatmap says: the .scale parameter has to be one of c(\"none\", \"row\", \"column\", \"both\")")
 
+		# Check if type is of the right kind
+		if(type %>% setdiff(names(type_to_annot_function)) %>% length %>% `>` (0))
+			stop("tidyHeatmap says: not all components of `type` parameter are valid.")
+		
 		# Deprecation .abundance
 		
 		if (is_present(.abundance) & !quo_is_null(.abundance)) {
@@ -206,6 +214,7 @@ heatmap.tbl_df <-
 			.vertical = !!.row,
 			.abundance = !!.value,
 			annotation = !!annotation,
+			type = type,
 			transform = transform,
 			.scale = .scale,
 			palette_abundance = palette_value,

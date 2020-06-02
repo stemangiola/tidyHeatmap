@@ -32,6 +32,7 @@
 #' @param .vertical The name of the column vertically presented in the heatmap
 #' @param .abundance The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
+#' @param type A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")
 #' @param transform A function, used to tranform .value, for example log1p
 #' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_abundance A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_abundance)`
@@ -53,15 +54,13 @@ plot_heatmap = function(.data,
 												.vertical,
 												.abundance,
 												annotation = NULL,
-												annotation_function = NULL,
+												type = rep("tile", length(quo_names(annotation))),
 												transform = NULL,
 												.scale = "row",
 												palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
 												palette_discrete = list(),
 												palette_continuous = list(),
 												...) {
-	
-	annotation_function = c(anno_points)
 	
 	# Comply with CRAN NOTES
 	. = NULL
@@ -120,10 +119,6 @@ plot_heatmap = function(.data,
 	abundance_mat =
 		abundance_tbl %>%
 		as_matrix(rownames = quo_name(.vertical)) 
-		# %>%
-		# t() %>%
-		# apply(2, scale_robust) %>%
-		# t()
 	 
 	# Colors tiles
 	# If palette_abundance is a function pass it directly, otherwise check if the character array is of length 3
@@ -171,20 +166,21 @@ plot_heatmap = function(.data,
 	if(.data %>% lapply(class)  %>% equals("list") %>% any)
 		warning("tidyHeatmap says: nested/list column are present in your data frame and have been dropped as their unicity cannot be identified by dplyr.")
 	
-
+	# Data frame of row and column columns
+	x_y_annot_cols = 
+		.data %>%
+		get_x_y_annotation_columns(!!.horizontal,!!.vertical,!!.abundance) 
 	
 	# Check if annotation is compatible with your dataset
-	.data %>%
-		select(!!annotation) %>%
-		colnames %>%
-		setdiff(.data_annot %>% pull(col_name)) %>%
-		ifelse_pipe(length(.) > 0,
-								~ stop(
-									sprintf(
-										"tidyHeatmap says: Your annotation \"%s\" is not unique to vertical nor horizontal dimentions",
-										.x %>% paste(collapse = ", ")
-									)
-								))
+	quo_names(annotation) %>%
+		setdiff(x_y_annot_cols %>% pull(col_name)) %>%
+		when( quo_names(annotation) != "NULL" & length(.) > 0 ~ 
+						stop(
+							sprintf(
+								"tidyHeatmap says: Your annotation \"%s\" is not unique to vertical nor horizontal dimentions",
+								(.) %>% paste(collapse = ", ")
+							)
+						))
 	
 	# See if I have grouping and setup framework
 	group_annotation = get_group_annotation(
@@ -202,43 +198,34 @@ plot_heatmap = function(.data,
 		palette_annotation$discrete %>%
 		ifelse_pipe(length(get_grouping_columns(.data)) > 0, ~ tail(.x, -length(get_grouping_columns(.data))))
 	
-	# See if there is annotation
-	# Annotation data frame
+	# Get annotation
 	.data_annot = 
-		.data %>% 
-		select(!!annotation) %>% 
-		gather(col_name, value) %>%
-		nest(data = -col_name) %>% 
-		mutate(data = map(data, ~ .x %>% pull(1))) %>%
-		mutate(fx = annotation_function) %>%
-		
-		# Apply annot function
-		mutate(annot = map2(data, fx, ~ if(is_function(.y)) .y(.x))) %>%
-		
-		# Add orientation
-		left_join(
-			.data %>%
-				select_if(negate(is.list)) %>%
-				ungroup() %>%
-				get_x_y_annotation_columns(!!.horizontal,!!.vertical,!!.abundance) ,
-			by = "col_name"
-		) %>%
-		
-		# # Check if NA in annotations
-		# mutate_at(vars(!!annotation), function(x) {
-		# 	if(any(is.na(x))) { warning("tidyHeatmap says: You have NAs into your annotation column"); replace_na(x, "NA"); } 
-		# 	else { x } 
-		# } ) %>% 
-			
-		# Get annotation
-		get_top_left_annotation(	palette_annotation)
+		.data %>%
+		get_top_left_annotation(	!!.horizontal,
+														 !!.vertical,
+														 !!.abundance,
+														 !!annotation,	palette_annotation,	type, x_y_annot_cols)
 	
-
+	# # Check if annotation is compatible with your dataset
+	# x_y_annot_cols %>%
+	# 	inner_join(.data_annot %>% distinct(col_name), by="col_name") %>%
+	# 	count(col_name) %>%
+	# 	filter(n > 1) %>%
+	# 	pull(col_name) %>%
+	# 	when( length(.) > 0 ~ 
+	# 				stop(
+	# 					sprintf(
+	# 						"tidyHeatmap says: Your annotation \"%s\" is unique to vertical and horizontal dimentions",
+	# 						(.) %>% paste(collapse = ", ")
+	# 					)
+	# 					))
+	
+	# Isolate top annotation
 	top_annot =  
 		c(
 			group_annotation$top_annotation, 
 			.data_annot %>% 
-				filter(orientation == "horizontal") %>%
+				filter(orientation == "column") %>%
 				annot_to_list
 		) %>%
 		list_drop_null() %>%
@@ -247,27 +234,24 @@ plot_heatmap = function(.data,
 			~ do.call("columnAnnotation", .x ),
 			~ NULL
 		)
-	
+
+	# Isolate left annotation
 	left_annot = 
-		c(group_annotation$left_annotation, top_left_annot$left_annotation) %>%
+		c(group_annotation$left_annotation, .data_annot %>% 
+				filter(orientation == "row") %>%
+				annot_to_list) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
 			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("rowAnnotation", .x),
 			~ NULL
 		)
-	
 
-	
-
-	
 	abundance_mat %>%
 		Heatmap(
 			name = quo_name(.abundance),
 			column_title = quo_name(.horizontal),
 			row_title = quo_name(.vertical),
-			# width = unit(0.5 * 13, "cm"),
-			# height = unit(0.5 * .data %>% distinct(!!.vertical) %>% nrow, "cm"),
 			col = colors,
 			row_split = group_annotation$row_split,
 			column_split = group_annotation$col_split,
