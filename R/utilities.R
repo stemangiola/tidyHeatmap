@@ -567,7 +567,6 @@ select_closest_pairs = function(df) {
 #' 
 #' @importFrom magrittr equals
 #' @importFrom purrr pmap
-#' @importFrom nanny subset
 #' 
 #' @param .data A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |
 #' @param .column The name of the column horizontally presented in the heatmap
