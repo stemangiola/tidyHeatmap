@@ -6,6 +6,7 @@ library(magrittr)
 library(dplyr)
 library(tidyr)
 library(tidyHeatmap)
+library(purrr)
 
 
 ## ---- eval=FALSE--------------------------------------------------------------
@@ -76,5 +77,25 @@ tidyHeatmap::pasilla %>%
 			.row = symbol,
 			.value = `count normalised adjusted`,
 			annotation = c(condition, activation)
+		)
+
+## -----------------------------------------------------------------------------
+# Chreate some more data points
+pasilla_plus = 
+	tidyHeatmap::pasilla %>%
+		dplyr::mutate(act = activation) %>% 
+		tidyr::nest(data = -sample) %>%
+		dplyr::mutate(size = rnorm(n(), 4,0.5)) %>%
+		dplyr::mutate(age = runif(n(), 50, 200)) %>%
+		tidyr::unnest(data) 
+
+# Plot
+pasilla_plus %>%
+		tidyHeatmap::heatmap(
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`,
+			annotation = c(condition, activation, act, size, age),
+			type = c("tile", "point", "tile", "bar", "line")
 		)
 
