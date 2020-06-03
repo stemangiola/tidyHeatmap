@@ -409,3 +409,27 @@ test_that("test scale",{
 	)
 	
 })
+
+test_that("multi-type",{
+	
+	library(magrittr)
+	
+	p = 
+		dplyr::group_by(tidyHeatmap::pasilla,		location, type) %>%
+		dplyr::mutate(act = activation) %>% 
+		tidyr::nest(data = -sample) %>%
+		dplyr::mutate(size = rnorm(n(), 4,0.5)) %>%
+		dplyr::mutate(age = runif(n(), 50, 200)) %>%
+		tidyr::unnest(data) %>%
+		tidyHeatmap::heatmap(
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`,
+			annotation = c(condition, activation, act, size, age),
+			type = c("tile", "point", "tile", "bar", "line")
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+})

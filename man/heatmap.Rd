@@ -10,6 +10,7 @@ heatmap(
   .column,
   .value,
   annotation = NULL,
+  type = rep("tile", length(quo_names(annotation))),
   transform = NULL,
   .scale = "row",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
@@ -33,6 +34,8 @@ heatmap(
 \item{.value}{The name of the transcript/gene abundance column}
 
 \item{annotation}{Vector of quotes}
+
+\item{type}{A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")}
 
 \item{transform}{A function, used to tranform .value row-wise (e.g., transform = log1p)}
 

@@ -158,3 +158,30 @@ tidyHeatmap::pasilla %>%
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+## Annotation types
+
+“tile” (default), “point”, “bar” and “line” are available
+
+``` r
+# Chreate some more data points
+pasilla_plus = 
+    tidyHeatmap::pasilla %>%
+        dplyr::mutate(act = activation) %>% 
+        tidyr::nest(data = -sample) %>%
+        dplyr::mutate(size = rnorm(n(), 4,0.5)) %>%
+        dplyr::mutate(age = runif(n(), 50, 200)) %>%
+        tidyr::unnest(data) 
+
+# Plot
+pasilla_plus %>%
+        tidyHeatmap::heatmap(
+            .column = sample,
+            .row = symbol,
+            .value = `count normalised adjusted`,
+            annotation = c(condition, activation, act, size, age),
+            type = c("tile", "point", "tile", "bar", "line")
+        )
+```
+
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
