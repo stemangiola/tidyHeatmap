@@ -566,75 +566,38 @@ select_closest_pairs = function(df) {
 #' get_x_y_annotation_columns
 #' 
 #' @importFrom magrittr equals
+#' @importFrom purrr pmap
 #' 
 #' @param .data A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |
-#' @param .horizontal The name of the column horizontally presented in the heatmap
-#' @param .vertical The name of the column vertically presented in the heatmap
+#' @param .column The name of the column horizontally presented in the heatmap
+#' @param .row The name of the column vertically presented in the heatmap
 #' @param .abundance The name of the transcript/gene abundance column
 #' 
 #' @return A list
 #' 
-get_x_y_annotation_columns = function(.data, .horizontal, .vertical, .abundance){
-  
+get_x_y_annotation_columns = function(.data, .column, .row, .abundance){
   
   # Comply with CRAN NOTES
   . = NULL
+  value = NULL
+  orientation = NULL
+  col_name = NULL
   
   # Make col names
-  .horizontal = enquo(.horizontal)
-  .vertical = enquo(.vertical)
+  .column = enquo(.column)
+  .row = enquo(.row)
   .abundance = enquo(.abundance)
   
-  # x-annotation df
-  n_x = .data %>% distinct(!!.horizontal) %>% nrow
-  n_y = .data %>% distinct(!!.vertical) %>% nrow
-  
-  list(
-    
-    # Horizontal
-    horizontal= 
-      .data %>%
-      select(-!!.horizontal, -!!.vertical, -!!.abundance) %>%
-      colnames %>%
-      map(
-        ~ 
-          .x %>%
-          ifelse_pipe(
-            .data %>%
-              distinct(!!.horizontal, !!as.symbol(.x)) %>%
-              nrow %>%
-              equals(n_x),
-            ~ .x,
-            ~ NULL
-          )
-      ) %>%
-      
-      # Drop NULL
-      {	(.)[lengths((.)) != 0]	} %>%
-      unlist,
-    
-    vertical= 
-      .data %>%
-      select(-!!.horizontal, -!!.vertical, -!!.abundance) %>%
-      colnames %>%
-      map(
-        ~ 
-          .x %>%
-          ifelse_pipe(
-            .data %>%
-              distinct(!!.vertical, !!as.symbol(.x)) %>%
-              nrow %>%
-              equals(n_y),
-            ~ .x,
-            ~ NULL
-          )
-      ) %>%
-      
-      # Drop NULL
-      {	(.)[lengths((.)) != 0]	} %>%
-      unlist
-    
-  )
+  .data %>%
+    select_if(negate(is.list)) %>%
+    ungroup() %>%
+    {
+      # Rows
+      bind_rows(
+        (.) %>% subset(!!.column) %>% colnames %>% as_tibble %>% rename(column = value) %>% gather(orientation, col_name),
+        (.) %>% subset(!!.row) %>% colnames %>% as_tibble %>% rename(row = value) %>% gather(orientation, col_name)
+      )
+    }
 }
 
 #' @importFrom purrr map_chr
@@ -651,196 +614,123 @@ ct_colors = function(ct)
     )
   )
 
-
-get_top_annotation = function(.data, .horizontal, .vertical, .abundance, annotation, x_y_annot_cols, palette_annotation){
+get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation, palette_annotation, type, x_y_annot_cols){
   
-  # Make col names
-  .horizontal = enquo(.horizontal)
-  .vertical = enquo(.vertical)
+  # Comply with CRAN NOTES
+  data = NULL
+  fx = NULL
+  annot = NULL
+  annot_type = NULL
+  idx = NULL
+  value = NULL
+  orientation = NULL
+  col_name = NULL
+  col_orientation = NULL
+  
+  
+  .column = enquo(.column) 
+  .row = enquo(.row) 
   .abundance = enquo(.abundance)
   annotation = enquo(annotation)
   
-  if(annotation %>% quo_is_symbolic()) {
-    annot_col_names = .data %>% ungroup() %>% select(!!annotation) %>% colnames
+  #type_to_annot_function = list("tile" = NULL, "point" = anno_points, "bar" = anno_barplot, "line" = anno_lines)
+  annotation_function = type_to_annot_function[type]
+  
+  # Create dataset
+  quo_names(annotation) %>%
+  as_tibble %>%
+  rename(col_name = value) %>%
+  
+  # delete if annotation is NULL
+  when(quo_is_null(annotation) ~ slice(., 0), ~ (.)) %>%
+  
+  # Add orientation
+  left_join(x_y_annot_cols,  by = "col_name") %>%
+  mutate(col_orientation = map_chr(orientation, ~ .x %>% when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) %>%
+  
+  # Add data
+  mutate(
+    data = map2(
+      col_name,
+      col_orientation,
+      ~
+        .data_ %>%
+        ungroup() %>%
+        select(.y, .x) %>%
+        distinct() %>%
+        arrange_at(vars(.y)) %>%
+        pull(.x)
+    )
+  )  %>%
     
-    x_y_annotation_cols_top = x_y_annot_cols$horizontal %>% intersect(annot_col_names)
-
+  # Add function
+  mutate(fx = annotation_function) %>%
+  
+  # Apply annot function if not NULL otherwise pass original annotation
+  # This because no function for ComplexHeatmap = to tile
+  mutate(annot = pmap(list(data, fx, orientation), ~  {
     
-    # Col annot
-    col_annot = 
-      x_y_annotation_cols_top %>%
-      map(
-        ~ {
-          .data %>%
-            ungroup() %>%
-            distinct(!!.horizontal, !!as.symbol(.x)) %>%
-            arrange(!!.horizontal) %>%
-            pull(!!as.symbol(.x))
-        }
-      )
+    # Trick needed for map BUG: could not find function "..2"
+    fx = ..2
     
-    # Stop if annotations discrete bigger than palette
-    if(
-      col_annot %>% map_chr(~ .x %>% class) %in% 
+    # Do conditional
+    if(is_function(fx)) fx(..1, which=..3) 
+    else .x
+  })) %>%
+  
+  # # Check if NA in annotations
+  # mutate_at(vars(!!annotation), function(x) {
+  # 	if(any(is.na(x))) { warning("tidyHeatmap says: You have NAs into your annotation column"); replace_na(x, "NA"); } 
+  # 	else { x } 
+  # } ) %>% 
+  
+  # Add color indexes separately for each orientation
+  mutate(annot_type = map_chr(annot, ~ .x %>% when(class(.) %in% c("factor", "character", "logical") ~ "discrete",
+                                                   class(.) %in% c("integer", "numerical", "numeric", "double") ~ "continuous",
+                                                   ~ "other"
+  ) )) %>%
+  group_by(annot_type) %>%
+  mutate(idx =  row_number()) %>%
+  ungroup() %>%
+  mutate(color = map2(annot, idx,  ~ {
+    if(.x %>% class %in% c("factor", "character", "logical"))
+      colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
+    else if (.x %>% class %in% c("integer", "numerical", "numeric", "double"))
+      colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
+    else NULL
+  })) %>%
+  
+  # Stop if annotations discrete bigger than palette
+  when(
+    (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
       c("factor", "character") %>% which %>% length %>%
-      `>` (palette_annotation$discrete %>% length)
-    ) stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available")
-    
-    # Stop if annotations continuous bigger than palette
-    if(
-      col_annot %>% map_chr(~ .x %>% class) %in% 
-      c("int", "dbl") %>% which %>% length %>%
-      `>` ( palette_annotation$continuous %>% length)
-    ) stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available")
-    
-    col_annot_cont = 
-      col_annot %>%
-      map2(
-        1:length(col_annot) %>% as.list,
-        ~ {
-          if(.x %>% class %in% c("factor", "character"))
-            palette_annotation$discrete[[.y]][1:length(unique(.x))] %>% setNames(unique(.x))
-          else
-            colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
-          
-        }
-      )
-    
-    
-    top_annotation_args = 
-      col_annot %>% 
-      setNames(x_y_annotation_cols_top) %>%
-      c(
-        col = list(col_annot_cont %>% setNames(x_y_annotation_cols_top))
-      )
-    
-    top_annotation = do.call("HeatmapAnnotation", as.list(top_annotation_args))
-    
-  } else {
-    top_annotation = NULL
-  }
+      `>` (palette_annotation$discrete %>% length) ~
+      stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available"),
+    ~ (.)
+  ) %>%
   
-  # Return
-  top_annotation
-}
-
-get_top_left_annotation = function(.data, .horizontal, .vertical, .abundance, annotation, x_y_annot_cols, palette_annotation){
-  
-  # Make col names
-  .horizontal = enquo(.horizontal)
-  .vertical = enquo(.vertical)
-  .abundance = enquo(.abundance)
-  annotation = enquo(annotation)
-  
-  # Setup default NULL
-  top_annotation = NULL
-  left_annotation = NULL
-  
-  # If I have annotation parameters at all
-  if(annotation %>% quo_is_symbolic()) {
-    annot_col_names = .data %>% ungroup() %>% select(!!annotation) %>% colnames
-    
-    x_y_annotation_cols_top = x_y_annot_cols$horizontal %>% intersect(annot_col_names)
-    x_y_annotation_cols_left = x_y_annot_cols$vertical %>% intersect(annot_col_names)
-    
-    
-    # Col annot top
-    col_annot_top = 
-      x_y_annotation_cols_top %>%
-      map(
-        ~ {
-          .data %>%
-            ungroup() %>%
-            distinct(!!.horizontal, !!as.symbol(.x)) %>%
-            arrange(!!.horizontal) %>%
-            pull(!!as.symbol(.x))
-        }
-      )
-    
-    # Col annot left
-    col_annot_left = 
-      x_y_annotation_cols_left %>%
-      map(
-        ~ {
-          .data %>%
-            ungroup() %>%
-            distinct(!!.vertical, !!as.symbol(.x)) %>%
-            arrange(!!.vertical) %>%
-            pull(!!as.symbol(.x))
-        }
-      )
-    
-    # Stop if annotations discrete bigger than palette
-    if(
-      c(col_annot_top, col_annot_left) %>% map_chr(~ .x %>% class) %in% 
-      c("factor", "character") %>% which %>% length %>%
-      `>` (palette_annotation$discrete %>% length)
-    ) stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available")
-    
-    # Stop if annotations continuous bigger than palette
-    if(
-      c(col_annot_top, col_annot_left)  %>% map_chr(~ .x %>% class) %in% 
+  # Stop if annotations continuous bigger than palette
+  when(
+    (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
       c("int", "dbl", "numeric") %>% which %>% length %>%
-      `>` ( palette_annotation$continuous %>% length)
-    ) stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available")
-    
-    col_annot_top_colors = 
-      col_annot_top %>%
-      map2(
-        1:length(col_annot_top) %>% as.list,
-        ~ {
-          if(.x %>% class %in% c("factor", "character"))
-          	colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
-        	#palette_annotation$discrete[[.y]][1:length(unique(.x))] %>% setNames(unique(.x))
-          else
-            colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
-          
-        }
-      )
-    
-    col_annot_left_colors = 
-      col_annot_left %>%
-      map2(
-        1:length(col_annot_left) %>% as.list,
-        ~ {
-          if(.x %>% class %in% c("factor", "character"))
-          	colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
-            #palette_annotation$discrete[[.y]][1:length(unique(.x))] %>% setNames(unique(.x))
-          else
-            colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
-          
-        }
-      )
-    
-    top_annotation_args = 
-      col_annot_top %>% 
-      setNames(x_y_annotation_cols_top) %>%
-      c(
-        col = list(col_annot_top_colors %>% setNames(x_y_annotation_cols_top))
-      )
-    
-    left_annotation_args = 
-      col_annot_left %>% 
-      setNames(x_y_annotation_cols_left) %>%
-      c(
-        col = list(col_annot_left_colors %>% setNames(x_y_annotation_cols_left))
-      )
-    
-    if(length(x_y_annotation_cols_top) > 0 )  top_annotation = as.list(top_annotation_args)
-    if(length(x_y_annotation_cols_left) > 0 ) left_annotation = as.list(left_annotation_args)
-    
-  } 
+      `>` ( palette_annotation$continuous %>% length) ~
+      stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available"),
+    ~ (.)
+  )
+      
   
-  # Return
-  list( top_annotation = top_annotation, left_annotation = left_annotation)
 }
 
-
-get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annotation, x_y_annot_cols, palette_annotation){
+get_group_annotation = function(.data, .column, .row, .abundance, annotation, x_y_annot_cols, palette_annotation){
+  
+  # Comply with CRAN NOTES
+  data = NULL
+  . = NULL
+  orientation = NULL
   
   # Make col names
-  .horizontal = enquo(.horizontal)
-  .vertical = enquo(.vertical)
+  .column = enquo(.column)
+  .row = enquo(.row)
   .abundance = enquo(.abundance)
   annotation = enquo(annotation)
    
@@ -856,31 +746,37 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
   if("groups" %in%  (.data %>% attributes %>% names)) {
     x_y_annotation_cols = 
       x_y_annot_cols %>%
+      nest(data = -orientation) %>%
+      mutate(data = map(data, ~ .x %>% pull(1))) %>%
+      {
+        df = (.)
+        pull(df, data) %>% setNames(pull(df, orientation))
+      } %>%
       map(
         ~ .x %>% intersect(col_group)
       )
      
     # Check if you have more than one grouping, at the moment just one is accepted
     if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% `>` (1))
-      stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 vertical and 1 horizontal) is supported.")
+      stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
     
-    if(length(x_y_annotation_cols$vertical) > 0){
-      
-      # Row split
+    if(length(x_y_annotation_cols$row) > 0){
+       
+    # Row split
     row_split = 
       .data %>%
       ungroup() %>%
-      distinct(!!.vertical, !!as.symbol(x_y_annotation_cols$vertical)) %>%
-      arrange(!!.vertical) %>%
-      pull(!!as.symbol(x_y_annotation_cols$vertical))
+      distinct(!!.row, !!as.symbol(x_y_annotation_cols$row)) %>%
+      arrange(!!.row) %>%
+      pull(!!as.symbol(x_y_annotation_cols$row))
     
     # Create array of colors
-    palette_fill_vertical = palette_annotation$discrete[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
+    palette_fill_row = palette_annotation$discrete[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
     
     left_annotation_args = 
       list(
         ct = anno_block(  
-          gp = gpar(fill = palette_fill_vertical ),
+          gp = gpar(fill = palette_fill_row ),
           labels = row_split %>% unique %>% sort,
           labels_gp = gpar(col = "white"),
           which = "row"
@@ -894,22 +790,22 @@ get_group_annotation = function(.data, .horizontal, .vertical, .abundance, annot
     
     }
     
-    if(length(x_y_annotation_cols$horizontal) > 0){
+    if(length(x_y_annotation_cols$column) > 0){
       # Col split
       col_split = 
         .data %>%
         ungroup() %>%
-        distinct(!!.horizontal, !!as.symbol(x_y_annotation_cols$horizontal)) %>%
-        arrange(!!.horizontal) %>%
-        pull(!!as.symbol(x_y_annotation_cols$horizontal))
+        distinct(!!.column, !!as.symbol(x_y_annotation_cols$column)) %>%
+        arrange(!!.column) %>%
+        pull(!!as.symbol(x_y_annotation_cols$column))
       
       # Create array of colors
-      palette_fill_horizontal = palette_annotation$discrete[[1]][1:length(unique(col_split))] %>% setNames(unique(col_split))
+      palette_fill_column = palette_annotation$discrete[[1]][1:length(unique(col_split))] %>% setNames(unique(col_split))
   
       top_annotation_args = 
         list(
           ct = anno_block(  
-            gp = gpar(fill = palette_fill_horizontal ),
+            gp = gpar(fill = palette_fill_column ),
             labels = col_split %>% unique %>% sort,
             labels_gp = gpar(col = "white"),
             which = "column"
@@ -941,4 +837,44 @@ list_drop_null = function(.data){
 # This function does not fail if sd == 0
 scale_robust = function(y){
   (y - mean(y, na.rm=T)) / ( sd(y, na.rm=T) ^ as.logical(sd(y, na.rm=T)) )
+}
+
+#' Convert array of quosure (e.g. c(col_a, col_b)) into character vector
+#'
+#' @importFrom rlang quo_name
+#' @importFrom rlang quo_squash
+#'
+#' @param v A array of quosures (e.g. c(col_a, col_b))
+#'
+#' @return A character vector
+quo_names <- function(v) {
+  
+  v = quo_name(quo_squash(v))
+  gsub('^c\\(|`|\\)$', '', v) %>% 
+    strsplit(', ') %>% 
+    unlist 
+}
+
+#' annot_to_list
+#' 
+#' @importFrom purrr map_lgl
+#' 
+#' @param .data A data frame
+#' 
+#' @return A list
+annot_to_list = function(.data){
+  
+  # Comply with CRAN NOTES
+  col_name = NULL
+  annot = NULL
+  
+  .data %>% pull(annot) %>% setNames(.data %>% pull(col_name))  %>%
+    
+    # If list is populated
+    when(length(.) > 0 ~ (.) %>% c(
+      col = list(.data %>%
+                   filter(map_lgl(color, ~ .x %>% is.null %>% `!`)) %>%
+                   { setNames( pull(., color),  pull(., col_name))    })
+    ), ~ (.))
+    
 }

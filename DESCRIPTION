@@ -43,7 +43,8 @@ Suggests:
     BiocManager,
     knitr,
     qpdf,
-    covr
+    covr,
+    roxygen2
 VignetteBuilder: 
     knitr
 RdMacros: 
