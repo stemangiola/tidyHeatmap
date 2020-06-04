@@ -4,14 +4,14 @@
 \alias{get_x_y_annotation_columns}
 \title{get_x_y_annotation_columns}
 \usage{
-get_x_y_annotation_columns(.data, .horizontal, .vertical, .abundance)
+get_x_y_annotation_columns(.data, .column, .row, .abundance)
 }
 \arguments{
 \item{.data}{A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |}
 
-\item{.horizontal}{The name of the column horizontally presented in the heatmap}
+\item{.column}{The name of the column horizontally presented in the heatmap}
 
-\item{.vertical}{The name of the column vertically presented in the heatmap}
+\item{.row}{The name of the column vertically presented in the heatmap}
 
 \item{.abundance}{The name of the transcript/gene abundance column}
 }

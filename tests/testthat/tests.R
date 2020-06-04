@@ -346,3 +346,90 @@ test_that("test log of 0",{
 	
 })
 
+test_that("test scale",{
+	
+	expect_equal(
+		class(
+			tidyHeatmap::heatmap(
+				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+				.column = UBR, 
+				.row = symbol_ct, 
+				.value = `read count`, 
+				.scale = "row"
+			))[1],
+		"Heatmap"
+	)
+	
+	expect_equal(
+		class(
+			tidyHeatmap::heatmap(
+				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+				.column = UBR, 
+				.row = symbol_ct, 
+				.value = `read count`, 
+				.scale = "column"
+			))[1],
+		"Heatmap"
+	)
+	
+	expect_equal(
+		class(
+			tidyHeatmap::heatmap(
+				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+				.column = UBR, 
+				.row = symbol_ct, 
+				.value = `read count`, 
+				.scale = "both"
+			))[1],
+		"Heatmap"
+	)
+	
+	expect_equal(
+		class(
+			tidyHeatmap::heatmap(
+				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+				.column = UBR, 
+				.row = symbol_ct, 
+				.value = `read count`, 
+				.scale = "none"
+			))[1],
+		"Heatmap"
+	)
+	
+	expect_error(
+		class(
+			tidyHeatmap::heatmap(
+				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+				.column = UBR, 
+				.row = symbol_ct, 
+				.value = `read count`, 
+				.scale = "WRONG_INPUT"
+			))[1],
+		"the .scale parameter has to be one of"
+	)
+	
+})
+
+test_that("multi-type",{
+	
+	library(magrittr)
+	
+	p = 
+		dplyr::group_by(tidyHeatmap::pasilla,		location, type) %>%
+		dplyr::mutate(act = activation) %>% 
+		tidyr::nest(data = -sample) %>%
+		dplyr::mutate(size = rnorm(n(), 4,0.5)) %>%
+		dplyr::mutate(age = runif(n(), 50, 200)) %>%
+		tidyr::unnest(data) %>%
+		tidyHeatmap::heatmap(
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`,
+			annotation = c(condition, activation, act, size, age),
+			type = c("tile", "point", "tile", "bar", "line")
+		)
+	
+	
+	expect_equal(as.character(class(p)), "Heatmap" )
+	
+})

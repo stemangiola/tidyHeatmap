@@ -9,6 +9,7 @@
 #' @importFrom stats sd
 #' @importFrom lifecycle is_present
 #' @importFrom lifecycle deprecate_warn
+#' 
 #'
 #' @name heatmap
 #' @rdname heatmap
@@ -18,7 +19,9 @@
 #' @param .column The name of the column horizontally presented in the heatmap
 #' @param .value The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
-#' @param transform A function, used to tranform .value row-wise (e.g., transform = log \%>\% scale)
+#' @param type A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")
+#' @param transform A function, used to tranform .value row-wise (e.g., transform = log1p)
+#' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_value A character vector This is the palette that will be used as gradient for .value
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
@@ -55,7 +58,9 @@ heatmap <-
 					 .column,
 					 .value,
 					 annotation = NULL,
-					 transform = scale_robust,
+					 type = rep("tile", length(quo_names(annotation))),
+					 transform = NULL,
+					 .scale = "row",
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
@@ -77,7 +82,9 @@ heatmap.default <-
 					 .column,
 					 .value,
 					 annotation = NULL,
-					 transform = scale_robust,
+					 type = rep("tile", length(quo_names(annotation))),
+					 transform = NULL,
+					 .scale = "row",
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
@@ -100,7 +107,9 @@ heatmap.tbl_df <-
 					 .column,
 					 .value,
 					 annotation = NULL,
-					 transform = scale_robust,
+					 type = rep("tile", length(quo_names(annotation))),
+					 transform = NULL,
+					 .scale = "row",
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
@@ -122,6 +131,13 @@ heatmap.tbl_df <-
 		
 		# Check if transform is of correct type
 		if(!(is.null(transform) || is_function(transform))) stop("tidyHeatmap says: transform has to be a function. is_function(transform) == TRUE")
+		
+		# Check if .scale is of correct type
+		if(.scale %in% c("none", "row", "column", "both") %>% `!`) stop("tidyHeatmap says: the .scale parameter has to be one of c(\"none\", \"row\", \"column\", \"both\")")
+
+		# Check if type is of the right kind
+		if(type %>% setdiff(names(type_to_annot_function)) %>% length %>% `>` (0))
+			stop("tidyHeatmap says: not all components of `type` parameter are valid.")
 		
 		# Deprecation .abundance
 		
@@ -199,7 +215,9 @@ heatmap.tbl_df <-
 			.vertical = !!.row,
 			.abundance = !!.value,
 			annotation = !!annotation,
+			type = type,
 			transform = transform,
+			.scale = .scale,
 			palette_abundance = palette_value,
 			palette_discrete = palette_discrete,
 			palette_continuous = palette_continuous,

@@ -22,6 +22,7 @@
 #' @importFrom viridis viridis
 #' @importFrom viridis magma
 #' @importFrom rlang is_function
+#' @importFrom purrr when
 #'
 #' @name plot_heatmap
 #' @rdname plot_heatmap
@@ -31,7 +32,9 @@
 #' @param .vertical The name of the column vertically presented in the heatmap
 #' @param .abundance The name of the transcript/gene abundance column
 #' @param annotation Vector of quotes
-#' @param transform A function, used to tranform .value, for example log
+#' @param type A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")
+#' @param transform A function, used to tranform .value, for example log1p
+#' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_abundance A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_abundance)`
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
@@ -51,13 +54,19 @@ plot_heatmap = function(.data,
 												.vertical,
 												.abundance,
 												annotation = NULL,
-												transform = scale_robust,
+												type = rep("tile", length(quo_names(annotation))),
+												transform = NULL,
+												.scale = "row",
 												palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
 												palette_discrete = list(),
 												palette_continuous = list(),
 												...) {
+	
 	# Comply with CRAN NOTES
 	. = NULL
+	col_name = NULL
+	orientation = NULL
+	
 	
 	# Make col names
 	.horizontal = enquo(.horizontal)
@@ -80,9 +89,7 @@ plot_heatmap = function(.data,
 			
 			# Transform rowwise
 			~ .x %>% 
-				nest(data = -!!.vertical) %>%
-				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% transform()))) %>%
-				unnest(data) %>%
+				mutate(!!.abundance := !!.abundance %>% transform()) %>%
 				
 				# Check if log introduced -Inf
 				ifelse_pipe(
@@ -91,16 +98,30 @@ plot_heatmap = function(.data,
 				)
 		) %>%
 		
+		# If .scale row
+		when(
+			.scale %in% c("row", "both") ~ (.) %>%
+				nest(data = -!!.vertical) %>%
+				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% scale_robust()))) %>%
+				unnest(data),
+			~ (.)
+		) %>%
+		
+		# If .scale column
+		when(
+			.scale %in% c("column", "both") ~ (.) %>%
+				nest(data = -!!.horizontal) %>%
+				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% scale_robust()))) %>%
+				unnest(data),
+			~ (.)
+		) %>%
+		
 		distinct(!!.vertical,!!.horizontal,!!.abundance) %>%
 		spread(!!.horizontal,!!.abundance)
 	
 	abundance_mat =
 		abundance_tbl %>%
 		as_matrix(rownames = quo_name(.vertical)) 
-		# %>%
-		# t() %>%
-		# apply(2, scale_robust) %>%
-		# t()
 	 
 	# Colors tiles
 	# If palette_abundance is a function pass it directly, otherwise check if the character array is of length 3
@@ -111,7 +132,12 @@ plot_heatmap = function(.data,
 			length(palette_abundance) != 3,
 			~ .x,
 			~ stop("tidyHeatmap says: If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_abundance)\""	),
-			~ colorRamp2(c(-2, 0, 2), palette_abundance)
+			~ colorRamp2(
+				
+				# min and max and intermediates based on length of the palette
+				seq(from=min(abundance_mat), to=max(abundance_mat), length.out = length(palette_abundance)),
+				palette_abundance
+			)
 		)
 	
 	# Colors annotations
@@ -143,25 +169,21 @@ plot_heatmap = function(.data,
 	if(.data %>% lapply(class)  %>% equals("list") %>% any)
 		warning("tidyHeatmap says: nested/list column are present in your data frame and have been dropped as their unicity cannot be identified by dplyr.")
 	
-	# Get x and y anntation columns
-	x_y_annot_cols =
+	# Data frame of row and column columns
+	x_y_annot_cols = 
 		.data %>%
-		select_if(negate(is.list)) %>%
-		ungroup() %>%
-		get_x_y_annotation_columns(!!.horizontal,!!.vertical,!!.abundance)
+		get_x_y_annotation_columns(!!.horizontal,!!.vertical,!!.abundance) 
 	
 	# Check if annotation is compatible with your dataset
-	.data %>%
-		select(!!annotation) %>%
-		colnames %>%
-		setdiff(x_y_annot_cols %>% unlist) %>%
-		ifelse_pipe(length(.) > 0,
-								~ stop(
-									sprintf(
-										"tidyHeatmap says: Your annotation \"%s\" is not unique to vertical nor horizontal dimentions",
-										.x %>% paste(collapse = ", ")
-									)
-								))
+	quo_names(annotation) %>%
+		setdiff(x_y_annot_cols %>% pull(col_name)) %>%
+		when( quo_names(annotation) != "NULL" & length(.) > 0 ~ 
+						stop(
+							sprintf(
+								"tidyHeatmap says: Your annotation \"%s\" is not unique to vertical nor horizontal dimentions",
+								(.) %>% paste(collapse = ", ")
+							)
+						))
 	
 	# See if I have grouping and setup framework
 	group_annotation = get_group_annotation(
@@ -179,50 +201,60 @@ plot_heatmap = function(.data,
 		palette_annotation$discrete %>%
 		ifelse_pipe(length(get_grouping_columns(.data)) > 0, ~ tail(.x, -length(get_grouping_columns(.data))))
 	
-	# See if there is annotation
-	top_left_annot = 
+	# Get annotation
+	.data_annot = 
 		.data %>%
-		
-		# Check if NA in annotations
-		mutate_at(vars(!!annotation), function(x) { replace_na(x, "NA")  } ) %>% 
-			
-		# Get annotation
-		 get_top_left_annotation(
-			!!.horizontal,
-			!!.vertical,
-			!!.abundance,
-			!!annotation,
-			x_y_annot_cols,
-			palette_annotation
-		)
+		get_top_left_annotation(	!!.horizontal,
+														 !!.vertical,
+														 !!.abundance,
+														 !!annotation,	palette_annotation,	type, x_y_annot_cols)
 	
-
+	# # Check if annotation is compatible with your dataset
+	# x_y_annot_cols %>%
+	# 	inner_join(.data_annot %>% distinct(col_name), by="col_name") %>%
+	# 	count(col_name) %>%
+	# 	filter(n > 1) %>%
+	# 	pull(col_name) %>%
+	# 	when( length(.) > 0 ~ 
+	# 				stop(
+	# 					sprintf(
+	# 						"tidyHeatmap says: Your annotation \"%s\" is unique to vertical and horizontal dimentions",
+	# 						(.) %>% paste(collapse = ", ")
+	# 					)
+	# 					))
+	
+	# Isolate top annotation
 	top_annot =  
-		c(group_annotation$top_annotation, top_left_annot$top_annotation) %>%
+		c(
+			group_annotation$top_annotation, 
+			.data_annot %>% 
+				filter(orientation == "column") %>%
+				annot_to_list()
+		) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
 			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("columnAnnotation", .x ),
 			~ NULL
 		)
-	
+
+	# Isolate left annotation
 	left_annot = 
-		c(group_annotation$left_annotation, top_left_annot$left_annotation) %>%
+		c(group_annotation$left_annotation, .data_annot %>% 
+				filter(orientation == "row") %>%
+				annot_to_list()) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
 			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("rowAnnotation", .x),
 			~ NULL
 		)
-	
 
 	abundance_mat %>%
 		Heatmap(
 			name = quo_name(.abundance),
 			column_title = quo_name(.horizontal),
 			row_title = quo_name(.vertical),
-			# width = unit(0.5 * 13, "cm"),
-			# height = unit(0.5 * .data %>% distinct(!!.vertical) %>% nrow, "cm"),
 			col = colors,
 			row_split = group_annotation$row_split,
 			column_split = group_annotation$col_split,

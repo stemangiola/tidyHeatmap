@@ -10,7 +10,9 @@ heatmap(
   .column,
   .value,
   annotation = NULL,
-  transform = scale_robust,
+  type = rep("tile", length(quo_names(annotation))),
+  transform = NULL,
+  .scale = "row",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_discrete = list(),
   palette_continuous = list(),
@@ -33,7 +35,11 @@ heatmap(
 
 \item{annotation}{Vector of quotes}
 
-\item{transform}{A function, used to tranform .value row-wise (e.g., transform = log \%>\% scale)}
+\item{type}{A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")}
+
+\item{transform}{A function, used to tranform .value row-wise (e.g., transform = log1p)}
+
+\item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
 
 \item{palette_value}{A character vector This is the palette that will be used as gradient for .value}
 
