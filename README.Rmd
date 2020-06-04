@@ -142,7 +142,7 @@ tidyHeatmap::pasilla %>%
 ```
 
 ## Annotation types
-**This features requires last version on Github**
+**This features requires >= 0.99.20 version**
 "tile" (default), "point", "bar" and "line" are available
 
 ```{r}
@@ -157,7 +157,7 @@ pasilla_plus =
 
 # Plot
 pasilla_plus %>%
-		tidyHeatmap::heatmap(
+		heatmap(
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted`,

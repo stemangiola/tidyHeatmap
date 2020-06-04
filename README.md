@@ -3,8 +3,7 @@ tidyHeatmap
 
 (If you like tidyverse and RNA, try
 [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular
-transcriptomics
-analyses\!)
+transcriptomics analyses\!)
 
 <!-- badges: start -->
 
@@ -162,7 +161,8 @@ tidyHeatmap::pasilla %>%
 ## Annotation types
 **This features requires last version on Github**
 
-“tile” (default), “point”, “bar” and “line” are available
+**This features requires \>= 0.99.20 version** “tile” (default),
+“point”, “bar” and “line” are available
 
 ``` r
 # Chreate some more data points
@@ -176,7 +176,7 @@ pasilla_plus =
 
 # Plot
 pasilla_plus %>%
-        tidyHeatmap::heatmap(
+        heatmap(
             .column = sample,
             .row = symbol,
             .value = `count normalised adjusted`,
