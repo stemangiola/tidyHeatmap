@@ -160,8 +160,9 @@ tidyHeatmap::pasilla %>%
 
 ## Annotation types
 
-**This features requires \>= 0.99.20 version** “tile” (default),
-“point”, “bar” and “line” are available
+**This feature requires \>= 0.99.20 version**
+
+“tile” (default), “point”, “bar” and “line” are available
 
 ``` r
 # Chreate some more data points
