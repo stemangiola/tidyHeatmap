@@ -116,7 +116,7 @@ mtcars_tidy %>%
 	)
 ```
 
-Or a grid::colorRamp2 functionfor higher flexibility
+Or a grid::colorRamp2 function for higher flexibility
 
 ```{r}
 mtcars_tidy %>% 
@@ -148,7 +148,7 @@ tidyHeatmap::pasilla %>%
 "tile" (default), "point", "bar" and "line" are available
 
 ```{r}
-# Chreate some more data points
+# Create some more data points
 pasilla_plus = 
 	tidyHeatmap::pasilla %>%
 		dplyr::mutate(act = activation) %>% 

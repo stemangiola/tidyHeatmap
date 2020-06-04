@@ -129,7 +129,7 @@ mtcars_tidy %>%
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-Or a grid::colorRamp2 functionfor higher flexibility
+Or a grid::colorRamp2 function for higher flexibility
 
 ``` r
 mtcars_tidy %>% 
@@ -159,14 +159,13 @@ tidyHeatmap::pasilla %>%
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Annotation types
-**This features requires last version on Github**
 
 **This feature requires \>= 0.99.20 version**
 
 “tile” (default), “point”, “bar” and “line” are available
 
 ``` r
-# Chreate some more data points
+# Create some more data points
 pasilla_plus = 
     tidyHeatmap::pasilla %>%
         dplyr::mutate(act = activation) %>% 
