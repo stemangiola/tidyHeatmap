@@ -159,7 +159,7 @@ tidyHeatmap::pasilla %>%
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Annotation types
-**This features requires \>= 0.99.20 version** 
+**This feature requires \>= 0.99.20 version** 
 
 “tile” (default), “point”, “bar” and “line” are available
 
