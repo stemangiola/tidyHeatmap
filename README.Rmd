@@ -142,6 +142,7 @@ tidyHeatmap::pasilla %>%
 ```
 
 ## Annotation types
+**This features requires last version on Github**
 "tile" (default), "point", "bar" and "line" are available
 
 ```{r}
