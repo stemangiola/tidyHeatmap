@@ -82,16 +82,26 @@ specifying:
 mtcars
 
 ``` r
-mtcars_tidy %>% 
-    heatmap(
-        `Car name`, 
-        Property, 
-        Value,
-        annotation = hp
-    )
+mtcars_heatmap = 
+    mtcars_tidy %>% 
+        heatmap(
+            `Car name`, 
+            Property, 
+            Value,
+            annotation = hp
+        )
+
+mtcars_heatmap
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+## Save
+
+``` r
+mtcars_heatmap %>%
+    save_pdf("mtcars_heatmap.pdf")
+```
 
 ## Grouping
 
@@ -110,7 +120,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ## Custom palettes
 
@@ -127,7 +137,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 Or a grid::colorRamp2 function for higher flexibility
 
@@ -141,7 +151,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -156,7 +166,7 @@ tidyHeatmap::pasilla %>%
         )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ## Annotation types
 
@@ -185,4 +195,4 @@ pasilla_plus %>%
         )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
