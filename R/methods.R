@@ -227,4 +227,83 @@ heatmap.tbl_df <-
 	}
 
 
+#' Save plot on PDF file
+#'
+#' \lifecycle{maturing}
+#' 
+#' @importFrom utils capture.output
+#' @import  grDevices
+#'
+#' @description save_pdf() takes as input a Heatmap from ComplexHeatmap and save it to PDF file
+#'
+#'
+#' @name save_pdf
+#'
+#' @param .heatmap A `Heatmap` 
+#' @param filename A character string. The name of the output file/path
+#' @param width A `double`. Plot width
+#' @param height A `double`. Plot height
+#' @param units	A character string. units ("in", "cm", or "mm")
+#' 
+#' @details It simply save an `Heatmap` to a PDF file use pdf() function in the back end
+#'
+#' @return NA
+#'
+#'
+#' @examples
+#' 
+#' 
+#' library(dplyr)
+#' 	tidyHeatmap::heatmap(
+#'   dplyr::group_by(tidyHeatmap::pasilla,		location, type),
+#'   .column = sample,
+#'   .row = symbol,
+#'   .value = `count normalised adjusted`,
+#'  ) %>%
+#'  save_pdf(tempfile())
+#'
+#' 
+#' @docType methods
+#' @rdname save_pdf-methods
+#' @export
+#'
+setGeneric("save_pdf", function(.heatmap,
+																filename,
+																width = NULL,
+																height = NULL,
+																units = c("in", "cm", "mm") )
+	standardGeneric("save_pdf"))
+
+.save_pdf = function(.heatmap,
+										 filename,
+										 width = NULL,
+										 height = NULL,
+										 units = c("in", "cm", "mm")){
+	
+	# Adapt to ggsave
+	if(is.null(width)) width = NA
+	if(is.null(height)) height = NA
+	
+	
+	dev = plot_dev("pdf", filename)
+	dim <- plot_dim(c(width, height), units = units)
+	
+	old_dev <- dev.cur()
+	dev(filename = filename, width = dim[1], height = dim[2])
+	on.exit(capture.output({
+		dev.off()
+		if (old_dev > 1) dev.set(old_dev) # restore old device unless null device
+	}))
+	print(.heatmap)
+	
+	invisible()
+	
+}
+
+#' save_pdf
+#' 
+#' @inheritParams save_pdf
+#' 
+#' @export
+setMethod("save_pdf", "Heatmap", .save_pdf)
 

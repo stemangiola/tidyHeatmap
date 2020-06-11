@@ -25,6 +25,7 @@ Depends:
     R (>= 3.6),
     ComplexHeatmap (>= 2.2.0)
 Imports: 
+    methods,
     stats,
     utils,
     dplyr (>= 0.8.5),

@@ -433,3 +433,20 @@ test_that("multi-type",{
 	expect_equal(as.character(class(p)), "Heatmap" )
 	
 })
+
+test_that("save_pdf",{
+	
+	library(magrittr)
+	
+	filename = tempfile()
+		
+	tidyHeatmap::heatmap(
+		dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+		.column = UBR, 
+		.row = symbol_ct, 
+		.value = `read count normalised log`
+	) %>%
+	save_pdf(filename)
+	
+	if (file.exists(filename)) file.remove(filename)
+})
