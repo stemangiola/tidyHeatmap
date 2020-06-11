@@ -33,13 +33,20 @@ mtcars_tidy =
 mtcars_tidy
 
 ## -----------------------------------------------------------------------------
-mtcars_tidy %>% 
-	heatmap(
-		`Car name`, 
-		Property, 
-		Value,
-		annotation = hp
-	)
+mtcars_heatmap = 
+	mtcars_tidy %>% 
+		heatmap(
+			`Car name`, 
+			Property, 
+			Value,
+			annotation = hp
+		)
+
+mtcars_heatmap
+
+## ----eval=F-------------------------------------------------------------------
+#  mtcars_heatmap %>%
+#  	save_pdf("mtcars_heatmap.pdf")
 
 ## -----------------------------------------------------------------------------
 mtcars_tidy %>% 
