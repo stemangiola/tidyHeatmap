@@ -77,25 +77,28 @@ plot_heatmap = function(.data,
 	# Check if palette discrete and continuous are lists
 	if(!is.list(palette_discrete) | !is.list(palette_continuous))
 		stop("tidyHeatmap says: the arguments palette_discrete and palette_continuous must be lists. E.g., list(rep(\"#000000\", 20))")
-	
+	 
 	# Get abundance matrix
 	abundance_tbl =
 		.data %>%
 		ungroup() %>%
 		
-		# Check if tranfrom is needed
-		ifelse_pipe(
-			is_function(transform),
-			
-			# Transform rowwise
-			~ .x %>% 
-				mutate(!!.abundance := !!.abundance %>% transform()) %>%
+		# Check if transform is needed
+		when(
+			is_function(transform) ~ 
+				mutate(., !!.abundance := !!.abundance %>% transform()) %>%
 				
 				# Check if log introduced -Inf
-				ifelse_pipe(
-					pull(., !!.abundance) %>% min %>% equals(-Inf), 
-					~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p.")
-				)
+				when(
+					
+					# NAN produced
+					filter(., !!.abundance %>% is.nan) %>% nrow %>% `>` (0) ~ stop("tidyHeatmap says: you applied a transformation that introduced NaN."),
+					
+					# -Inf produced
+					pull(., !!.abundance) %>% min %>% equals(-Inf) ~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p."),
+					~(.)
+				),
+			~ (.)
 		) %>%
 		
 		# If .scale row
