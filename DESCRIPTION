@@ -1,7 +1,7 @@
 Type: Package
 Package: tidyHeatmap
 Title: A Tidy Implementation of Heatmap
-Version: 0.99.20
+Version: 1.0.0
 Authors@R: 
     person(given = "Stefano",
            family = "Mangiola",
@@ -25,6 +25,7 @@ Depends:
     R (>= 3.6),
     ComplexHeatmap (>= 2.2.0)
 Imports: 
+    methods,
     stats,
     utils,
     dplyr (>= 0.8.5),

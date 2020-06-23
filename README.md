@@ -3,8 +3,7 @@ tidyHeatmap
 
 (If you like tidyverse and RNA, try
 [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular
-transcriptomics
-analyses\!)
+transcriptomics analyses\!)
 
 <!-- badges: start -->
 
@@ -83,16 +82,26 @@ specifying:
 mtcars
 
 ``` r
-mtcars_tidy %>% 
-    heatmap(
-        `Car name`, 
-        Property, 
-        Value,
-        annotation = hp
-    )
+mtcars_heatmap = 
+    mtcars_tidy %>% 
+        heatmap(
+            `Car name`, 
+            Property, 
+            Value,
+            annotation = hp
+        )
+
+mtcars_heatmap
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+## Save
+
+``` r
+mtcars_heatmap %>%
+    save_pdf("mtcars_heatmap.pdf")
+```
 
 ## Grouping
 
@@ -111,7 +120,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ## Custom palettes
 
@@ -128,9 +137,9 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
-Or a grid::colorRamp2 functionfor higher flexibility
+Or a grid::colorRamp2 function for higher flexibility
 
 ``` r
 mtcars_tidy %>% 
@@ -142,7 +151,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -157,14 +166,16 @@ tidyHeatmap::pasilla %>%
         )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ## Annotation types
+
+**This feature requires \>= 0.99.20 version** 
 
 “tile” (default), “point”, “bar” and “line” are available
 
 ``` r
-# Chreate some more data points
+# Create some more data points
 pasilla_plus = 
     tidyHeatmap::pasilla %>%
         dplyr::mutate(act = activation) %>% 
@@ -175,7 +186,7 @@ pasilla_plus =
 
 # Plot
 pasilla_plus %>%
-        tidyHeatmap::heatmap(
+        heatmap(
             .column = sample,
             .row = symbol,
             .value = `count normalised adjusted`,
@@ -184,4 +195,4 @@ pasilla_plus %>%
         )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->

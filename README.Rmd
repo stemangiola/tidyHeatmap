@@ -78,13 +78,23 @@ For plotting, you simply pipe the input data frame into heatmap, specifying:
 
 mtcars
 ```{r}
-mtcars_tidy %>% 
-	heatmap(
-		`Car name`, 
-		Property, 
-		Value,
-		annotation = hp
-	)
+mtcars_heatmap = 
+	mtcars_tidy %>% 
+		heatmap(
+			`Car name`, 
+			Property, 
+			Value,
+			annotation = hp
+		)
+
+mtcars_heatmap
+```
+
+## Save
+
+```{r eval=F}
+mtcars_heatmap %>%
+	save_pdf("mtcars_heatmap.pdf")
 ```
 
 ## Grouping
@@ -116,7 +126,7 @@ mtcars_tidy %>%
 	)
 ```
 
-Or a grid::colorRamp2 functionfor higher flexibility
+Or a grid::colorRamp2 function for higher flexibility
 
 ```{r}
 mtcars_tidy %>% 
@@ -142,10 +152,13 @@ tidyHeatmap::pasilla %>%
 ```
 
 ## Annotation types
+
+**This feature requires >= 0.99.20 version**
+
 "tile" (default), "point", "bar" and "line" are available
 
 ```{r}
-# Chreate some more data points
+# Create some more data points
 pasilla_plus = 
 	tidyHeatmap::pasilla %>%
 		dplyr::mutate(act = activation) %>% 
@@ -156,7 +169,7 @@ pasilla_plus =
 
 # Plot
 pasilla_plus %>%
-		tidyHeatmap::heatmap(
+		heatmap(
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted`,
@@ -164,3 +177,4 @@ pasilla_plus %>%
 			type = c("tile", "point", "tile", "bar", "line")
 		)
 ```
+
