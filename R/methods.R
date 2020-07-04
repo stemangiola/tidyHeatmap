@@ -312,6 +312,6 @@ setMethod("save_pdf", "Heatmap", .save_pdf)
 #the class definition
 InputHeatmap<-setClass("InputHeatmap",  slots = c(	input = "list" ))
 
-setMethod("show", "InputHeatmap", function(object) do.call(Heatmap, object@input) )
+setMethod("show", "InputHeatmap", function(object) show(do.call(Heatmap, object@input)) )
 
 
