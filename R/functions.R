@@ -1,6 +1,6 @@
-#' plot_heatmap
+#' input_heatmap
 #'
-#' @description plot_heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
+#' @description input_heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
 #'
 #' @import dplyr
 #' @import tidyr
@@ -23,9 +23,10 @@
 #' @importFrom viridis magma
 #' @importFrom rlang is_function
 #' @importFrom purrr when
+#' @importFrom rlang dots_list
 #'
-#' @name plot_heatmap
-#' @rdname plot_heatmap
+#' @name input_heatmap
+#' @rdname input_heatmap
 #'
 #' @param .data A `tbl` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |
 #' @param .horizontal The name of the column horizontally presented in the heatmap
@@ -49,7 +50,7 @@
 #'
 #'
 #'
-plot_heatmap = function(.data,
+input_heatmap = function(.data,
 												.horizontal,
 												.vertical,
 												.abundance,
@@ -252,32 +253,25 @@ plot_heatmap = function(.data,
 			~ do.call("rowAnnotation", .x),
 			~ NULL
 		)
-
-	abundance_mat %>%
-		Heatmap(
-			name = quo_name(.abundance),
-			column_title = quo_name(.horizontal),
-			row_title = quo_name(.vertical),
-			col = colors,
-			row_split = group_annotation$row_split,
-			column_split = group_annotation$col_split,
-			left_annotation = left_annot,
-			top_annotation  = top_annot,
-			cluster_row_slices = FALSE,
-			cluster_column_slices = FALSE,
-			row_names_gp = gpar(fontsize = min(12, 320 / dim(abundance_mat)[1])),
-			column_names_gp = gpar(fontsize = min(12, 320 / dim(abundance_mat)[2])),
-			#,
-			#	clustering_distance_columns = robust_dist,
-			# ,
-			#
-			# inflection =  anno_points( << THIS CAN ALSO BE AUTOMATIC GIVING COLUMN DISTINCT WITH .vertical AND TYPE anno_POINTS
-			# 	tbl %>% distinct(symbol_ct, inflection) %>%
-			# 		arrange(symbol_ct) %>% pull(inflection)
-			# )
-			
-			...
-		)
-	
+ 
+	xx = new("InputHeatmap", 
+		input  =
+			list(
+				abundance_mat,
+				name = quo_name(.abundance),
+				column_title = quo_name(.horizontal),
+				row_title = quo_name(.vertical),
+				col = colors,
+				row_split = group_annotation$row_split,
+				column_split = group_annotation$col_split,
+				left_annotation = left_annot,
+				top_annotation  = top_annot,
+				cluster_row_slices = FALSE,
+				cluster_column_slices = FALSE,
+				row_names_gp = gpar(fontsize = min(12, 320 / dim(abundance_mat)[1])),
+				column_names_gp = gpar(fontsize = min(12, 320 / dim(abundance_mat)[2]))
+			) %>% 
+			c( rlang::dots_list(...))
+	)
 	
 }

@@ -210,7 +210,7 @@ heatmap.tbl_df <-
 			# ) %>%
 			
 		# Run plotting function
-		plot_heatmap(
+		input_heatmap(
 			.horizontal = !!.column,
 			.vertical = !!.row,
 			.abundance = !!.value,
@@ -306,4 +306,12 @@ setGeneric("save_pdf", function(.heatmap,
 #' 
 #' @export
 setMethod("save_pdf", "Heatmap", .save_pdf)
+
+
+
+#the class definition
+InputHeatmap<-setClass("InputHeatmap",  slots = c(	input = "list" ))
+
+setMethod("show", "InputHeatmap", function(object) do.call(Heatmap, object@input) )
+
 
