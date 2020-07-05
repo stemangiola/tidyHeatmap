@@ -6,7 +6,7 @@
 \usage{
 add_annotation(
   my_input_heatmap,
-  annotation = NULL,
+  annotation,
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list()

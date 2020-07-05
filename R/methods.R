@@ -354,7 +354,14 @@ setMethod("save_pdf", "InputHeatmap", .save_pdf)
 #the class definition
 InputHeatmap<-setClass(
 	"InputHeatmap",  
-	slots = c(	input = "list", data = "tbl", palette_discrete = "list", palette_continuous = "list", arguments = "list" ),
+	slots = c(
+		input = "list", 
+		data = "tbl",
+		palette_discrete = "list", 
+		palette_continuous = "list",
+		arguments = "list" ,
+		top_annotation = "list",
+		left_annotation = "list"),
 	prototype=list(
 		palette_discrete=
 			list(
@@ -373,10 +380,33 @@ InputHeatmap<-setClass(
 				brewer.pal(11, "PRGn"),
 				brewer.pal(11, "BrBG")
 			),
-		input = list()
+		input = list(),
+		top_annotation = list(),
+		left_annotation = list()
 	)
 )
 
-setMethod("show", "InputHeatmap", function(object) show(do.call(Heatmap, object@input)) )
+setMethod("show", "InputHeatmap", function(object){
+	
+	object@input$top_annotation = 
+		object@top_annotation %>%
+		list_drop_null() %>%
+		ifelse_pipe(
+			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
+			~ do.call("columnAnnotation", .x ),
+			~ NULL
+		)
+	
+	object@input$left_annotation = 
+		object@left_annotation %>%
+		list_drop_null()  %>%
+		ifelse_pipe(
+			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
+			~ do.call("rowAnnotation", .x ),
+			~ NULL
+		)
+	
+	show(do.call(Heatmap, object@input))
+} )
 
 

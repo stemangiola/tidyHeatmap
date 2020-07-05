@@ -172,9 +172,9 @@ add_grouping = function(my_input_heatmap){
 		warning("tidyHeatmap says: nested/list column are present in your data frame and have been dropped as their unicity cannot be identified by dplyr.")
 	
 	# Column names
-	.horizontal = (my_input_heatmap@arguments$.horizontal)
-	.vertical = (my_input_heatmap@arguments$.vertical)
-	.abundance = (my_input_heatmap@arguments$.abundance)
+	.horizontal = my_input_heatmap@arguments$.horizontal
+	.vertical = my_input_heatmap@arguments$.vertical
+	.abundance = my_input_heatmap@arguments$.abundance
 	
 	# Add custom palette to discrete if any
 	my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete %>% c(my_input_heatmap@arguments$palette_grouping)
@@ -198,24 +198,10 @@ add_grouping = function(my_input_heatmap){
 	)
 	
 	# Isolate top annotation
-	top_annot =  
-		group_annotation$top_annotation %>%
-		list_drop_null() %>%
-		ifelse_pipe(
-			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
-			~ do.call("columnAnnotation", .x ),
-			~ NULL
-		)
+	my_input_heatmap@top_annotation = group_annotation$top_annotation 
 	
 	# Isolate left annotation
-	left_annot = 
-		group_annotation$left_annotation %>%
-		list_drop_null() %>%
-		ifelse_pipe(
-			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
-			~ do.call("rowAnnotation", .x),
-			~ NULL
-		)
+	my_input_heatmap@left_annotation = group_annotation$left_annotation 
 	
 	my_input_heatmap@input  =
 		my_input_heatmap@input %>%
@@ -223,8 +209,6 @@ add_grouping = function(my_input_heatmap){
 			list(
 				row_split = group_annotation$row_split,
 				column_split = group_annotation$col_split,
-				left_annotation = left_annot,
-				top_annotation  = top_annot,
 				cluster_row_slices = FALSE,
 				cluster_column_slices = FALSE
 			)
@@ -287,7 +271,7 @@ add_grouping = function(my_input_heatmap){
 #'
 #'
 add_annotation = function(my_input_heatmap,
-												 annotation = NULL,
+												 annotation,
 												 type = rep("tile", length(quo_names(annotation))),
 												 palette_discrete = list(),
 												 palette_continuous = list()) {
@@ -300,44 +284,27 @@ add_annotation = function(my_input_heatmap,
 	col_name = NULL
 	orientation = NULL
 	
-	
 	# Make col names
-	.horizontal = enquo(.horizontal)
-	.vertical = enquo(.vertical)
-	.abundance = enquo(.abundance)
+	# Column names
+	.horizontal = my_input_heatmap@arguments$.horizontal
+	.vertical = my_input_heatmap@arguments$.vertical
+	.abundance = my_input_heatmap@arguments$.abundance
 	annotation = enquo(annotation)
 	
 	# Check if palette discrete and continuous are lists
 	if(!is.list(palette_discrete) | !is.list(palette_continuous))
 		stop("tidyHeatmap says: the arguments palette_discrete and palette_continuous must be lists. E.g., list(rep(\"#000000\", 20))")
 	
-	# Colors tiles
-	# If palette_abundance is a function pass it directly, otherwise check if the character array is of length 3
-	colors = 
-		palette_abundance %>%
-		ifelse2_pipe(
-			palette_abundance %>% class() %>% equals("function"),
-			length(palette_abundance) != 3,
-			~ .x,
-			~ stop("tidyHeatmap says: If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_abundance)\""	),
-			~ colorRamp2(
-				
-				# min and max and intermediates based on length of the palette
-				seq(from=min(abundance_mat), to=max(abundance_mat), length.out = length(palette_abundance)),
-				palette_abundance
-			)
-		)
-	
 	# Colors annotations
 	palette_annotation = list(
 		# Discrete pellets
 		discrete = 
 			palette_discrete %>%
-			c(my_input_heatmap@discrete_palette),
+			c(my_input_heatmap@palette_discrete),
 		
 		continuous = 
 			palette_continuous %>%
-			c(my_input_heatmap@continuous_palette)
+			c(my_input_heatmap@palette_continuous)
 	)
 	
 	# Check if there are nested column in the data frame
@@ -359,17 +326,6 @@ add_annotation = function(my_input_heatmap,
 								(.) %>% paste(collapse = ", ")
 							)
 						))
-	
-	# See if I have grouping and setup framework
-	group_annotation = get_group_annotation(
-		.data,
-		!!.horizontal,
-		!!.vertical,
-		!!.abundance,
-		!!annotation,
-		x_y_annot_cols,
-		palette_annotation
-	)
 	
 	# If I have grouping, eliminate the first discrete palette
 	palette_annotation$discrete =
@@ -399,37 +355,22 @@ add_annotation = function(my_input_heatmap,
 	# 					))
 	
 	# Isolate top annotation
-	top_annot =  
+	my_input_heatmap@top_annotation =  
+		my_input_heatmap@top_annotation %>%
 		c(
-			group_annotation$top_annotation, 
 			.data_annot %>% 
 				filter(orientation == "column") %>%
 				annot_to_list()
-		) %>%
-		list_drop_null() %>%
-		ifelse_pipe(
-			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
-			~ do.call("columnAnnotation", .x ),
-			~ NULL
-		)
+		) 
 	
 	# Isolate left annotation
-	left_annot = 
-		c(group_annotation$left_annotation, .data_annot %>% 
+	my_input_heatmap@left_annotation = 
+		my_input_heatmap@left_annotation %>%
+		c(
+			.data_annot %>% 
 				filter(orientation == "row") %>%
-				annot_to_list()) %>%
-		list_drop_null() %>%
-		ifelse_pipe(
-			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
-			~ do.call("rowAnnotation", .x),
-			~ NULL
-		)
-	
-	my_input_heatmap@input = my_input_heatmap@input %>%
-		c(llist(
-			left_annotation = left_annot,
-			top_annotation  = top_annot
-		))
+				annot_to_list()
+		) 
 
 	my_input_heatmap
 	
