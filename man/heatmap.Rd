@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods.R
 \name{heatmap}
 \alias{heatmap}
-\title{Creates a  `ComplexHeatmap` plot from `tbl_df`}
+\title{Creates a  `InputHeatmap` plot from `tbl_df` on evaluation creates a `ComplexHeatmap`}
 \usage{
 heatmap(
   .data,
@@ -39,6 +39,8 @@ heatmap(
 \item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
 
 \item{palette_value}{A character vector This is the palette that will be used as gradient for .value}
+
+\item{palette_grouping}{A list of character vectors. This is the list of palettes that will be used for grouping}
 
 \item{annotation}{Vector of quotes}
 

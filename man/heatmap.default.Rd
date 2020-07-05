@@ -40,6 +40,8 @@
 
 \item{palette_value}{A character vector This is the palette that will be used as gradient for .value}
 
+\item{palette_grouping}{A list of character vectors. This is the list of palettes that will be used for grouping}
+
 \item{annotation}{Vector of quotes}
 
 \item{type}{A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")}

@@ -1,4 +1,65 @@
-#' Creates a  `ComplexHeatmap` plot from `tbl_df`
+#the class definition
+InputHeatmap<-setClass(
+	"InputHeatmap",  
+	slots = c(
+		input = "list", 
+		data = "tbl",
+		palette_discrete = "list", 
+		palette_continuous = "list",
+		arguments = "list" ,
+		top_annotation = "list",
+		left_annotation = "list"),
+	prototype=list(
+		palette_discrete=
+			list(
+				brewer.pal(9, "Set1"),
+				brewer.pal(8, "Set2"),
+				brewer.pal(12, "Set3"),
+				brewer.pal(8, "Dark2"),
+				brewer.pal(8, "Accent"),
+				brewer.pal(8, "Pastel2")
+			), 
+		palette_continuous=
+			list(
+				brewer.pal(11, "Spectral") %>% rev,
+				viridis(n = 5),
+				magma(n = 5),
+				brewer.pal(11, "PRGn"),
+				brewer.pal(11, "BrBG")
+			),
+		input = list(),
+		top_annotation = list(),
+		left_annotation = list()
+	)
+)
+
+setMethod("show", "InputHeatmap", function(object){
+	
+	object@input$top_annotation = 
+		object@top_annotation %>%
+		list_drop_null() %>%
+		ifelse_pipe(
+			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
+			~ do.call("columnAnnotation", .x ),
+			~ NULL
+		)
+	
+	object@input$left_annotation = 
+		object@left_annotation %>%
+		list_drop_null()  %>%
+		ifelse_pipe(
+			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
+			~ do.call("rowAnnotation", .x ),
+			~ NULL
+		)
+	
+	show(do.call(Heatmap, object@input))
+} )
+
+
+
+
+#' Creates a  `InputHeatmap` plot from `tbl_df` on evaluation creates a `ComplexHeatmap`
 #'
 #' \lifecycle{maturing}
 #'
@@ -23,6 +84,7 @@
 #' @param transform A function, used to tranform .value row-wise (e.g., transform = log1p)
 #' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_value A character vector This is the palette that will be used as gradient for .value
+#' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping 
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
 #' @param .horizontal DEPRECATED. Please use .column instead
@@ -261,6 +323,86 @@ heatmap.tbl_df <-
 		
 	}
 
+#' Creates a  `InputHeatmap` plot from `tbl_df` on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' @importFrom stats sd
+#' @importFrom lifecycle is_present
+#' @importFrom lifecycle deprecate_warn
+#' 
+#'
+#' @name add_tile
+#' @rdname add_tile
+#'
+#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .column Vector of quotes
+#' @param palette A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#'
+#' @details To be added.
+#'
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' tidyHeatmap::N52 %>%
+#' group_by( `Cell type`) %>%
+#' tidyHeatmap::heatmap(
+#'  .row = symbol_ct,
+#'  .column = UBR,
+#'  .value = `read count normalised log`,
+#'  annotation = CAPRA_TOTAL
+#' )
+#'
+#'
+#' @export
+setGeneric("add_tile", function(.data,
+																.column,
+																palette = NULL)
+	standardGeneric("add_tile"))
+
+#' add_tile
+#' @inheritParams add_tile
+#' 
+#' @docType methods
+#' @rdname add_tile-methods
+#' 
+#' @return A `add_tile` object
+#'
+setMethod("add_tile", "InputHeatmap", function(.data,
+																							 .column,
+																							 palette = NULL){
+	
+	.column = enquo(.column)
+	
+	.data %>% add_annotation(
+		!!.column,
+		type = list("tile"),
+		
+		# If annotation is discrete
+		palette_discrete = 
+			.data@data %>% 
+			select(!!.column) %>% 
+			sapply(class) %>% 
+			when(. %in% c("factor", "character", "logical") ~ list(palette), ~ list()),
+		
+		# If annotation is continuous
+		palette_continuous = 
+			.data@data %>% 
+			select(!!.column) %>% 
+			sapply(class) %>% 
+			when(. %in% c("integer", "numerical", "numeric", "double") ~ list(palette), ~ list())
+	)
+	
+})
+
 
 #' Save plot on PDF file
 #'
@@ -349,64 +491,5 @@ setMethod("save_pdf", "Heatmap", .save_pdf)
 #' @export
 setMethod("save_pdf", "InputHeatmap", .save_pdf)
 
-
-
-#the class definition
-InputHeatmap<-setClass(
-	"InputHeatmap",  
-	slots = c(
-		input = "list", 
-		data = "tbl",
-		palette_discrete = "list", 
-		palette_continuous = "list",
-		arguments = "list" ,
-		top_annotation = "list",
-		left_annotation = "list"),
-	prototype=list(
-		palette_discrete=
-			list(
-				brewer.pal(9, "Set1"),
-				brewer.pal(8, "Set2"),
-				brewer.pal(12, "Set3"),
-				brewer.pal(8, "Dark2"),
-				brewer.pal(8, "Accent"),
-				brewer.pal(8, "Pastel2")
-			), 
-		palette_continuous=
-			list(
-				brewer.pal(11, "Spectral") %>% rev,
-				viridis(n = 5),
-				magma(n = 5),
-				brewer.pal(11, "PRGn"),
-				brewer.pal(11, "BrBG")
-			),
-		input = list(),
-		top_annotation = list(),
-		left_annotation = list()
-	)
-)
-
-setMethod("show", "InputHeatmap", function(object){
-	
-	object@input$top_annotation = 
-		object@top_annotation %>%
-		list_drop_null() %>%
-		ifelse_pipe(
-			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
-			~ do.call("columnAnnotation", .x ),
-			~ NULL
-		)
-	
-	object@input$left_annotation = 
-		object@left_annotation %>%
-		list_drop_null()  %>%
-		ifelse_pipe(
-			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
-			~ do.call("rowAnnotation", .x ),
-			~ NULL
-		)
-	
-	show(do.call(Heatmap, object@input))
-} )
 
 

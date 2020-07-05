@@ -31,15 +31,9 @@ input_heatmap(
 
 \item{palette_abundance}{A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_abundance)`}
 
+\item{palette_grouping}{A list of character vectors. This is the list of palettes that will be used for grouping}
+
 \item{...}{Further arguments to be passed to ComplexHeatmap::Heatmap}
-
-\item{annotation}{Vector of quotes}
-
-\item{type}{A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")}
-
-\item{palette_discrete}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
-
-\item{palette_continuous}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).}
 }
 \value{
 A `ComplexHeatmap` object

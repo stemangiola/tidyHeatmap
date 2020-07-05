@@ -58,9 +58,8 @@ test_that("annotated plot continuous annot MUST ERROR",{
 			 left_join(my_df,  dplyr::mutate(dplyr::distinct(my_df, sample), a = rnorm(n()))), 
 			.column = UBR, 
 			.row = symbol_ct, 
-			.value = `read count normalised log`,
-			annotation = a
-		), "Your annotation*", fixed=FALSE) 
+			.value = `read count normalised log`
+		) %>% add_tile(a), "Your annotation*", fixed=FALSE) 
 	
 })
 
