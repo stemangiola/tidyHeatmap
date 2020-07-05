@@ -57,11 +57,14 @@ heatmap <-
 					 .row, 
 					 .column,
 					 .value,
-					 annotation = NULL,
-					 type = rep("tile", length(quo_names(annotation))),
 					 transform = NULL,
 					 .scale = "row",
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
+					 palette_grouping = list(),
+					 
+					 # DESPRECATED
+					 annotation = NULL,
+					 type = rep("tile", length(quo_names(annotation))),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
 					 .abundance  = NULL,
@@ -81,11 +84,14 @@ heatmap.default <-
 					 .row, 
 					 .column,
 					 .value,
-					 annotation = NULL,
-					 type = rep("tile", length(quo_names(annotation))),
 					 transform = NULL,
 					 .scale = "row",
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
+					 palette_grouping = list(),
+					 
+					 # DESPRECATED
+					 annotation = NULL,
+					 type = rep("tile", length(quo_names(annotation))),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
 					 .abundance  = NULL,
@@ -106,11 +112,14 @@ heatmap.tbl_df <-
 					 .row, 
 					 .column,
 					 .value,
-					 annotation = NULL,
-					 type = rep("tile", length(quo_names(annotation))),
 					 transform = NULL,
 					 .scale = "row",
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
+					 palette_grouping = list(),
+					 
+					 # DESPRECATED
+					 annotation = NULL,
+					 type = rep("tile", length(quo_names(annotation))),
 					 palette_discrete = list(),
 					 palette_continuous = list(),
 					 .abundance  = NULL,
@@ -201,6 +210,7 @@ heatmap.tbl_df <-
 		# Validation
 		.data %>% validation(!!.column, !!.row, !!.value)
 		
+
 		.data %>% 
 			
 			# # Check if data is rectangular
@@ -209,20 +219,45 @@ heatmap.tbl_df <-
 			# 	~  eliminate_sparse_transcripts(.x, !!.row)
 			# ) %>%
 			
-		# Run plotting function
-		input_heatmap(
-			.horizontal = !!.column,
-			.vertical = !!.row,
-			.abundance = !!.value,
-			annotation = !!annotation,
-			type = type,
-			transform = transform,
-			.scale = .scale,
-			palette_abundance = palette_value,
-			palette_discrete = palette_discrete,
-			palette_continuous = palette_continuous,
-			...
-		)
+			# Run plotting function
+			input_heatmap(
+				.horizontal = !!.column,
+				.vertical = !!.row,
+				.abundance = !!.value,
+				transform = transform,
+				.scale = .scale,
+				palette_abundance = palette_value,
+				palette_grouping = palette_grouping,
+				...
+			)		%>%
+			
+			# Add group annotation if any
+			when( "groups" %in%  (attributes(.data) %>% names) ~ 	add_grouping(.), ~ (.))
+		
+		# WITH OLD PARAMETRISATION
+		
+		# .data %>% 
+		# 	
+		# 	# # Check if data is rectangular
+		# 	# ifelse_pipe(
+		# 	# 	!check_if_data_rectangular((.), !!.column, !!.row, !!.value),
+		# 	# 	~  eliminate_sparse_transcripts(.x, !!.row)
+		# 	# ) %>%
+		# 	
+		# # Run plotting function
+		# input_heatmap(
+		# 	.horizontal = !!.column,
+		# 	.vertical = !!.row,
+		# 	.abundance = !!.value,
+		# 	annotation = !!annotation,
+		# 	type = type,
+		# 	transform = transform,
+		# 	.scale = .scale,
+		# 	palette_abundance = palette_value,
+		# 	palette_discrete = palette_discrete,
+		# 	palette_continuous = palette_continuous,
+		# 	...
+		# )
 		
 	}
 
@@ -307,10 +342,40 @@ setGeneric("save_pdf", function(.heatmap,
 #' @export
 setMethod("save_pdf", "Heatmap", .save_pdf)
 
+#' save_pdf
+#' 
+#' @inheritParams save_pdf
+#' 
+#' @export
+setMethod("save_pdf", "InputHeatmap", .save_pdf)
+
 
 
 #the class definition
-InputHeatmap<-setClass("InputHeatmap",  slots = c(	input = "list" ))
+InputHeatmap<-setClass(
+	"InputHeatmap",  
+	slots = c(	input = "list", data = "tbl", palette_discrete = "list", palette_continuous = "list", arguments = "list" ),
+	prototype=list(
+		palette_discrete=
+			list(
+				brewer.pal(9, "Set1"),
+				brewer.pal(8, "Set2"),
+				brewer.pal(12, "Set3"),
+				brewer.pal(8, "Dark2"),
+				brewer.pal(8, "Accent"),
+				brewer.pal(8, "Pastel2")
+			), 
+		palette_continuous=
+			list(
+				brewer.pal(11, "Spectral") %>% rev,
+				viridis(n = 5),
+				magma(n = 5),
+				brewer.pal(11, "PRGn"),
+				brewer.pal(11, "BrBG")
+			),
+		input = list()
+	)
+)
 
 setMethod("show", "InputHeatmap", function(object) show(do.call(Heatmap, object@input)) )
 

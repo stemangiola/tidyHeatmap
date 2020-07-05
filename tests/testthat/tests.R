@@ -12,7 +12,7 @@ test_that("basic plot",{
 		)
 	
 	
-  expect_equal(as.character(class(p)), "Heatmap" )
+  expect_equal(as.character(class(p)), "InputHeatmap" )
 
 })
 
@@ -30,7 +30,7 @@ test_that("grouped plot",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -45,7 +45,7 @@ test_that("annotated plot numerical continuous intereg nominal annot",{
 			annotation = CAPRA_TOTAL
 		)
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -77,7 +77,7 @@ test_that("annotated plot continuous annot as well",{
 			annotation = c(a, CAPRA_TOTAL)
 		)
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -96,7 +96,7 @@ test_that("grouped and annotated plot",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -112,7 +112,7 @@ test_that("grouped double and annotated plot",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 	
 })
@@ -147,7 +147,7 @@ test_that("pasilla one annotation",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -164,7 +164,7 @@ test_that("pasilla 2 annotations",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -182,7 +182,7 @@ test_that("pasilla custom color abundance",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 	# Test deprecation
 	expect_warning(
@@ -215,7 +215,7 @@ test_that("pasilla custom color discrete",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -233,7 +233,7 @@ test_that("pasilla custom color contunuous",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -250,7 +250,7 @@ test_that("pasilla custom color contunuous AND discrete",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -266,7 +266,7 @@ test_that("grouped and annotated plot both vertical and horizontal",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -283,7 +283,7 @@ test_that("pass arguments with ...",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -299,7 +299,7 @@ test_that("Custom function for fill abundance palette",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 
@@ -313,7 +313,7 @@ test_that("Warning if data sparse",{
 			.value = `read count normalised log`, 
 			palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
 		))[1],
-		"Heatmap"
+		"InputHeatmap"
 	)
 })
 
@@ -341,7 +341,7 @@ test_that("test log of 0",{
 			.value = `read count`, 
 			transform = log1p	
 		))[1],
-		"Heatmap"
+		"InputHeatmap"
 	)
 	
 })
@@ -357,7 +357,7 @@ test_that("test scale",{
 				.value = `read count`, 
 				.scale = "row"
 			))[1],
-		"Heatmap"
+		"InputHeatmap"
 	)
 	
 	expect_equal(
@@ -369,7 +369,7 @@ test_that("test scale",{
 				.value = `read count`, 
 				.scale = "column"
 			))[1],
-		"Heatmap"
+		"InputHeatmap"
 	)
 	
 	expect_equal(
@@ -381,7 +381,7 @@ test_that("test scale",{
 				.value = `read count`, 
 				.scale = "both"
 			))[1],
-		"Heatmap"
+		"InputHeatmap"
 	)
 	
 	expect_equal(
@@ -393,7 +393,7 @@ test_that("test scale",{
 				.value = `read count`, 
 				.scale = "none"
 			))[1],
-		"Heatmap"
+		"InputHeatmap"
 	)
 	
 	expect_error(
@@ -430,7 +430,7 @@ test_that("multi-type",{
 		)
 	
 	
-	expect_equal(as.character(class(p)), "Heatmap" )
+	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
 })
 

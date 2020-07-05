@@ -9,11 +9,12 @@
   .row,
   .column,
   .value,
-  annotation = NULL,
-  type = rep("tile", length(quo_names(annotation))),
   transform = NULL,
   .scale = "row",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
+  palette_grouping = list(),
+  annotation = NULL,
+  type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
   .abundance = NULL,
@@ -33,15 +34,15 @@
 
 \item{.value}{The name of the transcript/gene abundance column}
 
-\item{annotation}{Vector of quotes}
-
-\item{type}{A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")}
-
 \item{transform}{A function, used to tranform .value row-wise (e.g., transform = log1p)}
 
 \item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
 
 \item{palette_value}{A character vector This is the palette that will be used as gradient for .value}
+
+\item{annotation}{Vector of quotes}
+
+\item{type}{A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")}
 
 \item{palette_discrete}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
 
