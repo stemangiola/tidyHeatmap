@@ -736,8 +736,8 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
   .abundance = enquo(.abundance)
 
   # Setup default NULL
-  top_annotation = NULL
-  left_annotation = NULL
+  top_annotation = list()
+  left_annotation = list()
   row_split = NULL
   col_split = NULL
   

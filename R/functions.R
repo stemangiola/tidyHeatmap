@@ -295,16 +295,14 @@ add_annotation = function(my_input_heatmap,
 	if(!is.list(palette_discrete) | !is.list(palette_continuous))
 		stop("tidyHeatmap says: the arguments palette_discrete and palette_continuous must be lists. E.g., list(rep(\"#000000\", 20))")
 	
+	# Add custom palette to discrete if any
+	my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete %>% c(palette_discrete)
+	my_input_heatmap@palette_continuous = my_input_heatmap@palette_continuous %>% c(palette_continuous)
+	
 	# Colors annotations
 	palette_annotation = list(
-		# Discrete pellets
-		discrete = 
-			palette_discrete %>%
-			c(my_input_heatmap@palette_discrete),
-		
-		continuous = 
-			palette_continuous %>%
-			c(my_input_heatmap@palette_continuous)
+		discrete = 	my_input_heatmap@palette_discrete,
+		continuous = my_input_heatmap@palette_continuous
 	)
 	
 	# Check if there are nested column in the data frame
@@ -327,18 +325,21 @@ add_annotation = function(my_input_heatmap,
 							)
 						))
 	
-	# If I have grouping, eliminate the first discrete palette
-	palette_annotation$discrete =
-		palette_annotation$discrete %>%
-		ifelse_pipe(length(get_grouping_columns(.data)) > 0, ~ tail(.x, -length(get_grouping_columns(.data))))
-	
 	# Get annotation
 	.data_annot = 
 		.data %>%
-		get_top_left_annotation(	!!.horizontal,
+		get_top_left_annotation( !!.horizontal,
 														 !!.vertical,
 														 !!.abundance,
 														 !!annotation,	palette_annotation,	type, x_y_annot_cols)
+	
+	# Number of grouping
+	how_many_discrete = .data_annot %>% filter(annot_type=="discrete") %>% nrow
+	how_many_continuous = .data_annot %>% filter(annot_type=="continuous") %>% nrow
+	
+	# Eliminate used  annotations
+	my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete %>% tail(-how_many_discrete) 
+	my_input_heatmap@palette_continuous = my_input_heatmap@palette_continuous %>% tail(-how_many_continuous) 
 	
 	# # Check if annotation is compatible with your dataset
 	# x_y_annot_cols %>%

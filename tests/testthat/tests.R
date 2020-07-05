@@ -450,3 +450,51 @@ test_that("save_pdf",{
 	
 	if (file.exists(filename)) file.remove(filename)
 })
+
+test_that("managing palette usage",{
+	
+	p1 = 
+		tidyHeatmap::heatmap(
+			tidyHeatmap::pasilla,
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`
+		)
+	
+	l1 = length(p1@palette_discrete)
+	lc2 = length(p1@palette_continuous)
+	
+	p2 = 
+		tidyHeatmap::heatmap(
+			dplyr::group_by(tidyHeatmap::pasilla, type),
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`
+		)
+	
+	expect_equal(length(p2@palette_discrete), l1-1 )
+	
+	p3 = 
+		tidyHeatmap::heatmap(
+			dplyr::group_by(tidyHeatmap::pasilla,		location, type),
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`
+		)
+	
+	expect_equal(length(p3@palette_discrete), length(p2@palette_discrete)-1 )
+	
+	p4 =
+		p3 %>%
+		tidyHeatmap:::add_annotation(annotation = c(condition, activation))
+	
+	expect_equal(length(p4@palette_discrete), length(p3@palette_discrete)-1 )
+	
+	p5 =
+		p1 %>%
+		tidyHeatmap:::add_annotation(annotation = c(condition, activation))
+	
+	expect_equal(length(p5@palette_discrete), length(p1@palette_discrete)-1 )
+	expect_equal(length(p5@palette_continuous), length(p1@palette_continuous)-1 )
+	
+})
