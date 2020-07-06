@@ -24,6 +24,7 @@
 #' @importFrom rlang is_function
 #' @importFrom purrr when
 #' @importFrom rlang dots_list
+#' @importFrom methods new
 #'
 #' @name input_heatmap
 #' @rdname input_heatmap
@@ -162,8 +163,13 @@ input_heatmap = function(.data,
 	
 }
 
+#' @importFrom utils tail
 add_grouping = function(my_input_heatmap){
 	   
+	# Fix CRAN nots
+	.rows = NULL
+	
+	
 	# Check if there are nested column in the data frame
 	if(my_input_heatmap@data %>% lapply(class)  %>% equals("list") %>% any)
 		warning("tidyHeatmap says: nested/list column are present in your data frame and have been dropped as their unicity cannot be identified by dplyr.")
@@ -265,6 +271,9 @@ add_annotation = function(my_input_heatmap,
 												 type = rep("tile", length(quo_names(annotation))),
 												 palette_discrete = list(),
 												 palette_continuous = list()) {
+	
+	# Solve CRAN note
+	annot_type = NULL
 	
 	.data = my_input_heatmap@data
 

@@ -38,7 +38,12 @@ InputHeatmap<-setClass(
 	)
 )
 
+#' @importFrom methods show
 setMethod("show", "InputHeatmap", function(object){
+	
+	# Fix CRAN notes
+	. = NULL
+	
 	
 	object@input$top_annotation = 
 		c(
@@ -84,7 +89,6 @@ setMethod("show", "InputHeatmap", function(object){
 #' 
 #'
 #' @name heatmap
-#' @rdname heatmap
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .row The name of the column vertically presented in the heatmap
@@ -332,7 +336,7 @@ setMethod("heatmap", "tbl", heatmap_)
 #' 
 #'
 #' @name add_tile
-#' @rdname add_tile
+#' @rdname add_tile-methods
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
@@ -412,7 +416,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #' 
 #'
 #' @name add_point
-#' @rdname add_point
+#' @rdname add_point-methods
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes

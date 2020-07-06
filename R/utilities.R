@@ -826,6 +826,12 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
 
 get_group_annotation_OPTIMISED_NOT_FINISHED = function(.data, .column, .row, .abundance, palette_annotation){
   
+  # Fix CRAN notes
+  value = NULL
+  col_name = NULL
+  col_orientation = NULL
+  annotation_function = NULL
+  
   # Comply with CRAN NOTES
   data = NULL
   . = NULL
