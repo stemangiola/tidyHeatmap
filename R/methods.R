@@ -265,7 +265,7 @@ heatmap_ <-
 		.data %>% validation(!!.column, !!.row, !!.value)
 		
 		# DEPRECATION OF ANNOTATION
-		if (is_present(annotation) & !is.null(annotation)) {
+		if (is_present(annotation) & !quo_is_null(annotation)) {
 			
 			# Signal the deprecation to the user
 			deprecate_warn("1.1.0", "tidyHeatmap::heatmap(annotation = )", details = "Please use the new annotation framework instead: heatmap(...) %>% add_tile(...) %>% add_point(...) %>% add_bar() %>% add_line() %>% ...")
