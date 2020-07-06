@@ -328,8 +328,8 @@ add_annotation = function(my_input_heatmap,
 	how_many_continuous = .data_annot %>% filter(annot_type=="continuous") %>% nrow
 	
 	# Eliminate used  annotations
-	my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete %>% tail(-how_many_discrete) 
-	my_input_heatmap@palette_continuous = my_input_heatmap@palette_continuous %>% tail(-how_many_continuous) 
+	my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete %>% when(how_many_discrete>0 ~ tail(., -how_many_discrete) , ~ (.))
+	my_input_heatmap@palette_continuous = my_input_heatmap@palette_continuous %>% when(how_many_continuous>0 ~ tail(., -how_many_continuous), ~ (.))
 	
 	# # Check if annotation is compatible with your dataset
 	# x_y_annot_cols %>%
