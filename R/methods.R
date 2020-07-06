@@ -403,14 +403,14 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 			.data@data %>% 
 			select(!!.column) %>% 
 			sapply(class) %>% 
-			when(. %in% c("factor", "character", "logical") ~ list(palette), ~ list()),
+			when(. %in% c("factor", "character", "logical") &	!is.null(palette) ~ list(palette), ~ list()),
 		
 		# If annotation is continuous
 		palette_continuous = 
 			.data@data %>% 
 			select(!!.column) %>% 
 			sapply(class) %>% 
-			when(. %in% c("integer", "numerical", "numeric", "double") ~ list(palette), ~ list())
+			when(. %in% c("integer", "numerical", "numeric", "double") &	!is.null(palette) ~ list(palette), ~ list())
 	)
 	
 })
