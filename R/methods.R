@@ -70,7 +70,7 @@ setMethod("show", "InputHeatmap", function(object){
 
 
 
-#' Creates a  `InputHeatmap` plot from `tbl_df` on evaluation creates a `ComplexHeatmap`
+#' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
 #'
 #' \lifecycle{maturing}
 #'
@@ -124,64 +124,40 @@ setMethod("show", "InputHeatmap", function(object){
 #'  .value = `read count normalised log`,
 #' )
 #'
+#' @docType methods
+#' @rdname heatmap-methods
 #'
 #' @export
-heatmap <-
-	function(.data,
-					 .row, 
-					 .column,
-					 .value,
-					 transform = NULL,
-					 .scale = "row",
-					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
-					 palette_grouping = list(),
-					 
-					 # DESPRECATED
-					 annotation = NULL,
-					 type = rep("tile", length(quo_names(annotation))),
-					 palette_discrete = list(),
-					 palette_continuous = list(),
-					 .abundance  = NULL,
-					 .horizontal = NULL,
-					 .vertical = NULL,
-					 log_transform = NULL,
-					 palette_abundance = NULL,
-					 ...) {
-		UseMethod("heatmap", .data)
-	}
+setGeneric("heatmap", function(.data,
+															 .row, 
+															 .column,
+															 .value,
+															 transform = NULL,
+															 .scale = "row",
+															 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
+															 palette_grouping = list(),
+															 
+															 # DESPRECATED
+															 annotation = NULL,
+															 type = rep("tile", length(quo_names(annotation))),
+															 palette_discrete = list(),
+															 palette_continuous = list(),
+															 .abundance  = NULL,
+															 .horizontal = NULL,
+															 .vertical = NULL,
+															 log_transform = NULL,
+															 palette_abundance = NULL,
+															 ...) standardGeneric("heatmap"))
 
-#' Creates a  `ComplexHeatmap` plot from `tbl_df`
+#' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
 #' @inheritParams heatmap
-#' @export
-heatmap.default <-
-	function(.data,
-					 .row, 
-					 .column,
-					 .value,
-					 transform = NULL,
-					 .scale = "row",
-					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
-					 palette_grouping = list(),
-					 
-					 # DESPRECATED
-					 annotation = NULL,
-					 type = rep("tile", length(quo_names(annotation))),
-					 palette_discrete = list(),
-					 palette_continuous = list(),
-					 .abundance  = NULL,
-					 .horizontal = NULL,
-					 .vertical = NULL,
-					 log_transform = NULL,
-					 palette_abundance = NULL,
-					 ...)
-	{
-		message("tidyHeatmap::heatmap function cannot be applied to this object. Please input a tibble (tbl_df) object.")
-	}
-
-#' Creates a  `ComplexHeatmap` plot from `tbl_df`
-#' @inheritParams heatmap
-#' @export
-heatmap.tbl_df <-
+#' 
+#' @docType methods
+#' @rdname heatmap-methods
+#' 
+#' @return A `InputHeatmap` object
+#' 
+heatmap_ <-
 	function(.data,
 					 .row, 
 					 .column,
@@ -334,6 +310,16 @@ heatmap.tbl_df <-
 		# )
 		
 	}
+
+#' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
+#' @inheritParams heatmap
+#' 
+#' @docType methods
+#' @rdname heatmap-methods
+#' 
+#' @return A `InputHeatmap` object
+#'
+setMethod("heatmap", "tbl", heatmap_)
 
 #' Adds a tile annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'
