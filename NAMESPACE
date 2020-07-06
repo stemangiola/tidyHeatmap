@@ -2,6 +2,9 @@
 
 S3method(heatmap,default)
 S3method(heatmap,tbl_df)
+export(add_bar)
+export(add_line)
+export(add_point)
 export(add_tile)
 export(heatmap)
 export(save_pdf)

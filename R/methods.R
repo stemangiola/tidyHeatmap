@@ -7,8 +7,11 @@ InputHeatmap<-setClass(
 		palette_discrete = "list", 
 		palette_continuous = "list",
 		arguments = "list" ,
-		top_annotation = "list",
-		left_annotation = "list"),
+		top_annotation = "tbl",
+		left_annotation = "tbl",
+		group_top_annotation = "list",
+		group_left_annotation = "list"
+	),
 	prototype=list(
 		palette_discrete=
 			list(
@@ -28,15 +31,20 @@ InputHeatmap<-setClass(
 				brewer.pal(11, "BrBG")
 			),
 		input = list(),
-		top_annotation = list(),
-		left_annotation = list()
+		top_annotation =  tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list()),
+		left_annotation = tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list()),
+		group_top_annotation = list(),
+		group_left_annotation = list()
 	)
 )
 
 setMethod("show", "InputHeatmap", function(object){
 	
 	object@input$top_annotation = 
-		object@top_annotation %>%
+		c(
+			object@group_top_annotation,
+			object@top_annotation %>% annot_to_list()
+		) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
 			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
@@ -45,7 +53,10 @@ setMethod("show", "InputHeatmap", function(object){
 		)
 	
 	object@input$left_annotation = 
-		object@left_annotation %>%
+		c(
+			object@group_left_annotation,
+			object@left_annotation %>% annot_to_list()
+		) %>%
 		list_drop_null()  %>%
 		ifelse_pipe(
 			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
@@ -384,7 +395,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 	
 	.data %>% add_annotation(
 		!!.column,
-		type = list("tile"),
+		type = "tile",
 		
 		# If annotation is discrete
 		palette_discrete = 

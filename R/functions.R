@@ -195,10 +195,10 @@ add_grouping = function(my_input_heatmap){
 	)
 	
 	# Isolate top annotation
-	my_input_heatmap@top_annotation = group_annotation$top_annotation 
+	my_input_heatmap@group_top_annotation = group_annotation$top_annotation 
 	
 	# Isolate left annotation
-	my_input_heatmap@left_annotation = group_annotation$left_annotation 
+	my_input_heatmap@group_left_annotation = group_annotation$left_annotation 
 	
 	my_input_heatmap@input  =
 		my_input_heatmap@input %>%
@@ -348,20 +348,12 @@ add_annotation = function(my_input_heatmap,
 	# Isolate top annotation
 	my_input_heatmap@top_annotation =  
 		my_input_heatmap@top_annotation %>%
-		c(
-			.data_annot %>% 
-				filter(orientation == "column") %>%
-				annot_to_list()
-		) 
+		bind_rows(.data_annot %>% filter(orientation == "column") ) 
 	
 	# Isolate left annotation
 	my_input_heatmap@left_annotation = 
 		my_input_heatmap@left_annotation %>%
-		c(
-			.data_annot %>% 
-				filter(orientation == "row") %>%
-				annot_to_list()
-		) 
+		bind_rows(	.data_annot %>% filter(orientation == "row") ) 
 
 	my_input_heatmap
 	
