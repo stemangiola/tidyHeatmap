@@ -1,16 +1,16 @@
 #the class definition
 InputHeatmap<-setClass(
 	"InputHeatmap",  
-	slots = c(
+	slots = list(
 		input = "list", 
 		data = "tbl",
 		palette_discrete = "list", 
 		palette_continuous = "list",
-		arguments = "list" ,
+		group_top_annotation = "list",
+		group_left_annotation = "list",
 		top_annotation = "tbl",
 		left_annotation = "tbl",
-		group_top_annotation = "list",
-		group_left_annotation = "list"
+		arguments = "list" 
 	),
 	prototype=list(
 		palette_discrete=
@@ -71,9 +71,6 @@ setMethod("show", "InputHeatmap", function(object){
 	
 	show(do.call(Heatmap, object@input))
 } )
-
-
-
 
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
 #'

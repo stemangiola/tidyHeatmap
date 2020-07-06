@@ -147,6 +147,7 @@ input_heatmap = function(.data,
 	# Define object
 	new(
 		"InputHeatmap",
+		data = .data,
 		input = list(
 			abundance_mat,
 			name = quo_name(.abundance),
@@ -157,7 +158,6 @@ input_heatmap = function(.data,
 			column_names_gp = gpar(fontsize = min(12, 320 / dim(abundance_mat)[2]))
 		)  %>%
 		c(rlang::dots_list(...)),
-		data = .data,
 		arguments = arguments
 	)
 	
