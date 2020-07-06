@@ -286,8 +286,8 @@ add_annotation = function(my_input_heatmap,
 		stop("tidyHeatmap says: the arguments palette_discrete and palette_continuous must be lists. E.g., list(rep(\"#000000\", 20))")
 	
 	# Add custom palette to discrete if any
-	my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete %>% c(palette_discrete)
-	my_input_heatmap@palette_continuous = my_input_heatmap@palette_continuous %>% c(palette_continuous)
+	my_input_heatmap@palette_discrete = palette_discrete %>% c(my_input_heatmap@palette_discrete)
+	my_input_heatmap@palette_continuous = palette_continuous %>% c(my_input_heatmap@palette_continuous)
 	
 	# Colors annotations
 	palette_annotation = list(
