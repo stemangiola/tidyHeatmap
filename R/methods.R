@@ -264,7 +264,30 @@ heatmap_ <-
 		# Validation
 		.data %>% validation(!!.column, !!.row, !!.value)
 		
+		# DEPRECATION OF ANNOTATION
+		if (is_present(annotation) & !is.null(annotation)) {
+			
+			# Signal the deprecation to the user
+			deprecate_warn("1.1.0", "tidyHeatmap::heatmap(annotation = )", details = "Please use the new annotation framework instead: heatmap(...) %>% add_tile(...) %>% add_point(...) %>% add_bar() %>% add_line() %>% ...")
+			
+			# Deal with the deprecated argument for compatibility
+			return(		.data %>%
+									plot_heatmap(
+										.horizontal = !!.column,
+										.vertical = !!.row,
+										.abundance = !!.value,
+										annotation = !!annotation,
+										type = type,
+										transform = transform,
+										.scale = .scale,
+										palette_abundance = palette_value,
+										palette_discrete = palette_discrete,
+										palette_continuous = palette_continuous,
+										...
+									))
+		}
 
+		
 		.data %>% 
 			
 			# # Check if data is rectangular
@@ -287,31 +310,6 @@ heatmap_ <-
 			
 			# Add group annotation if any
 			when( "groups" %in%  (attributes(.data) %>% names) ~ 	add_grouping(.), ~ (.))
-		
-		# WITH OLD PARAMETRISATION
-		
-		# .data %>% 
-		# 	
-		# 	# # Check if data is rectangular
-		# 	# ifelse_pipe(
-		# 	# 	!check_if_data_rectangular((.), !!.column, !!.row, !!.value),
-		# 	# 	~  eliminate_sparse_transcripts(.x, !!.row)
-		# 	# ) %>%
-		# 	
-		# # Run plotting function
-		# input_heatmap(
-		# 	.horizontal = !!.column,
-		# 	.vertical = !!.row,
-		# 	.abundance = !!.value,
-		# 	annotation = !!annotation,
-		# 	type = type,
-		# 	transform = transform,
-		# 	.scale = .scale,
-		# 	palette_abundance = palette_value,
-		# 	palette_discrete = palette_discrete,
-		# 	palette_continuous = palette_continuous,
-		# 	...
-		# )
 		
 	}
 

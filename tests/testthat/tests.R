@@ -515,3 +515,18 @@ test_that("managing palette usage",{
 	expect_equal(length(p5@palette_continuous), length(p1@palette_continuous)-1 )
 	
 })
+
+test_that("annotated plot numerical continuous intereg nominal annot",{
+	
+	expect_warning(
+		tidyHeatmap::heatmap(
+			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+			.column = UBR, 
+			.row = symbol_ct, 
+			.value = `read count normalised log`,
+			annotation = CAPRA_TOTAL
+		), "Please use the new annotation framework instead"
+	)
+	
+
+})
