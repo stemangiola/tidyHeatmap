@@ -34,21 +34,21 @@ heatmap(
 
 \item{.value}{The name of the transcript/gene abundance column}
 
-\item{transform}{A function, used to tranform .value row-wise (e.g., transform = log1p)}
+\item{transform}{A function, used to transform .value row-wise (e.g., transform = log1p)}
 
 \item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
 
-\item{palette_value}{A character vector This is the palette that will be used as gradient for .value}
+\item{palette_value}{A character vector This is the palette that will be used as gradient for .value. For higher flexibility you can use circlize::colorRamp2\(c\(-2, -1, 0, 1, 2\), viridis::magma\(5\)\)}
 
 \item{palette_grouping}{A list of character vectors. This is the list of palettes that will be used for grouping}
 
-\item{annotation}{Vector of quotes}
+\item{annotation}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
 
-\item{type}{A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")}
+\item{type}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
 
-\item{palette_discrete}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
+\item{palette_discrete}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
 
-\item{palette_continuous}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).}
+\item{palette_continuous}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
 
 \item{.abundance}{DEPRECATED. Please use .value instead}
 
@@ -63,7 +63,7 @@ heatmap(
 \item{...}{Further arguments to be passed to ComplexHeatmap::Heatmap}
 }
 \value{
-A `ComplexHeatmap` object
+A `InputHeatmap` objects that gets evaluated to a `ComplexHeatmap` object
 }
 \description{
 heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
@@ -71,18 +71,18 @@ heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with int
 \details{
 \lifecycle{maturing}
 
-To be added.
+This function takes a tbl as an input and creates a `ComplexHeatmap` plot. The information is stored in a `InputHeatmap` object that is updated along the pipe statement, for example adding annotation layers.
 }
 \examples{
 
 library(dplyr)
+
 tidyHeatmap::N52 \%>\%
 group_by( `Cell type`) \%>\%
 tidyHeatmap::heatmap(
  .row = symbol_ct,
  .column = UBR,
  .value = `read count normalised log`,
- annotation = CAPRA_TOTAL
 )
 
 

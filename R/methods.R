@@ -90,37 +90,38 @@ setMethod("show", "InputHeatmap", function(object){
 #' @param .row The name of the column vertically presented in the heatmap
 #' @param .column The name of the column horizontally presented in the heatmap
 #' @param .value The name of the transcript/gene abundance column
-#' @param annotation Vector of quotes
-#' @param type A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")
-#' @param transform A function, used to tranform .value row-wise (e.g., transform = log1p)
+#' @param transform A function, used to transform .value row-wise (e.g., transform = log1p)
 #' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
-#' @param palette_value A character vector This is the palette that will be used as gradient for .value
+#' @param palette_value A character vector This is the palette that will be used as gradient for .value. For higher flexibility you can use circlize::colorRamp2\(c\(-2, -1, 0, 1, 2\), viridis::magma\(5\)\)
 #' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping 
-#' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
-#' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
+#' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
+#' 
+#' @param annotation DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
+#' @param type DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
+#' @param palette_discrete DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
+#' @param palette_continuous DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
 #' @param .horizontal DEPRECATED. Please use .column instead
 #' @param .vertical DEPRECATED. Please use .row instead
 #' @param .abundance DEPRECATED. Please use .value instead
 #' @param log_transform DEPRECATED. Please use transform instead
 #' @param palette_abundance DEPRECATED. Please use palette_value instead
-#' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
 #'
-#' @details To be added.
+#' @details This function takes a tbl as an input and creates a `ComplexHeatmap` plot. The information is stored in a `InputHeatmap` object that is updated along the pipe statement, for example adding annotation layers. 
 #'
-#' @return A `ComplexHeatmap` object
+#' @return A `InputHeatmap` objects that gets evaluated to a `ComplexHeatmap` object
 #'
 #'
 #'
 #' @examples
 #'
 #' library(dplyr)
+#' 
 #' tidyHeatmap::N52 %>%
 #' group_by( `Cell type`) %>%
 #' tidyHeatmap::heatmap(
 #'  .row = symbol_ct,
 #'  .column = UBR,
 #'  .value = `read count normalised log`,
-#'  annotation = CAPRA_TOTAL
 #' )
 #'
 #'
@@ -334,17 +335,14 @@ heatmap.tbl_df <-
 		
 	}
 
-#' Creates a  `InputHeatmap` plot from `tbl_df` on evaluation creates a `ComplexHeatmap`
+#' Adds a tile annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'
 #' \lifecycle{maturing}
 #'
-#' @description heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
+#' @description add_tile() from a `InputHeatmap` object, adds a tile annotation layer.
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
-#' @importFrom stats sd
-#' @importFrom lifecycle is_present
-#' @importFrom lifecycle deprecate_warn
 #' 
 #'
 #' @name add_tile
@@ -352,10 +350,11 @@ heatmap.tbl_df <-
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
-#' @param palette A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #'
-#' @details To be added.
 #'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 #'
@@ -363,14 +362,16 @@ heatmap.tbl_df <-
 #' @examples
 #'
 #' library(dplyr)
-#' tidyHeatmap::N52 %>%
-#' group_by( `Cell type`) %>%
-#' tidyHeatmap::heatmap(
-#'  .row = symbol_ct,
-#'  .column = UBR,
-#'  .value = `read count normalised log`,
-#'  annotation = CAPRA_TOTAL
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
 #' )
+#' 
+#' hm %>% add_tile(CAPRA_TOTAL)
 #'
 #'
 #' @export
@@ -414,6 +415,194 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 	
 })
 
+#' Adds a point annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description add_point() from a `InputHeatmap` object, adds a point annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#'
+#' @name add_point
+#' @rdname add_point
+#'
+#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .column Vector of quotes
+#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% add_point()
+#'
+#'
+#' @export
+setGeneric("add_point", function(.data,
+																.column,
+																palette = NULL)
+	standardGeneric("add_point"))
+
+#' add_point
+#' @inheritParams add_point
+#' 
+#' @docType methods
+#' @rdname add_point-methods
+#' 
+#' @return A `add_point` object
+#'
+setMethod("add_point", "InputHeatmap", function(.data,
+																							 .column,
+																							 palette = NULL){
+	
+	.column = enquo(.column)
+	
+	.data %>% add_annotation(	!!.column,	type = "point")
+	
+})
+
+#' Adds a line annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description add_line() from a `InputHeatmap` object, adds a line annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#'
+#' @name add_line
+#' @rdname add_line
+#'
+#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .column Vector of quotes
+#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% add_line()
+#'
+#'
+#' @export
+setGeneric("add_line", function(.data,
+																 .column,
+																 palette = NULL)
+	standardGeneric("add_line"))
+
+#' add_line
+#' @inheritParams add_line
+#' 
+#' @docType methods
+#' @rdname add_line-methods
+#' 
+#' @return A `add_line` object
+#'
+setMethod("add_line", "InputHeatmap", function(.data,
+																								.column,
+																								palette = NULL){
+	
+	.column = enquo(.column)
+	
+	.data %>% add_annotation(	!!.column,	type = "line")
+	
+})
+
+#' Adds a bar annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description add_bar() from a `InputHeatmap` object, adds a bar annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#'
+#' @name add_bar
+#' @rdname add_bar
+#'
+#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .column Vector of quotes
+#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% add_bar()
+#'
+#'
+#' @export
+setGeneric("add_bar", function(.data,
+																.column,
+																palette = NULL)
+	standardGeneric("add_bar"))
+
+#' add_bar
+#' @inheritParams add_bar
+#' 
+#' @docType methods
+#' @rdname add_bar-methods
+#' 
+#' @return A `add_bar` object
+#'
+setMethod("add_bar", "InputHeatmap", function(.data,
+																							 .column,
+																							 palette = NULL){
+	
+	.column = enquo(.column)
+	
+	.data %>% add_annotation(	!!.column,	type = "bar")
+	
+})
 
 #' Save plot on PDF file
 #'

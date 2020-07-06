@@ -41,9 +41,9 @@ test_that("annotated plot numerical continuous intereg nominal annot",{
 				dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
 			.column = UBR, 
 			.row = symbol_ct, 
-			.value = `read count normalised log`,
-			annotation = CAPRA_TOTAL
-		)
+			.value = `read count normalised log`
+		) %>%
+		add_tile(CAPRA_TOTAL)
 	
 	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
@@ -59,7 +59,8 @@ test_that("annotated plot continuous annot MUST ERROR",{
 			.column = UBR, 
 			.row = symbol_ct, 
 			.value = `read count normalised log`
-		) %>% add_tile(a), "Your annotation*", fixed=FALSE) 
+		) %>% 
+			add_tile(a), "Your annotation*", fixed=FALSE) 
 	
 })
 
@@ -72,9 +73,10 @@ test_that("annotated plot continuous annot as well",{
 			left_join(my_df,  dplyr::mutate(dplyr::distinct(my_df, UBR), a = rnorm(n(), sd=5))), 
 			.column = UBR, 
 			.row = symbol_ct, 
-			.value = `read count normalised log`,
-			annotation = c(a, CAPRA_TOTAL)
-		)
+			.value = `read count normalised log`
+		) %>%
+		add_tile(a) %>%
+		add_tile(CAPRA_TOTAL)
 	
 	expect_equal(as.character(class(p)), "InputHeatmap" )
 	
