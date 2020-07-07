@@ -369,12 +369,12 @@ summary {
 <p>title: ‘tidyHeatmap: A modular and tidyverse-style R package for heatmap visualisation’ tags: - R - tidyverse - tidy - heatmap - data visualization authors: - name: Stefano Mangiola<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> orcid: 0000-0001-7474-836X affiliation: “1, 2” - name: Anthony T. Papenfuss orcid: 0000-0002-1102-8506 affiliation: “1, 2, 3, 4” affiliations: - name: Bioinformatics Division, The Walter and Eliza Hall Institute of Medical Research, Parkville, Victoria, Australia index: 1 - name: Department of Medical Biology, University of Melbourne, Melbourne, Victoria, Australia. index: 2 - name: Peter MacCallum Cancer Centre, Melbourne, VIC 3000, Australia. index: 3 - name: School of Mathematics and Statistics, University of Melbourne, Melbourne, VIC 3010, Australia. index: 4 date: 07 July 2020 bibliography: paper.bib</p>
 <div id="summary" class="section level1">
 <h1>Summary</h1>
-<p>Heatmap is a powerful tool to visualise multi-dimensional data, where individual values can be organised in a two-dimensional matrix and their values expressed as colors. Row and columns can be ordered accordingly to their reciprocal similarity, using hierarchical clustering; and dendrograms can be added to the plot to facilitate the interpretation. Row- and column-wise can have associated visual annotations, such as colored tiles. Within the R environment, several packages have been produced to facilitate the production of heatmaps. The most simple and readily available tool is provided within the <code>stats</code> package [REF], which offers basic heatmaps with no annotations. The versative package <code>ggplot2</code> gives the possibility to produce basic heatmaps, but with fine aesthetical adjustable parameters [REF]. More powerful software exist for producing fully annotated, multi-panels heatmaps, such as <code>ComplexHeatmap</code> [Complex Heatmaps Reveal Patterns and Correlations in Multidimensional Genomic Data] and <code>Pheatmap</code> [REF]. The versatility of these packages comes at the cost of adding complexity in the user interface, characterised by a arge number of parameters and annotation functions that introduce a steap learning curve for producing complex, clear and good looking graphics.</p>
-<p>Recently, efforts have been made toward the harmonisation of data frame structures and data analysis workflows using the concept of tidiness [4]. Tidy data frames allow ease of manipulation, modelling and visualisation; and are characterised by having a specific structure where each variable is a column and each observation is a row. The <code>tidyverse</code> is a suite that defined the standard for tidy data and APIs [REF]. As the correspondence between quantities and annotations are univoquely defined in tidy data frames, a large portion of the information matching needed for highly annotated and structured heatmaps can be done programmatically, increasing user the cost/benefit ratio in complex operations. Within this basis, often the user input is limited to column names, of a tidy data frame.</p>
-<p><code>tidyHeatmap</code> is a graphical R package that introduces tidy principles to the creation of information-rich heatmaps. It is part of the CRAN R repository [REF]. This package uses <code>ComplexHeatmap</code> as graphical engine. The command-line user interface is organised in (i) the main plotting utility; (ii) the annotation layer utilities; and (iii) the save-to-disk utilities. The inputdata frame streams along the utility path using the pipe operator from <code>magrittr</code>, allowing high level of modularity. The main utility allows the user to plot a base heatmap with dendrograms. The annotation utilities allow to serially add tile, point, bar and/or line annotation boxes to the side on the heatmap. The orientation of the annotations (row- or column-wise) is inferred by the <code>tidyHeatmap</code> algorithms, based on the input data frame. The save-to-disk utility allows to create vectorial or bitmap images directly from the R object, in the style of <code>ggplot2</code>. User defined row- or column-wise clusters can be defined effortlessy applying <code>group_by</code> function from <code>dplyr</code> [REF] to the input data frame. Beside offering a modular and user-friendly interface, <code>tidyHeatmap</code> provide publication ready aesthetics such as viridis [REF] and brewer [REF] color palettes and automatic sizing of row and column labels to avoid overlapping.</p>
+<p>Heatmap is a powerful tool to visualise multi-dimensional data, where individual values can be organised in a two-dimensional matrix and their values expressed as colors. Row and columns can be ordered accordingly to their reciprocal similarity, using hierarchical clustering; and dendrograms can be added to the plot to facilitate the interpretation. Row- and column-wise can have associated visual annotations, such as colored tiles. Within the R environment, several packages have been produced to facilitate the production of heatmaps. The most simple and readily available tool is provided within the <code>stats</code> package <span class="citation">[@R Core Team:2013]</span>, which offers basic heatmaps with no annotations. The versative package <code>ggplot2</code> gives the possibility to produce basic heatmaps, but with fine aesthetical adjustable parameters <span class="citation">[@Hadley:2016]</span>. More powerful software exist for producing fully annotated, multi-panels heatmaps, such as <code>ComplexHeatmap</code> <span class="citation">[@Gu2016-cd]</span> and <code>Pheatmap</code> <span class="citation">[@Kolde2012-tu]</span>. The versatility of these packages comes at the cost of adding complexity in the user interface, characterised by a arge number of parameters and annotation functions that introduce a steap learning curve for producing complex, clear and good looking graphics.</p>
+<p>Recently, efforts have been made toward the harmonisation of data frame structures and data analysis workflows using the concept of tidiness [4]. Tidy data frames allow ease of manipulation, modelling and visualisation; and are characterised by having a specific structure where each variable is a column and each observation is a row. The <code>tidyverse</code> is a suite that defined the standard for tidy data and APIs <span class="citation">[@Hadley:2019]</span>. As the correspondence between quantities and annotations are univoquely defined in tidy data frames, a large portion of the information matching needed for highly annotated and structured heatmaps can be done programmatically, increasing user the cost/benefit ratio in complex operations. Within this basis, often the user input is limited to column names, of a tidy data frame.</p>
+<p><code>tidyHeatmap</code> is a graphical R package that introduces tidy principles to the creation of information-rich heatmaps. It is part of the CRAN R repository. This package uses <code>ComplexHeatmap</code> as graphical engine. The command-line user interface is organised in (i) the main plotting utility; (ii) the annotation layer utilities; and (iii) the save-to-disk utilities. The inputdata frame streams along the utility path using the pipe operator from <code>magrittr</code>, allowing high level of modularity. The main utility allows the user to plot a base heatmap with dendrograms. The annotation utilities allow to serially add tile, point, bar and/or line annotation boxes to the side on the heatmap. The orientation of the annotations (row- or column-wise) is inferred by the <code>tidyHeatmap</code> algorithms, based on the input data frame. The save-to-disk utility allows to create vectorial or bitmap images directly from the R object, in the style of <code>ggplot2</code>. User defined row- or column-wise clusters can be defined effortlessy applying <code>group_by</code> function from <code>dplyr</code> <span class="citation">[@Hadley:2020]</span> to the input data frame. Beside offering a modular and user-friendly interface, <code>tidyHeatmap</code> provide publication ready aesthetics such as viridis <span class="citation">[@Garnier:2018]</span> and brewer <span class="citation">[@Neuwirth:2014]</span> color palettes and automatic sizing of row and column labels to avoid overlapping. This software is designed for modular expandibility.</p>
 </div>
-<div id="code-interface" class="section level1">
-<h1>Code interface</h1>
+<div id="tidy-paradigm" class="section level1">
+<h1>Tidy paradigm</h1>
 <p>The input is a tidy data frame with the three basic columns including row and column elements of the heatmap and values, that will be converted in colors. Additionally further columns can include information about grouping and annotation.</p>
 <table>
 <thead>
@@ -396,14 +396,14 @@ summary {
 </tr>
 </tbody>
 </table>
-<p>The code interface consist in modular functions linked through the pipe operator (). Custom color palette can be used passing an array of colors of a color function (e.g., circlize [REF]) to the palette argument of the annotation utilities.</p>
+<p>The code interface consist in modular functions linked through the pipe operator (). Custom color palette can be used passing an array of colors of a color function (e.g., circlize <span class="citation">[@Zuguang:2014]</span>) to the palette argument of the annotation utilities.</p>
 <pre class="r"><code>my_heatmap = 
 
-        # Grouping
-        input_df %&gt;%
-        group_by(location) %&gt;%
+    # Grouping
+    input_df %&gt;%
+    group_by(location) %&gt;%
         
-        # Plotting
+    # Plotting
     heatmap(feature, element, value) %&gt;%
     
     # Annotation
@@ -415,56 +415,64 @@ summary {
 
 # Saving
 my_heatmap %&gt;% save_pdf(&quot;my_file.pdf&quot;)</code></pre>
-<p>For comparative purposes, the instructions using <code>ComplexHeatmap</code> needed to achieve  require 48 lines of code and 1220 characters (compared with 18 and 239 characters using <code>tidyHeatmap</code>).</p>
+<p>For comparative purposes, the instructions using <code>ComplexHeatmap</code> needed to achieve  require 56 lines of code and 1309 characters (compared with 18 and 239 characters using <code>tidyHeatmap</code>).</p>
 <pre class="r"><code># Heatmap coloring
-palette_abundance = c(&quot;#440154FF&quot;, &quot;#21908CFF&quot;, &quot;#fefada&quot; )
-colors = 
-  colorRamp2(
-    palette_abundance
-    seq(from=min(value_matrix), to=max(value_matrix), length.out = length(palette_abundance)),
-    palette_abundance
-  )
+palette_abundance = c(&quot;#440154FF&quot;, &quot;#21908CFF&quot;, &quot;#fefada&quot;)
+colors =
+    colorRamp2(palette_abundance
+                         seq(
+                            from = min(value_matrix),
+                            to = max(value_matrix),
+                            length.out = length(palette_abundance)
+                         ),
+                         palette_abundance)
 
 # Column annotations
-col_df = col_df[match(colnames(value_matrix), rownames(col_df)),]
+col_df = col_df[match(colnames(value_matrix), rownames(col_df)), ]
 top_annot = HeatmapAnnotation(
-    condition = col_df$condition, 
+    condition = col_df$condition,
     size = anno_bar(col_df$size),
     age = anno_lines(col_df$age),
     col = list(condition = c(&quot;#...&quot;, &quot;#...&quot;))
 )
 
 # Row annotations
-row_df = row_df[match(rownames(value_matrix), rownames(row_df)),]
-color_act = colorRampPalette(rev(brewer.pal(11, &quot;Spectral&quot;)))(nrow(row_df)) 
-color_act = colorRamp2( seq(min(value_matrix), max(value_matrix), length.out = nrow(row_df)), color_act)
+row_df = row_df[match(rownames(value_matrix), rownames(row_df)), ]
+color_act = colorRampPalette(rev(brewer.pal(11, &quot;Spectral&quot;)))(nrow(row_df))
+color_act = colorRamp2(seq(min(value_matrix), max(value_matrix), length.out = nrow(row_df)), color_act)
 top_annot = rowAnnotation(
-        ct = anno_block(  
-      gp = gpar(fill = c(&quot;#..., #...&quot;) ),
-      labels = c(&quot;Secretory&quot;, &quot;Intracellular&quot;),
-      labels_gp = gpar(col = &quot;white&quot;),
-      which = &quot;column&quot;
+    ct = anno_block(
+        gp = gpar(fill = c(&quot;#..., #...&quot;)),
+        labels = c(&quot;Secretory&quot;, &quot;Intracellular&quot;),
+        labels_gp = gpar(col = &quot;white&quot;),
+        which = &quot;column&quot;
     ),
-    act = row_df$act, 
+    act = row_df$act,
     activation = anno_point(row_df$activation),
-    col = list(act=color_act)
+    col = list(act = color_act)
 )
 
-Heatmap(
-    value_matrix,
-    name = &quot;count&quot;,
-    column_title = &quot;sample&quot;,
-    row_title = &quot;symbol&quot;,
-    col = colors,
-    row_split = row_df$group,
-    left_annotation = left_annot,
-    top_annotation  = top_annot,
-    cluster_row_slices = FALSE,
-    row_names_gp = gpar(fontsize = min(12, 320 / dim(value_matrix)[1])),
-    column_names_gp = gpar(fontsize = min(12, 320 / dim(value_matrix)[2]))
-)
-</code></pre>
-<p><span class="citation">[@Pearson:2017]</span></p>
+my_heatmap =
+    Heatmap(
+        value_matrix,
+        name = &quot;count&quot;,
+        column_title = &quot;sample&quot;,
+        row_title = &quot;symbol&quot;,
+        col = colors,
+        row_split = row_df$group,
+        left_annotation = left_annot,
+        top_annotation  = top_annot,
+        cluster_row_slices = FALSE,
+        row_names_gp = gpar(fontsize = min(12, 320 / dim(value_matrix)[1])),
+        column_names_gp = gpar(fontsize = min(12, 320 / dim(value_matrix)[2]))
+    )
+
+# Saving
+old_dev &lt;- dev.cur()
+pdf(&quot;my_file.pdf&quot;)
+my_heatmap
+dev.off()
+dev.set(old_dev)</code></pre>
 </div>
 <div id="figures" class="section level1">
 <h1>Figures</h1>
@@ -475,7 +483,7 @@ Heatmap(
 </div>
 <div id="acknowledgements" class="section level1">
 <h1>Acknowledgements</h1>
-<p>We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong Oh, and support from Kathryn Johnston during the genesis of this project.</p>
+<p>We acknowledge contributions all the Tony Papenfuss lab for feedback, and Maria Doyle for constant support.</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
