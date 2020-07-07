@@ -1,5 +1,5 @@
 ---
-title: 'tidyHeatmap: A modular and tidyverse-style R package for heatmap visualisation'
+title: 'tidyHeatmap: a modular R package for heatmap visualisation based on tidy principles'
 tags:
   - R
   - tidyverse
