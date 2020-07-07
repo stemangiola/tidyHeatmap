@@ -49,6 +49,7 @@ The input is a tidy data frame with the three basic columns including row and co
 
 The code interface consist in modular functions linked through the pipe operator (\autoref{fig:example}). Custom color palette can be used passing an array of colors of a color function (e.g., circlize [@Zuguang:2014]) to the palette argument of the annotation utilities.
 
+
 ```r
 my_heatmap = 
 
@@ -68,71 +69,6 @@ my_heatmap =
 
 # Saving
 my_heatmap %>% save_pdf("my_file.pdf")
-```
-
-For comparative purposes, the instructions using `ComplexHeatmap` needed to achieve \autoref{fig:example} require 56 lines of code and 1309 characters (compared with 18 and 239 characters using `tidyHeatmap`).
-
-```r
-# Heatmap coloring
-palette_abundance = c("#440154FF", "#21908CFF", "#fefada")
-colors =
-	colorRamp2(palette_abundance
-						 seq(
-						 	from = min(value_matrix),
-						 	to = max(value_matrix),
-						 	length.out = length(palette_abundance)
-						 ),
-						 palette_abundance)
-
-# Column annotations
-col_df = col_df[match(colnames(value_matrix), rownames(col_df)), ]
-top_annot = HeatmapAnnotation(
-	condition = col_df$condition,
-	size = anno_bar(col_df$size),
-	age = anno_lines(col_df$age),
-	col = list(condition = c("#...", "#..."))
-)
-
-# Row annotations
-row_df = row_df[match(rownames(value_matrix), rownames(row_df)), ]
-color_act = colorRampPalette(rev(brewer.pal(11, "Spectral")))(nrow(row_df))
-color_act = colorRamp2(
-	seq(min(value_matrix), max(value_matrix), length.out = nrow(row_df)), 
-	color_act
-)
-top_annot = rowAnnotation(
-	ct = anno_block(
-		gp = gpar(fill = c("#..., #...")),
-		labels = c("Secretory", "Intracellular"),
-		labels_gp = gpar(col = "white"),
-		which = "column"
-	),
-	act = row_df$act,
-	activation = anno_point(row_df$activation),
-	col = list(act = color_act)
-)
-
-my_heatmap =
-	Heatmap(
-		value_matrix,
-		name = "count",
-		column_title = "sample",
-		row_title = "symbol",
-		col = colors,
-		row_split = row_df$group,
-		left_annotation = left_annot,
-		top_annotation  = top_annot,
-		cluster_row_slices = FALSE,
-		row_names_gp = gpar(fontsize = min(12, 320 / dim(value_matrix)[1])),
-		column_names_gp = gpar(fontsize = min(12, 320 / dim(value_matrix)[2]))
-	)
-
-# Saving
-old_dev <- dev.cur()
-pdf("my_file.pdf")
-my_heatmap
-dev.off()
-dev.set(old_dev)
 ```
 
 # Figures
