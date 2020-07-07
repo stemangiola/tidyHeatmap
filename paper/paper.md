@@ -1,9 +1,4 @@
 ---
-output:
-  pdf_document: default
-  html_document: default
----
----
 title: 'tidyHeatmap: A modular and tidyverse-style R package for heatmap visualisation'
 tags:
   - R
