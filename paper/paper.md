@@ -34,6 +34,8 @@ Recently, efforts have been made toward the harmonisation of data frame structur
  
 `tidyHeatmap` is a graphical R package that introduces tidy principles to the creation of information-rich heatmaps. It is part of the CRAN R repository. This package uses `ComplexHeatmap` as graphical engine. The command-line user interface is organised in (i) the main plotting utility; (ii) the annotation layer utilities; and (iii) the save-to-disk utilities. The inputdata frame streams along the utility path using the pipe operator from `magrittr`, allowing high level of modularity. The main utility allows the user to plot a base heatmap with dendrograms. The annotation utilities allow to serially add tile, point, bar and/or line annotation boxes to the side on the heatmap. The orientation of the annotations (row- or column-wise) is inferred by the `tidyHeatmap` algorithms, based on the input data frame. The save-to-disk utility allows to create vectorial or bitmap images directly from the R object, in the style of `ggplot2`. User defined row- or column-wise clusters can be defined effortlessy applying `group_by` function from `dplyr` [@Hadley:2020] to the input data frame. Beside offering a modular and user-friendly interface, `tidyHeatmap` provide publication ready aesthetics such as viridis [@Garnier:2018] and brewer [@Neuwirth:2014] color palettes and automatic sizing of row and column labels to avoid overlapping. This software is designed for modular expandibility.
 
+![Heatmap of the pasilla dataset including grouping and multiple annotations. Some annotation data was simulated for visualisation purposes. \label{fig:example}](paper_tables_and_figures_files/figure-gfm/example_figure-1.png)
+
 # Tidy paradigm
 
 The input is a tidy data frame with the three basic columns including row and column elements of the heatmap and values, that will be converted in colors. Additionally further columns can include information about grouping and annotation.
@@ -66,10 +68,6 @@ my_heatmap =
 # Saving
 my_heatmap %>% save_pdf("my_file.pdf")
 ```
-
-# Figures
-
-![Heatmap of the pasilla dataset including grouping and multiple annotations. Some annotation data was simulated for visualisation purposes. \label{fig:example}](paper_tables_and_figures_files/figure-gfm/example_figure-1.png)
 
 # Acknowledgements
 
