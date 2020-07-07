@@ -1,19 +1,18 @@
 tidyHeatmap
 ================
 
-(If you like tidyverse and RNA, try
-[tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular
-transcriptomics analyses\!)
+Please have a look also to
+- [nanny](https://github.com/stemangiola/nanny) for tidy high-level data analysis and manipulation
+- [tidygate](https://github.com/stemangiola/tidygate) for adding custom gate information to your tibble
+- [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular transcriptomics analyses
 
 <!-- badges: start -->
 
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
-Tidy heatmap. This package is a tidy wrapper of the package
-[ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html).
-The goal of this package is to interface tidy data frames with this
-powerful tool.
+`tidyHeatmap` is a package that introduces tidy principles to the creation of information-rich heatmaps. 
+This package is uses [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) as graphical engine.
 
 **Advantages:**
 
