@@ -12,7 +12,7 @@ Please have a look also to
 <!-- badges: end -->
 
 `tidyHeatmap` is a package that introduces tidy principles to the creation of information-rich heatmaps. 
-This package is uses [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) as graphical engine.
+This package uses [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) as graphical engine.
 
 **Advantages:**
 
