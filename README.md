@@ -1,28 +1,35 @@
 tidyHeatmap
 ================
-
-(If you like tidyverse and RNA, try
-[tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular
-transcriptomics analyses\!)
-
 <!-- badges: start -->
-
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
-Tidy heatmap. This package is a tidy wrapper of the package
-[ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html).
-The goal of this package is to interface tidy data frames with this
-powerful tool.
+Please have a look also to
+- [nanny](https://github.com/stemangiola/nanny) for tidy high-level data analysis and manipulation
+- [tidygate](https://github.com/stemangiola/tidygate) for adding custom gate information to your tibble
+- [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular transcriptomics analyses
 
-Some of the advantages are:
+`tidyHeatmap` is a package that introduces tidy principles to the creation of information-rich heatmaps. 
+This package uses [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) as graphical engine.
 
-  - Row and/or columns colour annotations are easy to integrate just
-    specifying one parameter (column names).
+**Advantages:**
+
+  - Modular annotation with just specifying column names
   - Custom grouping of rows is easy to specify providing a grouped tbl.
     For example `df %>% group_by(...)`
   - Labels size adjusted by row and column total number
   - Default use of Brewer and Viridis palettes
+
+## Functions/utilities available
+
+| Function    | Description                         |
+| ----------- | ----------------------------------- |
+| `heatmap`   | Plot base heatmap                   |
+| `add_tile`  | Add tile annotation to the heatmap  |
+| `add_point` | Add point annotation to the heatmap |
+| `add_bar`   | Add bar annotation to the heatmap   |
+| `add_line`  | Add line annotation to the heatmap  |
+| `save_pdf`  | Save the PDF of the heatmap         |
 
 ## Installation
 
@@ -84,12 +91,8 @@ mtcars
 ``` r
 mtcars_heatmap = 
     mtcars_tidy %>% 
-        heatmap(
-            `Car name`, 
-            Property, 
-            Value,
-            annotation = hp
-        )
+        heatmap(`Car name`, Property, Value ) %>%
+        add_tile(hp)
 
 mtcars_heatmap
 ```
@@ -99,8 +102,7 @@ mtcars_heatmap
 ## Save
 
 ``` r
-mtcars_heatmap %>%
-    save_pdf("mtcars_heatmap.pdf")
+mtcars_heatmap %>% save_pdf("mtcars_heatmap.pdf")
 ```
 
 ## Grouping
@@ -112,12 +114,8 @@ heatmap will be grouped accordingly
 ``` r
 mtcars_tidy %>% 
     group_by(vs) %>%
-    heatmap(
-        `Car name`, 
-        Property, 
-        Value,
-        annotation = hp
-    )
+    heatmap(`Car name`, Property, Value ) %>%
+    add_tile(hp)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
@@ -161,16 +159,17 @@ tidyHeatmap::pasilla %>%
     heatmap(
             .column = sample,
             .row = symbol,
-            .value = `count normalised adjusted`,
-            annotation = c(condition, activation)
-        )
+            .value = `count normalised adjusted`
+        ) %>%
+    add_tile(condition) %>%
+    add_tile(activation)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ## Annotation types
 
-**This feature requires \>= 0.99.20 version** 
+**This feature requires \>= 0.99.20 version**
 
 “tile” (default), “point”, “bar” and “line” are available
 
@@ -189,10 +188,13 @@ pasilla_plus %>%
         heatmap(
             .column = sample,
             .row = symbol,
-            .value = `count normalised adjusted`,
-            annotation = c(condition, activation, act, size, age),
-            type = c("tile", "point", "tile", "bar", "line")
-        )
+            .value = `count normalised adjusted`
+        ) %>%
+    add_tile(condition) %>%
+    add_point(activation) %>%
+    add_tile(act) %>%
+    add_bar(size) %>%
+    add_line(age)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
