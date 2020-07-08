@@ -58,7 +58,7 @@ my_heatmap =
 
 	# Grouping
 	input_df %>%
-	group_by(location) %>%
+	group_by(pathway) %>%
 		
 	# Plotting
 	heatmap(feature, element, value) %>%

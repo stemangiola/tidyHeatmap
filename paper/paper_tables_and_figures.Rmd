@@ -19,12 +19,13 @@ pasilla_plus =
         dplyr::mutate(size = rnorm(n(), 4,0.5)) %>%
         dplyr::mutate(age = runif(n(), 50, 200)) %>%
         tidyr::unnest(data) %>%
-        rename(count = `count normalised adjusted`)
+        dplyr::rename(count = `count normalised adjusted`) %>%
+        dplyr::mutate(pathway = if_else(location == "Secretory", "cluster 1", "cluster 2"))
 ```
 
 ```{r example_figure}
 pasilla_plus %>%
-  group_by(location) %>%
+  group_by(pathway) %>%
   heatmap( symbol, sample, count ) %>%
     add_tile(condition) %>%
     add_point(activation) %>%
