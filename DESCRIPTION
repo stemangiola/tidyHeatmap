@@ -22,8 +22,7 @@ URL: https://www.r-project.org,
     https://github.com/stemangiola/tidyHeatmap
 BugReports: https://github.com/stemangiola/tidyHeatmap
 Depends: 
-    R (>= 3.6),
-    ComplexHeatmap (>= 2.2.0)
+    R (>= 3.6)
 Imports: 
     methods,
     stats,
@@ -33,6 +32,7 @@ Imports:
     tidyr (>= 1.0.3),
     rlang (>= 0.4.5),
     purrr (>= 0.3.3),
+    ComplexHeatmap (>= 2.2.0),
     viridis (>= 0.5.1),
     circlize (>= 0.4.8),
     RColorBrewer (>= 1.1), 
