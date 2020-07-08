@@ -1,0 +1,34 @@
+---
+output: github_document
+---
+
+
+## Minimal input data frame
+
+element | feature | value | annotation | group 
+------------ | ------------- | ------------- | ------------- | -------------
+`chr` or `fctr` | `chr` or `fctr` | `numeric` | ... | ...
+
+```{r}
+library(tidyverse)
+library(tidyHeatmap)
+pasilla_plus = 
+    tidyHeatmap::pasilla %>%
+        dplyr::mutate(act = activation) %>% 
+        tidyr::nest(data = -sample) %>%
+        dplyr::mutate(size = rnorm(n(), 4,0.5)) %>%
+        dplyr::mutate(age = runif(n(), 50, 200)) %>%
+        tidyr::unnest(data) %>%
+        rename(count = `count normalised adjusted`)
+```
+
+```{r example_figure}
+pasilla_plus %>%
+  group_by(location) %>%
+  heatmap( symbol, sample, count ) %>%
+    add_tile(condition) %>%
+    add_point(activation) %>%
+    add_tile(act) %>%
+    add_bar(size) %>%
+    add_line(age)
+```
