@@ -320,6 +320,26 @@ heatmap_ <-
 #'
 setMethod("heatmap", "tbl", heatmap_)
 
+#' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
+#' @inheritParams heatmap
+#' 
+#' @docType methods
+#' @rdname heatmap-methods
+#' 
+#' @return A `InputHeatmap` object
+#'
+setMethod("heatmap", "tbl_df", heatmap_)
+
+#' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
+#' @inheritParams heatmap
+#' 
+#' @docType methods
+#' @rdname heatmap-methods
+#' 
+#' @return A `InputHeatmap` object
+#'
+setMethod("heatmap", "tidybulk", heatmap_)
+
 #' Adds a tile annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'
 #' \lifecycle{maturing}
