@@ -406,6 +406,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 		# If annotation is discrete
 		palette_discrete = 
 			.data@data %>% 
+			ungroup() %>%
 			select(!!.column) %>% 
 			sapply(class) %>% 
 			when(. %in% c("factor", "character", "logical") &	!is.null(palette) ~ list(palette), ~ list()),
@@ -413,6 +414,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 		# If annotation is continuous
 		palette_continuous = 
 			.data@data %>% 
+			ungroup() %>%
 			select(!!.column) %>% 
 			sapply(class) %>% 
 			when(. %in% c("integer", "numerical", "numeric", "double") &	!is.null(palette) ~ list(palette), ~ list())
