@@ -54,7 +54,7 @@ install.packages("tidyHeatmap")
 
 ## Contribution
 
-If you want to contribute to the software, report issues or problems with the software or seek support pleae open an issue [here](https://github.com/stemangiola/tidyHeatmap/issues)
+If you want to contribute to the software, report issues or problems with the software or seek support please open an issue [here](https://github.com/stemangiola/tidyHeatmap/issues)
 
 ## Input data frame
 
@@ -62,7 +62,7 @@ If you want to contribute to the software, report issues or problems with the so
 library(dplyr)
 library(tidyr)
 library(tidyHeatmap)
-mtcars_tidy = 
+mtcars_tidy <- 
 	mtcars %>% 
 	as_tibble(rownames="Car name") %>% 
 	
@@ -70,7 +70,7 @@ mtcars_tidy =
 	mutate_at(vars(-`Car name`, -hp, -vs), scale) %>%
 	
 	# tidyfy
-	gather(Property, Value, -`Car name`, -hp, -vs)
+	pivot_longer(cols = -c(`Car name`, hp, vs), names_to = "Property", values_to = "Value")
 
 mtcars_tidy
 ```
@@ -86,7 +86,7 @@ For plotting, you simply pipe the input data frame into heatmap, specifying:
 
 mtcars
 ```{r}
-mtcars_heatmap = 
+mtcars_heatmap <- 
 	mtcars_tidy %>% 
 		heatmap(`Car name`, Property, Value	) %>%
 		add_tile(hp)
@@ -159,7 +159,7 @@ tidyHeatmap::pasilla %>%
 
 ```{r}
 # Create some more data points
-pasilla_plus = 
+pasilla_plus <- 
 	tidyHeatmap::pasilla %>%
 		dplyr::mutate(act = activation) %>% 
 		tidyr::nest(data = -sample) %>%
