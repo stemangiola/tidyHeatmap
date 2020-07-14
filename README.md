@@ -1,16 +1,23 @@
 tidyHeatmap
 ================
+
 <!-- badges: start -->
+
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
-Please have a look also to
-- [nanny](https://github.com/stemangiola/nanny) for tidy high-level data analysis and manipulation
-- [tidygate](https://github.com/stemangiola/tidygate) for adding custom gate information to your tibble
-- [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular transcriptomics analyses
+Please have a look also to -
+[nanny](https://github.com/stemangiola/nanny) for tidy high-level data
+analysis and manipulation -
+[tidygate](https://github.com/stemangiola/tidygate) for adding custom
+gate information to your tibble -
+[tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular
+transcriptomics analyses
 
-`tidyHeatmap` is a package that introduces tidy principles to the creation of information-rich heatmaps. 
-This package uses [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) as graphical engine.
+`tidyHeatmap` is a package that introduces tidy principles to the
+creation of information-rich heatmaps. This package uses
+[ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html)
+as graphical engine.
 
 **Advantages:**
 
@@ -46,7 +53,40 @@ this package is under a maturing lifecycle stage)
 install.packages("tidyHeatmap")
 ```
 
+## Contribution
+
+If you want to contribute to the software, report issues or problems
+with the software or seek support pleae open an issue
+[here](https://github.com/stemangiola/tidyHeatmap/issues)
+
 ## Input data frame
+
+``` r
+library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
+library(tidyr)
+library(tidyHeatmap)
+```
+
+    ## 
+    ## Attaching package: 'tidyHeatmap'
+
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     heatmap
 
 ``` r
 mtcars_tidy = 
@@ -58,7 +98,12 @@ mtcars_tidy =
     
     # tidyfy
     gather(Property, Value, -`Car name`, -hp, -vs)
+```
 
+    ## Warning: attributes are not identical across measure variables;
+    ## they will be dropped
+
+``` r
 mtcars_tidy
 ```
 
@@ -97,7 +142,7 @@ mtcars_heatmap =
 mtcars_heatmap
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ## Save
 
@@ -118,7 +163,7 @@ mtcars_tidy %>%
     add_tile(hp)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ## Custom palettes
 
@@ -135,7 +180,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 Or a grid::colorRamp2 function for higher flexibility
 
@@ -149,7 +194,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -165,7 +210,7 @@ tidyHeatmap::pasilla %>%
     add_tile(activation)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Annotation types
 
@@ -197,4 +242,4 @@ pasilla_plus %>%
     add_line(age)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->

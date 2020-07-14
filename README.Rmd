@@ -52,9 +52,16 @@ install.packages("tidyHeatmap")
 
 ```
 
+## Contribution
+
+If you want to contribute to the software, report issues or problems with the software or seek support pleae open an issue [here](https://github.com/stemangiola/tidyHeatmap/issues)
+
 ## Input data frame
 
 ```{r}
+library(dplyr)
+library(tidyr)
+library(tidyHeatmap)
 mtcars_tidy = 
 	mtcars %>% 
 	as_tibble(rownames="Car name") %>% 
