@@ -3,10 +3,15 @@ Package: tidyHeatmap
 Title: A Tidy Implementation of Heatmap
 Version: 1.1.1
 Authors@R: 
-    person(given = "Stefano",
+    c(person(given = "Stefano",
            family = "Mangiola",
            role = c("aut", "cre"),
-           email = "mangiolastefano@gmail.com")
+           email = "mangiolastefano@gmail.com"),
+           person(given = "Anthony",
+           family = "Papenfuss",
+           role = c("ctb"),
+           email = "papenfuss@wehi.edu.au")
+           )
 Maintainer: Stefano Mangiola <mangiolastefano@gmail.com>
 Description: This is a tidy implementation for heatmap.  At the
     moment it is based on the (great) package 'ComplexHeatmap'.  The goal
