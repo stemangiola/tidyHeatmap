@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Tidyheatmap by stemangiola</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Tidyheatmap</h1>
+        <p>Draw heatmap simply using a tidy data frame</p>
+
+        <p class="view"><a href="https://github.com/stemangiola/tidyHeatmap">View the Project on GitHub <small>stemangiola/tidyHeatmap</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/stemangiola/tidyHeatmap/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/stemangiola/tidyHeatmap/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/stemangiola/tidyHeatmap">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="tidyheatmap" class="anchor" href="#tidyheatmap" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>tidyHeatmap</h1>
+
+<p><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle:maturing"></a></p>
+
+<p>Please have a look also to -
+<a href="https://github.com/stemangiola/nanny">nanny</a> for tidy high-level data
+analysis and manipulation -
+<a href="https://github.com/stemangiola/tidygate">tidygate</a> for adding custom
+gate information to your tibble -
+<a href="https://github.com/stemangiola/tidybulk">tidybulk</a> for tidy and modular
+transcriptomics analyses</p>
+<p><code>tidyHeatmap</code> is a package that introduces tidy principles to the
+creation of information-rich heatmaps. This package uses
+<a href="https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html">ComplexHeatmap</a>
+as graphical engine.</p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Modular annotation with just specifying column names</li>
+<li>Custom grouping of rows is easy to specify providing a grouped tbl.
+For example <code>df %&gt;% group_by(...)</code>
+</li>
+<li>Labels size adjusted by row and column total number</li>
+<li>Default use of Brewer and Viridis palettes</li>
+</ul>
+<h2>
+<a id="functionsutilities-available" class="anchor" href="#functionsutilities-available" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Functions/utilities available</h2>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>heatmap</code></td>
+<td>Plot base heatmap</td>
+</tr>
+<tr>
+<td><code>add_tile</code></td>
+<td>Add tile annotation to the heatmap</td>
+</tr>
+<tr>
+<td><code>add_point</code></td>
+<td>Add point annotation to the heatmap</td>
+</tr>
+<tr>
+<td><code>add_bar</code></td>
+<td>Add bar annotation to the heatmap</td>
+</tr>
+<tr>
+<td><code>add_line</code></td>
+<td>Add line annotation to the heatmap</td>
+</tr>
+<tr>
+<td><code>save_pdf</code></td>
+<td>Save the PDF of the heatmap</td>
+</tr>
+</tbody>
+</table>
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+<p>To install the most up-to-date version</p>
+<div class="highlight highlight-source-r"><pre><span class="pl-e">devtools</span><span class="pl-k">::</span>install_github(<span class="pl-s"><span class="pl-pds">"</span>stemangiola/tidyHeatmap<span class="pl-pds">"</span></span>)</pre></div>
+<p>To install the most stable version (however please keep in mind that
+this package is under a maturing lifecycle stage)</p>
+<div class="highlight highlight-source-r"><pre>install.packages(<span class="pl-s"><span class="pl-pds">"</span>tidyHeatmap<span class="pl-pds">"</span></span>)</pre></div>
+<h2>
+<a id="contribution" class="anchor" href="#contribution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contribution</h2>
+<p>If you want to contribute to the software, report issues or problems
+with the software or seek support pleae open an issue
+<a href="https://github.com/stemangiola/tidyHeatmap/issues">here</a></p>
+<h2>
+<a id="input-data-frame" class="anchor" href="#input-data-frame" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Input data frame</h2>
+<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">dplyr</span>)</pre></div>
+<pre><code>## 
+## Attaching package: 'dplyr'
+
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+</code></pre>
+<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">tidyr</span>)
+library(<span class="pl-smi">tidyHeatmap</span>)</pre></div>
+<pre><code>## 
+## Attaching package: 'tidyHeatmap'
+
+## The following object is masked from 'package:stats':
+## 
+##     heatmap
+</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-v">mtcars_tidy</span> <span class="pl-k">=</span> 
+    <span class="pl-smi">mtcars</span> %<span class="pl-k">&gt;</span>% 
+    as_tibble(<span class="pl-v">rownames</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>Car name<span class="pl-pds">"</span></span>) %<span class="pl-k">&gt;</span>% 
+    
+    <span class="pl-c"><span class="pl-c">#</span> Scale</span>
+    mutate_at(vars(<span class="pl-k">-</span><span class="pl-smi">`Car name`</span>, <span class="pl-k">-</span><span class="pl-smi">hp</span>, <span class="pl-k">-</span><span class="pl-smi">vs</span>), <span class="pl-smi">scale</span>) %<span class="pl-k">&gt;</span>%
+    
+    <span class="pl-c"><span class="pl-c">#</span> tidyfy</span>
+    gather(<span class="pl-smi">Property</span>, <span class="pl-smi">Value</span>, <span class="pl-k">-</span><span class="pl-smi">`Car name`</span>, <span class="pl-k">-</span><span class="pl-smi">hp</span>, <span class="pl-k">-</span><span class="pl-smi">vs</span>)</pre></div>
+<pre><code>## Warning: attributes are not identical across measure variables;
+## they will be dropped
+</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">mtcars_tidy</span></pre></div>
+<pre><code>## # A tibble: 288 x 5
+##    `Car name`           hp    vs Property  Value
+##    &lt;chr&gt;             &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
+##  1 Mazda RX4           110     0 mpg       0.151
+##  2 Mazda RX4 Wag       110     0 mpg       0.151
+##  3 Datsun 710           93     1 mpg       0.450
+##  4 Hornet 4 Drive      110     1 mpg       0.217
+##  5 Hornet Sportabout   175     0 mpg      -0.231
+##  6 Valiant             105     1 mpg      -0.330
+##  7 Duster 360          245     0 mpg      -0.961
+##  8 Merc 240D            62     1 mpg       0.715
+##  9 Merc 230             95     1 mpg       0.450
+## 10 Merc 280            123     1 mpg      -0.148
+## # … with 278 more rows
+</code></pre>
+<h2>
+<a id="plot" class="anchor" href="#plot" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plot</h2>
+<p>For plotting, you simply pipe the input data frame into heatmap,
+specifying:</p>
+<ul>
+<li>The rows, cols relative column names (mandatory)</li>
+<li>The value column name (mandatory)</li>
+<li>The annotations column name(s)</li>
+</ul>
+<p>mtcars</p>
+<div class="highlight highlight-source-r"><pre><span class="pl-v">mtcars_heatmap</span> <span class="pl-k">=</span> 
+    <span class="pl-smi">mtcars_tidy</span> %<span class="pl-k">&gt;</span>% 
+        heatmap(<span class="pl-smi">`Car name`</span>, <span class="pl-smi">Property</span>, <span class="pl-smi">Value</span> ) %<span class="pl-k">&gt;</span>%
+        add_tile(<span class="pl-smi">hp</span>)
+
+<span class="pl-smi">mtcars_heatmap</span></pre></div>
+<p><img src="README_files/figure-gfm/unnamed-chunk-4-1.png" alt=""></p>
+<h2>
+<a id="save" class="anchor" href="#save" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Save</h2>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">mtcars_heatmap</span> %<span class="pl-k">&gt;</span>% save_pdf(<span class="pl-s"><span class="pl-pds">"</span>mtcars_heatmap.pdf<span class="pl-pds">"</span></span>)</pre></div>
+<h2>
+<a id="grouping" class="anchor" href="#grouping" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Grouping</h2>
+<p>We can easily group the data (one group per dimension maximum, at the
+moment only the vertical dimension is supported) with dplyr, and the
+heatmap will be grouped accordingly</p>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">mtcars_tidy</span> %<span class="pl-k">&gt;</span>% 
+    group_by(<span class="pl-smi">vs</span>) %<span class="pl-k">&gt;</span>%
+    heatmap(<span class="pl-smi">`Car name`</span>, <span class="pl-smi">Property</span>, <span class="pl-smi">Value</span> ) %<span class="pl-k">&gt;</span>%
+    add_tile(<span class="pl-smi">hp</span>)</pre></div>
+<p><img src="README_files/figure-gfm/unnamed-chunk-6-1.png" alt=""></p>
+<h2>
+<a id="custom-palettes" class="anchor" href="#custom-palettes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Custom palettes</h2>
+<p>We can easily use custom palette, using strings, hexadecimal color
+character vector,</p>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">mtcars_tidy</span> %<span class="pl-k">&gt;</span>% 
+    heatmap(
+        <span class="pl-smi">`Car name`</span>, 
+        <span class="pl-smi">Property</span>, 
+        <span class="pl-smi">Value</span>,
+        <span class="pl-v">palette_value</span> <span class="pl-k">=</span> c(<span class="pl-s"><span class="pl-pds">"</span>red<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>white<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>blue<span class="pl-pds">"</span></span>)
+    )</pre></div>
+<p><img src="README_files/figure-gfm/unnamed-chunk-7-1.png" alt=""></p>
+<p>Or a grid::colorRamp2 function for higher flexibility</p>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">mtcars_tidy</span> %<span class="pl-k">&gt;</span>% 
+    heatmap(
+        <span class="pl-smi">`Car name`</span>, 
+        <span class="pl-smi">Property</span>, 
+        <span class="pl-smi">Value</span>,
+        <span class="pl-v">palette_value</span> <span class="pl-k">=</span> <span class="pl-e">circlize</span><span class="pl-k">::</span>colorRamp2(c(<span class="pl-k">-</span><span class="pl-c1">2</span>, <span class="pl-k">-</span><span class="pl-c1">1</span>, <span class="pl-c1">0</span>, <span class="pl-c1">1</span>, <span class="pl-c1">2</span>), <span class="pl-e">viridis</span><span class="pl-k">::</span>magma(<span class="pl-c1">5</span>))
+    )</pre></div>
+<p><img src="README_files/figure-gfm/unnamed-chunk-8-1.png" alt=""></p>
+<h2>
+<a id="multiple-groupings-and-annotations" class="anchor" href="#multiple-groupings-and-annotations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Multiple groupings and annotations</h2>
+<div class="highlight highlight-source-r"><pre><span class="pl-e">tidyHeatmap</span><span class="pl-k">::</span><span class="pl-smi">pasilla</span> %<span class="pl-k">&gt;</span>%
+    group_by(<span class="pl-smi">location</span>, <span class="pl-smi">type</span>) %<span class="pl-k">&gt;</span>%
+    heatmap(
+            <span class="pl-v">.column</span> <span class="pl-k">=</span> <span class="pl-smi">sample</span>,
+            <span class="pl-v">.row</span> <span class="pl-k">=</span> <span class="pl-smi">symbol</span>,
+            <span class="pl-v">.value</span> <span class="pl-k">=</span> <span class="pl-smi">`count normalised adjusted`</span>
+        ) %<span class="pl-k">&gt;</span>%
+    add_tile(<span class="pl-smi">condition</span>) %<span class="pl-k">&gt;</span>%
+    add_tile(<span class="pl-smi">activation</span>)</pre></div>
+<p><img src="README_files/figure-gfm/unnamed-chunk-9-1.png" alt=""></p>
+<h2>
+<a id="annotation-types" class="anchor" href="#annotation-types" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Annotation types</h2>
+<p><strong>This feature requires &gt;= 0.99.20 version</strong></p>
+<p>“tile” (default), “point”, “bar” and “line” are available</p>
+<div class="highlight highlight-source-r"><pre><span class="pl-c"><span class="pl-c">#</span> Create some more data points</span>
+<span class="pl-v">pasilla_plus</span> <span class="pl-k">=</span> 
+    <span class="pl-e">tidyHeatmap</span><span class="pl-k">::</span><span class="pl-smi">pasilla</span> %<span class="pl-k">&gt;</span>%
+        <span class="pl-e">dplyr</span><span class="pl-k">::</span>mutate(<span class="pl-v">act</span> <span class="pl-k">=</span> <span class="pl-smi">activation</span>) %<span class="pl-k">&gt;</span>% 
+        <span class="pl-e">tidyr</span><span class="pl-k">::</span>nest(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-smi">sample</span>) %<span class="pl-k">&gt;</span>%
+        <span class="pl-e">dplyr</span><span class="pl-k">::</span>mutate(<span class="pl-v">size</span> <span class="pl-k">=</span> rnorm(n(), <span class="pl-c1">4</span>,<span class="pl-c1">0.5</span>)) %<span class="pl-k">&gt;</span>%
+        <span class="pl-e">dplyr</span><span class="pl-k">::</span>mutate(<span class="pl-v">age</span> <span class="pl-k">=</span> runif(n(), <span class="pl-c1">50</span>, <span class="pl-c1">200</span>)) %<span class="pl-k">&gt;</span>%
+        <span class="pl-e">tidyr</span><span class="pl-k">::</span>unnest(<span class="pl-smi">data</span>) 
+
+<span class="pl-c"><span class="pl-c">#</span> Plot</span>
+<span class="pl-smi">pasilla_plus</span> %<span class="pl-k">&gt;</span>%
+        heatmap(
+            <span class="pl-v">.column</span> <span class="pl-k">=</span> <span class="pl-smi">sample</span>,
+            <span class="pl-v">.row</span> <span class="pl-k">=</span> <span class="pl-smi">symbol</span>,
+            <span class="pl-v">.value</span> <span class="pl-k">=</span> <span class="pl-smi">`count normalised adjusted`</span>
+        ) %<span class="pl-k">&gt;</span>%
+    add_tile(<span class="pl-smi">condition</span>) %<span class="pl-k">&gt;</span>%
+    add_point(<span class="pl-smi">activation</span>) %<span class="pl-k">&gt;</span>%
+    add_tile(<span class="pl-smi">act</span>) %<span class="pl-k">&gt;</span>%
+    add_bar(<span class="pl-smi">size</span>) %<span class="pl-k">&gt;</span>%
+    add_line(<span class="pl-smi">age</span>)</pre></div>
+<p><img src="README_files/figure-gfm/unnamed-chunk-10-1.png" alt=""></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/stemangiola">stemangiola</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
