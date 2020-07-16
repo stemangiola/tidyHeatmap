@@ -530,3 +530,20 @@ test_that("annotated plot numerical continuous intereg nominal annot",{
 	
 
 })
+
+test_that("test sparse matrix",{
+	
+	expect_equal(
+		class(
+			data.frame(G = c('G1', 'G2', 'G3'), Y = c('M1', 'M1', 'M2'), V = c(1,2,3)) %>%
+			as_tibble() %>%
+			tidyHeatmap::heatmap(
+				G, Y, V,
+				cluster_rows = FALSE,
+				cluster_columns = FALSE
+			))[1],
+	"InputHeatmap" 
+)
+	
+	
+})
