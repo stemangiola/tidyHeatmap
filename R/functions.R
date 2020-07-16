@@ -77,7 +77,11 @@ input_heatmap = function(.data,
 	# Check if palette discrete and continuous are lists
 	if(!is.list(palette_grouping) )
 		stop("tidyHeatmap says: the arguments palette_discrete and palette_continuous must be lists. E.g., list(rep(\"#000000\", 20))")
-	 
+	
+	# Check that there have at least one value in the heatmap
+	if(.data %>% filter(!!.abundance %>% is.na %>% `!`) %>% nrow %>% equals(0))
+		stop("tidyHeatmap says: your dataset does not have any non NA values")
+	
 	# Get abundance matrix
 	abundance_tbl =
 		.data %>%
@@ -126,20 +130,27 @@ input_heatmap = function(.data,
 		abundance_tbl %>%
 		as_matrix(rownames = quo_name(.vertical)) 
 	 
-
 	# Colors tiles
 	# If palette_abundance is a function pass it directly, otherwise check if the character array is of length 3
 	colors = 
 		palette_abundance %>%
-		ifelse2_pipe(
-			palette_abundance %>% class() %>% equals("function"),
-			length(palette_abundance) != 3,
-			~ .x,
-			~ stop("tidyHeatmap says: If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_abundance)\""	),
+		when(
+			palette_abundance %>% class() %>% equals("function") ~ (.),
+			length(palette_abundance) != 3 ~ stop("tidyHeatmap says: If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_abundance)\""	),
+			
+			# For the crazy scenario when only one value is present in the heatmap (tidyHeatmap/issues/40)
+			min(abundance_mat, na.rm = T) == max(abundance_mat, na.rm = T) ~ colorRamp2(
+				
+				# min and max and intermediates based on length of the palette
+				seq(from=min(abundance_mat, na.rm = T)-1, to=max(abundance_mat, na.rm = T)+1, length.out = length(palette_abundance)),
+				palette_abundance
+			),
+			
+			# In the normal situation
 			~ colorRamp2(
 				
 				# min and max and intermediates based on length of the palette
-				seq(from=min(abundance_mat), to=max(abundance_mat), length.out = length(palette_abundance)),
+				seq(from=min(abundance_mat, na.rm = T), to=max(abundance_mat, na.rm = T), length.out = length(palette_abundance)),
 				palette_abundance
 			)
 		)

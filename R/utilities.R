@@ -983,8 +983,11 @@ list_drop_null = function(.data){
 #' 
 #' @export
 scale_robust = function(y){
-  (y - mean(y, na.rm=T)) / ( sd(y, na.rm=T) ^ as.logical(sd(y, na.rm=T)) )
-}
+  
+  do_consider_df = !is.na(sd(y, na.rm=T)) && as.logical(sd(y, na.rm=T) )
+  
+  (y - mean(y, na.rm=T)) / ( sd(y, na.rm=T) ^ do_consider_df )
+} 
 
 #' Convert array of quosure (e.g. c(col_a, col_b)) into character vector
 #'
