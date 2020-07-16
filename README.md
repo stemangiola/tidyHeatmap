@@ -14,6 +14,8 @@ gate information to your tibble -
 [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular
 transcriptomics analyses
 
+website: [stemangiola.github.io/tidyHeatmap/](https://stemangiola.github.io/tidyHeatmap/)
+
 `tidyHeatmap` is a package that introduces tidy principles to the
 creation of information-rich heatmaps. This package uses
 [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html)
