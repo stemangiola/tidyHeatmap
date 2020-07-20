@@ -1039,3 +1039,14 @@ annot_to_list = function(.data){
 }
 
 list_append = function(.list1, .list2){ .list1 %>% c(.list2) }
+
+reduce_to_tbl_if_in_class_chain = function(.obj){
+  .obj %>%
+    when(
+      
+      # Eliminate all classes until tbl
+      "tbl" %in% class(.) ~ drop_class(., class(.)[1:which(class(.) == "tbl")-1]  ),
+      ~ (.)
+    )
+  
+}
