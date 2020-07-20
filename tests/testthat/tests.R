@@ -147,8 +147,7 @@ test_that("pasilla one annotation",{
 			tidyHeatmap::pasilla,
 			.column = sample,
 			.row = symbol,
-			.value = `count normalised adjusted`,
-			transform = log1p
+			.value = `count normalised adjusted log`
 		)  %>%
 		add_tile(condition)
 	
@@ -164,8 +163,7 @@ test_that("pasilla 2 annotations",{
 			tidyHeatmap::pasilla,
 			.column = sample,
 			.row = symbol,
-			.value = `count normalised adjusted`,
-			transform = log1p
+			.value = `count normalised adjusted log`
 		) %>%
 		add_tile(condition) %>%
 		add_tile(type)
@@ -182,8 +180,7 @@ test_that("pasilla custom color abundance",{
 			tidyHeatmap::pasilla,
 			.column = sample,
 			.row = symbol,
-			.value = `count normalised adjusted`,
-			transform = log1p, 
+			.value = `count normalised adjusted log`,
 			palette_value = c("#d80000", "#ffffff", "#283cea")
 		) %>%
 		add_tile(condition) %>%
@@ -198,8 +195,7 @@ test_that("pasilla custom color abundance",{
 			tidyHeatmap::pasilla,
 			.column = sample,
 			.row = symbol,
-			.value = `count normalised adjusted`,
-			transform = log1p, 
+			.value = `count normalised adjusted log`, 
 			palette_abundance = c("#d80000", "#ffffff", "#283cea")
 		)  %>%
 			add_tile(condition) %>%
@@ -217,8 +213,7 @@ test_that("pasilla custom color discrete",{
 			tidyHeatmap::pasilla,
 			.column = sample,
 			.row = symbol,
-			.value = `count normalised adjusted`,
-			transform = log1p 
+			.value = `count normalised adjusted log`
 		)  %>%
 		add_tile(condition, c("#d80000", "#283cea")) %>%
 		add_tile(type)
@@ -235,8 +230,7 @@ test_that("pasilla custom color contunuous",{
 			tidyHeatmap::pasilla,
 			.column = sample,
 			.row = symbol,
-			.value = `count normalised adjusted`,
-			transform = log1p
+			.value = `count normalised adjusted log`
 		) %>%
 		add_tile(activation, c("#d80000", "#283cea"))
 	
@@ -252,8 +246,7 @@ test_that("pasilla custom color contunuous AND discrete",{
 			tidyHeatmap::pasilla,
 			.column = sample,
 			.row = symbol,
-			.value = `count normalised adjusted`,
-			transform = log1p
+			.value = `count normalised adjusted log`
 		) %>%
 		add_tile(condition) %>%
 		add_tile(type) %>%
@@ -357,7 +350,7 @@ test_that("test log of 0",{
 			transform = log1p	
 		)
 	
-	vdiffr::expect_doppelganger("log1p", p)
+	expect_equal(class(p)[1], "InputHeatmap")
 	
 })
 
