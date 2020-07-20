@@ -151,8 +151,8 @@ test_that("pasilla one annotation",{
 		)  %>%
 		add_tile(condition)
 	
-	
-	vdiffr::expect_doppelganger("pasilla heatmap 1", p)
+	expect_equal(class(p)[1], "InputHeatmap")
+	#vdiffr::expect_doppelganger("pasilla heatmap 1", p)
 	
 })
 
@@ -169,7 +169,8 @@ test_that("pasilla 2 annotations",{
 		add_tile(type)
 	
 	
-	vdiffr::expect_doppelganger("pasilla heatmap 2", p)
+	expect_equal(class(p)[1], "InputHeatmap")
+	#vdiffr::expect_doppelganger("pasilla heatmap 2", p)
 	
 })
 
@@ -187,7 +188,8 @@ test_that("pasilla custom color abundance",{
 		add_tile(type)
 	
 	
-	vdiffr::expect_doppelganger("custom color", p)
+	expect_equal(class(p)[1], "InputHeatmap")
+	#vdiffr::expect_doppelganger("custom color", p)
 	
 	# Test deprecation
 	expect_warning(
@@ -219,7 +221,8 @@ test_that("pasilla custom color discrete",{
 		add_tile(type)
 	
 	
-	vdiffr::expect_doppelganger("custom color discrete", p)
+	expect_equal(class(p)[1], "InputHeatmap")
+	#vdiffr::expect_doppelganger("custom color discrete", p)
 	
 })
 
@@ -235,7 +238,8 @@ test_that("pasilla custom color contunuous",{
 		add_tile(activation, c("#d80000", "#283cea"))
 	
 	
-	vdiffr::expect_doppelganger("custom color contunuous", p)
+	expect_equal(class(p)[1], "InputHeatmap")
+	#vdiffr::expect_doppelganger("custom color contunuous", p)
 	
 })
 
@@ -253,7 +257,8 @@ test_that("pasilla custom color contunuous AND discrete",{
 		add_tile(activation) 
 	
 	
-	vdiffr::expect_doppelganger("custom color both", p)
+	expect_equal(class(p)[1], "InputHeatmap")
+	#vdiffr::expect_doppelganger("custom color both", p)
 	
 })
 
