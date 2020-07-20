@@ -90,7 +90,7 @@ setMethod("show", "InputHeatmap", function(object){
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .row The name of the column vertically presented in the heatmap
 #' @param .column The name of the column horizontally presented in the heatmap
-#' @param .value The name of the transcript/gene abundance column
+#' @param .value The name of the column for the value of the element/feature pair
 #' @param transform A function, used to transform .value row-wise (e.g., transform = log1p)
 #' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_value A character vector This is the palette that will be used as gradient for .value. For higher flexibility you can use circlize::colorRamp2\(c\(-2, -1, 0, 1, 2\), viridis::magma\(5\)\)
