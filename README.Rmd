@@ -56,17 +56,17 @@ install.packages("tidyHeatmap")
 
 ## Contribution
 
-If you want to contribute to the software, report issues or problems with the software or seek support pleae open an issue [here](https://github.com/stemangiola/tidyHeatmap/issues)
+If you want to contribute to the software, report issues or problems with the software or seek support please open an issue [here](https://github.com/stemangiola/tidyHeatmap/issues)
 
 ## Input data frame
 
-The heatmaps visualise a multi-element, multi-feature dataset, annotated with independent variables. Each obsrvation is a element-feature pair (e.g., person-phisical characteristics).
+The heatmaps visualise a multi-element, multi-feature dataset, annotated with independent variables. Each observation is a element-feature pair (e.g., person-physical characteristics).
 
 element | feature | value | independent_variables
 ------------ | ------------- | ------------- | -------------
 `chr` or `fctr` | `chr` or `fctr` | `numeric` | ...
 
-Let's tranform the mtcars dataset into a tidy "element-feature-independent variables" data frame. Where the independent variables in this case are 'hp' and 'vs'.
+Let's transform the mtcars dataset into a tidy "element-feature-independent variables" data frame. Where the independent variables in this case are 'hp' and 'vs'.
 
 ```{r, echo=FALSE, include=FALSE}
 library(dplyr)

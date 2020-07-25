@@ -138,7 +138,7 @@ setGeneric("heatmap", function(.data,
 															 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 															 palette_grouping = list(),
 															 
-															 # DESPRECATED
+															 # DEPRECATED
 															 annotation = NULL,
 															 type = rep("tile", length(quo_names(annotation))),
 															 palette_discrete = list(),
@@ -168,7 +168,7 @@ heatmap_ <-
 					 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 					 palette_grouping = list(),
 					 
-					 # DESPRECATED
+					 # DEPRECATED
 					 annotation = NULL,
 					 type = rep("tile", length(quo_names(annotation))),
 					 palette_discrete = list(),
@@ -237,10 +237,10 @@ heatmap_ <-
 		if (is_present(log_transform) & !is.null(log_transform)) {
 			
 			# Signal the deprecation to the user
-			deprecate_warn("0.99.13", "tidyHeatmap::heatmap(log_transform = )", "tidyHeatmap::heatmap(tranform = )")
+			deprecate_warn("0.99.13", "tidyHeatmap::heatmap(log_transform = )", "tidyHeatmap::heatmap(transform = )")
 			
 			# Deal with the deprecated argument for compatibility
-			if(log_transform) tranform <- log
+			if(log_transform) transform <- log
 		}
 		
 		# Deprecation palette_abundance
