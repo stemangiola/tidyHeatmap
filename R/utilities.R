@@ -1,6 +1,6 @@
 
 
-#' This is a generalisation of ifelse that acceots an object and return an objects
+#' This is a generalisation of ifelse that accepts an object and return an objects
 #'
 #' @import dplyr
 #' @import tidyr
@@ -22,7 +22,7 @@ ifelse_pipe = function(.x, .p, .f1, .f2 = NULL) {
   
 }
 
-#' This is a generalisation of ifelse that acceots an object and return an objects
+#' This is a generalisation of ifelse that accepts an object and return an objects
 #'
 #' @import dplyr
 #' @import tidyr
