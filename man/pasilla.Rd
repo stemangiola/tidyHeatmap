@@ -5,7 +5,7 @@
 \alias{pasilla}
 \title{Example data set Pasilla}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 504 rows and 7 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 504 rows and 8 columns.
 }
 \usage{
 pasilla

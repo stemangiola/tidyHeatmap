@@ -60,10 +60,21 @@ If you want to contribute to the software, report issues or problems with the so
 
 ## Input data frame
 
-```{r}
+The heatmaps visualise a multi-element, multi-feature dataset, annotated with independent variables. Each observation is a element-feature pair (e.g., person-physical characteristics).
+
+element | feature | value | independent_variables
+------------ | ------------- | ------------- | -------------
+`chr` or `fctr` | `chr` or `fctr` | `numeric` | ...
+
+Let's transform the mtcars dataset into a tidy "element-feature-independent variables" data frame. Where the independent variables in this case are 'hp' and 'vs'.
+
+```{r, echo=FALSE, include=FALSE}
 library(dplyr)
 library(tidyr)
 library(tidyHeatmap)
+```
+
+```{r}
 mtcars_tidy <- 
 	mtcars %>% 
 	as_tibble(rownames="Car name") %>% 

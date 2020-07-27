@@ -121,7 +121,7 @@ heatmap_(
 
 \item{.column}{The name of the column horizontally presented in the heatmap}
 
-\item{.value}{The name of the transcript/gene abundance column}
+\item{.value}{The name of the column for the value of the element/feature pair}
 
 \item{transform}{A function, used to transform .value row-wise (e.g., transform = log1p)}
 

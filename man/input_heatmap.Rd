@@ -25,11 +25,11 @@ input_heatmap(
 
 \item{.abundance}{The name of the transcript/gene abundance column}
 
-\item{transform}{A function, used to tranform .value, for example log1p}
+\item{transform}{A function, used to transform .value, for example log1p}
 
 \item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
 
-\item{palette_abundance}{A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_abundance)`}
+\item{palette_abundance}{A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_abundance is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_abundance)`}
 
 \item{palette_grouping}{A list of character vectors. This is the list of palettes that will be used for grouping}
 

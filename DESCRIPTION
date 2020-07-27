@@ -45,7 +45,9 @@ Imports:
     grDevices,
     lifecycle (>= 0.2.0)
 Suggests:
+    spelling,
     testthat,
+    vdiffr,
     BiocManager,
     knitr,
     rmarkdown,
@@ -61,3 +63,4 @@ biocViews: AssayDomain, Infrastructure
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
+Language: en-US

@@ -14,7 +14,8 @@ gate information to your tibble -
 [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular
 transcriptomics analyses
 
-website: [stemangiola.github.io/tidyHeatmap/](https://stemangiola.github.io/tidyHeatmap/)
+website:
+[stemangiola.github.io/tidyHeatmap/](https://stemangiola.github.io/tidyHeatmap/)
 
 `tidyHeatmap` is a package that introduces tidy principles to the
 creation of information-rich heatmaps. This package uses
@@ -63,32 +64,17 @@ with the software or seek support please open an issue
 
 ## Input data frame
 
-``` r
-library(dplyr)
-```
+The heatmaps visualise a multi-element, multi-feature dataset, annotated
+with independent variables. Each observation is a element-feature pair
+(e.g., person-physical characteristics).
 
-    ## 
-    ## Attaching package: 'dplyr'
+| element         | feature         | value     | independent\_variables |
+| --------------- | --------------- | --------- | ---------------------- |
+| `chr` or `fctr` | `chr` or `fctr` | `numeric` | …                      |
 
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
-library(tidyr)
-library(tidyHeatmap)
-```
-
-    ## 
-    ## Attaching package: 'tidyHeatmap'
-
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     heatmap
+Let’s transform the mtcars dataset into a tidy
+“element-feature-independent variables” data frame. Where the
+independent variables in this case are ‘hp’ and ‘vs’.
 
 ``` r
 mtcars_tidy <- 
@@ -139,7 +125,7 @@ mtcars_heatmap <-
 mtcars_heatmap
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ## Save
 
@@ -160,7 +146,7 @@ mtcars_tidy %>%
     add_tile(hp)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ## Custom palettes
 
@@ -177,7 +163,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 Or a grid::colorRamp2 function for higher flexibility
 
@@ -191,7 +177,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -207,7 +193,7 @@ tidyHeatmap::pasilla %>%
     add_tile(activation)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ## Annotation types
 
@@ -239,4 +225,4 @@ pasilla_plus %>%
     add_line(age)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
