@@ -58,7 +58,7 @@ install.packages("tidyHeatmap")
 ## Contribution
 
 If you want to contribute to the software, report issues or problems
-with the software or seek support pleae open an issue
+with the software or seek support please open an issue
 [here](https://github.com/stemangiola/tidyHeatmap/issues)
 
 ## Input data frame
@@ -91,7 +91,7 @@ library(tidyHeatmap)
     ##     heatmap
 
 ``` r
-mtcars_tidy = 
+mtcars_tidy <- 
     mtcars %>% 
     as_tibble(rownames="Car name") %>% 
     
@@ -99,29 +99,24 @@ mtcars_tidy =
     mutate_at(vars(-`Car name`, -hp, -vs), scale) %>%
     
     # tidyfy
-    gather(Property, Value, -`Car name`, -hp, -vs)
-```
+    pivot_longer(cols = -c(`Car name`, hp, vs), names_to = "Property", values_to = "Value")
 
-    ## Warning: attributes are not identical across measure variables;
-    ## they will be dropped
-
-``` r
 mtcars_tidy
 ```
 
     ## # A tibble: 288 x 5
-    ##    `Car name`           hp    vs Property  Value
-    ##    <chr>             <dbl> <dbl> <chr>     <dbl>
-    ##  1 Mazda RX4           110     0 mpg       0.151
-    ##  2 Mazda RX4 Wag       110     0 mpg       0.151
-    ##  3 Datsun 710           93     1 mpg       0.450
-    ##  4 Hornet 4 Drive      110     1 mpg       0.217
-    ##  5 Hornet Sportabout   175     0 mpg      -0.231
-    ##  6 Valiant             105     1 mpg      -0.330
-    ##  7 Duster 360          245     0 mpg      -0.961
-    ##  8 Merc 240D            62     1 mpg       0.715
-    ##  9 Merc 230             95     1 mpg       0.450
-    ## 10 Merc 280            123     1 mpg      -0.148
+    ##    `Car name`       hp    vs Property Value[,1]
+    ##    <chr>         <dbl> <dbl> <chr>        <dbl>
+    ##  1 Mazda RX4       110     0 mpg          0.151
+    ##  2 Mazda RX4       110     0 cyl         -0.105
+    ##  3 Mazda RX4       110     0 disp        -0.571
+    ##  4 Mazda RX4       110     0 drat         0.568
+    ##  5 Mazda RX4       110     0 wt          -0.610
+    ##  6 Mazda RX4       110     0 qsec        -0.777
+    ##  7 Mazda RX4       110     0 am           1.19 
+    ##  8 Mazda RX4       110     0 gear         0.424
+    ##  9 Mazda RX4       110     0 carb         0.735
+    ## 10 Mazda RX4 Wag   110     0 mpg          0.151
     ## # … with 278 more rows
 
 ## Plot
@@ -136,7 +131,7 @@ specifying:
 mtcars
 
 ``` r
-mtcars_heatmap = 
+mtcars_heatmap <- 
     mtcars_tidy %>% 
         heatmap(`Car name`, Property, Value ) %>%
         add_tile(hp)
@@ -222,7 +217,7 @@ tidyHeatmap::pasilla %>%
 
 ``` r
 # Create some more data points
-pasilla_plus = 
+pasilla_plus <- 
     tidyHeatmap::pasilla %>%
         dplyr::mutate(act = activation) %>% 
         tidyr::nest(data = -sample) %>%
