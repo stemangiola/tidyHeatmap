@@ -614,6 +614,16 @@ ct_colors = function(ct)
     )
   )
 
+#' @importFrom ComplexHeatmap anno_points
+#' @importFrom ComplexHeatmap anno_barplot
+#' @importFrom ComplexHeatmap anno_lines
+type_to_annot_function = list(
+  "tile" = NULL, 
+  "point" = anno_points, 
+  "bar" = anno_barplot, 
+  "line" = anno_lines
+)
+
 get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation, palette_annotation, type, x_y_annot_cols){
   
   # Comply with CRAN NOTES
@@ -633,7 +643,6 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   .abundance = enquo(.abundance)
   annotation = enquo(annotation)
   
-  #type_to_annot_function = list("tile" = NULL, "point" = anno_points, "bar" = anno_barplot, "line" = anno_lines)
   annotation_function = type_to_annot_function[type]
   
   # Create dataset
@@ -1030,3 +1039,14 @@ annot_to_list = function(.data){
 }
 
 list_append = function(.list1, .list2){ .list1 %>% c(.list2) }
+
+reduce_to_tbl_if_in_class_chain = function(.obj){
+  .obj %>%
+    when(
+      
+      # Eliminate all classes until tbl
+      "tbl" %in% class(.) ~ drop_class(., class(.)[1:which(class(.) == "tbl")-1]  ),
+      ~ (.)
+    )
+  
+}

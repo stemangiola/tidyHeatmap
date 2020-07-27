@@ -158,7 +158,7 @@ input_heatmap = function(.data,
 	# Define object
 	new(
 		"InputHeatmap",
-		data = .data,
+		data = .data %>% reduce_to_tbl_if_in_class_chain,
 		input = list(
 			abundance_mat,
 			name = quo_name(.abundance),
