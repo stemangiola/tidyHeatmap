@@ -3,6 +3,9 @@ title: "tidyHeatmap"
 output: github_document
 ---
 
+```{r echo=FALSE}
+knitr::opts_chunk$set( fig.path = "man/figures/")
+```
 <!-- badges: start -->
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02472/status.svg)](https://doi.org/10.21105/joss.02472)
@@ -45,7 +48,9 @@ To install the most up-to-date version
 
 devtools::install_github("stemangiola/tidyHeatmap")
 
+
 ```
+
 
 To install the most stable version (however please keep in mind that this package is under a maturing lifecycle stage)
 

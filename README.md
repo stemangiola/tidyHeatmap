@@ -2,6 +2,7 @@ tidyHeatmap
 ================
 
 <!-- badges: start -->
+
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02472/status.svg)](https://doi.org/10.21105/joss.02472)
 <!-- badges: end -->
@@ -125,7 +126,7 @@ mtcars_heatmap <-
 mtcars_heatmap
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](man/figures/unnamed-chunk-6-1.png)<!-- -->
 
 ## Save
 
@@ -146,7 +147,7 @@ mtcars_tidy %>%
     add_tile(hp)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](man/figures/unnamed-chunk-8-1.png)<!-- -->
 
 ## Custom palettes
 
@@ -163,7 +164,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](man/figures/unnamed-chunk-9-1.png)<!-- -->
 
 Or a grid::colorRamp2 function for higher flexibility
 
@@ -177,7 +178,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](man/figures/unnamed-chunk-10-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -193,7 +194,7 @@ tidyHeatmap::pasilla %>%
     add_tile(activation)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](man/figures/unnamed-chunk-11-1.png)<!-- -->
 
 ## Annotation types
 
@@ -225,4 +226,4 @@ pasilla_plus %>%
     add_line(age)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](man/figures/unnamed-chunk-12-1.png)<!-- -->
