@@ -91,7 +91,15 @@
 <a href="#tidyheatmap" class="anchor"></a>tidyHeatmap</h1></div>
 <!-- badges: start -->
 
-<p>Please have a look also to - <a href="https://github.com/stemangiola/nanny">nanny</a> for tidy high-level data analysis and manipulation - <a href="https://github.com/stemangiola/tidygate">tidygate</a> for adding custom gate information to your tibble - <a href="https://github.com/stemangiola/tidybulk">tidybulk</a> for tidy and modular transcriptomics analyses</p>
+<p>Please have a look also to</p>
+<ul>
+<li>
+<a href="https://github.com/stemangiola/nanny">nanny</a> for tidy high-level data analysis and manipulation</li>
+<li>
+<a href="https://github.com/stemangiola/tidygate">tidygate</a> for adding custom gate information to your tibble</li>
+<li>
+<a href="https://github.com/stemangiola/tidybulk">tidybulk</a> for tidy and modular transcriptomics analyses</li>
+</ul>
 <p>website: <a href="https://stemangiola.github.io/tidyHeatmap/">stemangiola.github.io/tidyHeatmap/</a></p>
 <p><code>tidyHeatmap</code> is a package that introduces tidy principles to the creation of information-rich heatmaps. This package uses <a href="https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html">ComplexHeatmap</a> as graphical engine.</p>
 <p><strong>Advantages:</strong></p>
@@ -216,7 +224,7 @@
         <span class="fu"><a href="reference/add_tile-methods.html">add_tile</a></span>(<span class="no">hp</span>)
 
 <span class="no">mtcars_heatmap</span></pre></div>
-<p><img src="README_files/figure-gfm/unnamed-chunk-5-1.png"><!-- --></p>
+<p><img src="reference/figures/unnamed-chunk-6-1.png"><!-- --></p>
 </div>
 <div id="save" class="section level2">
 <h2 class="hasAnchor">
@@ -231,7 +239,7 @@
     <span class="fu">group_by</span>(<span class="no">vs</span>) <span class="kw">%&gt;%</span>
     <span class="fu"><a href="reference/heatmap-methods.html">heatmap</a></span>(<span class="no">`Car name`</span>, <span class="no">Property</span>, <span class="no">Value</span> ) <span class="kw">%&gt;%</span>
     <span class="fu"><a href="reference/add_tile-methods.html">add_tile</a></span>(<span class="no">hp</span>)</pre></div>
-<p><img src="README_files/figure-gfm/unnamed-chunk-7-1.png"><!-- --></p>
+<p><img src="reference/figures/unnamed-chunk-8-1.png"><!-- --></p>
 </div>
 <div id="custom-palettes" class="section level2">
 <h2 class="hasAnchor">
@@ -244,7 +252,7 @@
         <span class="no">Value</span>,
         <span class="kw">palette_value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"red"</span>, <span class="st">"white"</span>, <span class="st">"blue"</span>)
     )</pre></div>
-<p><img src="README_files/figure-gfm/unnamed-chunk-8-1.png"><!-- --></p>
+<p><img src="reference/figures/unnamed-chunk-9-1.png"><!-- --></p>
 <p>Or a grid::colorRamp2 function for higher flexibility</p>
 <div class="sourceCode" id="cb9"><pre class="r"><span class="no">mtcars_tidy</span> <span class="kw">%&gt;%</span>
     <span class="fu"><a href="reference/heatmap-methods.html">heatmap</a></span>(
@@ -253,7 +261,7 @@
         <span class="no">Value</span>,
         <span class="kw">palette_value</span> <span class="kw">=</span> <span class="kw pkg">circlize</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/circlize/man/colorRamp2.html">colorRamp2</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">2</span>, -<span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>), <span class="kw pkg">viridis</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/viridis/man/reexports.html">magma</a></span>(<span class="fl">5</span>))
     )</pre></div>
-<p><img src="README_files/figure-gfm/unnamed-chunk-9-1.png"><!-- --></p>
+<p><img src="reference/figures/unnamed-chunk-10-1.png"><!-- --></p>
 </div>
 <div id="multiple-groupings-and-annotations" class="section level2">
 <h2 class="hasAnchor">
@@ -267,7 +275,7 @@
         ) <span class="kw">%&gt;%</span>
     <span class="fu"><a href="reference/add_tile-methods.html">add_tile</a></span>(<span class="no">condition</span>) <span class="kw">%&gt;%</span>
     <span class="fu"><a href="reference/add_tile-methods.html">add_tile</a></span>(<span class="no">activation</span>)</pre></div>
-<p><img src="README_files/figure-gfm/unnamed-chunk-10-1.png"><!-- --></p>
+<p><img src="reference/figures/unnamed-chunk-11-1.png"><!-- --></p>
 </div>
 <div id="annotation-types" class="section level2">
 <h2 class="hasAnchor">
@@ -295,7 +303,7 @@
     <span class="fu"><a href="reference/add_tile-methods.html">add_tile</a></span>(<span class="no">act</span>) <span class="kw">%&gt;%</span>
     <span class="fu"><a href="reference/add_bar.html">add_bar</a></span>(<span class="no">size</span>) <span class="kw">%&gt;%</span>
     <span class="fu"><a href="reference/add_line.html">add_line</a></span>(<span class="no">age</span>)</pre></div>
-<p><img src="README_files/figure-gfm/unnamed-chunk-11-1.png"><!-- --></p>
+<p><img src="reference/figures/unnamed-chunk-12-1.png"><!-- --></p>
 </div>
 </div>
   </div>
