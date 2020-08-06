@@ -12,6 +12,7 @@ knitr::opts_chunk$set( fig.path = "man/figures/")
 <!-- badges: end -->
 
 Please have a look also to
+
 - [nanny](https://github.com/stemangiola/nanny) for tidy high-level data analysis and manipulation
 - [tidygate](https://github.com/stemangiola/tidygate) for adding custom gate information to your tibble
 - [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular transcriptomics analyses
