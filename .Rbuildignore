@@ -12,3 +12,6 @@
 README.Rmd
 README_files$
 paper$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
