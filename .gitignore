@@ -11,3 +11,8 @@ doc
 dev
 tidy_heatmap.Rcheck*
 
+<<<<<<< HEAD
+docs
+=======
+#docs
+>>>>>>> 539125393d2582c1cc8b942c404419be45f7a80b
