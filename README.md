@@ -7,13 +7,14 @@ tidyHeatmap
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02472/status.svg)](https://doi.org/10.21105/joss.02472)
 <!-- badges: end -->
 
-Please have a look also to -
-[nanny](https://github.com/stemangiola/nanny) for tidy high-level data
-analysis and manipulation -
-[tidygate](https://github.com/stemangiola/tidygate) for adding custom
-gate information to your tibble -
-[tidybulk](https://github.com/stemangiola/tidybulk) for tidy and modular
-transcriptomics analyses
+Please have a look also to
+
+  - [nanny](https://github.com/stemangiola/nanny) for tidy high-level
+    data analysis and manipulation
+  - [tidygate](https://github.com/stemangiola/tidygate) for adding
+    custom gate information to your tibble
+  - [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and
+    modular transcriptomics analyses
 
 website:
 [stemangiola.github.io/tidyHeatmap/](https://stemangiola.github.io/tidyHeatmap/)
