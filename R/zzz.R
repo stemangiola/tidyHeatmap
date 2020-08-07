@@ -1,3 +1,4 @@
+#' @importFrom utils packageDescription
 .onAttach = function(libname, pkgname) {
 	version = packageDescription(pkgname, fields = "Version")
 	
