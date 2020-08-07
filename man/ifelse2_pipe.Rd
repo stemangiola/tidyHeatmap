@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{ifelse2_pipe}
 \alias{ifelse2_pipe}
-\title{This is a generalisation of ifelse that acceots an object and return an objects}
+\title{This is a generalisation of ifelse that accepts an object and return an objects}
 \usage{
 ifelse2_pipe(.x, .p1, .p2, .f1, .f2, .f3 = NULL)
 }
@@ -23,5 +23,5 @@ ifelse2_pipe(.x, .p1, .p2, .f1, .f2, .f3 = NULL)
 A tibble
 }
 \description{
-This is a generalisation of ifelse that acceots an object and return an objects
+This is a generalisation of ifelse that accepts an object and return an objects
 }
