@@ -22,7 +22,7 @@ Description: This is a tidy implementation for heatmap.  At the
     a grouped tbl. For example: df %>% group_by(...).  Labels size
     adjusted by row and column total number.  Default use of Brewer and
     Viridis palettes.
-License: GPL-3 + file LICENSE
+License: GPL-3
 URL: https://www.r-project.org,
     https://github.com/stemangiola/tidyHeatmap
 BugReports: https://github.com/stemangiola/tidyHeatmap
