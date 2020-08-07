@@ -13,9 +13,9 @@
 #'
 #' @return A tibble
 ifelse_pipe = function(.x, .p, .f1, .f2 = NULL) {
-  switch(.p %>% `!` %>% sum(1),
+  switch(.p %>% not%>% sum(1),
          as_mapper(.f1)(.x),
-         if (.f2 %>% is.null %>% `!`)
+         if (.f2 %>% is.null %>% not)
            as_mapper(.f2)(.x)
          else
            .x)
@@ -38,19 +38,19 @@ ifelse_pipe = function(.x, .p, .f1, .f2 = NULL) {
 ifelse2_pipe = function(.x, .p1, .p2, .f1, .f2, .f3 = NULL) {
   # Nested switch
   switch(# First condition
-    .p1 %>% `!` %>% sum(1),
+    .p1 %>% not%>% sum(1),
     
     # First outcome
     as_mapper(.f1)(.x),
     switch(
       # Second condition
-      .p2 %>% `!` %>% sum(1),
+      .p2 %>% not %>% sum(1),
       
       # Second outcome
       as_mapper(.f2)(.x),
       
       # Third outcome - if there is not .f3 just return the original data frame
-      if (.f3 %>% is.null %>% `!`)
+      if (.f3 %>% is.null %>% not)
         as_mapper(.f3)(.x)
       else
         .x
@@ -91,7 +91,7 @@ as_matrix <- function(tbl,
         tidyr::gather(variable, class) %>%
         pull(class) %>%
         unique() %>%
-        `%in%`(c("numeric", "integer")) %>% `!`() %>% any(),
+        `%in%`(c("numeric", "integer")) %>% not() %>% any(),
       ~ {
         warning("to_matrix says: there are NON-numerical columns, the matrix will NOT be numerical")
         .x
@@ -124,7 +124,7 @@ error_if_log_transformed <- function(x, .abundance) {
   
   .abundance = enquo(.abundance)
   
-  if (x %>% nrow %>% `>` (0))
+  if (x %>% nrow %>% gt(0))
     if (x %>% summarise(m = !!.abundance %>% max) %>% pull(m) < 50)
       stop(
         "tidyHeatmap says: The input was log transformed, this algorithm requires raw (un-normalised) read counts"
@@ -373,16 +373,16 @@ get_elements_features = function(.data, .element, .feature, of_samples = TRUE){
   else {
     
     # If so, take them from the attribute
-    if(.data %>% attr("parameters") %>% is.null %>% `!`)
+    if(.data %>% attr("parameters") %>% is.null %>% not)
       
       return(list(
         .element =  switch(
-          of_samples %>% `!` %>% sum(1),
+          of_samples %>% not %>% sum(1),
           attr(.data, "parameters")$.sample,
           attr(.data, "parameters")$.transcript
         ),
         .feature = switch(
-          of_samples %>% `!` %>% sum(1),
+          of_samples %>% not %>% sum(1),
           attr(.data, "parameters")$.transcript,
           attr(.data, "parameters")$.sample
         )
@@ -465,11 +465,11 @@ get_elements = function(.data, .element, of_samples = TRUE){
   else {
     
     # If so, take them from the attribute
-    if(.data %>% attr("parameters") %>% is.null %>% `!`)
+    if(.data %>% attr("parameters") %>% is.null %>% not)
       
       return(list(
         .element =  switch(
-          of_samples %>% `!` %>% sum(1),
+          of_samples %>% not %>% sum(1),
           attr(.data, "parameters")$.sample,
           attr(.data, "parameters")$.transcript
         )
@@ -510,13 +510,13 @@ get_abundance_norm_if_exists = function(.data, .abundance){
   else {
     
     # If so, take them from the attribute
-    if(.data %>% attr("parameters") %>% is.null %>% `!`)
+    if(.data %>% attr("parameters") %>% is.null %>% not)
       
       return(list(
         .abundance =  switch(
           (".abundance_norm" %in% (.data %>% attr("parameters") %>% names) &
              quo_name(.data %>% attr("parameters") %$% .abundance_norm) %in% (.data %>% colnames)
-          ) %>% `!` %>% sum(1),
+          ) %>% not %>% sum(1),
           attr(.data, "parameters")$.abundance_norm,
           attr(.data, "parameters")$.abundance
         )
@@ -713,7 +713,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   when(
     (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
       c("factor", "character") %>% which %>% length %>%
-      `>` (palette_annotation$discrete %>% length) ~
+      gt(palette_annotation$discrete %>% length) ~
       stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available"),
     ~ (.)
   ) %>%
@@ -722,7 +722,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   when(
     (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
       c("int", "dbl", "numeric") %>% which %>% length %>%
-      `>` ( palette_annotation$continuous %>% length) ~
+      gt( palette_annotation$continuous %>% length) ~
       stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available"),
     ~ (.)
   )
@@ -770,7 +770,7 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
       )
      
     # Check if you have more than one grouping, at the moment just one is accepted
-    if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% `>` (1))
+    if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% gt(1))
       stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
     
     if(length(x_y_annotation_cols$row) > 0){
@@ -877,7 +877,7 @@ get_group_annotation_OPTIMISED_NOT_FINISHED = function(.data, .column, .row, .ab
     )
   
   # Check if you have more than one grouping, at the moment just one is accepted
-  if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% `>` (1))
+  if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% gt(1))
     stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
   
   # Create dataset
@@ -1032,7 +1032,7 @@ annot_to_list = function(.data){
     # If list is populated
     when(length(.) > 0 ~ (.) %>% c(
       col = list(.data %>%
-                   filter(map_lgl(color, ~ .x %>% is.null %>% `!`)) %>%
+                   filter(map_lgl(color, ~ .x %>% is.null %>% not)) %>%
                    { setNames( pull(., color),  pull(., col_name))    })
     ), ~ (.))
     
@@ -1050,3 +1050,15 @@ reduce_to_tbl_if_in_class_chain = function(.obj){
     )
   
 }
+
+# Greater than
+gt = function(a, b){	a > b }
+
+# Smaller than
+st = function(a, b){	a < b }
+
+# Negation
+not = function(is){	!is }
+
+# Raise to the power
+pow = function(a,b){	a^b }

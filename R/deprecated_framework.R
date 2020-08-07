@@ -41,7 +41,7 @@ plot_heatmap = function(.data,
 				when(
 					
 					# NAN produced
-					filter(., !!.abundance %>% is.nan) %>% nrow %>% `>` (0) ~ stop("tidyHeatmap says: you applied a transformation that introduced NaN."),
+					filter(., !!.abundance %>% is.nan) %>% nrow %>% gt(0) ~ stop("tidyHeatmap says: you applied a transformation that introduced NaN."),
 					
 					# -Inf produced
 					pull(., !!.abundance) %>% min %>% equals(-Inf) ~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p."),
@@ -185,7 +185,7 @@ plot_heatmap = function(.data,
 		) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
-			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
+			(.) %>% length %>% gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("columnAnnotation", .x ),
 			~ NULL
 		)
@@ -197,7 +197,7 @@ plot_heatmap = function(.data,
 				annot_to_list_OLD()) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
-			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
+			(.) %>% length %>% gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("rowAnnotation", .x),
 			~ NULL
 		)
@@ -321,7 +321,7 @@ get_top_left_annotation_OLD = function(.data_, .column, .row, .abundance, annota
 		when(
 			(.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
 				c("factor", "character") %>% which %>% length %>%
-				`>` (palette_annotation$discrete %>% length) ~
+				gt(palette_annotation$discrete %>% length) ~
 				stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available"),
 			~ (.)
 		) %>%
@@ -330,7 +330,7 @@ get_top_left_annotation_OLD = function(.data_, .column, .row, .abundance, annota
 		when(
 			(.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
 				c("int", "dbl", "numeric") %>% which %>% length %>%
-				`>` ( palette_annotation$continuous %>% length) ~
+				gt( palette_annotation$continuous %>% length) ~
 				stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available"),
 			~ (.)
 		)
@@ -374,7 +374,7 @@ get_group_annotation_OLD = function(.data, .column, .row, .abundance, annotation
 			)
 		
 		# Check if you have more than one grouping, at the moment just one is accepted
-		if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% `>` (1))
+		if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% gt(1))
 			stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
 		
 		if(length(x_y_annotation_cols$row) > 0){

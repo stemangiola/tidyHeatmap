@@ -52,7 +52,7 @@ setMethod("show", "InputHeatmap", function(object){
 		) %>%
 		list_drop_null() %>%
 		ifelse_pipe(
-			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
+			(.) %>% length %>% gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("columnAnnotation", .x ),
 			~ NULL
 		)
@@ -64,7 +64,7 @@ setMethod("show", "InputHeatmap", function(object){
 		) %>%
 		list_drop_null()  %>%
 		ifelse_pipe(
-			(.) %>% length %>% `>` (0) && !is.null((.)), # is.null needed for check Windows CRAN servers
+			(.) %>% length %>% gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("rowAnnotation", .x ),
 			~ NULL
 		)
@@ -196,7 +196,7 @@ heatmap_ <-
 		if(.scale %in% c("none", "row", "column", "both") %>% `!`) stop("tidyHeatmap says: the .scale parameter has to be one of c(\"none\", \"row\", \"column\", \"both\")")
 
 		# Check if type is of the right kind
-		if(type %>% setdiff(names(type_to_annot_function)) %>% length %>% `>` (0))
+		if(type %>% setdiff(names(type_to_annot_function)) %>% length %>% gt(0))
 			stop("tidyHeatmap says: not all components of `type` parameter are valid.")
 		
 		# Deprecation .abundance

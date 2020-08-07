@@ -79,7 +79,7 @@ input_heatmap = function(.data,
 		stop("tidyHeatmap says: the arguments palette_discrete and palette_continuous must be lists. E.g., list(rep(\"#000000\", 20))")
 	
 	# Check that there have at least one value in the heatmap
-	if(.data %>% filter(!!.abundance %>% is.na %>% `!`) %>% nrow %>% equals(0))
+	if(.data %>% filter(!!.abundance %>% is.na %>% not) %>% nrow %>% equals(0))
 		stop("tidyHeatmap says: your dataset does not have any non NA values")
 	
 	# Get abundance matrix
@@ -96,7 +96,7 @@ input_heatmap = function(.data,
 				when(
 					
 					# NAN produced
-					filter(., !!.abundance %>% is.nan) %>% nrow %>% `>` (0) ~ stop("tidyHeatmap says: you applied a transformation that introduced NaN."),
+					filter(., !!.abundance %>% is.nan) %>% nrow %>% gt(0) ~ stop("tidyHeatmap says: you applied a transformation that introduced NaN."),
 					
 					# -Inf produced
 					pull(., !!.abundance) %>% min %>% equals(-Inf) ~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p."),
