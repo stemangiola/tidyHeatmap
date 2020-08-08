@@ -22,11 +22,6 @@ heatmap(
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
-  .abundance = NULL,
-  .horizontal = NULL,
-  .vertical = NULL,
-  log_transform = NULL,
-  palette_abundance = NULL,
   ...
 )
 
@@ -43,11 +38,6 @@ heatmap_(
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
-  .abundance = NULL,
-  .horizontal = NULL,
-  .vertical = NULL,
-  log_transform = NULL,
-  palette_abundance = NULL,
   ...
 )
 
@@ -64,11 +54,6 @@ heatmap_(
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
-  .abundance = NULL,
-  .horizontal = NULL,
-  .vertical = NULL,
-  log_transform = NULL,
-  palette_abundance = NULL,
   ...
 )
 
@@ -85,11 +70,6 @@ heatmap_(
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
-  .abundance = NULL,
-  .horizontal = NULL,
-  .vertical = NULL,
-  log_transform = NULL,
-  palette_abundance = NULL,
   ...
 )
 
@@ -106,11 +86,6 @@ heatmap_(
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
-  .abundance = NULL,
-  .horizontal = NULL,
-  .vertical = NULL,
-  log_transform = NULL,
-  palette_abundance = NULL,
   ...
 )
 }
@@ -138,16 +113,6 @@ heatmap_(
 \item{palette_discrete}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
 
 \item{palette_continuous}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
-
-\item{.abundance}{DEPRECATED. Please use .value instead}
-
-\item{.horizontal}{DEPRECATED. Please use .column instead}
-
-\item{.vertical}{DEPRECATED. Please use .row instead}
-
-\item{log_transform}{DEPRECATED. Please use transform instead}
-
-\item{palette_abundance}{DEPRECATED. Please use palette_value instead}
 
 \item{...}{Further arguments to be passed to ComplexHeatmap::Heatmap}
 }

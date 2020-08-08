@@ -6,7 +6,7 @@ plot_heatmap = function(.data,
 												type = rep("tile", length(quo_names(annotation))),
 												transform = NULL,
 												.scale = "row",
-												palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
+												palette_value = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
 												palette_discrete = list(),
 												palette_continuous = list(),
 												...) {
@@ -76,19 +76,19 @@ plot_heatmap = function(.data,
 		as_matrix(rownames = quo_name(.vertical)) 
 	
 	# Colors tiles
-	# If palette_abundance is a function pass it directly, otherwise check if the character array is of length 3
+	# If palette_value is a function pass it directly, otherwise check if the character array is of length 3
 	colors = 
-		palette_abundance %>%
+		palette_value %>%
 		ifelse2_pipe(
-			palette_abundance %>% class() %>% equals("function"),
-			length(palette_abundance) != 3,
+			palette_value %>% class() %>% equals("function"),
+			length(palette_value) != 3,
 			~ .x,
-			~ stop("tidyHeatmap says: If palette_abundance is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_abundance)\""	),
+			~ stop("tidyHeatmap says: If palette_value is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_value)\""	),
 			~ colorRamp2(
 				
 				# min and max and intermediates based on length of the palette
-				seq(from=min(abundance_mat), to=max(abundance_mat), length.out = length(palette_abundance)),
-				palette_abundance
+				seq(from=min(abundance_mat), to=max(abundance_mat), length.out = length(palette_value)),
+				palette_value
 			)
 		)
 	

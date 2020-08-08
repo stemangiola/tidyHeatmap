@@ -191,20 +191,6 @@ test_that("pasilla custom color abundance",{
 	expect_equal(class(p)[1], "InputHeatmap")
 	#vdiffr::expect_doppelganger("custom color", p)
 	
-	# Test deprecation
-	expect_warning(
-		tidyHeatmap::heatmap(
-			tidyHeatmap::pasilla,
-			.column = sample,
-			.row = symbol,
-			.value = `count normalised adjusted log`, 
-			palette_abundance = c("#d80000", "#ffffff", "#283cea")
-		)  %>%
-			add_tile(condition) %>%
-			add_tile(type),
-		"Please use the `palette_value` argument instead"
-	)
-	
 })
 
 
