@@ -730,8 +730,6 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   
 }
 
-
-
 get_group_annotation = function(.data, .column, .row, .abundance, palette_annotation){
   
   # Comply with CRAN NOTES

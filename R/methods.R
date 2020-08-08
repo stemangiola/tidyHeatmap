@@ -93,8 +93,8 @@ setMethod("show", "InputHeatmap", function(object){
 #' @param .value The name of the column for the value of the element/feature pair
 #' @param transform A function, used to transform .value row-wise (e.g., transform = log1p)
 #' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
-#' @param palette_value A character vector This is the palette that will be used as gradient for .value. For higher flexibility you can use circlize::colorRamp2\(c\(-2, -1, 0, 1, 2\), viridis::magma\(5\)\)
-#' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping 
+#' @param palette_value A character vector This is the palette that will be used as gradient for .value. For example c("red", "white", "blue"). For higher flexibility you can use circlize::colorRamp2\(c\(-2, -1, 0, 1, 2\), viridis::magma\(5\)\)
+#' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping. For example list(RColorBrewer::brewer.pal(8, "Accent")) or list(c("#B3E2CD", "#FDCDAC", "#CBD5E8")) or list(c("black", "red")) 
 #' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
 #' 
 #' @param annotation DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
