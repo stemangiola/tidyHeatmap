@@ -196,7 +196,7 @@ add_grouping = function(my_input_heatmap){
 	# Number of grouping
 	how_many_grouping = my_input_heatmap@data %>% attr("groups") %>% select(-.rows) %>% ncol
 	
-	# Colors annotations
+	# Colours annotations
 	palette_annotation = my_input_heatmap@palette_discrete %>% head(how_many_grouping) 
 	
 	# Take away used palettes
