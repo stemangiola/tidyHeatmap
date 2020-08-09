@@ -191,12 +191,12 @@ add_grouping = function(my_input_heatmap){
 	.abundance = my_input_heatmap@arguments$.abundance
 	
 	# Add custom palette to discrete if any
-	my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete %>% c(my_input_heatmap@arguments$palette_grouping)
+	my_input_heatmap@palette_discrete = my_input_heatmap@arguments$palette_grouping %>% c(my_input_heatmap@palette_discrete)
 	
 	# Number of grouping
 	how_many_grouping = my_input_heatmap@data %>% attr("groups") %>% select(-.rows) %>% ncol
 	
-	# Colors annotations
+	# Colours annotations
 	palette_annotation = my_input_heatmap@palette_discrete %>% head(how_many_grouping) 
 	
 	# Take away used palettes

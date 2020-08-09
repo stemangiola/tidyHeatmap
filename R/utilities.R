@@ -730,8 +730,6 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   
 }
 
-
-
 get_group_annotation = function(.data, .column, .row, .abundance, palette_annotation){
   
   # Comply with CRAN NOTES
@@ -753,27 +751,27 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
   # Column groups
   col_group = get_grouping_columns(.data)
   
-  # Dataframe of column orientation
+  # Data frame of column orientation
   x_y_annot_cols = .data %>% get_x_y_annotation_columns(!!.column,!!.row,!!.abundance) 
   
   
-    x_y_annotation_cols = 
-      x_y_annot_cols %>%
-      nest(data = -orientation) %>%
-      mutate(data = map(data, ~ .x %>% pull(1))) %>%
-      {
-        df = (.)
-        pull(df, data) %>% setNames(pull(df, orientation))
-      } %>%
-      map(
-        ~ .x %>% intersect(col_group)
-      )
-     
-    # Check if you have more than one grouping, at the moment just one is accepted
-    if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% gt(1))
-      stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
-    
-    if(length(x_y_annotation_cols$row) > 0){
+  x_y_annotation_cols = 
+    x_y_annot_cols %>%
+    nest(data = -orientation) %>%
+    mutate(data = map(data, ~ .x %>% pull(1))) %>%
+    {
+      df = (.)
+      pull(df, data) %>% setNames(pull(df, orientation))
+    } %>%
+    map(
+      ~ .x %>% intersect(col_group)
+    )
+   
+  # Check if you have more than one grouping, at the moment just one is accepted
+  if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% gt(1))
+    stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
+  
+  if(length(x_y_annotation_cols$row) > 0){
        
     # Row split
     row_split = 
@@ -783,8 +781,21 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
       arrange(!!.row) %>%
       pull(!!as.symbol(x_y_annotation_cols$row))
     
-    # Create array of colors
-    palette_fill_row = palette_annotation[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
+    # Create array of colours
+    palette_fill_row = 
+      colorRampPalette(
+      palette_annotation[[1]][
+        
+        # If too long get the max length of palette
+        1:min(length(unique(row_split)), length(palette_annotation[[1]]))
+      ])(
+        # Extend colours arbitrarily
+        length(unique(row_split))
+      ) %>%
+      setNames(unique(row_split))
+    
+    # Old simple method
+    #palette_annotation[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
     
     left_annotation_args = 
       list(
@@ -812,8 +823,21 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
         arrange(!!.column) %>%
         pull(!!as.symbol(x_y_annotation_cols$column))
       
-      # Create array of colors
-      palette_fill_column = palette_annotation[[1]][1:length(unique(col_split))] %>% setNames(unique(col_split))
+      # Create array of colours
+      palette_fill_column = 
+        colorRampPalette(
+          palette_annotation[[1]][
+            
+            # If too long get the max length of palette
+            1:min(length(unique(col_split)), length(palette_annotation[[1]]))
+          ])(
+            # Extend colours arbitrarily
+            length(unique(col_split))
+          ) %>%
+        setNames(unique(col_split))
+      
+      # Old simple method
+      #palette_annotation[[1]][1:length(unique(col_split))] %>% setNames(unique(col_split))
   
       top_annotation_args = 
         list(
