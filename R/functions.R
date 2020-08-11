@@ -35,7 +35,7 @@
 #' @param .abundance The name of the transcript/gene abundance column
 #' @param transform A function, used to transform .value, for example log1p
 #' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
-#' @param palette_abundance A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_abundance is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_abundance)`
+#' @param palette_value A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_value)`
 #' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping 
 #' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
 #'
@@ -54,7 +54,7 @@ input_heatmap = function(.data,
 												.abundance,
 												transform = NULL,
 												.scale = "row",
-												palette_abundance = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
+												palette_value = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
 												palette_grouping = list(),
 												...) {
 	
@@ -131,27 +131,27 @@ input_heatmap = function(.data,
 		as_matrix(rownames = quo_name(.vertical)) 
 	 
 	# Colors tiles
-	# If palette_abundance is a function pass it directly, otherwise check if the character array is of length 3
+	# If palette_value is a function pass it directly, otherwise check if the character array is of length 3
 	colors = 
-		palette_abundance %>%
+		palette_value %>%
 		when(
-			palette_abundance %>% class() %>% equals("function") ~ (.),
-			length(palette_abundance) != 3 ~ stop("tidyHeatmap says: If palette_abundance is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_abundance a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_abundance)\""	),
+			palette_value %>% class() %>% equals("function") ~ (.),
+			length(palette_value) != 3 ~ stop("tidyHeatmap says: If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_value)\""	),
 			
 			# For the crazy scenario when only one value is present in the heatmap (tidyHeatmap/issues/40)
 			min(abundance_mat, na.rm = T) == max(abundance_mat, na.rm = T) ~ colorRamp2(
 				
 				# min and max and intermediates based on length of the palette
-				seq(from=min(abundance_mat, na.rm = T)-1, to=max(abundance_mat, na.rm = T)+1, length.out = length(palette_abundance)),
-				palette_abundance
+				seq(from=min(abundance_mat, na.rm = T)-1, to=max(abundance_mat, na.rm = T)+1, length.out = length(palette_value)),
+				palette_value
 			),
 			
 			# In the normal situation
 			~ colorRamp2(
 				
 				# min and max and intermediates based on length of the palette
-				seq(from=min(abundance_mat, na.rm = T), to=max(abundance_mat, na.rm = T), length.out = length(palette_abundance)),
-				palette_abundance
+				seq(from=min(abundance_mat, na.rm = T), to=max(abundance_mat, na.rm = T), length.out = length(palette_value)),
+				palette_value
 			)
 		)
 	
