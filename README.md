@@ -13,8 +13,14 @@ Please have a look also to
     data analysis and manipulation
   - [tidygate](https://github.com/stemangiola/tidygate) for adding
     custom gate information to your tibble
-  - [tidybulk](https://github.com/stemangiola/tidybulk) for tidy and
-    modular transcriptomics analyses
+  - [tidySCE](https://stemangiola.github.io/tidySCE/) for tidy
+    manipulation of Seurat objects
+  - [tidyseurat](https://stemangiola.github.io/tidyseurat/) for tidy
+    manipulation of Seurat objects
+  - [tidybulk](https://stemangiola.github.io/tidybulk/) for tidy
+    high-level data analysis and manipulation
+  - [tidySE](https://stemangiola.github.io/tidySE/) for heatmaps
+    produced with tidy principles
 
 website:
 [stemangiola.github.io/tidyHeatmap/](https://stemangiola.github.io/tidyHeatmap/)
