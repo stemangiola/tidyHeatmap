@@ -234,3 +234,25 @@ pasilla_plus %>%
 ```
 
 ![](man/figures/unnamed-chunk-12-1.png)<!-- -->
+
+# Layer symbol
+
+Add a layer on top of the heatmap
+
+``` r
+tidyHeatmap::pasilla %>%
+    
+    # filter
+    filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) %>%
+    
+    heatmap(
+            .column = sample,
+            .row = symbol,
+            .value = `count normalised adjusted`
+        ) %>% 
+    layer_symbol(
+        `count normalised adjusted log` > 6 & sample == "untreated3" 
+    )
+```
+
+![](man/figures/unnamed-chunk-13-1.png)<!-- -->

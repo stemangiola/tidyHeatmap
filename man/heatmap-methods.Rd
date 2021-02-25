@@ -6,7 +6,6 @@
 \alias{heatmap_}
 \alias{heatmap,tbl-method}
 \alias{heatmap,tbl_df-method}
-\alias{heatmap,tidybulk-method}
 \title{Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`}
 \usage{
 heatmap(
@@ -72,22 +71,6 @@ heatmap_(
   palette_continuous = list(),
   ...
 )
-
-\S4method{heatmap}{tidybulk}(
-  .data,
-  .row,
-  .column,
-  .value,
-  transform = NULL,
-  .scale = "row",
-  palette_value = c("#440154FF", "#21908CFF", "#fefada"),
-  palette_grouping = list(),
-  annotation = NULL,
-  type = rep("tile", length(quo_names(annotation))),
-  palette_discrete = list(),
-  palette_continuous = list(),
-  ...
-)
 }
 \arguments{
 \item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}
@@ -118,8 +101,6 @@ heatmap_(
 }
 \value{
 A `InputHeatmap` objects that gets evaluated to a `ComplexHeatmap` object
-
-A `InputHeatmap` object
 
 A `InputHeatmap` object
 
