@@ -37,6 +37,7 @@ Imports:
     tidyr (>= 1.0.3),
     rlang (>= 0.4.5),
     purrr (>= 0.3.3),
+    tibble,
     ComplexHeatmap (>= 2.2.0),
     viridis (>= 0.5.1),
     circlize (>= 0.4.8),

@@ -515,3 +515,26 @@ test_that("test sparse matrix",{
 	
 	
 })
+
+
+test_that("layer symbol",{
+	
+	library(dplyr)
+	
+	p = 
+		tidyHeatmap::N52 %>%
+		tidyHeatmap::heatmap(
+			.row = symbol_ct,
+			.column = UBR,
+			.value = `read count normalised log`
+		) %>% 
+		layer_symbol(
+			`read count normalised log` > 4 & 
+				UBR %in% c(11405, 11427)
+		)
+	
+	
+	vdiffr::expect_doppelganger("layer symbol", p)
+	
+})
+

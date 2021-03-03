@@ -10,7 +10,8 @@ InputHeatmap<-setClass(
 		group_left_annotation = "list",
 		top_annotation = "tbl",
 		left_annotation = "tbl",
-		arguments = "list" 
+		arguments = "list" ,
+		layer_symbol = "tbl"
 	),
 	prototype=list(
 		palette_discrete=
@@ -34,16 +35,19 @@ InputHeatmap<-setClass(
 		top_annotation =  tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list()),
 		left_annotation = tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list()),
 		group_top_annotation = list(),
-		group_left_annotation = list()
+		group_left_annotation = list(),
+		layer_symbol = tibble(column = integer(), row = integer(), shape = integer())
 	)
 )
 
 #' @importFrom methods show
+#' @importFrom tibble rowid_to_column
+#' @importFrom grid grid.points
 setMethod("show", "InputHeatmap", function(object){
 	
 	# Fix CRAN notes
 	. = NULL
-	
+	index_column_wise = NULL
 	
 	object@input$top_annotation = 
 		c(
@@ -68,6 +72,31 @@ setMethod("show", "InputHeatmap", function(object){
 			~ do.call("rowAnnotation", .x ),
 			~ NULL
 		)
+	
+	# On-top layer
+	object@input$layer_fun = function(j, i, x, y, w, h, fill) {
+		ind = 
+			tibble(row = i, column = j) %>%
+			rowid_to_column("index_column_wise") %>%
+			
+			# Filter just points to label
+			inner_join(object@layer_symbol, by = c("row", "column")) %>%
+			pull(index_column_wise)
+		
+		if(length(ind)>0)
+			grid.points(
+				x[ind], y[ind], 
+				pch = 16, 
+				size = unit(3, "mm"), 
+				gp = gpar(col = "#161616")
+			)
+	}
+	
+	
+
+					
+
+	
 	
 	show(do.call(Heatmap, object@input))
 } )
@@ -258,15 +287,15 @@ setMethod("heatmap", "tbl", heatmap_)
 #'
 setMethod("heatmap", "tbl_df", heatmap_)
 
-#' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
-#' @inheritParams heatmap
-#' 
-#' @docType methods
-#' @rdname heatmap-methods
-#' 
-#' @return A `InputHeatmap` object
-#'
-setMethod("heatmap", "tidybulk", heatmap_)
+# #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
+# #' @inheritParams heatmap
+# #' 
+# #' @docType methods
+# #' @rdname heatmap-methods
+# #' 
+# #' @return A `InputHeatmap` object
+# #'
+# setMethod("heatmap", "tidybulk", heatmap_)
 
 #' Adds a tile annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'
@@ -536,6 +565,97 @@ setMethod("add_bar", "InputHeatmap", function(.data,
 	.column = enquo(.column)
 	
 	.data %>% add_annotation(	!!.column,	type = "bar")
+	
+})
+
+#' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description layer_symbol() from a `InputHeatmap` object, adds a bar annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#'
+#' @name layer_symbol
+#' @rdname layer_symbol
+#'
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param symbol NOT IMPLEMENTED YET
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% layer_symbol()
+#'
+#'
+#' @export
+setGeneric("layer_symbol", function(.data,
+																		...,
+																		symbol = NULL)
+	standardGeneric("layer_symbol"))
+
+#' layer_symbol
+#' @inheritParams layer_symbol
+#' 
+#' @docType methods
+#' @rdname layer_symbol-methods
+#' 
+#' @return A `layer_symbol` object
+#'
+setMethod("layer_symbol", "InputHeatmap", function(.data,
+																									 ...,
+																									 symbol = NULL){
+	
+	.data_drame = .data@data
+	
+	
+	# Comply with CRAN NOTES
+	. = NULL
+	column = NULL
+	row = NULL
+	
+	# Make col names
+	# Column names
+	.horizontal = .data@arguments$.horizontal
+	.vertical = .data@arguments$.vertical
+	.abundance = .data@arguments$.abundance
+	
+	# Append which cells have to be signed
+	.data@layer_symbol= 
+		.data@layer_symbol %>%
+		bind_rows(
+			.data_drame %>%
+				droplevels() %>%
+				mutate(
+					column = !!.horizontal %>% as.factor %>% as.integer,
+					row = !!.vertical %>% as.factor %>% as.integer
+				) %>%
+				filter(...) %>%
+				select(column, row) %>%
+				mutate(shape = 16)
+		)
+	
+	.data
+
 	
 })
 
