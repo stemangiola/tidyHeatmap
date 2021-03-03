@@ -55,7 +55,7 @@ check_if_duplicated_genes <- function(.data,
 	is_unique = duplicates %>% nrow() %>% equals(0)
 	
 	if (!is_unique) {
-		writeLines("tidyHeatmap says: Those are the duplicated genes")
+		writeLines("tidyHeatmap says: Those are the duplicated elements")
 		duplicates %>% print()
 	}
 	
@@ -169,28 +169,14 @@ validation_default = function(.data,
 	if (type == "hard" &
 			!is_missing)
 		stop(
-			"tidyHeatmap says: One or more columns .sample .transcript or .abundance are missing from your data frame."
+			sprintf("tidyHeatmap says: One or more columns %s, %s or %s are missing from your data frame.", quo_name(.sample), quo_name(.transcript), quo_name(.abundance))
 		)
 	if (type == "soft" & !is_missing) {
 		warning(
-			"tidyHeatmap says: One or more columns .sample .transcript or .abundance are missing from your data frame. The tidyHeatmap object has been converted to a `tbl`"
+			sprintf("tidyHeatmap says: One or more columns %s, %s or %s are missing from your data frame.", quo_name(.sample), quo_name(.transcript), quo_name(.abundance))
 		)
 		return(.data %>% tidyHeatmap_to_tbl)
 	}
-	
-	# # Type check
-	# is_type = column_type_checking(.data,!!.sample,!!.transcript,!!.abundance)
-	# if (type == "hard" &
-	# 		!is_type)
-	# 	stop(
-	# 		"tidyHeatmap says: The column provided as .horizontal .vertical or .abundance do not comply with the required types (<FACTOR/CHARACTER>, <FACTOR/CHARACTER>, <NUMERIC> respectively)."
-	# 	)
-	# if (type == "soft" & !is_type) {
-	# 	warning(
-	# 		"tidyHeatmap says: The column provided as .sample .transcript or .abundance do not comply with the required types. The tidyHeatmap object has been converted to a `tbl`"
-	# 	)
-	# 	return(.data %>% tidyHeatmap_to_tbl)
-	# }
 	
 	# Check if duplicated genes
 	if (!skip_dupli_check) {
@@ -198,11 +184,11 @@ validation_default = function(.data,
 		if (type == "hard" &
 				!is_unique)
 			stop(
-				"tidyHeatmap says: Your dataset include duplicated sample/gene pairs. Please, remove redundancies before proceeding (e.g., aggregate_duplicates())."
+				"tidyHeatmap says: Your dataset include duplicated row/column pairs. Please, remove redundancies before proceeding."
 			)
 		if (type == "soft" & !is_unique) {
 			warning(
-				"tidyHeatmap says: Your dataset include duplicated sample/gene pairs. Please, remove redundancies before proceeding (e.g., aggregate_duplicates()). The tidyHeatmap object has been converted to a `tbl`"
+				"tidyHeatmap says: Your dataset include duplicated row/column pairs. Please, remove redundancies before proceeding."
 			)
 			return(.data %>% tidyHeatmap_to_tbl)
 		}
@@ -215,7 +201,7 @@ validation_default = function(.data,
 		stop("tidyHeatmap says: You have NA values in your counts. Please check your data frame.")
 	if (type == "soft" & !is_count_good) {
 		warning(
-			"tidyHeatmap says: You have NA values in your counts. The tidyHeatmap object has been converted to a `tbl`"
+			"tidyHeatmap says: You have NA values in your counts."
 		)
 		return(.data %>% tidyHeatmap_to_tbl)
 	}
@@ -246,7 +232,7 @@ validation.tidyHeatmap = function(.data,
 	if (type == "hard" &
 			!is_attr)
 		stop(
-			"tidyHeatmap says: The object provided has tidyHeatmap class but no attribute containing the column names. Insert a valid tidyHeatmap object or provide `.sample`, `.transcript`, `.abundance` column names as arguments "
+			"tidyHeatmap says: The object provided has tidyHeatmap class but no attribute containing the column names. Insert a valid tidyHeatmap object or provide `.row`, `.column`, `.value` column names as arguments "
 		)
 	if (type == "soft" & !is_attr) {
 		warning(
