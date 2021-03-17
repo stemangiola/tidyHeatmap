@@ -194,17 +194,17 @@ validation_default = function(.data,
 		}
 	}
 	
-	# Check if NA in counts
-	is_count_good = check_if_counts_is_na(.data,!!.abundance)
-	if (type == "hard" &
-			!is_count_good)
-		stop("tidyHeatmap says: You have NA values in your counts. Please check your data frame.")
-	if (type == "soft" & !is_count_good) {
-		warning(
-			"tidyHeatmap says: You have NA values in your counts."
-		)
-		return(.data %>% tidyHeatmap_to_tbl)
-	}
+	# # Check if NA in counts
+	# is_count_good = check_if_counts_is_na(.data,!!.abundance)
+	# if (type == "hard" &
+	# 		!is_count_good)
+	# 	stop("tidyHeatmap says: You have NA values in your counts. Please check your data frame.")
+	# if (type == "soft" & !is_count_good) {
+	# 	warning(
+	# 		"tidyHeatmap says: You have NA values in your counts."
+	# 	)
+	# 	return(.data %>% tidyHeatmap_to_tbl)
+	# }
 	
 }
 

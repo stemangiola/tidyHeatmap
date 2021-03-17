@@ -771,6 +771,10 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
   if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% gt(1))
     stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
   
+  # Check if annotation not specific to row or columns
+  if(x_y_annotation_cols %>% unlist() %>% duplicated() %>% any())
+  	stop(sprintf("tidyHeatmap says: the grouping %s is not specific to row or columns. Maybe you just have one grouping.", x_y_annotation_cols %>% unlist() %>% .[x_y_annotation_cols %>% unlist() %>% duplicated()]))
+  
   if(length(x_y_annotation_cols$row) > 0){
        
     # Row split
