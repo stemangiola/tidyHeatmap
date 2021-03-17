@@ -40,14 +40,15 @@ as graphical engine.
 
 ## Functions/utilities available
 
-| Function    | Description                         |
-| ----------- | ----------------------------------- |
-| `heatmap`   | Plot base heatmap                   |
-| `add_tile`  | Add tile annotation to the heatmap  |
-| `add_point` | Add point annotation to the heatmap |
-| `add_bar`   | Add bar annotation to the heatmap   |
-| `add_line`  | Add line annotation to the heatmap  |
-| `save_pdf`  | Save the PDF of the heatmap         |
+| Function       | Description                                |
+| -------------- | ------------------------------------------ |
+| `heatmap`      | Plot base heatmap                          |
+| `add_tile`     | Add tile annotation to the heatmap         |
+| `add_point`    | Add point annotation to the heatmap        |
+| `add_bar`      | Add bar annotation to the heatmap          |
+| `add_line`     | Add line annotation to the heatmap         |
+| `layer_symbol` | Add layer of symbols on top of the heatmap |
+| `save_pdf`     | Save the PDF of the heatmap                |
 
 ## Installation
 
