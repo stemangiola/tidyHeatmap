@@ -218,15 +218,15 @@ add_grouping = function(my_input_heatmap){
 	my_input_heatmap@group_left_annotation = group_annotation$left_annotation 
 	
 	my_input_heatmap@input  =
-		my_input_heatmap@input %>%
-		c(
-			list(
-				row_split = group_annotation$row_split,
-				column_split = group_annotation$col_split,
-				cluster_row_slices = FALSE,
-				cluster_column_slices = FALSE
-			)
-		) 
+		my_input_heatmap@input %>% 
+		when(
+			!is.null(group_annotation$row_split) ~ c(., list(row_split = group_annotation$row_split, cluster_row_slices = FALSE)),
+			~ (.)
+		) %>%
+		when(
+			!is.null(group_annotation$col_split) ~ c(., list(column_split = group_annotation$col_split, cluster_column_slices = FALSE)),
+			~ (.)
+		)
 	
 	my_input_heatmap
 }
