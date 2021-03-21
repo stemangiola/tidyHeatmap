@@ -13,17 +13,17 @@ Please have a look also to
     data analysis and manipulation
   - [tidygate](https://github.com/stemangiola/tidygate) for adding
     custom gate information to your tibble
-  - [tidySCE](https://stemangiola.github.io/tidySCE/) for tidy
+  - [tidySingleCellExperiment](https://stemangiola.github.io/tidySingleCellExperiment)
+    for tidy manipulation of Seurat objects
+  - [tidyseurat](https://stemangiola.github.io/tidyseurat) for tidy
     manipulation of Seurat objects
-  - [tidyseurat](https://stemangiola.github.io/tidyseurat/) for tidy
-    manipulation of Seurat objects
-  - [tidybulk](https://stemangiola.github.io/tidybulk/) for tidy
+  - [tidybulk](https://stemangiola.github.io/tidybulk) for tidy
     high-level data analysis and manipulation
-  - [tidySE](https://stemangiola.github.io/tidySE/) for heatmaps
-    produced with tidy principles
+  - [tidySummarizedExperiment](https://stemangiola.github.io/tidySummarizedExperiment)
+    for heatmaps produced with tidy principles
 
 website:
-[stemangiola.github.io/tidyHeatmap/](https://stemangiola.github.io/tidyHeatmap/)
+[stemangiola.github.io/tidyHeatmap](https://stemangiola.github.io/tidyHeatmap)
 
 `tidyHeatmap` is a package that introduces tidy principles to the
 creation of information-rich heatmaps. This package uses
