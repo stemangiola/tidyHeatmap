@@ -7,19 +7,25 @@ tidyHeatmap
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02472/status.svg)](https://doi.org/10.21105/joss.02472)
 <!-- badges: end -->
 
+## Citation
+
+Mangiola et al., (2020). tidyHeatmap: an R package for modular heatmap
+production based on tidy principles. Journal of Open Source Software,
+5(52), 2472, <https://doi.org/10.21105/joss.02472>
+
 Please have a look also to
 
-  - [nanny](https://github.com/stemangiola/nanny/) for tidy high-level
+-   [nanny](https://github.com/stemangiola/nanny/) for tidy high-level
     data analysis and manipulation
-  - [tidygate](https://github.com/stemangiola/tidygate/) for adding
+-   [tidygate](https://github.com/stemangiola/tidygate/) for adding
     custom gate information to your tibble
-  - [tidySingleCellExperiment](https://stemangiola.github.io/tidySingleCellExperiment/)
+-   [tidySingleCellExperiment](https://stemangiola.github.io/tidySingleCellExperiment/)
     for tidy manipulation of Seurat objects
-  - [tidyseurat](https://stemangiola.github.io/tidyseurat/) for tidy
+-   [tidyseurat](https://stemangiola.github.io/tidyseurat/) for tidy
     manipulation of Seurat objects
-  - [tidybulk](https://stemangiola.github.io/tidybulk/) for tidy
+-   [tidybulk](https://stemangiola.github.io/tidybulk/) for tidy
     high-level data analysis and manipulation
-  - [tidySummarizedExperiment](https://stemangiola.github.io/tidySummarizedExperiment/)
+-   [tidySummarizedExperiment](https://stemangiola.github.io/tidySummarizedExperiment/)
     for heatmaps produced with tidy principles
 
 website:
@@ -32,16 +38,16 @@ as graphical engine.
 
 **Advantages:**
 
-  - Modular annotation with just specifying column names
-  - Custom grouping of rows is easy to specify providing a grouped tbl.
+-   Modular annotation with just specifying column names
+-   Custom grouping of rows is easy to specify providing a grouped tbl.
     For example `df %>% group_by(...)`
-  - Labels size adjusted by row and column total number
-  - Default use of Brewer and Viridis palettes
+-   Labels size adjusted by row and column total number
+-   Default use of Brewer and Viridis palettes
 
 ## Functions/utilities available
 
 | Function       | Description                                |
-| -------------- | ------------------------------------------ |
+|----------------|--------------------------------------------|
 | `heatmap`      | Plot base heatmap                          |
 | `add_tile`     | Add tile annotation to the heatmap         |
 | `add_point`    | Add point annotation to the heatmap        |
@@ -78,7 +84,7 @@ with independent variables. Each observation is a element-feature pair
 (e.g., person-physical characteristics).
 
 | element         | feature         | value     | independent\_variables |
-| --------------- | --------------- | --------- | ---------------------- |
+|-----------------|-----------------|-----------|------------------------|
 | `chr` or `fctr` | `chr` or `fctr` | `numeric` | …                      |
 
 Let’s transform the mtcars dataset into a tidy
@@ -119,9 +125,9 @@ mtcars_tidy
 For plotting, you simply pipe the input data frame into heatmap,
 specifying:
 
-  - The rows, cols relative column names (mandatory)
-  - The value column name (mandatory)
-  - The annotations column name(s)
+-   The rows, cols relative column names (mandatory)
+-   The value column name (mandatory)
+-   The annotations column name(s)
 
 mtcars
 
@@ -206,7 +212,7 @@ tidyHeatmap::pasilla %>%
 
 ## Annotation types
 
-**This feature requires \>= 0.99.20 version**
+**This feature requires &gt;= 0.99.20 version**
 
 “tile” (default), “point”, “bar” and “line” are available
 
