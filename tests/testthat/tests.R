@@ -457,7 +457,7 @@ test_that("managing palette usage",{
 			.value = `count normalised adjusted`
 		)
 	
-	expect_equal(length(p2@palette_discrete), l1-1 )
+	expect_equal(length(p2@palette_discrete), l1 )
 	
 	p3 = 
 		tidyHeatmap::heatmap(
@@ -467,7 +467,7 @@ test_that("managing palette usage",{
 			.value = `count normalised adjusted`
 		)
 	
-	expect_equal(length(p3@palette_discrete), length(p2@palette_discrete)-1 )
+	expect_equal(length(p3@palette_discrete), length(p2@palette_discrete))
 	
 	p4 =
 		p3 %>%

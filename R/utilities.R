@@ -801,12 +801,14 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
     # Old simple method
     #palette_annotation[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
     
+    palette_text_row =  if_else(palette_fill_row %in% c("#FFFFFF", "white"), "#161616", "#ffffff")
+  
     left_annotation_args = 
       list(
         ct = anno_block(  
           gp = gpar(fill = palette_fill_row ),
           labels = row_split %>% unique %>% sort,
-          labels_gp = gpar(col = "white"),
+          labels_gp = gpar(col = palette_text_row),
           which = "row"
         )
       )
@@ -843,12 +845,15 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
       # Old simple method
       #palette_annotation[[1]][1:length(unique(col_split))] %>% setNames(unique(col_split))
   
+      palette_text_column =  if_else(palette_fill_column %in% c("#FFFFFF", "white"), "#161616", "#ffffff")
+      
+      
       top_annotation_args = 
         list(
           ct = anno_block(  
             gp = gpar(fill = palette_fill_column ),
             labels = col_split %>% unique %>% sort,
-            labels_gp = gpar(col = "white"),
+            labels_gp = gpar(col = palette_text_column),
             which = "column"
           )
         )
