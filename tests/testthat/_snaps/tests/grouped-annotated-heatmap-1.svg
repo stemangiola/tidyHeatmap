@@ -800,14 +800,14 @@
 <rect x='365.96' y='52.55' width='26.16' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
 <rect x='392.13' y='52.55' width='26.16' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
 <text x='421.12' y='63.76' style='font-size: 12.00px; font-family: sans;' textLength='86.71px' lengthAdjust='spacingAndGlyphs'>CAPRA_TOTAL</text>
-<rect x='52.55' y='69.56' width='22.79' height='79.35' style='stroke-width: 0.75; fill: #E41A1C;' />
-<text transform='translate(68.07,109.23) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='8.01px' lengthAdjust='spacingAndGlyphs'>E</text>
-<rect x='52.55' y='151.74' width='22.79' height='102.02' style='stroke-width: 0.75; fill: #377EB8;' />
-<text transform='translate(68.07,202.75) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>F</text>
-<rect x='52.55' y='256.60' width='22.79' height='192.71' style='stroke-width: 0.75; fill: #4DAF4A;' />
-<text transform='translate(68.07,352.95) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='10.00px' lengthAdjust='spacingAndGlyphs'>M</text>
-<rect x='52.55' y='452.14' width='22.79' height='79.35' style='stroke-width: 0.75; fill: #984EA3;' />
-<text transform='translate(68.07,491.82) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
+<rect x='52.55' y='69.56' width='22.79' height='79.35' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text transform='translate(68.07,109.23) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='8.01px' lengthAdjust='spacingAndGlyphs'>E</text>
+<rect x='52.55' y='151.74' width='22.79' height='102.02' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text transform='translate(68.07,202.75) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>F</text>
+<rect x='52.55' y='256.60' width='22.79' height='192.71' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text transform='translate(68.07,352.95) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='10.00px' lengthAdjust='spacingAndGlyphs'>M</text>
+<rect x='52.55' y='452.14' width='22.79' height='79.35' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text transform='translate(68.07,491.82) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
 <text x='511.08' y='271.08' style='font-size: 10.00px; font-weight: bold; font-family: sans;' textLength='115.08px' lengthAdjust='spacingAndGlyphs'>read count normalised log</text>
 <text x='525.25' y='338.30' style='font-size: 10.00px; font-family: sans;' textLength='8.89px' lengthAdjust='spacingAndGlyphs'>-2</text>
 <text x='525.25' y='319.69' style='font-size: 10.00px; font-family: sans;' textLength='5.56px' lengthAdjust='spacingAndGlyphs'>0</text>

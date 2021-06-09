@@ -904,20 +904,20 @@
 <text transform='translate(339.75,510.31) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='44.04px' lengthAdjust='spacingAndGlyphs'>treated1</text>
 <text transform='translate(392.96,510.31) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='57.38px' lengthAdjust='spacingAndGlyphs'>untreated2</text>
 <text transform='translate(446.17,510.31) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='57.38px' lengthAdjust='spacingAndGlyphs'>untreated1</text>
-<rect x='93.34' y='52.55' width='212.84' height='22.79' style='stroke-width: 0.75; fill: #66C2A5;' />
-<text x='199.76' y='68.07' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='57.38px' lengthAdjust='spacingAndGlyphs'>paired-end</text>
-<rect x='93.34' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #FFED6F;' />
-<rect x='146.55' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #FFED6F;' />
-<rect x='199.76' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #8DD3C7;' />
-<rect x='252.97' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #8DD3C7;' />
-<rect x='309.02' y='52.55' width='159.63' height='22.79' style='stroke-width: 0.75; fill: #FC8D62;' />
-<text x='388.83' y='68.07' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='59.37px' lengthAdjust='spacingAndGlyphs'>single-read</text>
-<rect x='309.02' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #8DD3C7;' />
-<rect x='362.23' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #FFED6F;' />
-<rect x='415.44' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #FFED6F;' />
+<rect x='93.34' y='52.55' width='212.84' height='22.79' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text x='199.76' y='68.07' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='57.38px' lengthAdjust='spacingAndGlyphs'>paired-end</text>
+<rect x='93.34' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
+<rect x='146.55' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
+<rect x='199.76' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
+<rect x='252.97' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
+<rect x='309.02' y='52.55' width='159.63' height='22.79' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text x='388.83' y='68.07' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='59.37px' lengthAdjust='spacingAndGlyphs'>single-read</text>
+<rect x='309.02' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
+<rect x='362.23' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
+<rect x='415.44' y='76.33' width='53.21' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
 <text x='471.48' y='87.55' style='font-size: 12.00px; font-family: sans;' textLength='48.04px' lengthAdjust='spacingAndGlyphs'>condition</text>
-<rect x='52.55' y='93.34' width='22.79' height='188.51' style='stroke-width: 0.75; fill: #E41A1C;' />
-<text transform='translate(68.07,187.60) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='62.03px' lengthAdjust='spacingAndGlyphs'>Intracellular</text>
+<rect x='52.55' y='93.34' width='22.79' height='188.51' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text transform='translate(68.07,187.60) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='62.03px' lengthAdjust='spacingAndGlyphs'>Intracellular</text>
 <rect x='76.33' y='93.34' width='14.17' height='5.71' style='stroke-width: 0.75; stroke: none; fill: #FCA65D;' />
 <rect x='76.33' y='99.05' width='14.17' height='5.71' style='stroke-width: 0.75; stroke: none; fill: #FDBE6E;' />
 <rect x='76.33' y='104.77' width='14.17' height='5.71' style='stroke-width: 0.75; stroke: none; fill: #DFF299;' />
@@ -951,8 +951,8 @@
 <rect x='76.33' y='264.72' width='14.17' height='5.71' style='stroke-width: 0.75; stroke: none; fill: #E6F49A;' />
 <rect x='76.33' y='270.43' width='14.17' height='5.71' style='stroke-width: 0.75; stroke: none; fill: #3D79B6;' />
 <rect x='76.33' y='276.14' width='14.17' height='5.71' style='stroke-width: 0.75; stroke: none; fill: #FDBD6E;' />
-<rect x='52.55' y='284.69' width='22.79' height='222.79' style='stroke-width: 0.75; fill: #377EB8;' />
-<text transform='translate(68.07,396.08) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='51.36px' lengthAdjust='spacingAndGlyphs'>Secretory</text>
+<rect x='52.55' y='284.69' width='22.79' height='222.79' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text transform='translate(68.07,396.08) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='51.36px' lengthAdjust='spacingAndGlyphs'>Secretory</text>
 <rect x='76.33' y='284.69' width='14.17' height='5.71' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
 <rect x='76.33' y='290.40' width='14.17' height='5.71' style='stroke-width: 0.75; stroke: none; fill: #ED6345;' />
 <rect x='76.33' y='296.11' width='14.17' height='5.71' style='stroke-width: 0.75; stroke: none; fill: #4274B3;' />
@@ -1226,7 +1226,7 @@
 <text x='658.10' y='228.96' style='font-size: 10.00px; font-weight: bold; font-family: sans;' textLength='40.03px' lengthAdjust='spacingAndGlyphs'>condition</text>
 <text x='672.27' y='244.04' style='font-size: 10.00px; font-family: sans;' textLength='31.13px' lengthAdjust='spacingAndGlyphs'>treated</text>
 <text x='672.27' y='255.38' style='font-size: 10.00px; font-family: sans;' textLength='42.26px' lengthAdjust='spacingAndGlyphs'>untreated</text>
-<rect x='658.10' y='234.93' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #8DD3C7;' />
-<rect x='658.10' y='246.27' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #FFED6F;' />
+<rect x='658.10' y='234.93' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #E41A1C;' />
+<rect x='658.10' y='246.27' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #999999;' />
 </g>
 </svg>

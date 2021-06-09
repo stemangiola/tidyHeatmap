@@ -142,6 +142,19 @@ mtcars_tidy %>%
 	add_tile(hp)
 ```
 
+```{r}
+mtcars_tidy %>% 
+	group_by(vs) %>%
+	heatmap(
+		`Car name`, Property, Value	,
+		palette_grouping = list(c("#66C2A5", "#FC8D62"))
+	) %>%
+	add_tile(hp)
+
+
+
+```
+
 ## Custom palettes
 
 We can easily use custom palette, using strings, hexadecimal color character vector, 
@@ -230,4 +243,26 @@ tidyHeatmap::pasilla %>%
 	layer_point(
 		`count normalised adjusted log` > 6 & sample == "untreated3" 
 	)
+```
+
+# ComplexHeatmap further styling
+
+Add cell borders
+
+```{r}
+	mtcars_tidy %>% 
+		heatmap(
+			`Car name`, Property, Value, 
+			rect_gp = grid::gpar(col = "#161616", lwd = 0.5)
+		) 
+```
+
+Drop row clustering
+
+```{r}
+	mtcars_tidy %>% 
+		heatmap(
+			`Car name`, Property, Value, 
+			cluster_rows = FALSE
+		) 
 ```

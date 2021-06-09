@@ -212,6 +212,11 @@ heatmap_ <-
 		if(type %>% setdiff(names(type_to_annot_function)) %>% length %>% gt(0))
 			stop("tidyHeatmap says: not all components of `type` parameter are valid.")
 		
+		# Message about change of style, once per session
+		if(length(palette_grouping)==0 & getOption("tidyHeatmap_white_group_message",TRUE)) {
+			message("tidyHeatmap says: (once per session) from release 1.2.3 the grouping labels have white background by default. To add color for one-ay grouping specify palette_grouping = list(c(\"red\", \"blue\"))")
+			options("tidyHeatmap_white_group_message"=FALSE) 
+		}
 		
 		.row = enquo(.row)
 		.column = enquo(.column)

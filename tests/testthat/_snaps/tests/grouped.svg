@@ -786,14 +786,14 @@
 <text transform='translate(444.74,534.33) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='33.37px' lengthAdjust='spacingAndGlyphs'>11458</text>
 <text transform='translate(479.26,534.33) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='33.37px' lengthAdjust='spacingAndGlyphs'>11450</text>
 <text transform='translate(513.77,534.33) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='33.37px' lengthAdjust='spacingAndGlyphs'>11467</text>
-<rect x='52.55' y='52.55' width='22.79' height='82.33' style='stroke-width: 0.75; fill: #E41A1C;' />
-<text transform='translate(68.07,93.71) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='8.01px' lengthAdjust='spacingAndGlyphs'>E</text>
-<rect x='52.55' y='137.71' width='22.79' height='105.85' style='stroke-width: 0.75; fill: #377EB8;' />
-<text transform='translate(68.07,190.63) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>F</text>
-<rect x='52.55' y='246.39' width='22.79' height='199.94' style='stroke-width: 0.75; fill: #4DAF4A;' />
-<text transform='translate(68.07,346.36) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='10.00px' lengthAdjust='spacingAndGlyphs'>M</text>
-<rect x='52.55' y='449.16' width='22.79' height='82.33' style='stroke-width: 0.75; fill: #984EA3;' />
-<text transform='translate(68.07,490.33) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #FFFFFF; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
+<rect x='52.55' y='52.55' width='22.79' height='82.33' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text transform='translate(68.07,93.71) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='8.01px' lengthAdjust='spacingAndGlyphs'>E</text>
+<rect x='52.55' y='137.71' width='22.79' height='105.85' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text transform='translate(68.07,190.63) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>F</text>
+<rect x='52.55' y='246.39' width='22.79' height='199.94' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text transform='translate(68.07,346.36) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='10.00px' lengthAdjust='spacingAndGlyphs'>M</text>
+<rect x='52.55' y='449.16' width='22.79' height='82.33' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<text transform='translate(68.07,490.33) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; fill: #161616; font-family: sans;' textLength='7.33px' lengthAdjust='spacingAndGlyphs'>T</text>
 <text x='589.49' y='262.57' style='font-size: 10.00px; font-weight: bold; font-family: sans;' textLength='115.08px' lengthAdjust='spacingAndGlyphs'>read count normalised log</text>
 <text x='603.66' y='329.80' style='font-size: 10.00px; font-family: sans;' textLength='8.89px' lengthAdjust='spacingAndGlyphs'>-2</text>
 <text x='603.66' y='311.19' style='font-size: 10.00px; font-family: sans;' textLength='5.56px' lengthAdjust='spacingAndGlyphs'>0</text>
