@@ -136,7 +136,11 @@ mtcars_heatmap <-
     mtcars_tidy %>% 
         heatmap(`Car name`, Property, Value ) %>%
         add_tile(hp)
+```
 
+    ## tidyHeatmap says: (once per session) from release 1.2.3 the grouping labels have white background by default. To add color for one-ay grouping specify palette_grouping = list(c("red", "blue"))
+
+``` r
 mtcars_heatmap
 ```
 
@@ -163,6 +167,18 @@ mtcars_tidy %>%
 
 ![](man/figures/unnamed-chunk-8-1.png)<!-- -->
 
+``` r
+mtcars_tidy %>% 
+    group_by(vs) %>%
+    heatmap(
+        `Car name`, Property, Value ,
+        palette_grouping = list(c("#66C2A5", "#FC8D62"))
+    ) %>%
+    add_tile(hp)
+```
+
+![](man/figures/unnamed-chunk-9-1.png)<!-- -->
+
 ## Custom palettes
 
 We can easily use custom palette, using strings, hexadecimal color
@@ -178,7 +194,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](man/figures/unnamed-chunk-9-1.png)<!-- -->
+![](man/figures/unnamed-chunk-10-1.png)<!-- -->
 
 Or a grid::colorRamp2 function for higher flexibility
 
@@ -192,7 +208,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](man/figures/unnamed-chunk-10-1.png)<!-- -->
+![](man/figures/unnamed-chunk-11-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -208,7 +224,7 @@ tidyHeatmap::pasilla %>%
     add_tile(activation)
 ```
 
-![](man/figures/unnamed-chunk-11-1.png)<!-- -->
+![](man/figures/unnamed-chunk-12-1.png)<!-- -->
 
 ## Annotation types
 
@@ -240,7 +256,7 @@ pasilla_plus %>%
     add_line(age)
 ```
 
-![](man/figures/unnamed-chunk-12-1.png)<!-- -->
+![](man/figures/unnamed-chunk-13-1.png)<!-- -->
 
 # Layer symbol
 
@@ -262,4 +278,30 @@ tidyHeatmap::pasilla %>%
     )
 ```
 
-![](man/figures/unnamed-chunk-13-1.png)<!-- -->
+![](man/figures/unnamed-chunk-14-1.png)<!-- -->
+
+# ComplexHeatmap further styling
+
+Add cell borders
+
+``` r
+    mtcars_tidy %>% 
+        heatmap(
+            `Car name`, Property, Value, 
+            rect_gp = grid::gpar(col = "#161616", lwd = 0.5)
+        ) 
+```
+
+![](man/figures/unnamed-chunk-15-1.png)<!-- -->
+
+Drop row clustering
+
+``` r
+    mtcars_tidy %>% 
+        heatmap(
+            `Car name`, Property, Value, 
+            cluster_rows = FALSE
+        ) 
+```
+
+![](man/figures/unnamed-chunk-16-1.png)<!-- -->
