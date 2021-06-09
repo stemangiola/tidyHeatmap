@@ -1,7 +1,7 @@
 context('tests')
 
 # For resetting
-# vdiffr::manage_cases()
+# testthat::snapshot_review()
 
 test_that("basic plot",{
 
@@ -528,7 +528,7 @@ test_that("layer symbol",{
 			.column = UBR,
 			.value = `read count normalised log`
 		) %>% 
-		layer_symbol(
+		layer_point(
 			`read count normalised log` > 4 & 
 				UBR %in% c(11405, 11427)
 		)
@@ -536,17 +536,6 @@ test_that("layer symbol",{
 	
 	vdiffr::expect_doppelganger("layer symbol", p)
 	
-	p = 
-		tidyHeatmap::N52 %>%
-		tidyHeatmap::heatmap(
-			.row = symbol_ct,
-			.column = UBR,
-			.value = `read count normalised log`
-		) %>% 
-		layer_square(
-			`read count normalised log` > 4 & 
-				UBR %in% c(11405, 11427)
-		)
 	
 })
 
