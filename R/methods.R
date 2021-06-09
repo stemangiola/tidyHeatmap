@@ -58,7 +58,7 @@ setMethod("show", "InputHeatmap", function(object){
 		when(
 			
 			# is.null needed for check Windows CRAN servers
-			(.) %>% length %>% gt(0) && !is.null((.)) ~ do.call("columnAnnotation", .x ),
+			(.) %>% length %>% gt(0) && !is.null(.) ~ do.call("columnAnnotation", . ),
 			~ NULL
 		)
 	
@@ -71,7 +71,7 @@ setMethod("show", "InputHeatmap", function(object){
 		when(
 			
 			# is.null needed for check Windows CRAN servers
-			(.) %>% length %>% gt(0) && !is.null((.))	~ do.call("rowAnnotation", .x ),
+			(.) %>% length %>% gt(0) && !is.null(.)	~ do.call("rowAnnotation", . ),
 			~ NULL
 		)
 	
@@ -83,12 +83,12 @@ setMethod("show", "InputHeatmap", function(object){
 			
 			# Filter just points to label
 			inner_join(object@layer_symbol, by = c("row", "column")) %>%
-			pull(index_column_wise)
+			select(index_column_wise, shape)
 		
-		if(length(ind)>0)
+		if(nrow(ind)>0)
 			grid.points(
-				x[ind], y[ind], 
-				pch = object@layer_symbol$shape %>% unique() , 
+				x[ind$index_column_wise], y[ind$index_column_wise], 
+				pch = ind$shape , 
 				size = unit(3, "mm"), 
 				gp = gpar(col = NULL, fill="#161616")
 			)
@@ -592,8 +592,11 @@ setMethod("add_bar", "InputHeatmap", function(.data,
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-#'
-#'
+#' @keywords internal
+#' @docType methods
+#' 
+#' @noRd
+#' 
 #' @examples
 #'
 #' library(dplyr)
@@ -609,7 +612,6 @@ setMethod("add_bar", "InputHeatmap", function(.data,
 #' hm %>% layer_symbol()
 #'
 #'
-#' @export
 setGeneric("layer_symbol", function(.data,
 																		...,
 																		symbol = "point")
@@ -620,6 +622,8 @@ setGeneric("layer_symbol", function(.data,
 #' 
 #' @docType methods
 #' @rdname layer_symbol-methods
+#' 
+#' @noRd
 #' 
 #' @return A `layer_symbol` object
 #'
