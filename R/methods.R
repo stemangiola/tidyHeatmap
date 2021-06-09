@@ -55,9 +55,10 @@ setMethod("show", "InputHeatmap", function(object){
 			object@top_annotation %>% annot_to_list()
 		) %>%
 		list_drop_null() %>%
-		ifelse_pipe(
-			(.) %>% length %>% gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
-			~ do.call("columnAnnotation", .x ),
+		when(
+			
+			# is.null needed for check Windows CRAN servers
+			(.) %>% length %>% gt(0) && !is.null((.)) ~ do.call("columnAnnotation", .x ),
 			~ NULL
 		)
 	
@@ -67,9 +68,10 @@ setMethod("show", "InputHeatmap", function(object){
 			object@left_annotation %>% annot_to_list()
 		) %>%
 		list_drop_null()  %>%
-		ifelse_pipe(
-			(.) %>% length %>% gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
-			~ do.call("rowAnnotation", .x ),
+		when(
+			
+			# is.null needed for check Windows CRAN servers
+			(.) %>% length %>% gt(0) && !is.null((.))	~ do.call("rowAnnotation", .x ),
 			~ NULL
 		)
 	
@@ -86,9 +88,9 @@ setMethod("show", "InputHeatmap", function(object){
 		if(length(ind)>0)
 			grid.points(
 				x[ind], y[ind], 
-				pch = 16, 
+				pch = object@layer_symbol$shape %>% unique() , 
 				size = unit(3, "mm"), 
-				gp = gpar(col = "#161616")
+				gp = gpar(col = NULL, fill="#161616")
 			)
 	}
 	
@@ -583,7 +585,7 @@ setMethod("add_bar", "InputHeatmap", function(.data,
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
-#' @param symbol NOT IMPLEMENTED YET
+#' @param symbol A character string of length one. The values allowed are "point" ,     "square" ,    "diamond" ,   "arrow_up" ,  "arrow_down"
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -610,7 +612,7 @@ setMethod("add_bar", "InputHeatmap", function(.data,
 #' @export
 setGeneric("layer_symbol", function(.data,
 																		...,
-																		symbol = NULL)
+																		symbol = "point")
 	standardGeneric("layer_symbol"))
 
 #' layer_symbol
@@ -623,10 +625,22 @@ setGeneric("layer_symbol", function(.data,
 #'
 setMethod("layer_symbol", "InputHeatmap", function(.data,
 																									 ...,
-																									 symbol = NULL){
+																									 symbol = "point"){
 	
 	.data_drame = .data@data
 	
+	
+	symbol_dictionary = 
+		list(
+			point = 21,
+			square = 22,
+			diamond = 23,
+			arrow_up = 24,
+			arrow_down = 25
+		)
+	
+	if(!symbol %in% names(symbol_dictionary) | length(symbol) != 1) 
+		stop(sprintf("tidyHeatmap says: the symbol argument must be one character string, among %s", paste(names(symbol_dictionary))))
 	
 	# Comply with CRAN NOTES
 	. = NULL
@@ -651,13 +665,273 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 				) %>%
 				filter(...) %>%
 				select(column, row) %>%
-				mutate(shape = 16)
+				mutate(shape = symbol_dictionary[[symbol]])
 		)
 	
 	.data
 
 	
 })
+
+#' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description layer_arrow_up() from a `InputHeatmap` object, adds a bar annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#'
+#' @name layer_arrow_up
+#' @rdname layer_arrow_up
+#'
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% layer_arrow_up()
+#'
+#'
+#' @export
+setGeneric("layer_arrow_up", function(.data,	...)
+	standardGeneric("layer_arrow_up"))
+
+#' layer_arrow_up
+#' @inheritParams layer_arrow_up
+#' 
+#' @docType methods
+#' @rdname layer_arrow_up-methods
+#' 
+#' @return A `layer_arrow_up` object
+#'
+setMethod("layer_arrow_up", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="arrow_up") })
+
+#' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description layer_arrow_down() from a `InputHeatmap` object, adds a bar annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#'
+#' @name layer_arrow_down
+#' @rdname layer_arrow_down
+#'
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% layer_arrow_down()
+#'
+#'
+#' @export
+setGeneric("layer_arrow_down", function(.data,	...)
+	standardGeneric("layer_arrow_down"))
+
+#' layer_arrow_down
+#' @inheritParams layer_arrow_down
+#' 
+#' @docType methods
+#' @rdname layer_arrow_down-methods
+#' 
+#' @return A `layer_arrow_down` object
+#'
+setMethod("layer_arrow_down", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="arrow_down") })
+
+#' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description layer_point() from a `InputHeatmap` object, adds a bar annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#'
+#' @name layer_point
+#' @rdname layer_point
+#'
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% layer_point()
+#'
+#'
+#' @export
+setGeneric("layer_point", function(.data,	...)
+	standardGeneric("layer_point"))
+
+#' layer_point
+#' @inheritParams layer_point
+#' 
+#' @docType methods
+#' @rdname layer_point-methods
+#' 
+#' @return A `layer_point` object
+#'
+setMethod("layer_point", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="point") })
+
+#' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description layer_square() from a `InputHeatmap` object, adds a bar annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#'
+#' @name layer_square
+#' @rdname layer_square
+#'
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% layer_square()
+#'
+#'
+#' @export
+setGeneric("layer_square", function(.data,	...)
+	standardGeneric("layer_square"))
+
+#' layer_square
+#' @inheritParams layer_square
+#' 
+#' @docType methods
+#' @rdname layer_square-methods
+#' 
+#' @return A `layer_square` object
+#'
+setMethod("layer_square", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="square") })
+
+#' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description layer_diamond() from a `InputHeatmap` object, adds a bar annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#'
+#' @name layer_diamond
+#' @rdname layer_diamond
+#'
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% layer_diamond()
+#'
+#'
+#' @export
+setGeneric("layer_diamond", function(.data,	...)
+	standardGeneric("layer_diamond"))
+
+#' layer_diamond
+#' @inheritParams layer_diamond
+#' 
+#' @docType methods
+#' @rdname layer_diamond-methods
+#' 
+#' @return A `layer_diamond` object
+#'
+setMethod("layer_diamond", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="diamond") })
 
 #' Save plot on PDF file
 #'
