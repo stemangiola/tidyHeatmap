@@ -46,15 +46,19 @@ as graphical engine.
 
 ## Functions/utilities available
 
-| Function       | Description                                |
-|----------------|--------------------------------------------|
-| `heatmap`      | Plot base heatmap                          |
-| `add_tile`     | Add tile annotation to the heatmap         |
-| `add_point`    | Add point annotation to the heatmap        |
-| `add_bar`      | Add bar annotation to the heatmap          |
-| `add_line`     | Add line annotation to the heatmap         |
-| `layer_symbol` | Add layer of symbols on top of the heatmap |
-| `save_pdf`     | Save the PDF of the heatmap                |
+| Function           | Description                                |
+|--------------------|--------------------------------------------|
+| `heatmap`          | Plot base heatmap                          |
+| `add_tile`         | Add tile annotation to the heatmap         |
+| `add_point`        | Add point annotation to the heatmap        |
+| `add_bar`          | Add bar annotation to the heatmap          |
+| `add_line`         | Add line annotation to the heatmap         |
+| `layer_point`      | Add layer of symbols on top of the heatmap |
+| `layer_square`     | Add layer of symbols on top of the heatmap |
+| `layer_diamond`    | Add layer of symbols on top of the heatmap |
+| `layer_arrow_up`   | Add layer of symbols on top of the heatmap |
+| `layer_arrow_down` | Add layer of symbols on top of the heatmap |
+| `save_pdf`         | Save the PDF of the heatmap                |
 
 ## Installation
 
@@ -257,7 +261,7 @@ tidyHeatmap::pasilla %>%
             .row = symbol,
             .value = `count normalised adjusted`
         ) %>% 
-    layer_symbol(
+    layer_point(
         `count normalised adjusted log` > 6 & sample == "untreated3" 
     )
 ```
