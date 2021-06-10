@@ -352,7 +352,7 @@ setGeneric("add_tile", function(.data,
 #' @docType methods
 #' @rdname add_tile-methods
 #' 
-#' @return A `add_tile` object
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("add_tile", "InputHeatmap", function(.data,
 																							 .column,
@@ -433,7 +433,7 @@ setGeneric("add_point", function(.data,
 #' @docType methods
 #' @rdname add_point-methods
 #' 
-#' @return A `add_point` object
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("add_point", "InputHeatmap", function(.data,
 																							 .column,
@@ -495,7 +495,12 @@ setGeneric("add_line", function(.data,
 #' @docType methods
 #' @rdname add_line-methods
 #' 
-#' @return A `add_line` object
+#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .column Vector of quotes
+#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#'
+#'
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("add_line", "InputHeatmap", function(.data,
 																								.column,
@@ -557,7 +562,11 @@ setGeneric("add_bar", function(.data,
 #' @docType methods
 #' @rdname add_bar-methods
 #' 
-#' @return A `add_bar` object
+#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .column Vector of quotes
+#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("add_bar", "InputHeatmap", function(.data,
 																							 .column,
@@ -621,9 +630,13 @@ setGeneric("layer_symbol", function(.data,
 #' @docType methods
 #' @rdname layer_symbol-methods
 #' 
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param symbol A character string of length one. The values allowed are "point" ,     "square" ,    "diamond" ,   "arrow_up" ,  "arrow_down"
+#' 
 #' @noRd
 #' 
-#' @return A `layer_symbol` object
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("layer_symbol", "InputHeatmap", function(.data,
 																									 ...,
@@ -686,7 +699,7 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 #' 
 #'
 #' @name layer_arrow_up
-#' @rdname layer_arrow_up
+#' @rdname layer-methods
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
@@ -720,9 +733,13 @@ setGeneric("layer_arrow_up", function(.data,	...)
 #' layer_arrow_up
 #' 
 #' @docType methods
-#' @rdname layer_arrow_up-methods
+#' @rdname layer-methods
 #' 
-#' @return A `layer_arrow_up` object
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("layer_arrow_up", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="arrow_up") })
 
@@ -737,7 +754,8 @@ setMethod("layer_arrow_up", "InputHeatmap", function(.data, ...){ .data %>%	laye
 #' 
 #'
 #' @name layer_arrow_down
-#' @rdname layer_arrow_down
+#' @rdname layer-methods
+#' 
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
@@ -771,9 +789,13 @@ setGeneric("layer_arrow_down", function(.data,	...)
 #' layer_arrow_down
 #' 
 #' @docType methods
-#' @rdname layer_arrow_down-methods
+#' @rdname layer-methods
 #' 
-#' @return A `layer_arrow_down` object
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("layer_arrow_down", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="arrow_down") })
 
@@ -788,7 +810,7 @@ setMethod("layer_arrow_down", "InputHeatmap", function(.data, ...){ .data %>%	la
 #' 
 #'
 #' @name layer_point
-#' @rdname layer_point
+#' @rdname layer-methods
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
@@ -822,9 +844,13 @@ setGeneric("layer_point", function(.data,	...)
 #' layer_point
 #' 
 #' @docType methods
-#' @rdname layer_point-methods
+#' @rdname layer-methods
 #' 
-#' @return A `layer_point` object
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("layer_point", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="point") })
 
@@ -839,7 +865,7 @@ setMethod("layer_point", "InputHeatmap", function(.data, ...){ .data %>%	layer_s
 #' 
 #'
 #' @name layer_square
-#' @rdname layer_square
+#' @rdname layer-methods
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
@@ -873,9 +899,13 @@ setGeneric("layer_square", function(.data,	...)
 #' layer_square
 #' 
 #' @docType methods
-#' @rdname layer_square-methods
+#' @rdname layer-methods
 #' 
-#' @return A `layer_square` object
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("layer_square", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="square") })
 
@@ -890,7 +920,7 @@ setMethod("layer_square", "InputHeatmap", function(.data, ...){ .data %>%	layer_
 #' 
 #'
 #' @name layer_diamond
-#' @rdname layer_diamond
+#' @rdname layer-methods
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
@@ -924,9 +954,13 @@ setGeneric("layer_diamond", function(.data,	...)
 #' layer_diamond
 #' 
 #' @docType methods
-#' @rdname layer_diamond-methods
+#' @rdname layer-methods
 #' 
-#' @return A `layer_diamond` object
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("layer_diamond", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="diamond") })
 
@@ -938,6 +972,7 @@ setMethod("layer_diamond", "InputHeatmap", function(.data, ...){ .data %>%	layer
 #'
 #' @importFrom stats hclust
 #' @importFrom dendextend cutree
+#' @importFrom purrr when
 #' 
 #'
 #' @name split_rows
@@ -978,20 +1013,34 @@ setGeneric("split_rows", function(.data,
 #' @docType methods
 #' @rdname split-methods
 #' 
+#' @param .data A `InputHeatmap` 
+#' @param number_of_groups An integer. The number of groups to split the cladogram into.
+#'
 #' 
-#' @return A `split_rows` object
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("split_rows", "InputHeatmap", function(.data,
 																								 number_of_groups){
 	
-	.data_matrix = .data@input[[1]]
+	# Get the same methods as the heatmap
+	distance_method = .data@input %>% when(
+		"clustering_distance_rows" %in% names(.) ~ .data@input$clustering_distance_rows,
+		~ "euclidean"
+	)
+	clustering_method = .data@input %>% when(
+		"clustering_method_rows" %in% names(.) ~ .data@input$clustering_method_rows,
+		~ "complete"
+	)
 	
 	# Get clusters
-	hr = hclust(dist(.data_matrix), method = "average")
-	clusters = dendextend::cutree(hr, k = number_of_groups)
+	hr = 
+		.data@input[[1]] %>%
+		dist(method = distance_method) %>%
+		hclust(method = clustering_method)
 	
 	# Append to input
-	.data@input$row_split = clusters
+	.data@input$row_split = dendextend::cutree(hr, k = number_of_groups)
 	
 	.data
 	
@@ -1028,7 +1077,7 @@ setMethod("split_rows", "InputHeatmap", function(.data,
 #' hm = 
 #'   tidyHeatmap::N52 %>%
 #'   tidyHeatmap::heatmap(
-#'     .column = symbol_ct,
+#'     .row = symbol_ct,
 #'     .column = UBR,
 #'     .value = `read count normalised log`
 #' )
@@ -1045,20 +1094,35 @@ setGeneric("split_columns", function(.data,
 #' @docType methods
 #' @rdname split-methods
 #' 
+#' @param .data A `InputHeatmap` 
+#' @param number_of_groups An integer. The number of groups to split the cladogram into.
+#'
 #' 
-#' @return A `split_columns` object
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("split_columns", "InputHeatmap", function(.data,
 																										number_of_groups){
 	
-	.data_matrix = .data@input[[1]] %>% t()
+	# Get the same methods as the heatmap
+	distance_method = .data@input %>% when(
+		"clustering_distance_columns" %in% names(.) ~ .data@input$clustering_distance_columns,
+		~ "euclidean"
+	)
+	clustering_method = .data@input %>% when(
+		"clustering_method_columns" %in% names(.) ~ .data@input$clustering_method_columns,
+		~ "complete"
+	)
 	
 	# Get clusters
-	hr = hclust(dist(.data_matrix), method = "average")
-	clusters = dendextend::cutree(hr, k = number_of_groups)
+	hr = 
+		.data@input[[1]] %>%
+		t() %>%
+		dist(method = distance_method) %>%
+		hclust(method = clustering_method)
 	
 	# Append to input
-	.data@input$column_split = clusters
+	.data@input$column_split = dendextend::cutree(hr, k = number_of_groups)
 	
 	.data
 	
@@ -1139,10 +1203,22 @@ setGeneric("save_pdf", function(.heatmap,
 
 #' save_pdf
 #' 
+#' @param .heatmap A `Heatmap` 
+#' @param filename A character string. The name of the output file/path
+#' @param width A `double`. Plot width
+#' @param height A `double`. Plot height
+#' @param units	A character string. units ("in", "cm", or "mm")
+#' 
 #' 
 setMethod("save_pdf", "Heatmap", .save_pdf)
 
 #' save_pdf
+#' 
+#' @param .heatmap A `Heatmap` 
+#' @param filename A character string. The name of the output file/path
+#' @param width A `double`. Plot width
+#' @param height A `double`. Plot height
+#' @param units	A character string. units ("in", "cm", or "mm")
 #' 
 #' 
 setMethod("save_pdf", "InputHeatmap", .save_pdf)

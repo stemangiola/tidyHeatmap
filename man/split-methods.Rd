@@ -24,11 +24,11 @@ split_columns(.data, number_of_groups)
 \value{
 A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 
-A `split_rows` object
+A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 
 A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 
-A `split_columns` object
+A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 }
 \description{
 split_rows() from a `InputHeatmap` object, split the row cladogram.
@@ -64,7 +64,7 @@ library(dplyr)
 hm = 
   tidyHeatmap::N52 \%>\%
   tidyHeatmap::heatmap(
-    .column = symbol_ct,
+    .row = symbol_ct,
     .column = UBR,
     .value = `read count normalised log`
 )
