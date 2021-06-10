@@ -284,6 +284,17 @@ tidyHeatmap::pasilla %>%
 
 ![](man/figures/unnamed-chunk-14-1.png)<!-- -->
 
+# Split cladogram
+
+``` r
+mtcars_tidy %>% 
+    heatmap(`Car name`, Property, Value ) %>%
+    split_rows(2) %>%
+    split_columns(2)
+```
+
+![](man/figures/unnamed-chunk-15-1.png)<!-- -->
+
 # ComplexHeatmap further styling
 
 Add cell borders
@@ -296,7 +307,7 @@ Add cell borders
         ) 
 ```
 
-![](man/figures/unnamed-chunk-15-1.png)<!-- -->
+![](man/figures/unnamed-chunk-16-1.png)<!-- -->
 
 Drop row clustering
 
@@ -308,4 +319,4 @@ Drop row clustering
         ) 
 ```
 
-![](man/figures/unnamed-chunk-16-1.png)<!-- -->
+![](man/figures/unnamed-chunk-17-1.png)<!-- -->
