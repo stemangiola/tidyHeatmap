@@ -20,7 +20,7 @@ add_point(.data, .column, palette = NULL)
 \value{
 A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 
-A `add_point` object
+A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 }
 \description{
 add_point() from a `InputHeatmap` object, adds a point annotation layer.

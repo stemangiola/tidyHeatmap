@@ -20,7 +20,7 @@ add_tile(.data, .column, palette = NULL)
 \value{
 A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 
-A `add_tile` object
+A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 }
 \description{
 add_tile() from a `InputHeatmap` object, adds a tile annotation layer.

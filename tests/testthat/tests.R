@@ -539,3 +539,22 @@ test_that("layer symbol",{
 	
 })
 
+test_that("split",{
+	
+	library(dplyr)
+	
+	p = 
+		tidyHeatmap::N52 %>%
+		tidyHeatmap::heatmap(
+			.row = symbol_ct,
+			.column = UBR,
+			.value = `read count normalised log`
+		) %>% 
+		split_rows(2) %>%
+		split_columns(2)
+	
+	
+	vdiffr::expect_doppelganger("split", p)
+	
+	
+})

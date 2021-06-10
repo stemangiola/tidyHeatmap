@@ -245,6 +245,15 @@ tidyHeatmap::pasilla %>%
 	)
 ```
 
+# Split cladogram
+
+```{r}
+mtcars_tidy %>% 
+	heatmap(`Car name`, Property, Value	) %>%
+	split_rows(2) %>%
+	split_columns(2)
+```
+
 # ComplexHeatmap further styling
 
 Add cell borders
