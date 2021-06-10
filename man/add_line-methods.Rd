@@ -7,13 +7,6 @@
 \usage{
 \S4method{add_line}{InputHeatmap}(.data, .column, palette = NULL)
 }
-\arguments{
-\item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}
-
-\item{.column}{Vector of quotes}
-
-\item{palette}{A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
-}
 \value{
 A `add_line` object
 }

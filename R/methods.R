@@ -275,7 +275,6 @@ heatmap_ <-
 	}
 
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
-#' @inheritParams heatmap
 #' 
 #' @docType methods
 #' @rdname heatmap-methods
@@ -285,7 +284,6 @@ heatmap_ <-
 setMethod("heatmap", "tbl", heatmap_)
 
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
-#' @inheritParams heatmap
 #' 
 #' @docType methods
 #' @rdname heatmap-methods
@@ -350,7 +348,6 @@ setGeneric("add_tile", function(.data,
 	standardGeneric("add_tile"))
 
 #' add_tile
-#' @inheritParams add_tile
 #' 
 #' @docType methods
 #' @rdname add_tile-methods
@@ -432,7 +429,6 @@ setGeneric("add_point", function(.data,
 	standardGeneric("add_point"))
 
 #' add_point
-#' @inheritParams add_point
 #' 
 #' @docType methods
 #' @rdname add_point-methods
@@ -495,7 +491,6 @@ setGeneric("add_line", function(.data,
 	standardGeneric("add_line"))
 
 #' add_line
-#' @inheritParams add_line
 #' 
 #' @docType methods
 #' @rdname add_line-methods
@@ -558,7 +553,6 @@ setGeneric("add_bar", function(.data,
 	standardGeneric("add_bar"))
 
 #' add_bar
-#' @inheritParams add_bar
 #' 
 #' @docType methods
 #' @rdname add_bar-methods
@@ -623,7 +617,6 @@ setGeneric("layer_symbol", function(.data,
 	standardGeneric("layer_symbol"))
 
 #' layer_symbol
-#' @inheritParams layer_symbol
 #' 
 #' @docType methods
 #' @rdname layer_symbol-methods
@@ -725,7 +718,6 @@ setGeneric("layer_arrow_up", function(.data,	...)
 	standardGeneric("layer_arrow_up"))
 
 #' layer_arrow_up
-#' @inheritParams layer_arrow_up
 #' 
 #' @docType methods
 #' @rdname layer_arrow_up-methods
@@ -777,7 +769,6 @@ setGeneric("layer_arrow_down", function(.data,	...)
 	standardGeneric("layer_arrow_down"))
 
 #' layer_arrow_down
-#' @inheritParams layer_arrow_down
 #' 
 #' @docType methods
 #' @rdname layer_arrow_down-methods
@@ -829,7 +820,6 @@ setGeneric("layer_point", function(.data,	...)
 	standardGeneric("layer_point"))
 
 #' layer_point
-#' @inheritParams layer_point
 #' 
 #' @docType methods
 #' @rdname layer_point-methods
@@ -881,7 +871,6 @@ setGeneric("layer_square", function(.data,	...)
 	standardGeneric("layer_square"))
 
 #' layer_square
-#' @inheritParams layer_square
 #' 
 #' @docType methods
 #' @rdname layer_square-methods
@@ -933,7 +922,6 @@ setGeneric("layer_diamond", function(.data,	...)
 	standardGeneric("layer_diamond"))
 
 #' layer_diamond
-#' @inheritParams layer_diamond
 #' 
 #' @docType methods
 #' @rdname layer_diamond-methods
@@ -941,6 +929,140 @@ setGeneric("layer_diamond", function(.data,	...)
 #' @return A `layer_diamond` object
 #'
 setMethod("layer_diamond", "InputHeatmap", function(.data, ...){ .data %>%	layer_symbol(..., symbol="diamond") })
+
+#' Split the heatmap row-wise depending on the biggest branches in the cladogram.
+#'
+#' \lifecycle{maturing}
+#'
+#' @description split_rows() from a `InputHeatmap` object, split the row cladogram.
+#'
+#' @importFrom stats hclust
+#' @importFrom dendextend cutree
+#' 
+#'
+#' @name split_rows
+#' @rdname split-methods
+#'
+#' @param .data A `InputHeatmap` 
+#' @param number_of_groups An integer. The number of groups to split the cladogram into.
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#' @docType methods
+#' 
+#' 
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% split_rows(2)
+#'
+#' @export
+setGeneric("split_rows", function(.data,
+																	number_of_groups)
+	standardGeneric("split_rows"))
+
+#' split_rows
+#' 
+#' @docType methods
+#' @rdname split-methods
+#' 
+#' 
+#' @return A `split_rows` object
+#'
+setMethod("split_rows", "InputHeatmap", function(.data,
+																								 number_of_groups){
+	
+	.data_matrix = .data@input[[1]]
+	
+	# Get clusters
+	hr = hclust(dist(.data_matrix), method = "average")
+	clusters = dendextend::cutree(hr, k = number_of_groups)
+	
+	# Append to input
+	.data@input$row_split = clusters
+	
+	.data
+	
+})
+
+#' Split the heatmap column-wise depending on the biggest branches in the cladogram.
+#'
+#' \lifecycle{maturing}
+#'
+#' @description split_columns() from a `InputHeatmap` object, split the column cladogram.
+#'
+#' @importFrom stats hclust
+#' @importFrom dendextend cutree
+#' 
+#'
+#' @name split_columns
+#' @rdname split-methods
+#'
+#' @param .data A `InputHeatmap` 
+#' @param number_of_groups An integer. The number of groups to split the cladogram into.
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#' @docType methods
+#' 
+#' 
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 %>%
+#'   tidyHeatmap::heatmap(
+#'     .column = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm %>% split_columns(2)
+#'
+#' @export
+setGeneric("split_columns", function(.data,
+																		 number_of_groups)
+	standardGeneric("split_columns"))
+
+#' split_columns
+#' 
+#' @docType methods
+#' @rdname split-methods
+#' 
+#' 
+#' @return A `split_columns` object
+#'
+setMethod("split_columns", "InputHeatmap", function(.data,
+																										number_of_groups){
+	
+	.data_matrix = .data@input[[1]] %>% t()
+	
+	# Get clusters
+	hr = hclust(dist(.data_matrix), method = "average")
+	clusters = dendextend::cutree(hr, k = number_of_groups)
+	
+	# Append to input
+	.data@input$column_split = clusters
+	
+	.data
+	
+})
 
 #' Save plot on PDF file
 #'
@@ -1017,16 +1139,12 @@ setGeneric("save_pdf", function(.heatmap,
 
 #' save_pdf
 #' 
-#' @inheritParams save_pdf
 #' 
-#' @export
 setMethod("save_pdf", "Heatmap", .save_pdf)
 
 #' save_pdf
 #' 
-#' @inheritParams save_pdf
 #' 
-#' @export
 setMethod("save_pdf", "InputHeatmap", .save_pdf)
 
 

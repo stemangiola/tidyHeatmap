@@ -12,17 +12,6 @@
   units = c("in", "cm", "mm")
 )
 }
-\arguments{
-\item{.heatmap}{A `Heatmap`}
-
-\item{filename}{A character string. The name of the output file/path}
-
-\item{width}{A `double`. Plot width}
-
-\item{height}{A `double`. Plot height}
-
-\item{units}{A character string. units ("in", "cm", or "mm")}
-}
 \description{
 save_pdf
 }
