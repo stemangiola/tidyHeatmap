@@ -159,6 +159,8 @@ input_heatmap = function(.data,
 	new(
 		"InputHeatmap",
 		data = .data %>% reduce_to_tbl_if_in_class_chain,
+		# Due to the `.homonyms="last"` parameter, additional arguments passed by the user
+		# via `...` overwrite the defaults given below (See also `?rlang::dots_list`)
 		input = rlang::dots_list(
 			abundance_mat,
 			name = quo_name(.abundance),
