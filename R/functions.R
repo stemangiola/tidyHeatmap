@@ -168,7 +168,7 @@ input_heatmap = function(.data,
 			row_names_gp = gpar(fontsize = min(12, 320 / dim(abundance_mat)[1])),
 			column_names_gp = gpar(fontsize = min(12, 320 / dim(abundance_mat)[2]))
 		)  %>%
-		c(rlang::dots_list(...)),
+		c(rlang::dots_list(..., .homonyms="last")),
 		arguments = arguments
 	)
 	
