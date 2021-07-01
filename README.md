@@ -46,19 +46,21 @@ as graphical engine.
 
 ## Functions/utilities available
 
-| Function           | Description                                |
-|--------------------|--------------------------------------------|
-| `heatmap`          | Plot base heatmap                          |
-| `add_tile`         | Add tile annotation to the heatmap         |
-| `add_point`        | Add point annotation to the heatmap        |
-| `add_bar`          | Add bar annotation to the heatmap          |
-| `add_line`         | Add line annotation to the heatmap         |
-| `layer_point`      | Add layer of symbols on top of the heatmap |
-| `layer_square`     | Add layer of symbols on top of the heatmap |
-| `layer_diamond`    | Add layer of symbols on top of the heatmap |
-| `layer_arrow_up`   | Add layer of symbols on top of the heatmap |
-| `layer_arrow_down` | Add layer of symbols on top of the heatmap |
-| `save_pdf`         | Save the PDF of the heatmap                |
+| Function           | Description                                 |
+|--------------------|---------------------------------------------|
+| `heatmap`          | Plots base heatmap                          |
+| `add_tile`         | Adds tile annotation to the heatmap         |
+| `add_point`        | Adds point annotation to the heatmap        |
+| `add_bar`          | Adds bar annotation to the heatmap          |
+| `add_line`         | Adds line annotation to the heatmap         |
+| `layer_point`      | Adds layer of symbols on top of the heatmap |
+| `layer_square`     | Adds layer of symbols on top of the heatmap |
+| `layer_diamond`    | Adds layer of symbols on top of the heatmap |
+| `layer_arrow_up`   | Adds layer of symbols on top of the heatmap |
+| `layer_arrow_down` | Add layer of symbols on top of the heatmap  |
+| `split_rows`       | Splits the rows based on the dendogram      |
+| `split_columns`    | Splits the columns based on the dendogram   |
+| `save_pdf`         | Saves the PDF of the heatmap                |
 
 ## Installation
 
@@ -124,7 +126,7 @@ mtcars_tidy
     ## 10 Mazda RX4 Wag   110     0 mpg          0.151
     ## # … with 278 more rows
 
-## Plot
+## Plotting
 
 For plotting, you simply pipe the input data frame into heatmap,
 specifying:
@@ -150,13 +152,13 @@ mtcars_heatmap
 
 ![](man/figures/unnamed-chunk-6-1.png)<!-- -->
 
-## Save
+## Saving
 
 ``` r
 mtcars_heatmap %>% save_pdf("mtcars_heatmap.pdf")
 ```
 
-## Grouping
+## Grouping and splitting
 
 We can easily group the data (one group per dimension maximum, at the
 moment only the vertical dimension is supported) with dplyr, and the
@@ -171,6 +173,8 @@ mtcars_tidy %>%
 
 ![](man/figures/unnamed-chunk-8-1.png)<!-- -->
 
+We can provide colour palettes to groupings
+
 ``` r
 mtcars_tidy %>% 
     group_by(vs) %>%
@@ -182,6 +186,31 @@ mtcars_tidy %>%
 ```
 
 ![](man/figures/unnamed-chunk-9-1.png)<!-- -->
+
+We can split based on the cladogram
+
+``` r
+mtcars_tidy %>% 
+    heatmap(`Car name`, Property, Value ) %>%
+    split_rows(2) %>%
+    split_columns(2)
+```
+
+![](man/figures/unnamed-chunk-10-1.png)<!-- -->
+
+We can Split on kmean clustering (using ComplexHeatmap options, it is
+stokastic)
+
+``` r
+mtcars_tidy %>% 
+    heatmap(
+        `Car name`, Property, Value ,
+        row_km = 2,
+        column_km = 2
+    ) 
+```
+
+![](man/figures/unnamed-chunk-11-1.png)<!-- -->
 
 ## Custom palettes
 
@@ -198,7 +227,24 @@ mtcars_tidy %>%
     )
 ```
 
-![](man/figures/unnamed-chunk-10-1.png)<!-- -->
+![](man/figures/unnamed-chunk-12-1.png)<!-- -->
+
+A better-looking blue-to-red palette
+
+``` r
+mtcars_tidy %>% 
+    heatmap(
+        `Car name`, 
+        Property, 
+        Value,
+        palette_value = circlize::colorRamp2(
+            seq(-2, 2, length.out = 11), 
+            RColorBrewer::brewer.pal(11, "RdBu")
+        )
+    )
+```
+
+![](man/figures/unnamed-chunk-13-1.png)<!-- -->
 
 Or a grid::colorRamp2 function for higher flexibility
 
@@ -212,7 +258,7 @@ mtcars_tidy %>%
     )
 ```
 
-![](man/figures/unnamed-chunk-11-1.png)<!-- -->
+![](man/figures/unnamed-chunk-14-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -228,7 +274,7 @@ tidyHeatmap::pasilla %>%
     add_tile(activation)
 ```
 
-![](man/figures/unnamed-chunk-12-1.png)<!-- -->
+![](man/figures/unnamed-chunk-15-1.png)<!-- -->
 
 ## Annotation types
 
@@ -260,7 +306,7 @@ pasilla_plus %>%
     add_line(age)
 ```
 
-![](man/figures/unnamed-chunk-13-1.png)<!-- -->
+![](man/figures/unnamed-chunk-16-1.png)<!-- -->
 
 # Layer symbol
 
@@ -282,18 +328,7 @@ tidyHeatmap::pasilla %>%
     )
 ```
 
-![](man/figures/unnamed-chunk-14-1.png)<!-- -->
-
-# Split cladogram
-
-``` r
-mtcars_tidy %>% 
-    heatmap(`Car name`, Property, Value ) %>%
-    split_rows(2) %>%
-    split_columns(2)
-```
-
-![](man/figures/unnamed-chunk-15-1.png)<!-- -->
+![](man/figures/unnamed-chunk-17-1.png)<!-- -->
 
 # ComplexHeatmap further styling
 
@@ -307,7 +342,7 @@ Add cell borders
         ) 
 ```
 
-![](man/figures/unnamed-chunk-16-1.png)<!-- -->
+![](man/figures/unnamed-chunk-18-1.png)<!-- -->
 
 Drop row clustering
 
@@ -319,4 +354,4 @@ Drop row clustering
         ) 
 ```
 
-![](man/figures/unnamed-chunk-17-1.png)<!-- -->
+![](man/figures/unnamed-chunk-19-1.png)<!-- -->
