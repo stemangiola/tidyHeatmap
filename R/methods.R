@@ -48,6 +48,7 @@ setMethod("show", "InputHeatmap", function(object){
 	# Fix CRAN notes
 	. = NULL
 	index_column_wise = NULL
+	shape = NULL
 	
 	object@input$top_annotation = 
 		c(
@@ -83,7 +84,7 @@ setMethod("show", "InputHeatmap", function(object){
 			
 			# Filter just points to label
 			inner_join(object@layer_symbol, by = c("row", "column")) %>%
-			select(index_column_wise, shape)
+			select(`index_column_wise`, `shape`)
 		
 		if(nrow(ind)>0)
 			grid.points(
