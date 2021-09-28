@@ -159,16 +159,19 @@ input_heatmap = function(.data,
 	new(
 		"InputHeatmap",
 		data = .data %>% reduce_to_tbl_if_in_class_chain,
-		input = list(
+		# Due to the `.homonyms="last"` parameter, additional arguments passed by the user
+		# via `...` overwrite the defaults given below (See also `?rlang::dots_list`)
+		input = rlang::dots_list(
 			abundance_mat,
 			name = quo_name(.abundance),
 			column_title = quo_name(.horizontal),
 			row_title = quo_name(.vertical),
 			col = colors,
 			row_names_gp = gpar(fontsize = min(12, 320 / dim(abundance_mat)[1])),
-			column_names_gp = gpar(fontsize = min(12, 320 / dim(abundance_mat)[2]))
-		)  %>%
-		c(rlang::dots_list(...)),
+			column_names_gp = gpar(fontsize = min(12, 320 / dim(abundance_mat)[2])),
+			...,
+			.homonyms="last"
+		),
 		arguments = arguments
 	)
 	

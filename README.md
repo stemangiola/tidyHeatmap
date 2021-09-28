@@ -40,25 +40,27 @@ as graphical engine.
 
 -   Modular annotation with just specifying column names
 -   Custom grouping of rows is easy to specify providing a grouped tbl.
-    For example `df %>% group_by(...)`
+    For example `df |> group_by(...)`
 -   Labels size adjusted by row and column total number
 -   Default use of Brewer and Viridis palettes
 
 ## Functions/utilities available
 
-| Function           | Description                                |
-|--------------------|--------------------------------------------|
-| `heatmap`          | Plot base heatmap                          |
-| `add_tile`         | Add tile annotation to the heatmap         |
-| `add_point`        | Add point annotation to the heatmap        |
-| `add_bar`          | Add bar annotation to the heatmap          |
-| `add_line`         | Add line annotation to the heatmap         |
-| `layer_point`      | Add layer of symbols on top of the heatmap |
-| `layer_square`     | Add layer of symbols on top of the heatmap |
-| `layer_diamond`    | Add layer of symbols on top of the heatmap |
-| `layer_arrow_up`   | Add layer of symbols on top of the heatmap |
-| `layer_arrow_down` | Add layer of symbols on top of the heatmap |
-| `save_pdf`         | Save the PDF of the heatmap                |
+| Function           | Description                                 |
+|--------------------|---------------------------------------------|
+| `heatmap`          | Plots base heatmap                          |
+| `add_tile`         | Adds tile annotation to the heatmap         |
+| `add_point`        | Adds point annotation to the heatmap        |
+| `add_bar`          | Adds bar annotation to the heatmap          |
+| `add_line`         | Adds line annotation to the heatmap         |
+| `layer_point`      | Adds layer of symbols on top of the heatmap |
+| `layer_square`     | Adds layer of symbols on top of the heatmap |
+| `layer_diamond`    | Adds layer of symbols on top of the heatmap |
+| `layer_arrow_up`   | Adds layer of symbols on top of the heatmap |
+| `layer_arrow_down` | Add layer of symbols on top of the heatmap  |
+| `split_rows`       | Splits the rows based on the dendogram      |
+| `split_columns`    | Splits the columns based on the dendogram   |
+| `save_pdf`         | Saves the PDF of the heatmap                |
 
 ## Installation
 
@@ -97,11 +99,11 @@ independent variables in this case are ‘hp’ and ‘vs’.
 
 ``` r
 mtcars_tidy <- 
-    mtcars %>% 
-    as_tibble(rownames="Car name") %>% 
+    mtcars |> 
+    as_tibble(rownames="Car name") |> 
     
     # Scale
-    mutate_at(vars(-`Car name`, -hp, -vs), scale) %>%
+    mutate_at(vars(-`Car name`, -hp, -vs), scale) |>
     
     # tidyfy
     pivot_longer(cols = -c(`Car name`, hp, vs), names_to = "Property", values_to = "Value")
@@ -124,7 +126,7 @@ mtcars_tidy
     ## 10 Mazda RX4 Wag   110     0 mpg          0.151
     ## # … with 278 more rows
 
-## Plot
+## Plotting
 
 For plotting, you simply pipe the input data frame into heatmap,
 specifying:
@@ -137,9 +139,9 @@ mtcars
 
 ``` r
 mtcars_heatmap <- 
-    mtcars_tidy %>% 
-        heatmap(`Car name`, Property, Value ) %>%
-        add_tile(hp)
+    mtcars_tidy |> 
+    heatmap(`Car name`, Property, Value ) |>
+    add_tile(hp)
 ```
 
     ## tidyHeatmap says: (once per session) from release 1.2.3 the grouping labels have white background by default. To add color for one-ay grouping specify palette_grouping = list(c("red", "blue"))
@@ -150,38 +152,65 @@ mtcars_heatmap
 
 ![](man/figures/unnamed-chunk-6-1.png)<!-- -->
 
-## Save
+## Saving
 
 ``` r
-mtcars_heatmap %>% save_pdf("mtcars_heatmap.pdf")
+mtcars_heatmap |> save_pdf("mtcars_heatmap.pdf")
 ```
 
-## Grouping
+## Grouping and splitting
 
 We can easily group the data (one group per dimension maximum, at the
 moment only the vertical dimension is supported) with dplyr, and the
 heatmap will be grouped accordingly
 
 ``` r
-mtcars_tidy %>% 
-    group_by(vs) %>%
-    heatmap(`Car name`, Property, Value ) %>%
+mtcars_tidy |> 
+    group_by(vs) |>
+    heatmap(`Car name`, Property, Value ) |>
     add_tile(hp)
 ```
 
 ![](man/figures/unnamed-chunk-8-1.png)<!-- -->
 
+We can provide colour palettes to groupings
+
 ``` r
-mtcars_tidy %>% 
-    group_by(vs) %>%
+mtcars_tidy |> 
+    group_by(vs) |>
     heatmap(
         `Car name`, Property, Value ,
         palette_grouping = list(c("#66C2A5", "#FC8D62"))
-    ) %>%
+    ) |>
     add_tile(hp)
 ```
 
 ![](man/figures/unnamed-chunk-9-1.png)<!-- -->
+
+We can split based on the cladogram
+
+``` r
+mtcars_tidy |> 
+    heatmap(`Car name`, Property, Value ) |>
+    split_rows(2) |>
+    split_columns(2)
+```
+
+![](man/figures/unnamed-chunk-10-1.png)<!-- -->
+
+We can Split on kmean clustering (using ComplexHeatmap options, it is
+stokastic)
+
+``` r
+mtcars_tidy |> 
+    heatmap(
+        `Car name`, Property, Value ,
+        row_km = 2,
+        column_km = 2
+    ) 
+```
+
+![](man/figures/unnamed-chunk-11-1.png)<!-- -->
 
 ## Custom palettes
 
@@ -189,7 +218,7 @@ We can easily use custom palette, using strings, hexadecimal color
 character vector,
 
 ``` r
-mtcars_tidy %>% 
+mtcars_tidy |> 
     heatmap(
         `Car name`, 
         Property, 
@@ -198,12 +227,29 @@ mtcars_tidy %>%
     )
 ```
 
-![](man/figures/unnamed-chunk-10-1.png)<!-- -->
+![](man/figures/unnamed-chunk-12-1.png)<!-- -->
+
+A better-looking blue-to-red palette
+
+``` r
+mtcars_tidy |> 
+    heatmap(
+        `Car name`, 
+        Property, 
+        Value,
+        palette_value = circlize::colorRamp2(
+            seq(-2, 2, length.out = 11), 
+            RColorBrewer::brewer.pal(11, "RdBu")
+        )
+    )
+```
+
+![](man/figures/unnamed-chunk-13-1.png)<!-- -->
 
 Or a grid::colorRamp2 function for higher flexibility
 
 ``` r
-mtcars_tidy %>% 
+mtcars_tidy |> 
     heatmap(
         `Car name`, 
         Property, 
@@ -212,23 +258,23 @@ mtcars_tidy %>%
     )
 ```
 
-![](man/figures/unnamed-chunk-11-1.png)<!-- -->
+![](man/figures/unnamed-chunk-14-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
 ``` r
-tidyHeatmap::pasilla %>%
-    group_by(location, type) %>%
+tidyHeatmap::pasilla |>
+    group_by(location, type) |>
     heatmap(
-            .column = sample,
-            .row = symbol,
-            .value = `count normalised adjusted`
-        ) %>%
-    add_tile(condition) %>%
+        .column = sample,
+        .row = symbol,
+        .value = `count normalised adjusted`
+    ) |>
+    add_tile(condition) |>
     add_tile(activation)
 ```
 
-![](man/figures/unnamed-chunk-12-1.png)<!-- -->
+![](man/figures/unnamed-chunk-15-1.png)<!-- -->
 
 ## Annotation types
 
@@ -239,73 +285,87 @@ tidyHeatmap::pasilla %>%
 ``` r
 # Create some more data points
 pasilla_plus <- 
-    tidyHeatmap::pasilla %>%
-        dplyr::mutate(act = activation) %>% 
-        tidyr::nest(data = -sample) %>%
-        dplyr::mutate(size = rnorm(n(), 4,0.5)) %>%
-        dplyr::mutate(age = runif(n(), 50, 200)) %>%
-        tidyr::unnest(data) 
+    tidyHeatmap::pasilla |>
+    dplyr::mutate(act = activation) |> 
+    tidyr::nest(data = -sample) |>
+    dplyr::mutate(size = rnorm(n(), 4,0.5)) |>
+    dplyr::mutate(age = runif(n(), 50, 200)) |>
+    tidyr::unnest(data) 
 
 # Plot
-pasilla_plus %>%
-        heatmap(
-            .column = sample,
-            .row = symbol,
-            .value = `count normalised adjusted`
-        ) %>%
-    add_tile(condition) %>%
-    add_point(activation) %>%
-    add_tile(act) %>%
-    add_bar(size) %>%
+pasilla_plus |>
+    heatmap(
+        .column = sample,
+        .row = symbol,
+        .value = `count normalised adjusted`
+    ) |>
+    add_tile(condition) |>
+    add_point(activation) |>
+    add_tile(act) |>
+    add_bar(size) |>
     add_line(age)
 ```
 
-![](man/figures/unnamed-chunk-13-1.png)<!-- -->
+![](man/figures/unnamed-chunk-16-1.png)<!-- -->
 
 # Layer symbol
 
 Add a layer on top of the heatmap
 
 ``` r
-tidyHeatmap::pasilla %>%
+tidyHeatmap::pasilla |>
     
     # filter
-    filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) %>%
+    filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) |>
     
     heatmap(
-            .column = sample,
-            .row = symbol,
-            .value = `count normalised adjusted`
-        ) %>% 
+        .column = sample,
+        .row = symbol,
+        .value = `count normalised adjusted`
+    ) |> 
     layer_point(
         `count normalised adjusted log` > 6 & sample == "untreated3" 
     )
 ```
 
-![](man/figures/unnamed-chunk-14-1.png)<!-- -->
+![](man/figures/unnamed-chunk-17-1.png)<!-- -->
 
 # ComplexHeatmap further styling
 
 Add cell borders
 
 ``` r
-    mtcars_tidy %>% 
-        heatmap(
-            `Car name`, Property, Value, 
-            rect_gp = grid::gpar(col = "#161616", lwd = 0.5)
-        ) 
+mtcars_tidy |> 
+    heatmap(
+        `Car name`, Property, Value, 
+        rect_gp = grid::gpar(col = "#161616", lwd = 0.5)
+    ) 
 ```
 
-![](man/figures/unnamed-chunk-15-1.png)<!-- -->
+![](man/figures/unnamed-chunk-18-1.png)<!-- -->
 
 Drop row clustering
 
 ``` r
-    mtcars_tidy %>% 
-        heatmap(
-            `Car name`, Property, Value, 
-            cluster_rows = FALSE
-        ) 
+mtcars_tidy |> 
+    heatmap(
+        `Car name`, Property, Value, 
+        cluster_rows = FALSE
+    ) 
 ```
 
-![](man/figures/unnamed-chunk-16-1.png)<!-- -->
+![](man/figures/unnamed-chunk-19-1.png)<!-- -->
+
+Reorder rows elements
+
+``` r
+library(forcats)
+mtcars_tidy |> 
+    mutate(`Car name` = fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+    heatmap(
+        `Car name`, Property, Value, 
+        cluster_rows = FALSE
+    ) 
+```
+
+![](man/figures/unnamed-chunk-20-1.png)<!-- -->
