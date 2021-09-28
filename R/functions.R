@@ -300,7 +300,7 @@ add_annotation = function(my_input_heatmap,
 												 annotation,
 												 type = rep("tile", length(quo_names(annotation))),
 												 palette_discrete = list(),
-												 palette_continuous = list()) {
+												 palette_continuous = list(), ...) {
 	
 	# Solve CRAN note
 	annot_type = NULL
@@ -360,7 +360,7 @@ add_annotation = function(my_input_heatmap,
 		get_top_left_annotation( !!.horizontal,
 														 !!.vertical,
 														 !!.abundance,
-														 !!annotation,	palette_annotation,	type, x_y_annot_cols)
+														 !!annotation,	palette_annotation,	type, x_y_annot_cols, ...)
 	
 	# Number of grouping
 	how_many_discrete = .data_annot %>% filter(annot_type=="discrete") %>% nrow

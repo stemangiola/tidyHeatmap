@@ -32,8 +32,8 @@ InputHeatmap<-setClass(
 				brewer.pal(11, "BrBG")
 			),
 		input = list(),
-		top_annotation =  tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list()),
-		left_annotation = tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list()),
+		top_annotation =  tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list(), further_arguments = list()),
+		left_annotation = tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list(), further_arguments = list()),
 		group_top_annotation = list(),
 		group_left_annotation = list(),
 		layer_symbol = tibble(column = integer(), row = integer(), shape = integer())
@@ -346,7 +346,7 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #' @export
 setGeneric("add_tile", function(.data,
 																.column,
-																palette = NULL)
+																palette = NULL, ...)
 	standardGeneric("add_tile"))
 
 #' add_tile
@@ -359,7 +359,7 @@ setGeneric("add_tile", function(.data,
 #'
 setMethod("add_tile", "InputHeatmap", function(.data,
 																							 .column,
-																							 palette = NULL){
+																							 palette = NULL, ...){
 	
 	.column = enquo(.column)
 	
@@ -381,7 +381,8 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 			ungroup() %>%
 			select(!!.column) %>% 
 			sapply(class) %>% 
-			when(. %in% c("integer", "numerical", "numeric", "double") &	!is.null(palette) ~ list(palette), ~ list())
+			when(. %in% c("integer", "numerical", "numeric", "double") &	!is.null(palette) ~ list(palette), ~ list()),
+		...
 	)
 	
 })
