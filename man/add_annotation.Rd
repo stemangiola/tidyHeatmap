@@ -9,7 +9,8 @@ add_annotation(
   annotation,
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
-  palette_continuous = list()
+  palette_continuous = list(),
+  ...
 )
 }
 \arguments{

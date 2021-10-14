@@ -624,9 +624,9 @@ type_to_annot_function = list(
   "line" = anno_lines
 )
 
-get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation, palette_annotation, type, x_y_annot_cols){
+get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation, palette_annotation, type, x_y_annot_cols, ...){
   
-  # Comply with CRAN NOTES
+  # Comply with CRAN NOTES 
   data = NULL
   fx = NULL
   annot = NULL
@@ -642,6 +642,8 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   .row = enquo(.row) 
   .abundance = enquo(.abundance)
   annotation = enquo(annotation)
+  
+  dots_args = rlang::dots_list(...)
   
   annotation_function = type_to_annot_function[type]
   
@@ -708,6 +710,9 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
       colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
     else NULL
   })) %>%
+  	
+  mutate(further_arguments = map(col_name, ~ dots_args)) %>% 	
+  
   
   # Stop if annotations discrete bigger than palette
   when(
@@ -808,8 +813,9 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
         ct = anno_block(  
           gp = gpar(fill = palette_fill_row ),
           labels = row_split %>% unique %>% sort,
-          labels_gp = gpar(col = palette_text_row),
-          which = "row"
+          labels_gp = gpar(col = palette_text_row, fontsize = 7),
+          which = "row",
+          width = unit(9, "pt")
         )
       )
     
@@ -853,8 +859,9 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
           ct = anno_block(  
             gp = gpar(fill = palette_fill_column ),
             labels = col_split %>% unique %>% sort,
-            labels_gp = gpar(col = palette_text_column),
-            which = "column"
+            labels_gp = gpar(col = palette_text_column, fontsize = 7),
+            which = "column",
+            height = unit(9, "pt")
           )
         )
       
@@ -1060,14 +1067,25 @@ annot_to_list = function(.data){
   col_name = NULL
   annot = NULL
   
-  .data %>% pull(annot) %>% setNames(.data %>% pull(col_name))  %>%
+  .data %>% 
+  	pull(annot) %>%
+  	setNames(.data %>% pull(col_name))  %>%
     
     # If list is populated
     when(length(.) > 0 ~ (.) %>% c(
       col = list(.data %>%
                    filter(map_lgl(color, ~ .x %>% is.null %>% not)) %>%
                    { setNames( pull(., color),  pull(., col_name))    })
-    ), ~ (.))
+    ) %>%
+    	
+    	# Add additional arguments
+    	c(
+    		.data %>% 
+    			pull(further_arguments) %>% 
+    			combine_elements_with_the_same_name()
+    	),
+    
+    ~ (.)) 
     
 }
 
@@ -1095,3 +1113,13 @@ not = function(is){	!is }
 
 # Raise to the power
 pow = function(a,b){	a^b }
+
+combine_elements_with_the_same_name = function(x){
+	
+	if(length(unlist(x))==0) return(unlist(x))
+	else {
+		x = unlist(x)
+		tapply(unlist(x, use.names = FALSE), rep(names(x), lengths(x)), FUN = c)
+	}
+
+}

@@ -16,7 +16,6 @@ Mangiola et al., (2020). tidyHeatmap: an R package for modular heatmap productio
 
 Please have a look also to 
 
-- [nanny](https://github.com/stemangiola/nanny/) for tidy high-level data analysis and manipulation 
 - [tidygate](https://github.com/stemangiola/tidygate/) for adding custom gate information to your tibble 
 - [tidySingleCellExperiment](https://stemangiola.github.io/tidySingleCellExperiment/) for tidy manipulation of Seurat objects
 - [tidyseurat](https://stemangiola.github.io/tidyseurat/) for tidy manipulation of Seurat objects
@@ -233,6 +232,21 @@ tidyHeatmap::pasilla |>
 	add_tile(condition) |>
 	add_tile(activation)
 ```
+Remove legends, adding aesthetics to annotations in a modular fashion, using `ComplexHeatmap` arguments
+
+```{r}
+
+tidyHeatmap::pasilla |>
+	group_by(location, type) |>
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,
+		show_heatmap_legend = FALSE
+	) |>
+	add_tile(condition, show_legend = FALSE) |>
+	add_tile(activation, show_legend = FALSE)
+```
 
 ## Annotation types
 
@@ -317,3 +331,6 @@ mtcars_tidy |>
 		cluster_rows = FALSE
 	) 
 ```
+
+
+
