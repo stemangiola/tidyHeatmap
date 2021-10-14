@@ -15,8 +15,6 @@ production based on tidy principles. Journal of Open Source Software,
 
 Please have a look also to
 
--   [nanny](https://github.com/stemangiola/nanny/) for tidy high-level
-    data analysis and manipulation
 -   [tidygate](https://github.com/stemangiola/tidygate/) for adding
     custom gate information to your tibble
 -   [tidySingleCellExperiment](https://stemangiola.github.io/tidySingleCellExperiment/)
@@ -89,9 +87,9 @@ The heatmaps visualise a multi-element, multi-feature dataset, annotated
 with independent variables. Each observation is a element-feature pair
 (e.g., person-physical characteristics).
 
-| element         | feature         | value     | independent\_variables |
-|-----------------|-----------------|-----------|------------------------|
-| `chr` or `fctr` | `chr` or `fctr` | `numeric` | …                      |
+| element         | feature         | value     | independent_variables |
+|-----------------|-----------------|-----------|-----------------------|
+| `chr` or `fctr` | `chr` or `fctr` | `numeric` | …                     |
 
 Let’s transform the mtcars dataset into a tidy
 “element-feature-independent variables” data frame. Where the
@@ -274,11 +272,28 @@ tidyHeatmap::pasilla |>
     add_tile(activation)
 ```
 
-![](man/figures/unnamed-chunk-15-1.png)<!-- -->
+![](man/figures/unnamed-chunk-15-1.png)<!-- --> Remove legends, adding
+aesthetics to annotations in a modular fashion, using `ComplexHeatmap`
+arguments
+
+``` r
+tidyHeatmap::pasilla |>
+    group_by(location, type) |>
+    heatmap(
+        .column = sample,
+        .row = symbol,
+        .value = `count normalised adjusted`,
+        show_heatmap_legend = FALSE
+    ) |>
+    add_tile(condition, show_legend = FALSE) |>
+    add_tile(activation, show_legend = FALSE)
+```
+
+![](man/figures/unnamed-chunk-16-1.png)<!-- -->
 
 ## Annotation types
 
-**This feature requires &gt;= 0.99.20 version**
+**This feature requires \>= 0.99.20 version**
 
 “tile” (default), “point”, “bar” and “line” are available
 
@@ -306,7 +321,7 @@ pasilla_plus |>
     add_line(age)
 ```
 
-![](man/figures/unnamed-chunk-16-1.png)<!-- -->
+![](man/figures/unnamed-chunk-17-1.png)<!-- -->
 
 # Layer symbol
 
@@ -328,7 +343,7 @@ tidyHeatmap::pasilla |>
     )
 ```
 
-![](man/figures/unnamed-chunk-17-1.png)<!-- -->
+![](man/figures/unnamed-chunk-18-1.png)<!-- -->
 
 # ComplexHeatmap further styling
 
@@ -342,7 +357,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/figures/unnamed-chunk-18-1.png)<!-- -->
+![](man/figures/unnamed-chunk-19-1.png)<!-- -->
 
 Drop row clustering
 
@@ -354,7 +369,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/figures/unnamed-chunk-19-1.png)<!-- -->
+![](man/figures/unnamed-chunk-20-1.png)<!-- -->
 
 Reorder rows elements
 
@@ -368,4 +383,4 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/figures/unnamed-chunk-20-1.png)<!-- -->
+![](man/figures/unnamed-chunk-21-1.png)<!-- -->
