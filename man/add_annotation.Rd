@@ -23,6 +23,8 @@ add_annotation(
 \item{palette_discrete}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
 
 \item{palette_continuous}{A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).}
+
+\item{...}{The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container}
 }
 \value{
 A `ComplexHeatmap` object
