@@ -6,9 +6,9 @@
 \alias{add_tile,InputHeatmap-method}
 \title{Adds a tile annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
 \usage{
-add_tile(.data, .column, palette = NULL)
+add_tile(.data, .column, palette = NULL, ...)
 
-\S4method{add_tile}{InputHeatmap}(.data, .column, palette = NULL)
+\S4method{add_tile}{InputHeatmap}(.data, .column, palette = NULL, ...)
 }
 \arguments{
 \item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}
@@ -16,6 +16,8 @@ add_tile(.data, .column, palette = NULL)
 \item{.column}{Vector of quotes}
 
 \item{palette}{A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
+
+\item{...}{The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container}
 }
 \value{
 A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`

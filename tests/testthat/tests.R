@@ -44,7 +44,7 @@ test_that("annotated plot numerical continuous intereg nominal annot",{
 			.column = UBR, 
 			.row = symbol_ct, 
 			.value = `read count normalised log`
-		) %>%
+		) |>
 		add_tile(CAPRA_TOTAL)
 	
 	vdiffr::expect_doppelganger("annotated heatmap 1", p)
@@ -60,7 +60,7 @@ test_that("annotated plot continuous annot MUST ERROR",{
 			.column = UBR, 
 			.row = symbol_ct, 
 			.value = `read count normalised log`
-		) %>% 
+		) |> 
 			add_tile(a), "Your annotation*", fixed=FALSE) 
 	
 })
@@ -77,8 +77,8 @@ test_that("annotated plot continuous annot as well",{
 			.column = UBR, 
 			.row = symbol_ct, 
 			.value = `read count normalised log`
-		) %>%
-		add_tile(a) %>%
+		) |>
+		add_tile(a) |>
 		add_tile(CAPRA_TOTAL)
 	
 	vdiffr::expect_doppelganger("annotated heatmap 2", p)
@@ -96,7 +96,7 @@ test_that("grouped and annotated plot",{
 			.column = UBR, 
 			.row = symbol_ct, 
 			.value = `read count normalised log`
-		) %>%
+		) |>
 		add_tile(CAPRA_TOTAL)
 	
 	
@@ -112,8 +112,8 @@ test_that("grouped double and annotated plot",{
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted`
-		) %>%
-		add_tile(condition) %>%
+		) |>
+		add_tile(condition) |>
 		add_tile(activation)
 	
 	
@@ -131,8 +131,8 @@ test_that("grouping error",{
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted`
-		) %>%
-			add_tile(condition) %>%
+		) |>
+			add_tile(condition) |>
 			add_tile(activation),
 		regexp = "tidyHeatmap says: At the moment just one grouping per dimension*"
 	)
@@ -148,7 +148,7 @@ test_that("pasilla one annotation",{
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted log`
-		)  %>%
+		)  |>
 		add_tile(condition)
 	
 	expect_equal(class(p)[1], "InputHeatmap")
@@ -164,8 +164,8 @@ test_that("pasilla 2 annotations",{
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted log`
-		) %>%
-		add_tile(condition) %>%
+		) |>
+		add_tile(condition) |>
 		add_tile(type)
 	
 	
@@ -183,8 +183,8 @@ test_that("pasilla custom color abundance",{
 			.row = symbol,
 			.value = `count normalised adjusted log`,
 			palette_value = c("#d80000", "#ffffff", "#283cea")
-		) %>%
-		add_tile(condition) %>%
+		) |>
+		add_tile(condition) |>
 		add_tile(type)
 	
 	
@@ -202,8 +202,8 @@ test_that("pasilla custom color discrete",{
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted log`
-		)  %>%
-		add_tile(condition, c("#d80000", "#283cea")) %>%
+		)  |>
+		add_tile(condition, c("#d80000", "#283cea")) |>
 		add_tile(type)
 	
 	
@@ -220,7 +220,7 @@ test_that("pasilla custom color contunuous",{
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted log`
-		) %>%
+		) |>
 		add_tile(activation, c("#d80000", "#283cea"))
 	
 	
@@ -237,9 +237,9 @@ test_that("pasilla custom color contunuous AND discrete",{
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted log`
-		) %>%
-		add_tile(condition) %>%
-		add_tile(type) %>%
+		) |>
+		add_tile(condition) |>
+		add_tile(type) |>
 		add_tile(activation) 
 	
 	
@@ -256,9 +256,9 @@ test_that("grouped and annotated plot both vertical and horizontal",{
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted`
-		) %>%
-		add_tile(condition) %>%
-		add_tile(type) %>%
+		) |>
+		add_tile(condition) |>
+		add_tile(type) |>
 		add_tile(activation) 
 	
 	
@@ -275,9 +275,9 @@ test_that("pass arguments with ...",{
 			.row = symbol,
 			.value = `count normalised adjusted`,
 			show_heatmap_legend = FALSE
-		) %>%
-		add_tile(condition) %>%
-		add_tile(type) %>%
+		) |>
+		add_tile(condition) |>
+		add_tile(type) |>
 		add_tile(activation) 
 	
 	
@@ -397,21 +397,21 @@ test_that("multi-type",{
 	library(magrittr)
 
 	p = 
-		dplyr::group_by(tidyHeatmap::pasilla,		location, type) %>%
-		dplyr::mutate(act = activation) %>% 
-		tidyr::nest(data = -sample) %>%
-		dplyr::mutate(size = c(4.014422, 3.783935, 4.844936, 4.614196, 4.138012, 3.475512, 3.739565)) %>%
-		dplyr::mutate(age = c(147 , 98,  96,  83, 105, 198,  73)) %>%
-		tidyr::unnest(data) %>%
+		dplyr::group_by(tidyHeatmap::pasilla,		location, type) |>
+		dplyr::mutate(act = activation) |> 
+		tidyr::nest(data = -sample) |>
+		dplyr::mutate(size = c(4.014422, 3.783935, 4.844936, 4.614196, 4.138012, 3.475512, 3.739565)) |>
+		dplyr::mutate(age = c(147 , 98,  96,  83, 105, 198,  73)) |>
+		tidyr::unnest(data) |>
 		tidyHeatmap::heatmap(
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted`
-		) %>%
-		add_tile(condition) %>%
-		add_point(activation) %>%
-		add_tile(act) %>%
-		add_bar(size) %>%
+		) |>
+		add_tile(condition) |>
+		add_point(activation) |>
+		add_tile(act) |>
+		add_bar(size) |>
 		add_line(age)
 	
 	
@@ -430,7 +430,7 @@ test_that("save_pdf",{
 		.column = UBR, 
 		.row = symbol_ct, 
 		.value = `read count normalised log`
-	) %>%
+	) |>
 	save_pdf(filename)
 	
 	if (file.exists(filename)) file.remove(filename)
@@ -470,15 +470,15 @@ test_that("managing palette usage",{
 	expect_equal(length(p3@palette_discrete), length(p2@palette_discrete))
 	
 	p4 =
-		p3 %>%
-		add_tile(condition) %>%
+		p3 |>
+		add_tile(condition) |>
 		add_tile(activation)
 	
 	expect_equal(length(p4@palette_discrete), length(p3@palette_discrete)-1 )
 	
 	p5 =
-		p1 %>%
-		add_tile(condition) %>%
+		p1 |>
+		add_tile(condition) |>
 		add_tile(activation)
 	
 	expect_equal(length(p5@palette_discrete), length(p1@palette_discrete)-1 )
@@ -503,8 +503,8 @@ test_that("annotated plot numerical continuous intereg nominal annot",{
 
 test_that("test sparse matrix",{
 	
-	p=data.frame(G = c('G1', 'G2', 'G3'), Y = c('M1', 'M1', 'M2'), V = c(1,2,3)) %>%
-			as_tibble() %>%
+	p=data.frame(G = c('G1', 'G2', 'G3'), Y = c('M1', 'M1', 'M2'), V = c(1,2,3)) |>
+			as_tibble() |>
 			tidyHeatmap::heatmap(
 				G, Y, V,
 				cluster_rows = FALSE,
@@ -519,15 +519,15 @@ test_that("test sparse matrix",{
 
 test_that("layer symbol",{
 	
-	library(dplyr)
+	
 	
 	p = 
-		tidyHeatmap::N52 %>%
+		tidyHeatmap::N52 |>
 		tidyHeatmap::heatmap(
 			.row = symbol_ct,
 			.column = UBR,
 			.value = `read count normalised log`
-		) %>% 
+		) |> 
 		layer_point(
 			`read count normalised log` > 4 & 
 				UBR %in% c(11405, 11427)
@@ -541,16 +541,14 @@ test_that("layer symbol",{
 
 test_that("split",{
 	
-	library(dplyr)
-	
 	p = 
-		tidyHeatmap::N52 %>%
+		tidyHeatmap::N52 |>
 		tidyHeatmap::heatmap(
 			.row = symbol_ct,
 			.column = UBR,
 			.value = `read count normalised log`
-		) %>% 
-		split_rows(2) %>%
+		) |> 
+		split_rows(2) |>
 		split_columns(2)
 	
 	
@@ -558,3 +556,22 @@ test_that("split",{
 	
 	
 })
+
+test_that("legend",{
+	
+	p = 
+		tidyHeatmap::N52 |>
+		tidyHeatmap::heatmap(
+			.row = symbol_ct,
+			.column = UBR,
+			.value = `read count normalised log`,
+			show_heatmap_legend = FALSE
+		) |> 
+		add_tile(UBR, show_legend = FALSE) |>
+		add_tile(`Cell type`, show_legend = FALSE) 
+	
+	vdiffr::expect_doppelganger("legend", p)
+	
+	
+})
+

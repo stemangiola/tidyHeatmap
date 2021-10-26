@@ -32,8 +32,8 @@ InputHeatmap<-setClass(
 				brewer.pal(11, "BrBG")
 			),
 		input = list(),
-		top_annotation =  tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list()),
-		left_annotation = tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list()),
+		top_annotation =  tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list(), further_arguments = list()),
+		left_annotation = tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list(), further_arguments = list()),
 		group_top_annotation = list(),
 		group_left_annotation = list(),
 		layer_symbol = tibble(column = integer(), row = integer(), shape = integer())
@@ -133,7 +133,8 @@ setMethod("show", "InputHeatmap", function(object){
 #' @param type DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
 #' @param palette_discrete DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
 #' @param palette_continuous DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
-#'
+#' @param ... The arguments that will be passed to the Heatmap function of ComplexHeatmap backend
+#' 
 #' @details This function takes a tbl as an input and creates a `ComplexHeatmap` plot. The information is stored in a `InputHeatmap` object that is updated along the pipe statement, for example adding annotation layers. 
 #'
 #' @return A `InputHeatmap` objects that gets evaluated to a `ComplexHeatmap` object
@@ -153,7 +154,7 @@ setMethod("show", "InputHeatmap", function(object){
 #' )
 #'
 #' @docType methods
-#' @rdname heatmap-methods
+#' @rdname heatmap-method
 #'
 #' @export
 setGeneric("heatmap", function(.data,
@@ -176,7 +177,7 @@ setGeneric("heatmap", function(.data,
 #' @inheritParams heatmap
 #' 
 #' @docType methods
-#' @rdname heatmap-methods
+#' @rdname heatmap-method
 #' 
 #' @return A `InputHeatmap` object
 #' 
@@ -278,7 +279,7 @@ heatmap_ <-
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
 #' 
 #' @docType methods
-#' @rdname heatmap-methods
+#' @rdname heatmap-method
 #' 
 #' @return A `InputHeatmap` object
 #'
@@ -287,7 +288,7 @@ setMethod("heatmap", "tbl", heatmap_)
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
 #' 
 #' @docType methods
-#' @rdname heatmap-methods
+#' @rdname heatmap-method
 #' 
 #' @return A `InputHeatmap` object
 #'
@@ -314,12 +315,12 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #' 
 #'
 #' @name add_tile
-#' @rdname add_tile-methods
+#' @rdname add_tile-method
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
-#'
+#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
 #' 
@@ -345,19 +346,19 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #' @export
 setGeneric("add_tile", function(.data,
 																.column,
-																palette = NULL)
+																palette = NULL, ...)
 	standardGeneric("add_tile"))
 
 #' add_tile
 #' 
 #' @docType methods
-#' @rdname add_tile-methods
+#' @rdname add_tile-method
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("add_tile", "InputHeatmap", function(.data,
 																							 .column,
-																							 palette = NULL){
+																							 palette = NULL, ...){
 	
 	.column = enquo(.column)
 	
@@ -379,7 +380,8 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 			ungroup() %>%
 			select(!!.column) %>% 
 			sapply(class) %>% 
-			when(. %in% c("integer", "numerical", "numeric", "double") &	!is.null(palette) ~ list(palette), ~ list())
+			when(. %in% c("integer", "numerical", "numeric", "double") &	!is.null(palette) ~ list(palette), ~ list()),
+		...
 	)
 	
 })
@@ -395,12 +397,12 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #' 
 #'
 #' @name add_point
-#' @rdname add_point-methods
+#' @rdname add_point-method
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
-#'
+#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
 #' 
@@ -426,23 +428,23 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #' @export
 setGeneric("add_point", function(.data,
 																.column,
-																palette = NULL)
+																palette = NULL, ...)
 	standardGeneric("add_point"))
 
 #' add_point
 #' 
 #' @docType methods
-#' @rdname add_point-methods
+#' @rdname add_point-method
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("add_point", "InputHeatmap", function(.data,
 																							 .column,
-																							 palette = NULL){
+																							 palette = NULL, ...){
 	
 	.column = enquo(.column)
 	
-	.data %>% add_annotation(	!!.column,	type = "point")
+	.data %>% add_annotation(	!!.column,	type = "point", ...)
 	
 })
 
@@ -457,12 +459,12 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #' 
 #'
 #' @name add_line
-#' @rdname add_line
+#' @rdname add_line-method
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
-#'
+#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
 #' 
@@ -488,28 +490,24 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #' @export
 setGeneric("add_line", function(.data,
 																 .column,
-																 palette = NULL)
+																 palette = NULL, ...)
 	standardGeneric("add_line"))
 
 #' add_line
 #' 
 #' @docType methods
-#' @rdname add_line-methods
+#' @rdname add_line-method
 #' 
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
-#' @param .column Vector of quotes
-#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
-#'
 #'
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("add_line", "InputHeatmap", function(.data,
 																								.column,
-																								palette = NULL){
+																								palette = NULL, ...){
 	
 	.column = enquo(.column)
 	
-	.data %>% add_annotation(	!!.column,	type = "line")
+	.data %>% add_annotation(	!!.column,	type = "line", ...)
 	
 })
 
@@ -524,12 +522,12 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #' 
 #'
 #' @name add_bar
-#' @rdname add_bar
+#' @rdname add_bar-method
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
-#'
+#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
 #' 
@@ -555,27 +553,23 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #' @export
 setGeneric("add_bar", function(.data,
 																.column,
-																palette = NULL)
+																palette = NULL, ...)
 	standardGeneric("add_bar"))
 
 #' add_bar
 #' 
 #' @docType methods
-#' @rdname add_bar-methods
-#' 
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
-#' @param .column Vector of quotes
-#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' @rdname add_bar-method
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("add_bar", "InputHeatmap", function(.data,
 																							 .column,
-																							 palette = NULL){
+																							 palette = NULL, ...){
 	
 	.column = enquo(.column)
 	
-	.data %>% add_annotation(	!!.column,	type = "bar")
+	.data %>% add_annotation(	!!.column,	type = "bar", ...)
 	
 })
 
@@ -590,7 +584,7 @@ setMethod("add_bar", "InputHeatmap", function(.data,
 #' 
 #'
 #' @name layer_symbol
-#' @rdname layer_symbol
+#' @rdname layer_symbol-method
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
@@ -601,9 +595,9 @@ setMethod("add_bar", "InputHeatmap", function(.data,
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-#' @keywords internal
 #' @docType methods
 #' 
+#' @keywords internal
 #' @noRd
 #' 
 #' @examples
@@ -629,12 +623,9 @@ setGeneric("layer_symbol", function(.data,
 #' layer_symbol
 #' 
 #' @docType methods
-#' @rdname layer_symbol-methods
+#' @rdname layer_symbol-method
 #' 
-#' @param .data A `InputHeatmap` 
-#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
-#' @param symbol A character string of length one. The values allowed are "point" ,     "square" ,    "diamond" ,   "arrow_up" ,  "arrow_down"
-#' 
+#' @keywords internal
 #' @noRd
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
@@ -700,7 +691,7 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 #' 
 #'
 #' @name layer_arrow_up
-#' @rdname layer-methods
+#' @rdname layer_arrow_up-method
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
@@ -734,11 +725,8 @@ setGeneric("layer_arrow_up", function(.data,	...)
 #' layer_arrow_up
 #' 
 #' @docType methods
-#' @rdname layer-methods
+#' @rdname layer_arrow_up-method
 #' 
-#' @param .data A `InputHeatmap` 
-#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
-#'
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
@@ -755,7 +743,7 @@ setMethod("layer_arrow_up", "InputHeatmap", function(.data, ...){ .data %>%	laye
 #' 
 #'
 #' @name layer_arrow_down
-#' @rdname layer-methods
+#' @rdname layer_arrow_down-method
 #' 
 #'
 #' @param .data A `InputHeatmap` 
@@ -790,11 +778,8 @@ setGeneric("layer_arrow_down", function(.data,	...)
 #' layer_arrow_down
 #' 
 #' @docType methods
-#' @rdname layer-methods
+#' @rdname layer_arrow_down-method
 #' 
-#' @param .data A `InputHeatmap` 
-#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
-#'
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
@@ -811,7 +796,7 @@ setMethod("layer_arrow_down", "InputHeatmap", function(.data, ...){ .data %>%	la
 #' 
 #'
 #' @name layer_point
-#' @rdname layer-methods
+#' @rdname layer_point-method
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
@@ -845,11 +830,8 @@ setGeneric("layer_point", function(.data,	...)
 #' layer_point
 #' 
 #' @docType methods
-#' @rdname layer-methods
+#' @rdname layer_point-method
 #' 
-#' @param .data A `InputHeatmap` 
-#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
-#'
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
@@ -866,7 +848,7 @@ setMethod("layer_point", "InputHeatmap", function(.data, ...){ .data %>%	layer_s
 #' 
 #'
 #' @name layer_square
-#' @rdname layer-methods
+#' @rdname layer_square-method
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
@@ -900,11 +882,7 @@ setGeneric("layer_square", function(.data,	...)
 #' layer_square
 #' 
 #' @docType methods
-#' @rdname layer-methods
-#' 
-#' @param .data A `InputHeatmap` 
-#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
-#'
+#' @rdname layer_square-method
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
@@ -921,7 +899,7 @@ setMethod("layer_square", "InputHeatmap", function(.data, ...){ .data %>%	layer_
 #' 
 #'
 #' @name layer_diamond
-#' @rdname layer-methods
+#' @rdname layer_diamond-method
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
@@ -955,11 +933,8 @@ setGeneric("layer_diamond", function(.data,	...)
 #' layer_diamond
 #' 
 #' @docType methods
-#' @rdname layer-methods
+#' @rdname layer_diamond-method
 #' 
-#' @param .data A `InputHeatmap` 
-#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
-#'
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
@@ -1014,9 +989,6 @@ setGeneric("split_rows", function(.data,
 #' @docType methods
 #' @rdname split-methods
 #' 
-#' @param .data A `InputHeatmap` 
-#' @param number_of_groups An integer. The number of groups to split the cladogram into.
-#'
 #' 
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
@@ -1094,10 +1066,6 @@ setGeneric("split_columns", function(.data,
 #' 
 #' @docType methods
 #' @rdname split-methods
-#' 
-#' @param .data A `InputHeatmap` 
-#' @param number_of_groups An integer. The number of groups to split the cladogram into.
-#'
 #' 
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`

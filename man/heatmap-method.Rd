@@ -97,7 +97,7 @@ heatmap_(
 
 \item{palette_continuous}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
 
-\item{...}{Further arguments to be passed to ComplexHeatmap::Heatmap}
+\item{...}{The arguments that will be passed to the Heatmap function of ComplexHeatmap backend}
 }
 \value{
 A `InputHeatmap` objects that gets evaluated to a `ComplexHeatmap` object
