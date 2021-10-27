@@ -232,6 +232,7 @@ tidyHeatmap::pasilla |>
 	add_tile(condition) |>
 	add_tile(activation)
 ```
+
 Remove legends, adding aesthetics to annotations in a modular fashion, using `ComplexHeatmap` arguments
 
 ```{r}

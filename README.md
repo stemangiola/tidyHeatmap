@@ -272,9 +272,10 @@ tidyHeatmap::pasilla |>
     add_tile(activation)
 ```
 
-![](man/figures/unnamed-chunk-15-1.png)<!-- --> Remove legends, adding
-aesthetics to annotations in a modular fashion, using `ComplexHeatmap`
-arguments
+![](man/figures/unnamed-chunk-15-1.png)<!-- -->
+
+Remove legends, adding aesthetics to annotations in a modular fashion,
+using `ComplexHeatmap` arguments
 
 ``` r
 tidyHeatmap::pasilla |>
