@@ -148,7 +148,7 @@ mtcars_heatmap <-
 mtcars_heatmap
 ```
 
-![](man/figures/unnamed-chunk-6-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-7-1.png)<!-- -->
 
 ## Saving
 
@@ -169,7 +169,7 @@ mtcars_tidy |>
     add_tile(hp)
 ```
 
-![](man/figures/unnamed-chunk-8-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-9-1.png)<!-- -->
 
 We can provide colour palettes to groupings
 
@@ -183,7 +183,7 @@ mtcars_tidy |>
     add_tile(hp)
 ```
 
-![](man/figures/unnamed-chunk-9-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-10-1.png)<!-- -->
 
 We can split based on the cladogram
 
@@ -194,7 +194,7 @@ mtcars_tidy |>
     split_columns(2)
 ```
 
-![](man/figures/unnamed-chunk-10-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-11-1.png)<!-- -->
 
 We can Split on kmean clustering (using ComplexHeatmap options, it is
 stokastic)
@@ -208,7 +208,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/figures/unnamed-chunk-11-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-12-1.png)<!-- -->
 
 ## Custom palettes
 
@@ -225,7 +225,7 @@ mtcars_tidy |>
     )
 ```
 
-![](man/figures/unnamed-chunk-12-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-13-1.png)<!-- -->
 
 A better-looking blue-to-red palette
 
@@ -242,7 +242,7 @@ mtcars_tidy |>
     )
 ```
 
-![](man/figures/unnamed-chunk-13-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-14-1.png)<!-- -->
 
 Or a grid::colorRamp2 function for higher flexibility
 
@@ -256,7 +256,7 @@ mtcars_tidy |>
     )
 ```
 
-![](man/figures/unnamed-chunk-14-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-15-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -272,9 +272,9 @@ tidyHeatmap::pasilla |>
     add_tile(activation)
 ```
 
-![](man/figures/unnamed-chunk-15-1.png)<!-- --> Remove legends, adding
-aesthetics to annotations in a modular fashion, using `ComplexHeatmap`
-arguments
+![](man/fragments/figures/unnamed-chunk-16-1.png)<!-- --> Remove
+legends, adding aesthetics to annotations in a modular fashion, using
+`ComplexHeatmap` arguments
 
 ``` r
 tidyHeatmap::pasilla |>
@@ -289,7 +289,7 @@ tidyHeatmap::pasilla |>
     add_tile(activation, show_legend = FALSE)
 ```
 
-![](man/figures/unnamed-chunk-16-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-17-1.png)<!-- -->
 
 ## Annotation types
 
@@ -321,7 +321,7 @@ pasilla_plus |>
     add_line(age)
 ```
 
-![](man/figures/unnamed-chunk-17-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-18-1.png)<!-- -->
 
 # Layer symbol
 
@@ -343,7 +343,7 @@ tidyHeatmap::pasilla |>
     )
 ```
 
-![](man/figures/unnamed-chunk-18-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-19-1.png)<!-- -->
 
 # ComplexHeatmap further styling
 
@@ -357,7 +357,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/figures/unnamed-chunk-19-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-20-1.png)<!-- -->
 
 Drop row clustering
 
@@ -369,7 +369,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/figures/unnamed-chunk-20-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-21-1.png)<!-- -->
 
 Reorder rows elements
 
@@ -383,4 +383,4 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/figures/unnamed-chunk-21-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-22-1.png)<!-- -->
