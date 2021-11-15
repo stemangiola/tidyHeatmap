@@ -1145,7 +1145,7 @@ combine_elements_with_the_same_name = function(x){
 			warning("tidyHeatmap says: the current backend only allows for one tail annotation size. The latter one will be selected.")
 			
 		# Select one size
-		list_df = 
+		list_df =  
 			bind_rows(
 			list_df %>% 
 				filter(my_class == "simpleUnit") %>% 
@@ -1158,6 +1158,7 @@ combine_elements_with_the_same_name = function(x){
 				data, my_class,
 				~ {
 					if(.y == "simpleUnit") reduce(.x$value, unit.c)
+					else if(.y == "gpar") combine_lists_with_the_same_name(.x$value) %>% as.list() %>% do.call(gpar, .)
 					else reduce(.x$value, c)
 				}
 			)) 
@@ -1171,4 +1172,14 @@ combine_elements_with_the_same_name = function(x){
 		# tapply(unlist(x, use.names = FALSE), rep(names(x), lengths(x)), FUN = c)
 	}
 
+}
+
+combine_lists_with_the_same_name = function(x){
+	
+	if(length(unlist(x))==0) return(unlist(x))
+	else {
+		x = unlist(x)
+		tapply(unlist(x, use.names = FALSE), rep(names(x), lengths(x)), FUN = c)
+	}
+	
 }
