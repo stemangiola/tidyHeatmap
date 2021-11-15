@@ -197,7 +197,7 @@ mtcars_tidy |>
 ![](man/figures/unnamed-chunk-10-1.png)<!-- -->
 
 We can Split on kmean clustering (using ComplexHeatmap options, it is
-stokastic)
+stochastic)
 
 ``` r
 mtcars_tidy |> 
