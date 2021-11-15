@@ -305,7 +305,7 @@ add_annotation = function(my_input_heatmap,
 												 annotation,
 												 type = rep("tile", length(quo_names(annotation))),
 												 palette_discrete = list(),
-												 palette_continuous = list(),  size = unit(2, "cm"), ...) {
+												 palette_continuous = list(),  size = NULL, ...) {
 	
 	# Solve CRAN note
 	annot_type = NULL

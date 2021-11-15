@@ -6,9 +6,9 @@
 \alias{add_tile,InputHeatmap-method}
 \title{Adds a tile annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
 \usage{
-add_tile(.data, .column, palette = NULL, size = unit(2, "cm"), ...)
+add_tile(.data, .column, palette = NULL, size = NULL, ...)
 
-\S4method{add_tile}{InputHeatmap}(.data, .column, palette = NULL, size = unit(2, "cm"), ...)
+\S4method{add_tile}{InputHeatmap}(.data, .column, palette = NULL, size = NULL, ...)
 }
 \arguments{
 \item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}

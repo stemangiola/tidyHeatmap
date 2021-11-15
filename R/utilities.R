@@ -618,7 +618,7 @@ ct_colors = function(ct)
 #' @importFrom ComplexHeatmap anno_barplot
 #' @importFrom ComplexHeatmap anno_lines
 type_to_annot_function = list(
-  "tile" = anno_simple, 
+  "tile" = NULL, #anno_simple, 
   "point" = anno_points, 
   "bar" = anno_barplot, 
   "line" = anno_lines
@@ -701,9 +701,9 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
     fx = ..2
     
     # Do conditional
-    if(..3 == "column") fx(..1, which=..3, height = size, col=..4) 
-    else if(..3 == "row") fx(..1, which=..3, width = size, col=..4) 
-    else stop("tidyHeatmap says: this should not happen. In the internal function get_top_left_annotation")
+    if(is_function(fx) & ..3 == "column") fx(..1, which=..3, height = size) 
+    else if(is_function(fx) & ..3 == "row") fx(..1, which=..3, width = size) 
+    else .x # else stop("tidyHeatmap says: this should not happen. In the internal function get_top_left_annotation")
   })) %>%
   
   # # Check if NA in annotations
@@ -712,9 +712,14 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   # 	else { x } 
   # } ) %>% 
   
-
-  	
-  mutate(further_arguments = map(col_name, ~ dots_args)) %>% 	
+  mutate(further_arguments = map2(
+  	col_name, fx,
+  	~ dots_args %>% 
+  		
+  		# If tile add size as further argument
+  		when(!is_function(.y) ~ c(., list(simple_anno_size = size)), ~ (.))
+  		
+  )) %>% 	
   
   
   # Stop if annotations discrete bigger than palette
@@ -1121,8 +1126,49 @@ combine_elements_with_the_same_name = function(x){
 	
 	if(length(unlist(x))==0) return(unlist(x))
 	else {
-		x = unlist(x)
-		tapply(unlist(x, use.names = FALSE), rep(names(x), lengths(x)), FUN = c)
+		list_df = 
+			map_dfr(x, ~ enframe(.x)) %>% 
+			mutate(my_class = map_chr(value, ~class(.x)[[1]])) 
+		
+		# The current backend does not allow multiple tails sizes
+		if(
+			list_df %>% 
+				filter(my_class == "simpleUnit") %>% 
+				nrow()  %>% 
+				gt(1) &&
+			list_df %>% 
+				filter(my_class == "simpleUnit") %>% 
+				pull(value) %>% 
+				reduce(identical) %>% 
+				not()
+		)
+			warning("tidyHeatmap says: the current backend only allows for one tail annotation size. The latter one will be selected.")
+			
+		# Select one size
+		list_df = 
+			bind_rows(
+			list_df %>% 
+				filter(my_class == "simpleUnit") %>% 
+				tail(1),
+			list_df %>% 
+				filter(my_class != "simpleUnit")
+		) %>% 
+			nest(data = -c(name, my_class)) %>% 
+			mutate(vector = map2(
+				data, my_class,
+				~ {
+					if(.y == "simpleUnit") reduce(.x$value, unit.c)
+					else reduce(.x$value, c)
+				}
+			)) 
+		
+			
+		list_df %>% 
+			pull(vector) %>% 
+			setNames(list_df$name)
+			
+		# x = unlist(x)
+		# tapply(unlist(x, use.names = FALSE), rep(names(x), lengths(x)), FUN = c)
 	}
 
 }

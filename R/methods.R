@@ -346,7 +346,7 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #' @export
 setGeneric("add_tile", function(.data,
 																.column,
-																palette = NULL, size = unit(2, "cm"), ...)
+																palette = NULL, size = NULL, ...)
 	standardGeneric("add_tile"))
 
 #' add_tile
@@ -358,7 +358,7 @@ setGeneric("add_tile", function(.data,
 #'
 setMethod("add_tile", "InputHeatmap", function(.data,
 																							 .column,
-																							 palette = NULL, size = unit(2, "cm"),...){
+																							 palette = NULL, size = NULL,...){
 	
 	.column = enquo(.column)
 	
@@ -431,7 +431,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #' @export
 setGeneric("add_point", function(.data,
 																.column,
-																palette = NULL, size = unit(2, "cm"),...)
+																palette = NULL, size = NULL,...)
 	standardGeneric("add_point"))
 
 #' add_point
@@ -443,7 +443,7 @@ setGeneric("add_point", function(.data,
 #'
 setMethod("add_point", "InputHeatmap", function(.data,
 																							 .column,
-																							 palette = NULL, size = unit(2, "cm"),...){
+																							 palette = NULL, size = NULL,...){
 	
 	.column = enquo(.column)
 	
@@ -494,7 +494,7 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #' @export
 setGeneric("add_line", function(.data,
 																 .column,
-																 palette = NULL,size = unit(2, "cm"), ...)
+																 palette = NULL,size = NULL, ...)
 	standardGeneric("add_line"))
 
 #' add_line
@@ -507,7 +507,7 @@ setGeneric("add_line", function(.data,
 #'
 setMethod("add_line", "InputHeatmap", function(.data,
 																								.column,
-																								palette = NULL, size = unit(2, "cm"),...){
+																								palette = NULL, size = NULL,...){
 	
 	.column = enquo(.column)
 	
@@ -558,7 +558,7 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #' @export
 setGeneric("add_bar", function(.data,
 																.column,
-																palette = NULL, size = unit(2, "cm"),...)
+																palette = NULL, size = NULL,...)
 	standardGeneric("add_bar"))
 
 #' add_bar
@@ -570,7 +570,7 @@ setGeneric("add_bar", function(.data,
 #'
 setMethod("add_bar", "InputHeatmap", function(.data,
 																							 .column,
-																							 palette = NULL, size = unit(2, "cm"),...){
+																							 palette = NULL, size = NULL,...){
 	
 	.column = enquo(.column)
 	

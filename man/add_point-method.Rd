@@ -6,9 +6,9 @@
 \alias{add_point,InputHeatmap-method}
 \title{Adds a point annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
 \usage{
-add_point(.data, .column, palette = NULL, size = unit(2, "cm"), ...)
+add_point(.data, .column, palette = NULL, size = NULL, ...)
 
-\S4method{add_point}{InputHeatmap}(.data, .column, palette = NULL, size = unit(2, "cm"), ...)
+\S4method{add_point}{InputHeatmap}(.data, .column, palette = NULL, size = NULL, ...)
 }
 \arguments{
 \item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}
