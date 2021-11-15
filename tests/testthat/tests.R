@@ -585,8 +585,8 @@ test_that("size annotation",{
 			.value = `read count normalised log`,
 			show_heatmap_legend = FALSE
 		) |> 
-		add_tile(UBR, size = unit(10, "mm")) |>
-		add_tile(`Cell type`, size = unit(10, "mm")) 
+		add_tile(UBR, size = unit(20, "mm")) |>
+		add_tile(`Cell type`, size = unit(2, "mm")) 
 	
 	vdiffr::expect_doppelganger("legend", p)
 	

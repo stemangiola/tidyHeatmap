@@ -618,7 +618,7 @@ ct_colors = function(ct)
 #' @importFrom ComplexHeatmap anno_barplot
 #' @importFrom ComplexHeatmap anno_lines
 type_to_annot_function = list(
-  "tile" = NULL, 
+  "tile" = anno_simple, 
   "point" = anno_points, 
   "bar" = anno_barplot, 
   "line" = anno_lines
@@ -668,7 +668,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
         .data_ %>%
         ungroup() %>%
         select(.y, .x) %>%
-        distinct() %>%
+        distinct() %>% 
         arrange_at(vars(.y)) %>%
         pull(.x)
     )
@@ -677,17 +677,33 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   # Add function
   mutate(fx = annotation_function) %>%
   
+	# Add color indexes separately for each orientation
+	mutate(annot_type = map_chr(data, ~ .x %>% when(class(.) %in% c("factor", "character", "logical") ~ "discrete",
+																									 class(.) %in% c("integer", "numerical", "numeric", "double") ~ "continuous",
+																									 ~ "other"
+	) )) %>%
+	group_by(annot_type) %>%
+	mutate(idx =  row_number()) %>%
+	ungroup() %>%
+	mutate(color = map2(data, idx,  ~ {
+		if(.x %>% class %in% c("factor", "character", "logical"))
+			colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
+		else if (.x %>% class %in% c("integer", "numerical", "numeric", "double"))
+			colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
+		else NULL
+	})) %>%
+  	
   # Apply annot function if not NULL otherwise pass original annotation
   # This because no function for ComplexHeatmap = to tile
-  mutate(annot = pmap(list(data, fx, orientation), ~  {
+  mutate(annot = pmap(list(data, fx, orientation, color = color), ~  {
     
     # Trick needed for map BUG: could not find function "..2"
     fx = ..2
     
     # Do conditional
-    if(is_function(fx) & ..3 == "column") fx(..1, which=..3, height = size) 
-    if(is_function(fx) & ..3 == "row") fx(..1, which=..3, width = size) 
-    else .x
+    if(..3 == "column") fx(..1, which=..3, height = size, col=..4) 
+    else if(..3 == "row") fx(..1, which=..3, width = size, col=..4) 
+    else stop("tidyHeatmap says: this should not happen. In the internal function get_top_left_annotation")
   })) %>%
   
   # # Check if NA in annotations
@@ -696,21 +712,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   # 	else { x } 
   # } ) %>% 
   
-  # Add color indexes separately for each orientation
-  mutate(annot_type = map_chr(annot, ~ .x %>% when(class(.) %in% c("factor", "character", "logical") ~ "discrete",
-                                                   class(.) %in% c("integer", "numerical", "numeric", "double") ~ "continuous",
-                                                   ~ "other"
-  ) )) %>%
-  group_by(annot_type) %>%
-  mutate(idx =  row_number()) %>%
-  ungroup() %>%
-  mutate(color = map2(annot, idx,  ~ {
-    if(.x %>% class %in% c("factor", "character", "logical"))
-      colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
-    else if (.x %>% class %in% c("integer", "numerical", "numeric", "double"))
-      colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
-    else NULL
-  })) %>%
+
   	
   mutate(further_arguments = map(col_name, ~ dots_args)) %>% 	
   
