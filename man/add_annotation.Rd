@@ -10,6 +10,7 @@ add_annotation(
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
+  size = unit(2, "cm"),
   ...
 )
 }

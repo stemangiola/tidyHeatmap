@@ -624,7 +624,7 @@ type_to_annot_function = list(
   "line" = anno_lines
 )
 
-get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation, palette_annotation, type, x_y_annot_cols, ...){
+get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation, palette_annotation, type, x_y_annot_cols, size, ...){
   
   # Comply with CRAN NOTES 
   data = NULL
@@ -685,7 +685,8 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
     fx = ..2
     
     # Do conditional
-    if(is_function(fx)) fx(..1, which=..3) 
+    if(is_function(fx) & ..3 == "column") fx(..1, which=..3, height = size) 
+    if(is_function(fx) & ..3 == "row") fx(..1, which=..3, width = size) 
     else .x
   })) %>%
   

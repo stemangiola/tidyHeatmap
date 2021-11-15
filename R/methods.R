@@ -312,7 +312,7 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
-#' 
+#' @importFrom grid unit 
 #'
 #' @name add_tile
 #' @rdname add_tile-method
@@ -346,7 +346,7 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #' @export
 setGeneric("add_tile", function(.data,
 																.column,
-																palette = NULL, ...)
+																palette = NULL, size = unit(2, "cm"), ...)
 	standardGeneric("add_tile"))
 
 #' add_tile
@@ -358,7 +358,7 @@ setGeneric("add_tile", function(.data,
 #'
 setMethod("add_tile", "InputHeatmap", function(.data,
 																							 .column,
-																							 palette = NULL, ...){
+																							 palette = NULL, size = unit(2, "cm"),...){
 	
 	.column = enquo(.column)
 	
@@ -381,6 +381,8 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 			select(!!.column) %>% 
 			sapply(class) %>% 
 			when(. %in% c("integer", "numerical", "numeric", "double") &	!is.null(palette) ~ list(palette), ~ list()),
+		
+		size = size,
 		...
 	)
 	
@@ -394,6 +396,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
+#' @importFrom grid unit 
 #' 
 #'
 #' @name add_point
@@ -428,7 +431,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #' @export
 setGeneric("add_point", function(.data,
 																.column,
-																palette = NULL, ...)
+																palette = NULL, size = unit(2, "cm"),...)
 	standardGeneric("add_point"))
 
 #' add_point
@@ -440,11 +443,11 @@ setGeneric("add_point", function(.data,
 #'
 setMethod("add_point", "InputHeatmap", function(.data,
 																							 .column,
-																							 palette = NULL, ...){
+																							 palette = NULL, size = unit(2, "cm"),...){
 	
 	.column = enquo(.column)
 	
-	.data %>% add_annotation(	!!.column,	type = "point", ...)
+	.data %>% add_annotation(	!!.column,	type = "point", 		size = size,...)
 	
 })
 
@@ -456,6 +459,7 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
+#' @importFrom grid unit 
 #' 
 #'
 #' @name add_line
@@ -490,7 +494,7 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #' @export
 setGeneric("add_line", function(.data,
 																 .column,
-																 palette = NULL, ...)
+																 palette = NULL,size = unit(2, "cm"), ...)
 	standardGeneric("add_line"))
 
 #' add_line
@@ -503,11 +507,11 @@ setGeneric("add_line", function(.data,
 #'
 setMethod("add_line", "InputHeatmap", function(.data,
 																								.column,
-																								palette = NULL, ...){
+																								palette = NULL, size = unit(2, "cm"),...){
 	
 	.column = enquo(.column)
 	
-	.data %>% add_annotation(	!!.column,	type = "line", ...)
+	.data %>% add_annotation(	!!.column,	type = "line", 		size = size,...)
 	
 })
 
@@ -519,6 +523,7 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
+#' @importFrom grid unit 
 #' 
 #'
 #' @name add_bar
@@ -553,7 +558,7 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #' @export
 setGeneric("add_bar", function(.data,
 																.column,
-																palette = NULL, ...)
+																palette = NULL, size = unit(2, "cm"),...)
 	standardGeneric("add_bar"))
 
 #' add_bar
@@ -565,11 +570,11 @@ setGeneric("add_bar", function(.data,
 #'
 setMethod("add_bar", "InputHeatmap", function(.data,
 																							 .column,
-																							 palette = NULL, ...){
+																							 palette = NULL, size = unit(2, "cm"),...){
 	
 	.column = enquo(.column)
 	
-	.data %>% add_annotation(	!!.column,	type = "bar", ...)
+	.data %>% add_annotation(	!!.column,	type = "bar", 		size = size,...)
 	
 })
 

@@ -3,7 +3,9 @@ title: "Overview of the tidyHeatmap package"
 author: "Stefano Mangiola"
 date: "`r Sys.Date()`"
 package: tidyHeatmap
-output: rmarkdown::html_vignette
+output:
+  html_vignette:
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{Overview of the tidyHeatmap package}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,3 +20,8 @@ vignette: >
 ```{r child="man/fragments/intro.Rmd"}
 ```
 
+# Session Info
+
+```{r}
+sessionInfo()
+```

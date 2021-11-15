@@ -6,9 +6,9 @@
 \alias{add_bar,InputHeatmap-method}
 \title{Adds a bar annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
 \usage{
-add_bar(.data, .column, palette = NULL, ...)
+add_bar(.data, .column, palette = NULL, size = unit(2, "cm"), ...)
 
-\S4method{add_bar}{InputHeatmap}(.data, .column, palette = NULL, ...)
+\S4method{add_bar}{InputHeatmap}(.data, .column, palette = NULL, size = unit(2, "cm"), ...)
 }
 \arguments{
 \item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}

@@ -280,6 +280,7 @@ add_grouping = function(my_input_heatmap){
 #' @importFrom rlang is_function
 #' @importFrom purrr when
 #' @importFrom rlang dots_list
+#' @importFrom grid unit
 #'
 #' @name add_annotation
 #' @rdname add_annotation
@@ -304,7 +305,7 @@ add_annotation = function(my_input_heatmap,
 												 annotation,
 												 type = rep("tile", length(quo_names(annotation))),
 												 palette_discrete = list(),
-												 palette_continuous = list(), ...) {
+												 palette_continuous = list(),  size = unit(2, "cm"), ...) {
 	
 	# Solve CRAN note
 	annot_type = NULL
@@ -364,7 +365,7 @@ add_annotation = function(my_input_heatmap,
 		get_top_left_annotation( !!.horizontal,
 														 !!.vertical,
 														 !!.abundance,
-														 !!annotation,	palette_annotation,	type, x_y_annot_cols, ...)
+														 !!annotation,	palette_annotation,	type, x_y_annot_cols, size, ...)
 	
 	# Number of grouping
 	how_many_discrete = .data_annot %>% filter(annot_type=="discrete") %>% nrow
