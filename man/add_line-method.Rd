@@ -17,6 +17,8 @@ add_line(.data, .column, palette = NULL, size = NULL, ...)
 
 \item{palette}{A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
 
+\item{size}{A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.}
+
 \item{...}{The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container}
 }
 \value{

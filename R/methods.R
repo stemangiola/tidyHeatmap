@@ -320,6 +320,7 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
 #' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -405,6 +406,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
 #' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -468,6 +470,7 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
 #' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -532,6 +535,7 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
 #' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
