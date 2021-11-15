@@ -165,7 +165,7 @@ mtcars_tidy |>
 	split_columns(2)
 ```
 
-We can Split on kmean clustering (using ComplexHeatmap options, it is stokastic)
+We can split on kmean clustering (using ComplexHeatmap options, it is stochastic)
 
 ```{r}
 mtcars_tidy |> 
