@@ -649,96 +649,98 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   
   # Create dataset
   quo_names(annotation) %>%
-  as_tibble %>%
-  rename(col_name = value) %>%
-  
-  # delete if annotation is NULL
-  when(quo_is_null(annotation) ~ slice(., 0), ~ (.)) %>%
-  
-  # Add orientation
-  left_join(x_y_annot_cols,  by = "col_name") %>%
-  mutate(col_orientation = map_chr(orientation, ~ .x %>% when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) %>%
-  
-  # Add data
-  mutate(
-    data = map2(
-      col_name,
-      col_orientation,
-      ~
-        .data_ %>%
-        ungroup() %>%
-        select(.y, .x) %>%
-        distinct() %>% 
-        arrange_at(vars(.y)) %>%
-        pull(.x)
-    )
-  )  %>%
-    
-  # Add function
-  mutate(fx = annotation_function) %>%
-  
-	# Add color indexes separately for each orientation
-	mutate(annot_type = map_chr(data, ~ .x %>% when(class(.) %in% c("factor", "character", "logical") ~ "discrete",
-																									 class(.) %in% c("integer", "numerical", "numeric", "double") ~ "continuous",
-																									 ~ "other"
-	) )) %>%
-	group_by(annot_type) %>%
-	mutate(idx =  row_number()) %>%
-	ungroup() %>%
-	mutate(color = map2(data, idx,  ~ {
-		if(.x %>% class %in% c("factor", "character", "logical"))
-			colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
-		else if (.x %>% class %in% c("integer", "numerical", "numeric", "double"))
-			colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
-		else NULL
-	})) %>%
-  	
-  # Apply annot function if not NULL otherwise pass original annotation
-  # This because no function for ComplexHeatmap = to tile
-  mutate(annot = pmap(list(data, fx, orientation, color = color), ~  {
-    
-    # Trick needed for map BUG: could not find function "..2"
-    fx = ..2
-    
-    # Do conditional
-    if(is_function(fx) & ..3 == "column") fx(..1, which=..3, height = size) 
-    else if(is_function(fx) & ..3 == "row") fx(..1, which=..3, width = size) 
-    else .x # else stop("tidyHeatmap says: this should not happen. In the internal function get_top_left_annotation")
-  })) %>%
-  
-  # # Check if NA in annotations
-  # mutate_at(vars(!!annotation), function(x) {
-  # 	if(any(is.na(x))) { warning("tidyHeatmap says: You have NAs into your annotation column"); replace_na(x, "NA"); } 
-  # 	else { x } 
-  # } ) %>% 
-  
-  mutate(further_arguments = map2(
-  	col_name, fx,
-  	~ dots_args %>% 
-  		
-  		# If tile add size as further argument
-  		when(!is_function(.y) ~ c(., list(simple_anno_size = size)), ~ (.))
-  		
-  )) %>% 	
-  
-  
-  # Stop if annotations discrete bigger than palette
-  when(
-    (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
-      c("factor", "character") %>% which %>% length %>%
-      gt(palette_annotation$discrete %>% length) ~
-      stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available"),
-    ~ (.)
-  ) %>%
-  
-  # Stop if annotations continuous bigger than palette
-  when(
-    (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
-      c("int", "dbl", "numeric") %>% which %>% length %>%
-      gt( palette_annotation$continuous %>% length) ~
-      stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available"),
-    ~ (.)
-  )
+	  as_tibble %>%
+	  rename(col_name = value) %>%
+	  
+	  # delete if annotation is NULL
+	  when(quo_is_null(annotation) ~ slice(., 0), ~ (.)) %>%
+	  
+	  # Add orientation
+	  left_join(x_y_annot_cols,  by = "col_name") %>%
+	  mutate(col_orientation = map_chr(orientation, ~ .x %>% when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) %>%
+	  
+	  # Add data
+	  mutate(
+	    data = map2(
+	      col_name,
+	      col_orientation,
+	      ~
+	        .data_ %>%
+	        ungroup() %>%
+	        select(.y, .x) %>%
+	        distinct() %>% 
+	        arrange_at(vars(.y)) %>%
+	        pull(.x)
+	    )
+	  )  %>%
+	    
+	  # Add function
+	  mutate(fx = annotation_function) %>%
+	  
+	
+	  	
+	  # Apply annot function if not NULL otherwise pass original annotation
+	  # This because no function for ComplexHeatmap = to tile
+	  mutate(annot = pmap(list(data, fx, orientation), ~  {
+	    
+	    # Trick needed for map BUG: could not find function "..2"
+	    fx = ..2
+	    
+	    # Do conditional
+	    if(is_function(fx) & ..3 == "column") fx(..1, which=..3, height = size) 
+	    else if(is_function(fx) & ..3 == "row") fx(..1, which=..3, width = size) 
+	    else .x # else stop("tidyHeatmap says: this should not happen. In the internal function get_top_left_annotation")
+	  })) %>%
+	  
+	  # # Check if NA in annotations
+	  # mutate_at(vars(!!annotation), function(x) {
+	  # 	if(any(is.na(x))) { warning("tidyHeatmap says: You have NAs into your annotation column"); replace_na(x, "NA"); } 
+	  # 	else { x } 
+	  # } ) %>% 
+	  
+		# Add color indexes separately for each orientation
+		mutate(annot_type = map_chr(annot, ~ .x %>% when(class(.) %in% c("factor", "character", "logical") ~ "discrete",
+																										class(.) %in% c("integer", "numerical", "numeric", "double") ~ "continuous",
+																										~ "other"
+		) )) %>%
+		group_by(annot_type) %>%
+		mutate(idx =  row_number()) %>%
+		ungroup() %>%
+		mutate(color = map2(annot, idx,  ~ {
+			if(.x %>% class %in% c("factor", "character", "logical"))
+				colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
+			else if (.x %>% class %in% c("integer", "numerical", "numeric", "double"))
+				colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
+			else NULL
+		})) %>%
+	  	
+	  mutate(further_arguments = map2(
+	  	col_name, fx,
+	  	~ dots_args %>% 
+	  		
+	  		# If tile add size as further argument
+	  		when(!is_function(.y) ~ c(., list(simple_anno_size = size)), ~ (.))
+	  		
+	  )) %>% 	
+	  
+	  
+	  # Stop if annotations discrete bigger than palette
+	  when(
+	    (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
+	      c("factor", "character") %>% which %>% length %>%
+	      gt(palette_annotation$discrete %>% length) ~
+	      stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available"),
+	    ~ (.)
+	  ) %>%
+	  
+	  # Stop if annotations continuous bigger than palette
+	  when(
+	    (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
+	      c("int", "dbl", "numeric") %>% which %>% length %>%
+	      gt( palette_annotation$continuous %>% length) ~
+	      stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available"),
+	    ~ (.)
+	  )
       
   
 }
@@ -1126,6 +1128,7 @@ pow = function(a,b){	a^b }
 #' @importFrom purrr map_dfr
 #' @importFrom purrr reduce
 #' @importFrom tibble enframe
+#' @importFrom grid unit.c
 combine_elements_with_the_same_name = function(x){
 	
 	if(length(unlist(x))==0) return(unlist(x))

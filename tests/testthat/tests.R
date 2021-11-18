@@ -586,9 +586,9 @@ test_that("size annotation",{
 			show_heatmap_legend = FALSE
 		) |> 
 		add_tile(UBR, size = unit(20, "mm")) |>
-		add_tile(`Cell type`, size = unit(2, "mm")) 
+		add_tile(`Cell type`, size = unit(20, "mm")) 
 	
-	vdiffr::expect_doppelganger("legend", p)
+	vdiffr::expect_doppelganger("size annotation", p)
 	
 	
 })
