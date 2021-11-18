@@ -267,7 +267,7 @@ pasilla_plus |>
 
 ## Annotation size 
 
-We can customise annotation sizes, using the `grid::unit()`
+We can customise annotation sizes using the `grid::unit()`, and the size of their names using in-built `ComplexHeatmap` arguments
 
 ```{r}
 pasilla_plus |>
@@ -276,11 +276,11 @@ pasilla_plus |>
 		.row = symbol,
 		.value = `count normalised adjusted`
 	) |>
-	add_tile(condition, size = unit(0.3, "cm")) |>
-	add_point(activation, size = unit(0.3, "cm")) |>
-	add_tile(act, size = unit(0.3, "cm")) |>
-	add_bar(size, size = unit(0.3, "cm")) |>
-	add_line(age, size = unit(0.3, "cm"))
+	add_tile(condition, size = unit(0.3, "cm"),	annotation_name_gp= gpar(fontsize = 8)) |>
+	add_point(activation, size = unit(0.3, "cm"),	annotation_name_gp= gpar(fontsize = 8)) |>
+	add_tile(act, size = unit(0.3, "cm"),	annotation_name_gp= gpar(fontsize = 8)) |>
+	add_bar(size, size = unit(0.3, "cm"),	annotation_name_gp= gpar(fontsize = 8)) |>
+	add_line(age, size = unit(0.3, "cm"),	annotation_name_gp= gpar(fontsize = 8))
 ```
 
 # Layer symbol
@@ -305,7 +305,7 @@ tidyHeatmap::pasilla |>
 
 # ComplexHeatmap further styling
 
-Add cell borders
+## Add cell borders
 
 ```{r}
 mtcars_tidy |> 
@@ -315,7 +315,7 @@ mtcars_tidy |>
 	) 
 ```
 
-Drop row clustering
+## Drop row clustering
 
 ```{r}
 mtcars_tidy |> 
@@ -325,7 +325,7 @@ mtcars_tidy |>
 	) 
 ```
 
-Reorder rows elements
+## Reorder rows elements
 
 ```{r}
 library(forcats)
@@ -337,5 +337,29 @@ mtcars_tidy |>
 	) 
 ```
 
+## Size of dendrograms
 
+```{r}
+mtcars_tidy |> 
+	mutate(`Car name` = fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	heatmap(
+		`Car name`, Property, Value, 
+		column_dend_height = unit(0.2, "cm"), 
+		row_dend_width = unit(0.2, "cm")
+	) 
+```
+
+## Size of rows/columns titles and names
+
+```{r}
+mtcars_tidy |> 
+	mutate(`Car name` = fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	heatmap(
+		`Car name`, Property, Value, 
+		row_names_gp = gpar(fontsize = 7),
+		column_names_gp = gpar(fontsize = 7),
+		column_title_gp = gpar(fontsize = 7),
+		row_title_gp = gpar(fontsize = 7)
+	) 
+```
 

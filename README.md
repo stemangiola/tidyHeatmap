@@ -272,9 +272,10 @@ tidyHeatmap::pasilla |>
     add_tile(activation)
 ```
 
-![](man/fragments/figures/unnamed-chunk-16-1.png)<!-- --> Remove
-legends, adding aesthetics to annotations in a modular fashion, using
-`ComplexHeatmap` arguments
+![](man/fragments/figures/unnamed-chunk-16-1.png)<!-- -->
+
+Remove legends, adding aesthetics to annotations in a modular fashion,
+using `ComplexHeatmap` arguments
 
 ``` r
 tidyHeatmap::pasilla |>
@@ -293,9 +294,7 @@ tidyHeatmap::pasilla |>
 
 ## Annotation types
 
-**This feature requires \>= 0.99.20 version**
-
-“tile” (default), “point”, “bar” and “line” are available
+“tile”, “point”, “bar” and “line” are available
 
 ``` r
 # Create some more data points
@@ -323,6 +322,27 @@ pasilla_plus |>
 
 ![](man/fragments/figures/unnamed-chunk-18-1.png)<!-- -->
 
+## Annotation size
+
+We can customise annotation sizes using the `grid::unit()`, and the size
+of their names using in-built `ComplexHeatmap` arguments
+
+``` r
+pasilla_plus |>
+    heatmap(
+        .column = sample,
+        .row = symbol,
+        .value = `count normalised adjusted`
+    ) |>
+    add_tile(condition, size = unit(0.3, "cm"), annotation_name_gp= gpar(fontsize = 8)) |>
+    add_point(activation, size = unit(0.3, "cm"),   annotation_name_gp= gpar(fontsize = 8)) |>
+    add_tile(act, size = unit(0.3, "cm"),   annotation_name_gp= gpar(fontsize = 8)) |>
+    add_bar(size, size = unit(0.3, "cm"),   annotation_name_gp= gpar(fontsize = 8)) |>
+    add_line(age, size = unit(0.3, "cm"),   annotation_name_gp= gpar(fontsize = 8))
+```
+
+![](man/fragments/figures/unnamed-chunk-19-1.png)<!-- -->
+
 # Layer symbol
 
 Add a layer on top of the heatmap
@@ -343,11 +363,11 @@ tidyHeatmap::pasilla |>
     )
 ```
 
-![](man/fragments/figures/unnamed-chunk-19-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-20-1.png)<!-- -->
 
 # ComplexHeatmap further styling
 
-Add cell borders
+## Add cell borders
 
 ``` r
 mtcars_tidy |> 
@@ -357,9 +377,9 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-20-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-21-1.png)<!-- -->
 
-Drop row clustering
+## Drop row clustering
 
 ``` r
 mtcars_tidy |> 
@@ -369,9 +389,9 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-21-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-22-1.png)<!-- -->
 
-Reorder rows elements
+## Reorder rows elements
 
 ``` r
 library(forcats)
@@ -383,4 +403,34 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-22-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-23-1.png)<!-- -->
+
+## Size of dendrograms
+
+``` r
+mtcars_tidy |> 
+    mutate(`Car name` = fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+    heatmap(
+        `Car name`, Property, Value, 
+        column_dend_height = unit(0.2, "cm"), 
+        row_dend_width = unit(0.2, "cm")
+    ) 
+```
+
+![](man/fragments/figures/unnamed-chunk-24-1.png)<!-- -->
+
+## Size of rows/columns titles and names
+
+``` r
+mtcars_tidy |> 
+    mutate(`Car name` = fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+    heatmap(
+        `Car name`, Property, Value, 
+        row_names_gp = gpar(fontsize = 7),
+        column_names_gp = gpar(fontsize = 7),
+        column_title_gp = gpar(fontsize = 7),
+        row_title_gp = gpar(fontsize = 7)
+    ) 
+```
+
+![](man/fragments/figures/unnamed-chunk-25-1.png)<!-- -->
