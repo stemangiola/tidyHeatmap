@@ -78,6 +78,7 @@ Let's transform the mtcars dataset into a tidy "element-feature-independent vari
 library(dplyr)
 library(tidyr)
 library(tidyHeatmap)
+library(grid)
 ```
 
 ```{r}
@@ -219,6 +220,7 @@ tidyHeatmap::pasilla |>
 	add_tile(condition) |>
 	add_tile(activation)
 ```
+
 Remove legends, adding aesthetics to annotations in a modular fashion, using `ComplexHeatmap` arguments
 
 ```{r}
@@ -237,9 +239,7 @@ tidyHeatmap::pasilla |>
 
 ## Annotation types
 
-**This feature requires >= 0.99.20 version**
-
-"tile" (default), "point", "bar" and "line" are available
+"tile", "point", "bar" and "line" are available
 
 ```{r}
 # Create some more data points
@@ -263,6 +263,24 @@ pasilla_plus |>
 	add_tile(act) |>
 	add_bar(size) |>
 	add_line(age)
+```
+
+## Annotation size 
+
+We can customise annotation sizes, using the `grid::unit()`
+
+```{r}
+pasilla_plus |>
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`
+	) |>
+	add_tile(condition, size = unit(0.3, "cm")) |>
+	add_point(activation, size = unit(0.3, "cm")) |>
+	add_tile(act, size = unit(0.3, "cm")) |>
+	add_bar(size, size = unit(0.3, "cm")) |>
+	add_line(age, size = unit(0.3, "cm"))
 ```
 
 # Layer symbol

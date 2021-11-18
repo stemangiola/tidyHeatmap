@@ -743,6 +743,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   
 }
 
+#' @importFrom grid unit
 get_group_annotation = function(.data, .column, .row, .abundance, palette_annotation){
   
   # Comply with CRAN NOTES
@@ -1122,6 +1123,9 @@ not = function(is){	!is }
 # Raise to the power
 pow = function(a,b){	a^b }
 
+#' @importFrom purrr map_dfr
+#' @importFrom purrr reduce
+#' @importFrom tibble enframe
 combine_elements_with_the_same_name = function(x){
 	
 	if(length(unlist(x))==0) return(unlist(x))
