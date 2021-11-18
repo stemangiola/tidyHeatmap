@@ -723,7 +723,6 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  		
 	  )) %>% 	
 	  
-	  
 	  # Stop if annotations discrete bigger than palette
 	  when(
 	    (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
@@ -1077,6 +1076,11 @@ annot_to_list = function(.data){
   # Comply with CRAN NOTES
   col_name = NULL
   annot = NULL
+  value = NULL
+  my_cells = NULL
+  name = NULL
+  data = NULL
+  
   
   .data %>% 
   	pull(annot) %>%
@@ -1130,6 +1134,9 @@ pow = function(a,b){	a^b }
 #' @importFrom tibble enframe
 #' @importFrom grid unit.c
 combine_elements_with_the_same_name = function(x){
+	
+	# Fix CRAN notes
+	my_class  = NULL
 	
 	if(length(unlist(x))==0) return(unlist(x))
 	else {
