@@ -36,7 +36,7 @@
 #' @param transform A function, used to transform .value, for example log1p
 #' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_value A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_value)`
-#' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping 
+#' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping  
 #' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
 #'
 #' @details To be added.
