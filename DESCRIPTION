@@ -55,7 +55,8 @@ Suggests:
     rmarkdown,
     qpdf,
     covr,
-    roxygen2
+    roxygen2,
+    forcats
 VignetteBuilder: 
     knitr
 RdMacros: 
@@ -64,5 +65,5 @@ Biarch: true
 biocViews: AssayDomain, Infrastructure
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Language: en-US
