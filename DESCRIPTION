@@ -55,7 +55,8 @@ Suggests:
     rmarkdown,
     qpdf,
     covr,
-    roxygen2
+    roxygen2,
+    forcats
 VignetteBuilder: 
     knitr
 RdMacros: 

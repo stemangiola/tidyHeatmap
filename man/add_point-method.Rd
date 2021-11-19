@@ -6,9 +6,9 @@
 \alias{add_point,InputHeatmap-method}
 \title{Adds a point annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
 \usage{
-add_point(.data, .column, palette = NULL, ...)
+add_point(.data, .column, palette = NULL, size = NULL, ...)
 
-\S4method{add_point}{InputHeatmap}(.data, .column, palette = NULL, ...)
+\S4method{add_point}{InputHeatmap}(.data, .column, palette = NULL, size = NULL, ...)
 }
 \arguments{
 \item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}
@@ -16,6 +16,8 @@ add_point(.data, .column, palette = NULL, ...)
 \item{.column}{Vector of quotes}
 
 \item{palette}{A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
+
+\item{size}{A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.}
 
 \item{...}{The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container}
 }

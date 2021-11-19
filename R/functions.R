@@ -36,7 +36,7 @@
 #' @param transform A function, used to transform .value, for example log1p
 #' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_value A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_value)`
-#' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping 
+#' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping  
 #' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
 #'
 #' @details To be added.
@@ -280,6 +280,7 @@ add_grouping = function(my_input_heatmap){
 #' @importFrom rlang is_function
 #' @importFrom purrr when
 #' @importFrom rlang dots_list
+#' @importFrom grid unit
 #'
 #' @name add_annotation
 #' @rdname add_annotation
@@ -289,6 +290,7 @@ add_grouping = function(my_input_heatmap){
 #' @param type A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
+#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
 #' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
 #' @details To be added.
@@ -304,7 +306,7 @@ add_annotation = function(my_input_heatmap,
 												 annotation,
 												 type = rep("tile", length(quo_names(annotation))),
 												 palette_discrete = list(),
-												 palette_continuous = list(), ...) {
+												 palette_continuous = list(),  size = NULL, ...) {
 	
 	# Solve CRAN note
 	annot_type = NULL
@@ -364,7 +366,7 @@ add_annotation = function(my_input_heatmap,
 		get_top_left_annotation( !!.horizontal,
 														 !!.vertical,
 														 !!.abundance,
-														 !!annotation,	palette_annotation,	type, x_y_annot_cols, ...)
+														 !!annotation,	palette_annotation,	type, x_y_annot_cols, size, ...)
 	
 	# Number of grouping
 	how_many_discrete = .data_annot %>% filter(annot_type=="discrete") %>% nrow

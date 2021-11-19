@@ -575,3 +575,20 @@ test_that("legend",{
 	
 })
 
+test_that("size annotation",{
+	
+	p = 
+		tidyHeatmap::N52 |>
+		tidyHeatmap::heatmap(
+			.row = symbol_ct,
+			.column = UBR,
+			.value = `read count normalised log`,
+			show_heatmap_legend = FALSE
+		) |> 
+		add_tile(UBR, size = unit(20, "mm")) |>
+		add_tile(`Cell type`, size = unit(20, "mm")) 
+	
+	vdiffr::expect_doppelganger("size annotation", p)
+	
+	
+})
