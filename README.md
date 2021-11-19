@@ -163,8 +163,13 @@ moment only the vertical dimension is supported) with dplyr, and the
 heatmap will be grouped accordingly
 
 ``` r
-mtcars_tidy |> 
-    group_by(vs) |>
+# Make up more groupings
+mtcars_tidy_groupings = 
+    mtcars_tidy |>
+    mutate(property_group = if_else(Property %in% c("cyl", "disp"), "Engine", "Other"))
+
+mtcars_tidy_groupings |> 
+    group_by(vs, property_group) |>
     heatmap(`Car name`, Property, Value ) |>
     add_tile(hp)
 ```
@@ -174,11 +179,18 @@ mtcars_tidy |>
 We can provide colour palettes to groupings
 
 ``` r
-mtcars_tidy |> 
-    group_by(vs) |>
+mtcars_tidy_groupings |> 
+    group_by(vs, property_group) |>
     heatmap(
         `Car name`, Property, Value ,
-        palette_grouping = list(c("#66C2A5", "#FC8D62"))
+        palette_grouping = list(
+            
+            # For first grouping (vs)
+            c("#66C2A5", "#FC8D62"), 
+            
+            # For second grouping (property_group)
+            c("#b58b4c", "#74a6aa")
+        )
     ) |>
     add_tile(hp)
 ```
@@ -196,8 +208,8 @@ mtcars_tidy |>
 
 ![](man/fragments/figures/unnamed-chunk-11-1.png)<!-- -->
 
-We can Split on kmean clustering (using ComplexHeatmap options, it is
-stokastic)
+We can split on kmean clustering (using ComplexHeatmap options, it is
+stochastic)
 
 ``` r
 mtcars_tidy |> 
