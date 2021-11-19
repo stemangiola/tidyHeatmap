@@ -823,7 +823,7 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
         ct = anno_block(  
           gp = gpar(fill = palette_fill_row ),
           labels = row_split %>% unique %>% sort,
-          labels_gp = gpar(col = palette_text_row, fontsize = 7),
+          labels_gp = gpar(col = palette_text_row, fontsize = 8),
           which = "row",
           width = unit(9, "pt")
         )
@@ -869,7 +869,7 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
           ct = anno_block(  
             gp = gpar(fill = palette_fill_column ),
             labels = col_split %>% unique %>% sort,
-            labels_gp = gpar(col = palette_text_column, fontsize = 7),
+            labels_gp = gpar(col = palette_text_column, fontsize = 8),
             which = "column",
             height = unit(9, "pt")
           )
