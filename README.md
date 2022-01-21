@@ -109,7 +109,7 @@ mtcars_tidy <-
 mtcars_tidy
 ```
 
-    ## # A tibble: 288 x 5
+    ## # A tibble: 288 × 5
     ##    `Car name`       hp    vs Property Value[,1]
     ##    <chr>         <dbl> <dbl> <chr>        <dbl>
     ##  1 Mazda RX4       110     0 mpg          0.151
@@ -407,6 +407,11 @@ mtcars_tidy |>
 
 ``` r
 library(forcats)
+```
+
+    ## Warning: package 'forcats' was built under R version 4.1.2
+
+``` r
 mtcars_tidy |> 
     mutate(`Car name` = fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
     heatmap(
@@ -446,3 +451,27 @@ mtcars_tidy |>
 ```
 
 ![](man/fragments/figures/unnamed-chunk-25-1.png)<!-- -->
+
+## Using patchwork to integrate heatmaps
+
+``` r
+library(ggplot2)
+library(patchwork)
+
+p_heatmap =
+    mtcars_tidy |> 
+    heatmap(
+        `Car name`, Property, Value, 
+            show_heatmap_legend = FALSE,
+        row_names_gp = gpar(fontsize = 7)
+    ) 
+
+p_ggplot = tibble(value = 1:10) %>% ggplot(aes(value)) + geom_density()
+
+wrap_heatmap(p_heatmap) + 
+    p_ggplot +
+    wrap_heatmap(p_heatmap) + 
+    plot_layout(width = c(1, 0.3, 1))
+```
+
+![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->

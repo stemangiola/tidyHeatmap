@@ -592,3 +592,21 @@ test_that("size annotation",{
 	
 	
 })
+
+test_that("wrap heatmap for patchwork",{
+	
+	library(patchwork)
+	
+	p = 
+		tidyHeatmap::N52 |>
+		tidyHeatmap::heatmap(
+			.row = symbol_ct,
+			.column = UBR,
+			.value = `read count normalised log`
+		) %>% 
+		wrap_heatmap()
+	
+	vdiffr::expect_doppelganger("wrap heatmap", p + p)
+	
+	
+})
