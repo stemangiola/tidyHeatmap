@@ -1137,6 +1137,9 @@ combine_elements_with_the_same_name = function(x){
 	
 	# Fix CRAN notes
 	my_class  = NULL
+	value = NULL
+	name = NULL
+	data = NULL
 	
 	if(length(unlist(x))==0) return(unlist(x))
 	else {
