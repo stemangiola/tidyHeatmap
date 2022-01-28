@@ -1,7 +1,7 @@
 Type: Package
 Package: tidyHeatmap
 Title: A Tidy Implementation of Heatmap
-Version: 1.5.1
+Version: 1.6.0
 Authors@R: 
     c(person(given = "Stefano",
            family = "Mangiola",
@@ -45,7 +45,8 @@ Imports:
     grid,
     grDevices,
     lifecycle (>= 0.2.0),
-    dendextend
+    dendextend,
+    patchwork
 Suggests:
     spelling,
     testthat,
@@ -56,7 +57,8 @@ Suggests:
     qpdf,
     covr,
     roxygen2,
-    forcats
+    forcats,
+    ggplot2
 VignetteBuilder: 
     knitr
 RdMacros: 

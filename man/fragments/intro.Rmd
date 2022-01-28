@@ -376,3 +376,25 @@ mtcars_tidy |>
 	) 
 ```
 
+## Using patchwork to integrate heatmaps
+
+```{r}
+library(ggplot2)
+library(patchwork)
+
+p_heatmap =
+	mtcars_tidy |> 
+	heatmap(
+		`Car name`, Property, Value, 
+			show_heatmap_legend = FALSE,
+		row_names_gp = gpar(fontsize = 7)
+	) 
+
+p_ggplot = tibble(value = 1:10) %>% ggplot(aes(value)) + geom_density()
+
+wrap_heatmap(p_heatmap) + 
+	p_ggplot +
+	wrap_heatmap(p_heatmap) + 
+	plot_layout(width = c(1, 0.3, 1))
+
+```
