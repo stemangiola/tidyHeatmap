@@ -219,7 +219,7 @@ setGeneric("heatmap", function(.data,
 															 palette_value = c("#440154FF", "#21908CFF", "#fefada" ),
 															 palette_grouping = list(),
 															 
-															 # DEPRECATED
+															 # DEPRECATED 
 															 .scale = NULL,
 															 ...) standardGeneric("heatmap"))
 
@@ -280,7 +280,7 @@ heatmap_ <-
 			deprecate_warn("1.7.0", "tidyHeatmap::heatmap(.scale = )", details = "Please use scale (without dot prefix) instead: heatmap(scale = ...)")
 			
 			scale = .scale
-		}
+		} 
 		
 		.data %>% 
 			
