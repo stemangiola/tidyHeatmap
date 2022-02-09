@@ -10,7 +10,7 @@ input_heatmap(
   .vertical,
   .abundance,
   transform = NULL,
-  .scale = "row",
+  scale = "none",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
   ...
@@ -27,7 +27,7 @@ input_heatmap(
 
 \item{transform}{A function, used to transform .value, for example log1p}
 
-\item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
+\item{scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
 
 \item{palette_value}{A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_value)`}
 

@@ -34,7 +34,7 @@
 #' @param .vertical The name of the column vertically presented in the heatmap
 #' @param .abundance The name of the transcript/gene abundance column
 #' @param transform A function, used to transform .value, for example log1p
-#' @param .scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
+#' @param scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_value A character vector, or a function for higher customisation (colorRamp2). This is the palette that will be used as gradient for abundance. If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example `colorRamp2(c(-2, 0, 2), palette_value)`
 #' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping  
 #' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
@@ -53,7 +53,7 @@ input_heatmap = function(.data,
 												.vertical,
 												.abundance,
 												transform = NULL,
-												.scale = "row",
+												scale = "none",
 												palette_value = c("#440154FF", "#21908CFF", "#fefada" ), #c(viridis(3)[1:2],"#fefada")
 												palette_grouping = list(),
 												...) {
@@ -105,18 +105,18 @@ input_heatmap = function(.data,
 			~ (.)
 		) %>%
 		
-		# If .scale row
+		# If scale row
 		when(
-			.scale %in% c("row", "both") ~ (.) %>%
+			scale %in% c("row", "both") ~ (.) %>%
 				nest(data = -!!.vertical) %>%
 				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% scale_robust()))) %>%
 				unnest(data),
 			~ (.)
 		) %>%
 		
-		# If .scale column
+		# If scale column
 		when(
-			.scale %in% c("column", "both") ~ (.) %>%
+			scale %in% c("column", "both") ~ (.) %>%
 				nest(data = -!!.horizontal) %>%
 				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% scale_robust()))) %>%
 				unnest(data),
