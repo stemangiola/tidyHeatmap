@@ -114,8 +114,6 @@ heatmap_(
 =======
 >>>>>>> clean all OLD deprecation, because .scale deprecation causes problems with the old famework. Fix tests
 
-\item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
-
 \item{...}{The arguments that will be passed to the Heatmap function of ComplexHeatmap backend}
 }
 \value{
