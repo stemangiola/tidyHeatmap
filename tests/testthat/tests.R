@@ -1,7 +1,7 @@
 context('tests')
 
 # For resetting
-# testthat::snapshot_review()
+# testthat::snapshot_review('tests')
 
 test_that("basic plot",{
 
@@ -388,8 +388,8 @@ vdiffr::expect_doppelganger("scale both", p)
 				.column = UBR, 
 				.row = symbol_ct, 
 				.value = `read count`, 
-				.scale = "WRONG_INPUT"
-			), "the .scale parameter has to be one")
+				scale = "WRONG_INPUT"
+			), "the scale parameter has to be one")
 })
 
 test_that("multi-type",{
@@ -484,21 +484,6 @@ test_that("managing palette usage",{
 	expect_equal(length(p5@palette_discrete), length(p1@palette_discrete)-1 )
 	expect_equal(length(p5@palette_continuous), length(p1@palette_continuous)-1 )
 	
-})
-
-test_that("annotated plot numerical continuous intereg nominal annot",{
-	
-	expect_warning(
-		tidyHeatmap::heatmap(
-			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
-			.column = UBR, 
-			.row = symbol_ct, 
-			.value = `read count normalised log`,
-			annotation = CAPRA_TOTAL
-		), "Please use the new annotation framework instead"
-	)
-	
-
 })
 
 test_that("test sparse matrix",{
