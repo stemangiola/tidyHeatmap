@@ -202,7 +202,7 @@ heatmap_ <-
 		# 	message("tidyHeatmap says: (once per session) from release 1.2.3 the grouping labels have white background by default. To add color for one-ay grouping specify palette_grouping = list(c(\"red\", \"blue\"))")
 		# 	options("tidyHeatmap_white_group_message"=FALSE) 
 		# }
-		
+
 		# Message about change of scale, once per session
 		if(scale == "none" & getOption("tidyHeatmap_default_scaling_none",TRUE)) {
 			message("tidyHeatmap says: (once per session) from release 1.7.0 the scaling is set to \"none\" by default. Please use scale = \"row\", \"column\" or \"both\" to apply scaling")
