@@ -127,12 +127,8 @@ setMethod("show", "InputHeatmap", function(object){
 #' @param scale A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")
 #' @param palette_value A character vector This is the palette that will be used as gradient for .value. For example c("red", "white", "blue"). For higher flexibility you can use circlize::colorRamp2\(c\(-2, -1, 0, 1, 2\), viridis::magma\(5\)\)
 #' @param palette_grouping A list of character vectors. This is the list of palettes that will be used for grouping. For example list(RColorBrewer::brewer.pal(8, "Accent")) or list(c("#B3E2CD", "#FDCDAC", "#CBD5E8")) or list(c("black", "red")) 
-#' @param ... Further arguments to be passed to ComplexHeatmap::Heatmap
 #' 
-#' @param annotation DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
-#' @param type DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
-#' @param palette_discrete DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
-#' @param palette_continuous DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).
+#' @param .scale DEPRECATED. please use scale instead \( with no dot prefix \).
 #' @param ... The arguments that will be passed to the Heatmap function of ComplexHeatmap backend
 #' 
 #' @details This function takes a tbl as an input and creates a `ComplexHeatmap` plot. The information is stored in a `InputHeatmap` object that is updated along the pipe statement, for example adding annotation layers. 
@@ -167,10 +163,6 @@ setGeneric("heatmap", function(.data,
 															 palette_grouping = list(),
 															 
 															 # DEPRECATED
-															 annotation = NULL,
-															 type = rep("tile", length(quo_names(annotation))),
-															 palette_discrete = list(),
-															 palette_continuous = list(),
 															 .scale = NULL,
 															 ...) standardGeneric("heatmap"))
 
@@ -193,17 +185,11 @@ heatmap_ <-
 					 palette_grouping = list(),
 					 
 					 # DEPRECATED
-					 annotation = NULL,
-					 type = rep("tile", length(quo_names(annotation))),
-					 palette_discrete = list(),
-					 palette_continuous = list(),
+					 .scale = NULL,
 					 ...)
 	{
 		# Comply with CRAN NOTES
 		. = NULL
-		
-		# Make col names
-		annotation = enquo(annotation)
 		
 		# Check if transform is of correct type
 		if(!(is.null(transform) || is_function(transform))) stop("tidyHeatmap says: transform has to be a function. is_function(transform) == TRUE")
@@ -211,10 +197,6 @@ heatmap_ <-
 		# Check if scale is of correct type
 		if(scale %in% c("none", "row", "column", "both") %>% `!`) stop("tidyHeatmap says: the scale parameter has to be one of c(\"none\", \"row\", \"column\", \"both\")")
 
-		# Check if type is of the right kind
-		if(type %>% setdiff(names(type_to_annot_function)) %>% length %>% gt(0))
-			stop("tidyHeatmap says: not all components of `type` parameter are valid.")
-		
 		# # Message about change of style, once per session
 		# if(length(palette_grouping)==0 & getOption("tidyHeatmap_white_group_message",TRUE)) {
 		# 	message("tidyHeatmap says: (once per session) from release 1.2.3 the grouping labels have white background by default. To add color for one-ay grouping specify palette_grouping = list(c(\"red\", \"blue\"))")
@@ -234,38 +216,14 @@ heatmap_ <-
 		# Validation
 		.data %>% validation(!!.column, !!.row, !!.value)
 		
-		# DEPRECATION OF ANNOTATION
-		if (is_present(annotation) & !quo_is_null(annotation)) {
-			
-			# Signal the deprecation to the user
-			deprecate_warn("1.1.0", "tidyHeatmap::heatmap(annotation = )", details = "Please use the new annotation framework instead: heatmap(...) %>% add_tile(...) %>% add_point(...) %>% add_bar() %>% add_line() %>% ...")
-			
-			# Deal with the deprecated argument for compatibility
-			return(		.data %>%
-									plot_heatmap(
-										.horizontal = !!.column,
-										.vertical = !!.row,
-										.abundance = !!.value,
-										annotation = !!annotation,
-										type = type,
-										transform = transform,
-										scale = scale,
-										palette_value = palette_value,
-										palette_discrete = palette_discrete,
-										palette_continuous = palette_continuous,
-										...
-									))
-		}
-		
 		# DEPRECATION OF SCALE
-		if (is_present(.scale)) {
+		if (is_present(.scale) && !is.null(.scale)) {
 			
 			# Signal the deprecation to the user
-			deprecate_warn("2.0.0", "tidyHeatmap::heatmap(.scale = )", details = "Please use scale (without dot prefix) instead: heatmap(scale = ...)")
+			deprecate_warn("1.7.0", "tidyHeatmap::heatmap(.scale = )", details = "Please use scale (without dot prefix) instead: heatmap(scale = ...)")
 			
 			scale = .scale
 		}
-
 		
 		.data %>% 
 			
