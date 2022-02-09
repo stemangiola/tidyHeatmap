@@ -224,7 +224,7 @@ heatmap_ <-
 			
 			scale = .scale
 		}
-
+		
 		.data %>% 
 			
 			# # Check if data is rectangular
