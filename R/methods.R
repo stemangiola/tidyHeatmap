@@ -280,8 +280,9 @@ heatmap_ <-
 			deprecate_warn("1.7.0", "tidyHeatmap::heatmap(.scale = )", details = "Please use scale (without dot prefix) instead: heatmap(scale = ...)")
 			
 			scale = .scale
-		} 
-		
+
+		}
+	
 		.data %>% 
 			
 			# # Check if data is rectangular
