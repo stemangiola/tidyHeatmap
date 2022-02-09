@@ -18,12 +18,15 @@ heatmap(
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   annotation = NULL,
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
 >>>>>>> change scale argument and set it to none
+=======
+>>>>>>> clean all OLD deprecation, because .scale deprecation causes problems with the old famework. Fix tests
   .scale = NULL,
   ...
 )
@@ -51,12 +54,15 @@ heatmap_(
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   annotation = NULL,
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
 >>>>>>> change scale argument and set it to none
+=======
+>>>>>>> clean all OLD deprecation, because .scale deprecation causes problems with the old famework. Fix tests
   .scale = NULL,
   ...
 )
@@ -71,12 +77,15 @@ heatmap_(
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   annotation = NULL,
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
 >>>>>>> change scale argument and set it to none
+=======
+>>>>>>> clean all OLD deprecation, because .scale deprecation causes problems with the old famework. Fix tests
   .scale = NULL,
   ...
 )
@@ -99,8 +108,11 @@ heatmap_(
 \item{palette_grouping}{A list of character vectors. This is the list of palettes that will be used for grouping. For example list(RColorBrewer::brewer.pal(8, "Accent")) or list(c("#B3E2CD", "#FDCDAC", "#CBD5E8")) or list(c("black", "red"))}
 
 \item{.scale}{DEPRECATED. please use scale instead \( with no dot prefix \).}
+<<<<<<< HEAD
 
 \item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
+=======
+>>>>>>> clean all OLD deprecation, because .scale deprecation causes problems with the old famework. Fix tests
 
 \item{...}{The arguments that will be passed to the Heatmap function of ComplexHeatmap backend}
 }
