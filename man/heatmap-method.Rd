@@ -14,13 +14,14 @@ heatmap(
   .column,
   .value,
   transform = NULL,
-  .scale = "row",
+  scale = "none",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
   annotation = NULL,
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
+  .scale = NULL,
   ...
 )
 
@@ -30,7 +31,7 @@ heatmap_(
   .column,
   .value,
   transform = NULL,
-  .scale = "row",
+  scale = "none",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
   annotation = NULL,
@@ -46,13 +47,14 @@ heatmap_(
   .column,
   .value,
   transform = NULL,
-  .scale = "row",
+  scale = "none",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
   annotation = NULL,
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
+  .scale = NULL,
   ...
 )
 
@@ -62,13 +64,14 @@ heatmap_(
   .column,
   .value,
   transform = NULL,
-  .scale = "row",
+  scale = "none",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
   annotation = NULL,
   type = rep("tile", length(quo_names(annotation))),
   palette_discrete = list(),
   palette_continuous = list(),
+  .scale = NULL,
   ...
 )
 }
@@ -83,7 +86,7 @@ heatmap_(
 
 \item{transform}{A function, used to transform .value row-wise (e.g., transform = log1p)}
 
-\item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
+\item{scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
 
 \item{palette_value}{A character vector This is the palette that will be used as gradient for .value. For example c("red", "white", "blue"). For higher flexibility you can use circlize::colorRamp2\(c\(-2, -1, 0, 1, 2\), viridis::magma\(5\)\)}
 
@@ -96,6 +99,8 @@ heatmap_(
 \item{palette_discrete}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
 
 \item{palette_continuous}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
+
+\item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
 
 \item{...}{The arguments that will be passed to the Heatmap function of ComplexHeatmap backend}
 }
