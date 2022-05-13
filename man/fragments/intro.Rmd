@@ -408,7 +408,7 @@ mtcars_tidy |>
 ### Chainging side of legends
 
 ```{r}
-
+ 
 heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) %>%
 	as_ComplexHeatmap() %>%
 	ComplexHeatmap::draw(heatmap_legend_side = "left"	)
