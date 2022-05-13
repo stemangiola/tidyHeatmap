@@ -40,6 +40,7 @@ InputHeatmap<-setClass(
 	)
 )
 
+
 #' Creates a  `ComplexHeatmap` object for less standard plot manipulation (e.g. changing legend position)
 #'
 #' \lifecycle{maturing}
@@ -138,6 +139,14 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	}
 	
 	return(do.call(Heatmap, tidyHeatmap@input))
+})
+
+
+setMethod("show", "InputHeatmap", function(object){
+	
+	object %>%
+		as_ComplexHeatmap() %>%
+		show()
 })
 
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
