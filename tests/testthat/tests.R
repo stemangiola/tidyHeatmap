@@ -625,3 +625,21 @@ test_that("wrap heatmap for patchwork",{
 	
 	
 })
+
+test_that("plus operator",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+			.column = UBR, 
+			.row = symbol_ct, 
+			.value = `read count normalised log`,
+			scale = "row"
+		)
+	
+	p = p+p
+	
+	
+	vdiffr::expect_doppelganger("plus operator", p)
+	
+})
