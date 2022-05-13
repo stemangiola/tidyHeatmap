@@ -4,7 +4,6 @@
 #'
 #' @import dplyr
 #' @import tidyr
-#' @import ComplexHeatmap
 #' @importFrom magrittr "%>%"
 #' @importFrom rlang enquo
 #' @importFrom rlang quo_name
@@ -260,7 +259,6 @@ add_grouping = function(my_input_heatmap){
 #'
 #' @import dplyr
 #' @import tidyr
-#' @import ComplexHeatmap
 #' @importFrom magrittr "%>%"
 #' @importFrom rlang enquo
 #' @importFrom rlang quo_name
