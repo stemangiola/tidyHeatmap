@@ -14,13 +14,10 @@ heatmap(
   .column,
   .value,
   transform = NULL,
-  .scale = "row",
+  scale = "none",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
-  annotation = NULL,
-  type = rep("tile", length(quo_names(annotation))),
-  palette_discrete = list(),
-  palette_continuous = list(),
+  .scale = NULL,
   ...
 )
 
@@ -30,13 +27,10 @@ heatmap_(
   .column,
   .value,
   transform = NULL,
-  .scale = "row",
+  scale = "none",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
-  annotation = NULL,
-  type = rep("tile", length(quo_names(annotation))),
-  palette_discrete = list(),
-  palette_continuous = list(),
+  .scale = NULL,
   ...
 )
 
@@ -46,13 +40,10 @@ heatmap_(
   .column,
   .value,
   transform = NULL,
-  .scale = "row",
+  scale = "none",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
-  annotation = NULL,
-  type = rep("tile", length(quo_names(annotation))),
-  palette_discrete = list(),
-  palette_continuous = list(),
+  .scale = NULL,
   ...
 )
 
@@ -62,13 +53,10 @@ heatmap_(
   .column,
   .value,
   transform = NULL,
-  .scale = "row",
+  scale = "none",
   palette_value = c("#440154FF", "#21908CFF", "#fefada"),
   palette_grouping = list(),
-  annotation = NULL,
-  type = rep("tile", length(quo_names(annotation))),
-  palette_discrete = list(),
-  palette_continuous = list(),
+  .scale = NULL,
   ...
 )
 }
@@ -83,19 +71,13 @@ heatmap_(
 
 \item{transform}{A function, used to transform .value row-wise (e.g., transform = log1p)}
 
-\item{.scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
+\item{scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
 
 \item{palette_value}{A character vector This is the palette that will be used as gradient for .value. For example c("red", "white", "blue"). For higher flexibility you can use circlize::colorRamp2\(c\(-2, -1, 0, 1, 2\), viridis::magma\(5\)\)}
 
 \item{palette_grouping}{A list of character vectors. This is the list of palettes that will be used for grouping. For example list(RColorBrewer::brewer.pal(8, "Accent")) or list(c("#B3E2CD", "#FDCDAC", "#CBD5E8")) or list(c("black", "red"))}
 
-\item{annotation}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
-
-\item{type}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
-
-\item{palette_discrete}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
-
-\item{palette_continuous}{DEPRECATED. please use the annotation functions add_* function \(\* one of tile, point, bar, line  \).}
+\item{.scale}{DEPRECATED. please use scale instead \( with no dot prefix \).}
 
 \item{...}{The arguments that will be passed to the Heatmap function of ComplexHeatmap backend}
 }
