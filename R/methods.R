@@ -74,7 +74,18 @@ InputHeatmap<-setClass(
 #' @rdname as_ComplexHeatmap-method
 #'
 #' @export
-as_ComplexHeatmap = function(tidyHeatmap){
+#' 
+setGeneric("as_ComplexHeatmap", function(tidyHeatmap) standardGeneric("as_ComplexHeatmap"))
+
+
+#' Creates a  `ComplexHeatmap` object for less standard plot manipulation (e.g. changing legend position)
+#'
+#' @docType methods
+#' @rdname as_ComplexHeatmap-method
+#'
+#' @export
+#' 
+setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	
 	# Fix CRAN notes
 	. = NULL
@@ -127,16 +138,7 @@ as_ComplexHeatmap = function(tidyHeatmap){
 	}
 	
 	return(do.call(Heatmap, tidyHeatmap@input))
-}
-
-
-setMethod("show", "InputHeatmap", function(object){
-
-	object %>%
-		as_ComplexHeatmap() %>%
-		show()
-
-} )
+})
 
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
 #'
