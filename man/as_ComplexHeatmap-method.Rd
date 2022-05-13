@@ -3,9 +3,12 @@
 \docType{methods}
 \name{as_ComplexHeatmap}
 \alias{as_ComplexHeatmap}
+\alias{as_ComplexHeatmap,InputHeatmap-method}
 \title{Creates a  `ComplexHeatmap` object for less standard plot manipulation (e.g. changing legend position)}
 \usage{
 as_ComplexHeatmap(tidyHeatmap)
+
+\S4method{as_ComplexHeatmap}{InputHeatmap}(tidyHeatmap)
 }
 \arguments{
 \item{tidyHeatmap}{A `InputHeatmap` object from tidyHeatmap::heatmap() call}
