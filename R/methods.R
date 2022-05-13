@@ -151,7 +151,6 @@ setMethod("show", "InputHeatmap", function(object){
 		show()
 })
 
-
 #' @rdname plot_arithmetic
 #' @export
 "+.InputHeatmap" <- function(e1, e2) {
