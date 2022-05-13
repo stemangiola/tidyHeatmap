@@ -1,7 +1,10 @@
 context('tests')
 
 # For resetting
-test_that("basic plot",{ 
+# testthat::snapshot_review('tests/')
+
+test_that("basic plot",{
+
 
 	p = 
 		tidyHeatmap::heatmap(
