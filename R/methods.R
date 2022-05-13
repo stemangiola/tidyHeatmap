@@ -144,7 +144,6 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	return(do.call(Heatmap, tidyHeatmap@input))
 })
 
-
 setMethod("show", "InputHeatmap", function(object){
 	
 	object %>%

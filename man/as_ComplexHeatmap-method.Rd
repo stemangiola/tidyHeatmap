@@ -4,17 +4,23 @@
 \name{as_ComplexHeatmap}
 \alias{as_ComplexHeatmap}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> covert to S4 method
 \alias{as_ComplexHeatmap,InputHeatmap-method}
 \title{Creates a  `ComplexHeatmap` object for less standard plot manipulation (e.g. changing legend position)}
 \usage{
 as_ComplexHeatmap(tidyHeatmap)
 
 \S4method{as_ComplexHeatmap}{InputHeatmap}(tidyHeatmap)
+<<<<<<< HEAD
 =======
 \title{Creates a  `ComplexHeatmap` object for less standard plot manipulation (e.g. changing legend position)}
 \usage{
 as_ComplexHeatmap(tidyHeatmap)
 >>>>>>> add as_ComplexHeatmap for more unusual operations with draw
+=======
+>>>>>>> covert to S4 method
 }
 \arguments{
 \item{tidyHeatmap}{A `InputHeatmap` object from tidyHeatmap::heatmap() call}
