@@ -391,6 +391,19 @@ mtcars_tidy |>
 	) 
 ```
 
+## External `ComplexHeatmap` functionalities
+
+`ComplexHeatmap` has some graphical functionalities that are not included in the standard functional framework
+
+### Chainging side of legends
+
+```{r}
+
+heatmap(mtcars_tidy, `Car name`, Property, Value	) %>%
+	as_ComplexHeatmap() %>%
+	ComplexHeatmap::draw(heatmap_legend_side = "left"	)
+```
+
 ## Using patchwork to integrate heatmaps
 
 ```{r}
