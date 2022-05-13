@@ -458,6 +458,33 @@ mtcars_tidy |>
 
 ![](man/fragments/figures/unnamed-chunk-25-1.png)<!-- -->
 
+## External `ComplexHeatmap` functionalities
+
+`ComplexHeatmap` has some graphical functionalities that are not
+included in the standard functional framework
+
+### Chainging side of legends
+
+``` r
+heatmap(mtcars_tidy, `Car name`, Property, Value    ) %>%
+    as_ComplexHeatmap() %>%
+    ComplexHeatmap::draw(heatmap_legend_side = "left"   )
+```
+
+    ## tidyHeatmap says: (once per session) from release 1.7.0 the scaling is set to "none" by default. Please use scale = "row", "column" or "both" to apply scaling
+
+![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
+
+### Adding heatmap side-by-side
+
+``` r
+p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value    ) 
+
+p_heatmap + p_heatmap
+```
+
+![](man/fragments/figures/unnamed-chunk-27-1.png)<!-- -->
+
 ## Using patchwork to integrate heatmaps
 
 ``` r
@@ -481,4 +508,4 @@ wrap_heatmap(p_heatmap) +
     plot_layout(width = c(1, 0.3, 1))
 ```
 
-![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-28-1.png)<!-- -->
