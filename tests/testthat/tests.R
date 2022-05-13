@@ -5,7 +5,7 @@ context('tests')
 
 test_that("basic plot",{
 
-
+ 
 	p = 
 		tidyHeatmap::heatmap(
 			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
