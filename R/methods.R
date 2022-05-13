@@ -40,20 +40,51 @@ InputHeatmap<-setClass(
 	)
 )
 
+#' Creates a  `ComplexHeatmap` object for less standard plot manipulation (e.g. changing legend position)
+#'
+#' \lifecycle{maturing}
+#'
+#' @description as_ComplexHeatmap() takes a `InputHeatmap` object and produces a `Heatmap` object
+#'
 #' @importFrom methods show
 #' @importFrom tibble rowid_to_column
 #' @importFrom grid grid.points
-setMethod("show", "InputHeatmap", function(object){
+#' 
+#'
+#' @name as_ComplexHeatmap
+#'
+#' @param tidyHeatmap A `InputHeatmap` object from tidyHeatmap::heatmap() call
+#' 
+#' @return A `ComplexHeatmap` 
+#'
+#'
+#'
+#' @examples
+#'
+#' 
+#' tidyHeatmap::N52 |>
+#' tidyHeatmap::heatmap(
+#'  .row = symbol_ct,
+#'  .column = UBR,
+#'  .value = `read count normalised log`,
+#' ) |>
+#' as_ComplexHeatmap()
+#'
+#' @docType methods
+#' @rdname as_ComplexHeatmap-method
+#'
+#' @export
+as_ComplexHeatmap = function(tidyHeatmap){
 	
 	# Fix CRAN notes
 	. = NULL
 	index_column_wise = NULL
 	shape = NULL
 	
-	object@input$top_annotation = 
+	tidyHeatmap@input$top_annotation = 
 		c(
-			object@group_top_annotation,
-			object@top_annotation %>% annot_to_list()
+			tidyHeatmap@group_top_annotation,
+			tidyHeatmap@top_annotation %>% annot_to_list()
 		) %>%
 		list_drop_null() %>%
 		when(
@@ -63,10 +94,10 @@ setMethod("show", "InputHeatmap", function(object){
 			~ NULL
 		)
 	
-	object@input$left_annotation = 
+	tidyHeatmap@input$left_annotation = 
 		c(
-			object@group_left_annotation,
-			object@left_annotation %>% annot_to_list()
+			tidyHeatmap@group_left_annotation,
+			tidyHeatmap@left_annotation %>% annot_to_list()
 		) %>%
 		list_drop_null()  %>%
 		when(
@@ -77,13 +108,13 @@ setMethod("show", "InputHeatmap", function(object){
 		)
 	
 	# On-top layer
-	object@input$layer_fun = function(j, i, x, y, w, h, fill) {
+	tidyHeatmap@input$layer_fun = function(j, i, x, y, w, h, fill) {
 		ind = 
 			tibble(row = i, column = j) %>%
 			rowid_to_column("index_column_wise") %>%
 			
 			# Filter just points to label
-			inner_join(object@layer_symbol, by = c("row", "column")) %>%
+			inner_join(tidyHeatmap@layer_symbol, by = c("row", "column")) %>%
 			select(`index_column_wise`, `shape`)
 		
 		if(nrow(ind)>0)
@@ -95,13 +126,16 @@ setMethod("show", "InputHeatmap", function(object){
 			)
 	}
 	
-	
+	return(do.call(Heatmap, tidyHeatmap@input))
+}
 
-					
 
-	
-	
-	show(do.call(Heatmap, object@input))
+setMethod("show", "InputHeatmap", function(object){
+
+	object %>%
+		as_ComplexHeatmap() %>%
+		show()
+
 } )
 
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
