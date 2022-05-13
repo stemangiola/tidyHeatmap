@@ -414,6 +414,16 @@ heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) %>%
 	ComplexHeatmap::draw(heatmap_legend_side = "left"	)
 ```
 
+### Adding heatmap side-by-side
+
+```{r, warning=FALSE}
+
+p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value	) 
+
+p_heatmap + p_heatmap
+
+```
+
 ## Using patchwork to integrate heatmaps
 
 ```{r}
