@@ -81,6 +81,9 @@ setGeneric("as_ComplexHeatmap", function(tidyHeatmap) standardGeneric("as_Comple
 
 #' Creates a  `ComplexHeatmap` object for less standard plot manipulation (e.g. changing legend position)
 #'
+#' @importFrom ComplexHeatmap columnAnnotation
+#' @importFrom ComplexHeatmap rowAnnotation
+#'
 #' @docType methods
 #' @rdname as_ComplexHeatmap-method
 #'
@@ -149,12 +152,21 @@ setMethod("show", "InputHeatmap", function(object){
 		show()
 })
 
+
+#' @rdname plot_arithmetic
+#' @export
+"+.InputHeatmap" <- function(e1, e2) {
+	
+	as_ComplexHeatmap(e1) + as_ComplexHeatmap(e2)
+}
+
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
 #'
 #' \lifecycle{maturing}
 #'
 #' @description heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, with integration with tibble and dplyr frameworks.
 #'
+#' @importFrom ComplexHeatmap Heatmap
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
 #' @importFrom stats sd
