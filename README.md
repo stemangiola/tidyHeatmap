@@ -383,6 +383,16 @@ tidyHeatmap::pasilla |>
 
 ![](man/fragments/figures/unnamed-chunk-20-1.png)<!-- -->
 
+# Adding heatmap side-by-side
+
+``` r
+p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row") 
+
+p_heatmap + p_heatmap
+```
+
+![](man/fragments/figures/unnamed-chunk-21-1.png)<!-- -->
+
 # ComplexHeatmap further styling
 
 ## Add cell borders
@@ -396,7 +406,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-21-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-22-1.png)<!-- -->
 
 ## Drop row clustering
 
@@ -409,7 +419,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-22-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-23-1.png)<!-- -->
 
 ## Reorder rows elements
 
@@ -424,7 +434,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-23-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-24-1.png)<!-- -->
 
 ## Size of dendrograms
 
@@ -439,7 +449,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-24-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-25-1.png)<!-- -->
 
 ## Size of rows/columns titles and names
 
@@ -456,7 +466,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-25-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
 
 ## External `ComplexHeatmap` functionalities
 
@@ -469,16 +479,6 @@ included in the standard functional framework
 heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row" ) %>%
     as_ComplexHeatmap() %>%
     ComplexHeatmap::draw(heatmap_legend_side = "left"   )
-```
-
-![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
-
-### Adding heatmap side-by-side
-
-``` r
-p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row") 
-
-p_heatmap + p_heatmap
 ```
 
 ![](man/fragments/figures/unnamed-chunk-27-1.png)<!-- -->
