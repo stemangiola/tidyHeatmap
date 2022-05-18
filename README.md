@@ -467,6 +467,7 @@ mtcars_tidy |>
 ```
 
 ![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
+<<<<<<< HEAD
 
 ## External `ComplexHeatmap` functionalities
 
@@ -482,6 +483,8 @@ heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row" ) %>%
 ```
 
 ![](man/fragments/figures/unnamed-chunk-27-1.png)<!-- -->
+=======
+>>>>>>> update README
 
 ## External `ComplexHeatmap` functionalities
 
@@ -494,16 +497,6 @@ included in the standard functional framework
 heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row" ) %>%
     as_ComplexHeatmap() %>%
     ComplexHeatmap::draw(heatmap_legend_side = "left"   )
-```
-
-![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
-
-### Adding heatmap side-by-side
-
-``` r
-p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row") 
-
-p_heatmap + p_heatmap
 ```
 
 ![](man/fragments/figures/unnamed-chunk-27-1.png)<!-- -->
