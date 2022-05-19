@@ -179,7 +179,6 @@ mtcars_tidy |>
 ```
 
 
-
 ## Custom palettes
 
 We can easily use custom palette, using strings, hexadecimal color character vector, 
@@ -222,6 +221,22 @@ mtcars_tidy |>
 		Value,	
 		scale = "row",
 		palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+	)
+```
+
+We can use grid::colorRamp2 function for tile annotation too
+
+```{r}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,	
+		scale = "row"
+	) |>
+	add_tile(
+		hp, 
+		palette = circlize::colorRamp2(c(0, 100, 200, 300), viridis::magma(4))
 	)
 ```
 
