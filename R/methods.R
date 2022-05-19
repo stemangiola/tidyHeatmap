@@ -350,7 +350,7 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
-#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
 #' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
 #' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
@@ -374,6 +374,8 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #' 
 #' hm %>% add_tile(CAPRA_TOTAL)
 #'
+#'
+#' hm %>% add_tile(inflection, palette = circlize::colorRamp2(c(0, 3,10), c("white", "green", "red")))
 #'
 #' @export
 setGeneric("add_tile", function(.data,
@@ -436,7 +438,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
-#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
 #' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
 #' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
@@ -458,7 +460,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #'     .value = `read count normalised log`
 #' )
 #' 
-#' hm %>% add_point()
+#' hm %>% add_point(inflection)
 #'
 #'
 #' @export
@@ -500,7 +502,7 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
-#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
 #' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
 #' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
@@ -522,7 +524,7 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #'     .value = `read count normalised log`
 #' )
 #' 
-#' hm %>% add_line()
+#' hm %>% add_line(inflection)
 #'
 #'
 #' @export
@@ -565,7 +567,7 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
-#' @param palette A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
+#' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
 #' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
 #' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
 #'
@@ -587,7 +589,7 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #'     .value = `read count normalised log`
 #' )
 #' 
-#' hm %>% add_bar()
+#' hm %>% add_bar(inflection)
 #'
 #'
 #' @export
