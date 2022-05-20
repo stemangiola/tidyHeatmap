@@ -338,14 +338,14 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #'
 #' \lifecycle{maturing}
 #'
-#' @description add_tile() from a `InputHeatmap` object, adds a tile annotation layer.
+#' @description annotation_tile() from a `InputHeatmap` object, adds a tile annotation layer.
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
 #' @importFrom grid unit 
 #'
-#' @name add_tile
-#' @rdname add_tile-method
+#' @name annotation_tile
+#' @rdname annotation_tile-method
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
@@ -371,25 +371,29 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #'     .value = `read count normalised log`
 #' )
 #' 
-#' hm %>% add_tile(CAPRA_TOTAL)
+#' hm %>% annotation_tile(CAPRA_TOTAL)
 #'
 #'
-#' hm %>% add_tile(inflection, palette = circlize::colorRamp2(c(0, 3,10), c("white", "green", "red")))
+#' hm %>% 
+#'   annotation_tile(
+#'     inflection, 
+#'     palette = circlize::colorRamp2(c(0, 3,10), c("white", "green", "red"))
+#'  )
 #'
 #' @export
-setGeneric("add_tile", function(.data,
+setGeneric("annotation_tile", function(.data,
 																.column,
 																palette = NULL, size = NULL, ...)
-	standardGeneric("add_tile"))
+	standardGeneric("annotation_tile"))
 
-#' add_tile
+#' annotation_tile
 #' 
 #' @docType methods
-#' @rdname add_tile-method
+#' @rdname annotation_tile-method
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("add_tile", "InputHeatmap", function(.data,
+setMethod("annotation_tile", "InputHeatmap", function(.data,
 																							 .column,
 																							 palette = NULL, size = NULL,...){
 	
@@ -425,15 +429,15 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #'
 #' \lifecycle{maturing}
 #'
-#' @description add_point() from a `InputHeatmap` object, adds a point annotation layer.
+#' @description annotation_point() from a `InputHeatmap` object, adds a point annotation layer.
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
 #' @importFrom grid unit 
 #' 
 #'
-#' @name add_point
-#' @rdname add_point-method
+#' @name annotation_point
+#' @rdname annotation_point-method
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
@@ -459,23 +463,23 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #'     .value = `read count normalised log`
 #' )
 #' 
-#' hm %>% add_point(inflection)
+#' hm %>% annotation_point(inflection)
 #'
 #'
 #' @export
-setGeneric("add_point", function(.data,
+setGeneric("annotation_point", function(.data,
 																.column,
 																palette = NULL, size = NULL,...)
-	standardGeneric("add_point"))
+	standardGeneric("annotation_point"))
 
-#' add_point
+#' annotation_point
 #' 
 #' @docType methods
-#' @rdname add_point-method
+#' @rdname annotation_point-method
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("add_point", "InputHeatmap", function(.data,
+setMethod("annotation_point", "InputHeatmap", function(.data,
 																							 .column,
 																							 palette = NULL, size = NULL,...){
 	
@@ -489,15 +493,15 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #'
 #' \lifecycle{maturing}
 #'
-#' @description add_line() from a `InputHeatmap` object, adds a line annotation layer.
+#' @description annotation_line() from a `InputHeatmap` object, adds a line annotation layer.
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
 #' @importFrom grid unit 
 #' 
 #'
-#' @name add_line
-#' @rdname add_line-method
+#' @name annotation_line
+#' @rdname annotation_line-method
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
@@ -523,24 +527,24 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #'     .value = `read count normalised log`
 #' )
 #' 
-#' hm %>% add_line(inflection)
+#' hm %>% annotation_line(inflection)
 #'
 #'
 #' @export
-setGeneric("add_line", function(.data,
+setGeneric("annotation_line", function(.data,
 																 .column,
 																 palette = NULL,size = NULL, ...)
-	standardGeneric("add_line"))
+	standardGeneric("annotation_line"))
 
-#' add_line
+#' annotation_line
 #' 
 #' @docType methods
-#' @rdname add_line-method
+#' @rdname annotation_line-method
 #' 
 #'
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("add_line", "InputHeatmap", function(.data,
+setMethod("annotation_line", "InputHeatmap", function(.data,
 																								.column,
 																								palette = NULL, size = NULL,...){
 	
@@ -554,15 +558,15 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #'
 #' \lifecycle{maturing}
 #'
-#' @description add_bar() from a `InputHeatmap` object, adds a bar annotation layer.
+#' @description annotation_bar() from a `InputHeatmap` object, adds a bar annotation layer.
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
 #' @importFrom grid unit 
 #' 
 #'
-#' @name add_bar
-#' @rdname add_bar-method
+#' @name annotation_bar
+#' @rdname annotation_bar-method
 #'
 #' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
 #' @param .column Vector of quotes
@@ -588,29 +592,29 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #'     .value = `read count normalised log`
 #' )
 #' 
-#' hm %>% add_bar(inflection)
+#' hm %>% annotation_bar(inflection)
 #'
 #'
 #' @export
-setGeneric("add_bar", function(.data,
+setGeneric("annotation_bar", function(.data,
 																.column,
 																palette = NULL, size = NULL,...)
-	standardGeneric("add_bar"))
+	standardGeneric("annotation_bar"))
 
-#' add_bar
+#' annotation_bar
 #' 
 #' @docType methods
-#' @rdname add_bar-method
+#' @rdname annotation_bar-method
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("add_bar", "InputHeatmap", function(.data,
+setMethod("annotation_bar", "InputHeatmap", function(.data,
 																							 .column,
 																							 palette = NULL, size = NULL,...){
 	
 	.column = enquo(.column)
 	
-	.data %>% add_annotation(	!!.column,	type = "bar", 		size = size,...)
+	.data %>% add_annotation(	!!.column,	type = "bar", size = size,...)
 	
 })
 
