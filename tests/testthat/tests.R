@@ -5,6 +5,7 @@ context('tests')
 
 test_that("basic plot",{
 
+ 
 	p = 
 		tidyHeatmap::heatmap(
 			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
@@ -625,3 +626,42 @@ test_that("wrap heatmap for patchwork",{
 	
 	
 })
+
+test_that("plus operator",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+			.column = UBR, 
+			.row = symbol_ct, 
+			.value = `read count normalised log`,
+			scale = "row"
+		)
+	
+	p = p+p
+	
+	
+	vdiffr::expect_doppelganger("plus operator", p)
+	
+})
+
+test_that("tile colorRamp2 palette",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+			.column = UBR, 
+			.row = symbol_ct, 
+			.value = `read count normalised log`,
+			scale = "row"
+		) %>%
+		add_tile(
+			inflection,
+			palette = colorRamp2(c(0, 3,10), c("white", "green", "red"))
+		)
+	
+	
+	vdiffr::expect_doppelganger("tile colorRamp2 palette", p)
+	
+})
+

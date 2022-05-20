@@ -179,7 +179,6 @@ mtcars_tidy |>
 ```
 
 
-
 ## Custom palettes
 
 We can easily use custom palette, using strings, hexadecimal color character vector, 
@@ -222,6 +221,22 @@ mtcars_tidy |>
 		Value,	
 		scale = "row",
 		palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+	)
+```
+
+We can use grid::colorRamp2 function for tile annotation too
+
+```{r}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,	
+		scale = "row"
+	) |>
+	add_tile(
+		hp, 
+		palette = circlize::colorRamp2(c(0, 100, 200, 300), viridis::magma(4))
 	)
 ```
 
@@ -326,6 +341,16 @@ tidyHeatmap::pasilla |>
 	)
 ```
 
+# Adding heatmap side-by-side
+
+```{r, warning=FALSE}
+
+p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row") 
+
+p_heatmap + p_heatmap
+
+```
+
 # ComplexHeatmap further styling
 
 ## Add cell borders
@@ -389,6 +414,19 @@ mtcars_tidy |>
 		column_title_gp = gpar(fontsize = 7),
 		row_title_gp = gpar(fontsize = 7)
 	) 
+```
+
+## External `ComplexHeatmap` functionalities
+
+`ComplexHeatmap` has some graphical functionalities that are not included in the standard functional framework
+
+### Chainging side of legends
+
+```{r}
+
+heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) %>%
+	as_ComplexHeatmap() %>%
+	ComplexHeatmap::draw(heatmap_legend_side = "left"	)
 ```
 
 ## Using patchwork to integrate heatmaps

@@ -706,11 +706,28 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 		group_by(annot_type) %>%
 		mutate(idx =  row_number()) %>%
 		ungroup() %>%
+  	
 		mutate(color = map2(annot, idx,  ~ {
-			if(.x %>% class %in% c("factor", "character", "logical"))
-				colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
-			else if (.x %>% class %in% c("integer", "numerical", "numeric", "double"))
-				colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
+			if(.x %>% class %in% c("factor", "character", "logical")){
+				
+				# If is colorRamp 
+				if(is(palette_annotation$discrete[[.y]], "function"))
+					palette_annotation$discrete[[.y]]
+				
+				# If it is a list of colors
+				else
+					colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
+			} else if (.x %>% class %in% c("integer", "numerical", "numeric", "double")){
+				
+				# If is colorRamp 
+				if(is(palette_annotation$continuous[[.y]], "function"))
+					palette_annotation$continuous[[.y]]
+
+				# If it is a list of colors
+				else
+					colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
+				
+			}
 			else NULL
 		})) %>%
 	  	
@@ -745,6 +762,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 }
 
 #' @importFrom grid unit
+#' @importFrom ComplexHeatmap anno_block
 get_group_annotation = function(.data, .column, .row, .abundance, palette_annotation){
   
   # Comply with CRAN NOTES

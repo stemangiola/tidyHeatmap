@@ -15,7 +15,7 @@ add_tile(.data, .column, palette = NULL, size = NULL, ...)
 
 \item{.column}{Vector of quotes}
 
-\item{palette}{A character vector of colors  This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).}
+\item{palette}{A character vector of colors, or a function such as colorRamp2 (see examples).}
 
 \item{size}{A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.}
 
@@ -48,5 +48,7 @@ hm =
 
 hm \%>\% add_tile(CAPRA_TOTAL)
 
+
+hm \%>\% add_tile(inflection, palette = circlize::colorRamp2(c(0, 3,10), c("white", "green", "red")))
 
 }
