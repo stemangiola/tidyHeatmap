@@ -30,17 +30,16 @@ It uses `ComplexHeatmap` as visualisation tool.
 }
 \examples{
 
-library(dplyr)
 
 hm = 
-  tidyHeatmap::N52 \%>\%
+  tidyHeatmap::N52 |>
   tidyHeatmap::heatmap(
     .row = symbol_ct,
     .column = UBR,
     .value = `read count normalised log`
 )
 
-hm \%>\% layer_point()
+hm |> layer_point()
 
 
 }

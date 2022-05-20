@@ -401,3 +401,110 @@ add_annotation = function(my_input_heatmap,
 	my_input_heatmap
 	
 }
+
+#' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description layer_symbol() from a `InputHeatmap` object, adds a bar annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#' 
+#'
+#' @name layer_symbol
+#' @rdname layer_symbol-method
+#'
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param symbol A character string of length one. The values allowed are "point" ,     "square" ,    "diamond" ,   "arrow_up" ,  "arrow_down"
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#' @docType methods
+#' 
+#' @keywords internal
+#' @noRd
+#' 
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm |> layer_symbol()
+#'
+setGeneric("layer_symbol", function(.data,
+																		...,
+																		symbol = "point")
+	standardGeneric("layer_symbol"))
+
+#' layer_symbol
+#' 
+#' @docType methods
+#' @rdname layer_symbol-method
+#' 
+#' @keywords internal
+#' @noRd
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+setMethod("layer_symbol", "InputHeatmap", function(.data,
+																									 ...,
+																									 symbol = "point"){
+	
+	.data_drame = .data@data
+	
+	
+	symbol_dictionary = 
+		list(
+			point = 21,
+			square = 22,
+			diamond = 23,
+			arrow_up = 24,
+			arrow_down = 25
+		)
+	
+	if(!symbol %in% names(symbol_dictionary) | length(symbol) != 1) 
+		stop(sprintf("tidyHeatmap says: the symbol argument must be one character string, among %s", paste(names(symbol_dictionary))))
+	
+	# Comply with CRAN NOTES
+	. = NULL
+	column = NULL
+	row = NULL
+	
+	# Make col names
+	# Column names
+	.horizontal = .data@arguments$.horizontal
+	.vertical = .data@arguments$.vertical
+	.abundance = .data@arguments$.abundance
+	
+	# Append which cells have to be signed
+	.data@layer_symbol= 
+		.data@layer_symbol |>
+		bind_rows(
+			.data_drame |>
+				droplevels() |>
+				mutate(
+					column = !!.horizontal %>%  as.factor()  %>%  as.integer(),
+					row = !!.vertical  %>%  as.factor() %>% as.integer()
+				) |>
+				filter(...) |>
+				select(column, row) |>
+				mutate(shape = symbol_dictionary[[symbol]])
+		)
+	
+	.data
+	
+	
+})

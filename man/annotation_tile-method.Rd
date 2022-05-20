@@ -36,20 +36,19 @@ It uses `ComplexHeatmap` as visualisation tool.
 }
 \examples{
 
-library(dplyr)
 
 hm = 
-  tidyHeatmap::N52 \%>\%
+  tidyHeatmap::N52 |>
   tidyHeatmap::heatmap(
     .row = symbol_ct,
     .column = UBR,
     .value = `read count normalised log`
 )
 
-hm \%>\% annotation_tile(CAPRA_TOTAL)
+hm |> annotation_tile(CAPRA_TOTAL)
 
 
-hm \%>\% 
+hm |> 
   annotation_tile(
     inflection, 
     palette = circlize::colorRamp2(c(0, 3,10), c("white", "green", "red"))

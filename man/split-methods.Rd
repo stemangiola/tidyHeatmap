@@ -46,29 +46,27 @@ It uses `ComplexHeatmap` as visualisation tool.
 }
 \examples{
 
-library(dplyr)
 
 hm = 
-  tidyHeatmap::N52 \%>\%
+  tidyHeatmap::N52 |>
   tidyHeatmap::heatmap(
     .row = symbol_ct,
     .column = UBR,
     .value = `read count normalised log`
 )
 
-hm \%>\% split_rows(2)
+hm |> split_rows(2)
 
 
-library(dplyr)
 
 hm = 
-  tidyHeatmap::N52 \%>\%
+  tidyHeatmap::N52 |>
   tidyHeatmap::heatmap(
     .row = symbol_ct,
     .column = UBR,
     .value = `read count normalised log`
 )
 
-hm \%>\% split_columns(2)
+hm |> split_columns(2)
 
 }
