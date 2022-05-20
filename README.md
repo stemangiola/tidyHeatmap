@@ -44,21 +44,23 @@ as graphical engine.
 
 ## Functions/utilities available
 
-| Function           | Description                                 |
-|--------------------|---------------------------------------------|
-| `heatmap`          | Plots base heatmap                          |
-| `add_tile`         | Adds tile annotation to the heatmap         |
-| `add_point`        | Adds point annotation to the heatmap        |
-| `add_bar`          | Adds bar annotation to the heatmap          |
-| `add_line`         | Adds line annotation to the heatmap         |
-| `layer_point`      | Adds layer of symbols on top of the heatmap |
-| `layer_square`     | Adds layer of symbols on top of the heatmap |
-| `layer_diamond`    | Adds layer of symbols on top of the heatmap |
-| `layer_arrow_up`   | Adds layer of symbols on top of the heatmap |
-| `layer_arrow_down` | Add layer of symbols on top of the heatmap  |
-| `split_rows`       | Splits the rows based on the dendogram      |
-| `split_columns`    | Splits the columns based on the dendogram   |
-| `save_pdf`         | Saves the PDF of the heatmap                |
+| Function            | Description                                                                 |
+|---------------------|-----------------------------------------------------------------------------|
+| `heatmap`           | Plots base heatmap                                                          |
+| `add_tile`          | Adds tile annotation to the heatmap                                         |
+| `add_point`         | Adds point annotation to the heatmap                                        |
+| `add_bar`           | Adds bar annotation to the heatmap                                          |
+| `add_line`          | Adds line annotation to the heatmap                                         |
+| `layer_point`       | Adds layer of symbols on top of the heatmap                                 |
+| `layer_square`      | Adds layer of symbols on top of the heatmap                                 |
+| `layer_diamond`     | Adds layer of symbols on top of the heatmap                                 |
+| `layer_arrow_up`    | Adds layer of symbols on top of the heatmap                                 |
+| `layer_arrow_down`  | Add layer of symbols on top of the heatmap                                  |
+| `split_rows`        | Splits the rows based on the dendogram                                      |
+| `split_columns`     | Splits the columns based on the dendogram                                   |
+| `save_pdf`          | Saves the PDF of the heatmap                                                |
+| `+`                 | Integrate heatmaps side-by-side                                             |
+| `as_ComplexHeatmap` | Convert the tidyHeatmap output to ComplexHeatmap for non-standard “drawing” |
 
 ## Installation
 
@@ -271,7 +273,26 @@ mtcars_tidy |>
 
 ![](man/fragments/figures/unnamed-chunk-15-1.png)<!-- -->
 
-We can use grid::colorRamp2 function for tile annotation too
+We can use custom colors for tile annotation
+
+``` r
+mtcars_tidy |> 
+    heatmap(
+        `Car name`, 
+        Property, 
+        Value,  
+        scale = "row"
+    ) |>
+    add_tile(
+        hp, 
+        palette = c("red", "white", "blue")
+    )
+```
+
+![](man/fragments/figures/unnamed-chunk-16-1.png)<!-- -->
+
+We can use grid::colorRamp2 function for tile annotation for specific
+color scales
 
 ``` r
 mtcars_tidy |> 
@@ -287,7 +308,7 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/unnamed-chunk-16-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-17-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -304,7 +325,7 @@ tidyHeatmap::pasilla |>
     add_tile(activation)
 ```
 
-![](man/fragments/figures/unnamed-chunk-17-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-18-1.png)<!-- -->
 
 Remove legends, adding aesthetics to annotations in a modular fashion,
 using `ComplexHeatmap` arguments
@@ -323,7 +344,7 @@ tidyHeatmap::pasilla |>
     add_tile(activation, show_legend = FALSE)
 ```
 
-![](man/fragments/figures/unnamed-chunk-18-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-19-1.png)<!-- -->
 
 ## Annotation types
 
@@ -354,7 +375,7 @@ pasilla_plus |>
     add_line(age)
 ```
 
-![](man/fragments/figures/unnamed-chunk-19-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-20-1.png)<!-- -->
 
 ## Annotation size
 
@@ -376,7 +397,7 @@ pasilla_plus |>
     add_line(age, size = unit(0.3, "cm"),   annotation_name_gp= gpar(fontsize = 8))
 ```
 
-![](man/fragments/figures/unnamed-chunk-20-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-21-1.png)<!-- -->
 
 # Layer symbol
 
@@ -399,7 +420,7 @@ tidyHeatmap::pasilla |>
     )
 ```
 
-![](man/fragments/figures/unnamed-chunk-21-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-22-1.png)<!-- -->
 
 # Adding heatmap side-by-side
 
@@ -409,7 +430,7 @@ p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row")
 p_heatmap + p_heatmap
 ```
 
-![](man/fragments/figures/unnamed-chunk-22-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-23-1.png)<!-- -->
 
 # ComplexHeatmap further styling
 
@@ -424,7 +445,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-23-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-24-1.png)<!-- -->
 
 ## Drop row clustering
 
@@ -437,7 +458,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-24-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-25-1.png)<!-- -->
 
 ## Reorder rows elements
 
@@ -452,7 +473,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-25-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
 
 ## Size of dendrograms
 
@@ -467,7 +488,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-27-1.png)<!-- -->
 
 ## Size of rows/columns titles and names
 
@@ -484,12 +505,13 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-27-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-28-1.png)<!-- -->
 
 ## External `ComplexHeatmap` functionalities
 
-`ComplexHeatmap` has some graphical functionalities that are not
-included in the standard functional framework
+ComplexHeatmap has some graphical functionalities that are not included
+in the standard functional framework. We can use `as_ComplexHeatmap` to
+convert our output before applying drawing options.
 
 ### Chainging side of legends
 
@@ -499,7 +521,7 @@ heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row" ) %>%
     ComplexHeatmap::draw(heatmap_legend_side = "left"   )
 ```
 
-![](man/fragments/figures/unnamed-chunk-28-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-29-1.png)<!-- -->
 
 ## Using patchwork to integrate heatmaps
 
@@ -524,4 +546,4 @@ wrap_heatmap(p_heatmap) +
     plot_layout(width = c(1, 0.3, 1))
 ```
 
-![](man/fragments/figures/unnamed-chunk-29-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-30-1.png)<!-- -->

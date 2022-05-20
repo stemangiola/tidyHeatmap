@@ -39,6 +39,8 @@ Function | Description
 `split_rows` | Splits the rows based on the dendogram
 `split_columns` | Splits the columns based on the dendogram
 `save_pdf` | Saves the PDF of the heatmap
+`+` | Integrate heatmaps side-by-side
+`as_ComplexHeatmap` | Convert the tidyHeatmap output to ComplexHeatmap for non-standard "drawing"
 
 ## Installation
 
@@ -224,7 +226,23 @@ mtcars_tidy |>
 	)
 ```
 
-We can use grid::colorRamp2 function for tile annotation too
+We can use custom colors for tile annotation 
+
+```{r}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,	
+		scale = "row"
+	) |>
+	add_tile(
+		hp, 
+		palette = c("red", "white", "blue")
+	)
+```
+
+We can use grid::colorRamp2 function for tile annotation for specific color scales
 
 ```{r}
 mtcars_tidy |> 
@@ -418,7 +436,7 @@ mtcars_tidy |>
 
 ## External `ComplexHeatmap` functionalities
 
-`ComplexHeatmap` has some graphical functionalities that are not included in the standard functional framework
+ComplexHeatmap has some graphical functionalities that are not included in the standard functional framework. We can use `as_ComplexHeatmap` to convert our output before applying drawing options.
 
 ### Chainging side of legends
 
