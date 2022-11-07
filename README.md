@@ -6,7 +6,7 @@ tidyHeatmap
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02472/status.svg)](https://doi.org/10.21105/joss.02472)
 <!-- badges: end -->
-
+ 
 ## Citation
 
 Mangiola et al., (2020). tidyHeatmap: an R package for modular heatmap
