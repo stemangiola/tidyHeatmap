@@ -41,6 +41,7 @@ Function | Description
 `save_pdf` | Saves the PDF of the heatmap
 `+` | Integrate heatmaps side-by-side
 `as_ComplexHeatmap` | Convert the tidyHeatmap output to ComplexHeatmap for non-standard "drawing"
+`group_by` | Applied to the input dataset, groups heatpmap rows/columns
 
 ## Installation
 
