@@ -665,3 +665,20 @@ test_that("tile colorRamp2 palette",{
 	
 })
 
+
+test_that("patchwork padding",{
+	
+	p = 
+		tidyHeatmap::N52 |> 
+		dplyr::filter(, Category == "Angiogenesis") |> 
+		tidyHeatmap::heatmap(
+			.column = UBR, 
+			.row = symbol_ct, 
+			.value = `read count normalised log`
+		) |> 
+		wrap_heatmap(padding = grid::unit(c(-10, -10, -10, -10), unit="pt"))
+	
+	
+	vdiffr::expect_doppelganger("patchwork padding", p)
+	
+})
