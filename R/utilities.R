@@ -675,22 +675,29 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  )  %>%
 	    
 	  # Add function
-	  mutate(fx = annotation_function) %>%
-	  
+	  mutate(my_function = annotation_function) %>%
+	  mutate(type = !!type) |> 
 	
 	  	
 	  # Apply annot function if not NULL otherwise pass original annotation
 	  # This because no function for ComplexHeatmap = to tile
-	  mutate(annot = pmap(list(data, fx, orientation), ~  {
+	  mutate(annot = pmap(list(data, type, orientation), ~  {
 	    
-	    # Trick needed for map BUG: could not find function "..2"
-	    fx = ..2
+	  	if(..3 == "column"){
+	  		if(..2 == "tile") return(..1)
+	  		else if(..2 == "point") return(anno_points(..1, which=..3, height = size) )
+	  		else if(..2 == "bar") return(anno_barplot(..1, which=..3, height = size) )
+	  		else if(..2 == "line") return(anno_lines(..1, which=..3, height = size) )
+	  	} 
+	  	else if(..3 == "row"){
+	  		if(..2 == "tile") return(..1)
+	  		else if(..2 == "point") return(anno_points(..1, which=..3, width = size) )
+	  		else if(..2 == "bar") return(anno_barplot(..1, which=..3, width = size) )
+	  		else if(..2 == "line") return(anno_lines(..1, which=..3, width = size) )
+	  	} 
+
 	    
-	    # Do conditional
-	    if(is_function(fx) & ..3 == "column") fx(..1, which=..3, height = size) 
-	    else if(is_function(fx) & ..3 == "row") fx(..1, which=..3, width = size) 
-	    else .x # else stop("tidyHeatmap says: this should not happen. In the internal function get_top_left_annotation")
-	  })) %>%
+  })) %>%
 	  
 	  # # Check if NA in annotations
 	  # mutate_at(vars(!!annotation), function(x) {
@@ -732,7 +739,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 		})) %>%
 	  	
 	  mutate(further_arguments = map2(
-	  	col_name, fx,
+	  	col_name, my_function,
 	  	~ dots_args %>% 
 	  		
 	  		# If tile add size as further argument
