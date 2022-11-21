@@ -38,13 +38,12 @@ It simply save an `Heatmap` to a PDF file use pdf() function in the back end
 \examples{
 
 
-library(dplyr)
 	tidyHeatmap::heatmap(
   dplyr::group_by(tidyHeatmap::pasilla,		location, type),
   .column = sample,
   .row = symbol,
   .value = `count normalised adjusted`,
- ) \%>\%
+ ) |>
  save_pdf(tempfile())
 
 

@@ -49,7 +49,7 @@ test_that("annotated plot numerical continuous intereg nominal annot",{
 			.value = `read count normalised log`,
 			scale = "row"
 		) |>
-		add_tile(CAPRA_TOTAL)
+		annotation_tile(CAPRA_TOTAL)
 	
 	vdiffr::expect_doppelganger("annotated heatmap 1", p)
 	
@@ -66,7 +66,7 @@ test_that("annotated plot continuous annot MUST ERROR",{
 			.value = `read count normalised log`,
 			scale = "row"
 		) |> 
-			add_tile(a), "Your annotation*", fixed=FALSE) 
+			annotation_tile(a), "Your annotation*", fixed=FALSE) 
 	
 })
 
@@ -84,8 +84,8 @@ test_that("annotated plot continuous annot as well",{
 			.value = `read count normalised log`,
 			scale = "row"
 		) |>
-		add_tile(a) |>
-		add_tile(CAPRA_TOTAL)
+		annotation_tile(a) |>
+		annotation_tile(CAPRA_TOTAL)
 	
 	vdiffr::expect_doppelganger("annotated heatmap 2", p)
 	
@@ -104,7 +104,7 @@ test_that("grouped and annotated plot",{
 			.value = `read count normalised log`,
 			scale = "row"
 		) |>
-		add_tile(CAPRA_TOTAL)
+		annotation_tile(CAPRA_TOTAL)
 	
 	
 	vdiffr::expect_doppelganger("grouped annotated heatmap 1", p)
@@ -121,8 +121,8 @@ test_that("grouped double and annotated plot",{
 			.value = `count normalised adjusted`,
 			scale = "row"
 		) |>
-		add_tile(condition) |>
-		add_tile(activation)
+		annotation_tile(condition) |>
+		annotation_tile(activation)
 	
 	
 	vdiffr::expect_doppelganger("grouped annotated heatmap 2", p)
@@ -141,8 +141,8 @@ test_that("grouping error",{
 			.value = `count normalised adjusted`,
 			scale = "row"
 		) |>
-			add_tile(condition) |>
-			add_tile(activation),
+			annotation_tile(condition) |>
+			annotation_tile(activation),
 		regexp = "tidyHeatmap says: At the moment just one grouping per dimension*"
 	)
 	
@@ -159,7 +159,7 @@ test_that("pasilla one annotation",{
 			.value = `count normalised adjusted log`,
 			scale = "row"
 		)  |>
-		add_tile(condition)
+		annotation_tile(condition)
 	
 	expect_equal(class(p)[1], "InputHeatmap")
 	#vdiffr::expect_doppelganger("pasilla heatmap 1", p)
@@ -176,8 +176,8 @@ test_that("pasilla 2 annotations",{
 			.value = `count normalised adjusted log`,
 			scale = "row"
 		) |>
-		add_tile(condition) |>
-		add_tile(type)
+		annotation_tile(condition) |>
+		annotation_tile(type)
 	
 	
 	expect_equal(class(p)[1], "InputHeatmap")
@@ -196,8 +196,8 @@ test_that("pasilla custom color abundance",{
 			palette_value = c("#d80000", "#ffffff", "#283cea"),
 			scale = "row"
 		) |>
-		add_tile(condition) |>
-		add_tile(type)
+		annotation_tile(condition) |>
+		annotation_tile(type)
 	
 	
 	expect_equal(class(p)[1], "InputHeatmap")
@@ -216,8 +216,8 @@ test_that("pasilla custom color discrete",{
 			.value = `count normalised adjusted log`,
 			scale = "row"
 		)  |>
-		add_tile(condition, c("#d80000", "#283cea")) |>
-		add_tile(type)
+		annotation_tile(condition, c("#d80000", "#283cea")) |>
+		annotation_tile(type)
 	
 	
 	expect_equal(class(p)[1], "InputHeatmap")
@@ -235,7 +235,7 @@ test_that("pasilla custom color contunuous",{
 			.value = `count normalised adjusted log`,
 			scale = "row"
 		) |>
-		add_tile(activation, c("#d80000", "#283cea"))
+		annotation_tile(activation, c("#d80000", "#283cea"))
 	
 	
 	expect_equal(class(p)[1], "InputHeatmap")
@@ -253,9 +253,9 @@ test_that("pasilla custom color contunuous AND discrete",{
 			.value = `count normalised adjusted log`,
 			scale = "row"
 		) |>
-		add_tile(condition) |>
-		add_tile(type) |>
-		add_tile(activation) 
+		annotation_tile(condition) |>
+		annotation_tile(type) |>
+		annotation_tile(activation) 
 	
 	
 	expect_equal(class(p)[1], "InputHeatmap")
@@ -273,9 +273,9 @@ test_that("grouped and annotated plot both vertical and horizontal",{
 			.value = `count normalised adjusted`,
 			scale = "row"
 		) |>
-		add_tile(condition) |>
-		add_tile(type) |>
-		add_tile(activation) 
+		annotation_tile(condition) |>
+		annotation_tile(type) |>
+		annotation_tile(activation) 
 	
 	
 	vdiffr::expect_doppelganger("grouped custom color both", p)
@@ -293,9 +293,9 @@ test_that("pass arguments with ...",{
 			scale = "row",
 			show_heatmap_legend = FALSE
 		) |>
-		add_tile(condition) |>
-		add_tile(type) |>
-		add_tile(activation) 
+		annotation_tile(condition) |>
+		annotation_tile(type) |>
+		annotation_tile(activation) 
 	
 	
 	vdiffr::expect_doppelganger("show_heatmap_legend", p)
@@ -429,11 +429,11 @@ test_that("multi-type",{
 			.row = symbol,
 			.value = `count normalised adjusted`
 		) |>
-		add_tile(condition) |>
-		add_point(activation) |>
-		add_tile(act) |>
-		add_bar(size) |>
-		add_line(age)
+		annotation_tile(condition) |>
+		annotation_point(activation) |>
+		annotation_tile(act) |>
+		annotation_bar(size) |>
+		annotation_line(age)
 	
 	
 	vdiffr::expect_doppelganger("multi-type", p)
@@ -496,15 +496,15 @@ test_that("managing palette usage",{
 	
 	p4 =
 		p3 |>
-		add_tile(condition) |>
-		add_tile(activation)
+		annotation_tile(condition) |>
+		annotation_tile(activation)
 	
 	expect_equal(length(p4@palette_discrete), length(p3@palette_discrete)-1 )
 	
 	p5 =
 		p1 |>
-		add_tile(condition) |>
-		add_tile(activation)
+		annotation_tile(condition) |>
+		annotation_tile(activation)
 	
 	expect_equal(length(p5@palette_discrete), length(p1@palette_discrete)-1 )
 	expect_equal(length(p5@palette_continuous), length(p1@palette_continuous)-1 )
@@ -581,8 +581,8 @@ test_that("legend",{
 			scale = "row",
 			show_heatmap_legend = FALSE
 		) |> 
-		add_tile(UBR, show_legend = FALSE) |>
-		add_tile(`Cell type`, show_legend = FALSE) 
+		annotation_tile(UBR, show_legend = FALSE) |>
+		annotation_tile(`Cell type`, show_legend = FALSE) 
 	
 	vdiffr::expect_doppelganger("legend", p)
 	
@@ -600,8 +600,8 @@ test_that("size annotation",{
 			scale = "row",
 			show_heatmap_legend = FALSE
 		) |> 
-		add_tile(UBR, size = unit(20, "mm")) |>
-		add_tile(`Cell type`, size = unit(20, "mm")) 
+		annotation_tile(UBR, size = unit(20, "mm")) |>
+		annotation_tile(`Cell type`, size = unit(20, "mm")) 
 	
 	vdiffr::expect_doppelganger("size annotation", p)
 	
@@ -655,7 +655,7 @@ test_that("tile colorRamp2 palette",{
 			.value = `read count normalised log`,
 			scale = "row"
 		) %>%
-		add_tile(
+		annotation_tile(
 			inflection,
 			palette = colorRamp2(c(0, 3,10), c("white", "green", "red"))
 		)
@@ -665,3 +665,20 @@ test_that("tile colorRamp2 palette",{
 	
 })
 
+
+test_that("patchwork padding",{
+	
+	p = 
+		tidyHeatmap::N52 |> 
+		dplyr::filter(, Category == "Angiogenesis") |> 
+		tidyHeatmap::heatmap(
+			.column = UBR, 
+			.row = symbol_ct, 
+			.value = `read count normalised log`
+		) |> 
+		wrap_heatmap(padding = grid::unit(c(-10, -10, -10, -10), unit="pt"))
+	
+	
+	vdiffr::expect_doppelganger("patchwork padding", p)
+	
+})

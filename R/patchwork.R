@@ -21,6 +21,8 @@
 #' @param ignore_tag Should tags be ignored for this patch. This is relevant
 #' when using automatic tagging of plots and the content of the patch does not
 #' qualify for a tag.
+#' 
+#' @param padding A grid::unit object. It defined the padding distance for the plot. It is helpful when the heatmap is assembled with other ggplots through patchwork.
 #'
 #' @docType methods
 #' @rdname wrap_heatmap-method
@@ -42,7 +44,7 @@
 #' 
 setGeneric(
 	"wrap_heatmap", 
-	function(panel = NULL, plot = NULL, full = NULL, clip = TRUE, ignore_tag = FALSE) standardGeneric("wrap_heatmap")
+	function(panel = NULL, plot = NULL, full = NULL, clip = TRUE, ignore_tag = FALSE, padding = NULL) standardGeneric("wrap_heatmap")
 )
 
 #' Wrap tidyHeatmap (ComplexHeatmap) in a patchwork-compliant patch
@@ -51,6 +53,25 @@ setGeneric(
 #' @rdname wrap_heatmap-method
 #' 
 #' @return A wrapped_patch object
-setMethod("wrap_heatmap", "InputHeatmap", function(panel = NULL, plot = NULL, full = NULL, clip = TRUE, ignore_tag = FALSE){
-	patchwork::wrap_elements(grid::grid.grabExpr(ComplexHeatmap::draw(ComplexHeatmap::draw(methods::show(panel)))))
+setMethod("wrap_heatmap", "InputHeatmap", function(panel = NULL, plot = NULL, full = NULL, clip = TRUE, ignore_tag = FALSE, padding = NULL){
+	
+	if(!is.null(padding))
+		panel = 
+			as_ComplexHeatmap(panel) |> 
+			draw( padding = padding)
+	
+	
+		patchwork::wrap_elements(grid::grid.grabExpr(ComplexHeatmap::draw(ComplexHeatmap::draw(methods::show(panel)))))
+	
+	
 })
+
+# #' Wrap tidyHeatmap (ComplexHeatmap) in a patchwork-compliant patch
+# #' 
+# #' @docType methods
+# #' @rdname wrap_heatmap-method
+# #' 
+# #' @return A wrapped_patch object
+# setMethod("wrap_heatmap", "HeatmapList", function(panel = NULL, plot = NULL, full = NULL, clip = TRUE, ignore_tag = FALSE, padding = NULL){
+# 	patchwork::wrap_elements(grid::grid.grabExpr(ComplexHeatmap::draw(ComplexHeatmap::draw(methods::show(panel)))))
+# })

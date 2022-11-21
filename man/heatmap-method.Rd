@@ -100,14 +100,13 @@ This function takes a tbl as an input and creates a `ComplexHeatmap` plot. The i
 }
 \examples{
 
-library(dplyr)
 
-tidyHeatmap::N52 \%>\%
-group_by( `Cell type`) \%>\%
-tidyHeatmap::heatmap(
- .row = symbol_ct,
- .column = UBR,
- .value = `read count normalised log`,
-)
+tidyHeatmap::N52 |>
+  dplyr::group_by( `Cell type`) |>
+  tidyHeatmap::heatmap(
+   .row = symbol_ct,
+   .column = UBR,
+   .value = `read count normalised log`,
+  )
 
 }

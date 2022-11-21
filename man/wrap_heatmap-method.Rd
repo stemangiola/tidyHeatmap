@@ -11,7 +11,8 @@ wrap_heatmap(
   plot = NULL,
   full = NULL,
   clip = TRUE,
-  ignore_tag = FALSE
+  ignore_tag = FALSE,
+  padding = NULL
 )
 
 \S4method{wrap_heatmap}{InputHeatmap}(
@@ -19,7 +20,8 @@ wrap_heatmap(
   plot = NULL,
   full = NULL,
   clip = TRUE,
-  ignore_tag = FALSE
+  ignore_tag = FALSE,
+  padding = NULL
 )
 }
 \arguments{
@@ -31,6 +33,8 @@ nativeRaster object to add to the respective area.}
 \item{ignore_tag}{Should tags be ignored for this patch. This is relevant
 when using automatic tagging of plots and the content of the patch does not
 qualify for a tag.}
+
+\item{padding}{A grid::unit object. It defined the padding distance for the plot. It is helpful when the heatmap is assembled with other ggplots through patchwork.}
 }
 \value{
 A wrapped_patch object
