@@ -47,10 +47,10 @@ as graphical engine.
 | Function           | Description                                 |
 |--------------------|---------------------------------------------|
 | `heatmap`          | Plots base heatmap                          |
-| `add_tile`         | Adds tile annotation to the heatmap         |
-| `add_point`        | Adds point annotation to the heatmap        |
-| `add_bar`          | Adds bar annotation to the heatmap          |
-| `add_line`         | Adds line annotation to the heatmap         |
+| `annotation_tile`  | Adds tile annotation to the heatmap         |
+| `annotation_point` | Adds point annotation to the heatmap        |
+| `annotation_bar`   | Adds bar annotation to the heatmap          |
+| `annotation_line`  | Adds line annotation to the heatmap         |
 | `layer_point`      | Adds layer of symbols on top of the heatmap |
 | `layer_square`     | Adds layer of symbols on top of the heatmap |
 | `layer_diamond`    | Adds layer of symbols on top of the heatmap |
@@ -139,7 +139,7 @@ mtcars
 mtcars_heatmap <- 
     mtcars_tidy |> 
     heatmap(`Car name`, Property, Value,    scale = "row"   ) |>
-    add_tile(hp)
+    annotation_tile(hp)
 
 mtcars_heatmap
 ```
@@ -167,7 +167,7 @@ mtcars_tidy_groupings =
 mtcars_tidy_groupings |> 
     group_by(vs, property_group) |>
     heatmap(`Car name`, Property, Value,    scale = "row"   ) |>
-    add_tile(hp)
+    annotation_tile(hp)
 ```
 
 ![](man/fragments/figures/unnamed-chunk-9-1.png)<!-- -->
@@ -189,7 +189,7 @@ mtcars_tidy_groupings |>
             c("#b58b4c", "#74a6aa")
         )
     ) |>
-    add_tile(hp)
+    annotation_tile(hp)
 ```
 
 ![](man/fragments/figures/unnamed-chunk-10-1.png)<!-- -->
@@ -281,7 +281,7 @@ mtcars_tidy |>
         Value,  
         scale = "row"
     ) |>
-    add_tile(
+    annotation_tile(
         hp, 
         palette = circlize::colorRamp2(c(0, 100, 200, 300), viridis::magma(4))
     )
@@ -300,8 +300,8 @@ tidyHeatmap::pasilla |>
         .value = `count normalised adjusted`,   
         scale = "row"
     ) |>
-    add_tile(condition) |>
-    add_tile(activation)
+    annotation_tile(condition) |>
+    annotation_tile(activation)
 ```
 
 ![](man/fragments/figures/unnamed-chunk-17-1.png)<!-- -->
@@ -319,8 +319,8 @@ tidyHeatmap::pasilla |>
         scale = "row",
         show_heatmap_legend = FALSE
     ) |>
-    add_tile(condition, show_legend = FALSE) |>
-    add_tile(activation, show_legend = FALSE)
+    annotation_tile(condition, show_legend = FALSE) |>
+    annotation_tile(activation, show_legend = FALSE)
 ```
 
 ![](man/fragments/figures/unnamed-chunk-18-1.png)<!-- -->
@@ -347,11 +347,11 @@ pasilla_plus |>
         .value = `count normalised adjusted`,   
         scale = "row"
     ) |>
-    add_tile(condition) |>
-    add_point(activation) |>
-    add_tile(act) |>
-    add_bar(size) |>
-    add_line(age)
+    annotation_tile(condition) |>
+    annotation_point(activation) |>
+    annotation_tile(act) |>
+    annotation_bar(size) |>
+    annotation_line(age)
 ```
 
 ![](man/fragments/figures/unnamed-chunk-19-1.png)<!-- -->
@@ -369,11 +369,11 @@ pasilla_plus |>
         .value = `count normalised adjusted`,   
         scale = "row"
     ) |>
-    add_tile(condition, size = unit(0.3, "cm"), annotation_name_gp= gpar(fontsize = 8)) |>
-    add_point(activation, size = unit(0.3, "cm"),   annotation_name_gp= gpar(fontsize = 8)) |>
-    add_tile(act, size = unit(0.3, "cm"),   annotation_name_gp= gpar(fontsize = 8)) |>
-    add_bar(size, size = unit(0.3, "cm"),   annotation_name_gp= gpar(fontsize = 8)) |>
-    add_line(age, size = unit(0.3, "cm"),   annotation_name_gp= gpar(fontsize = 8))
+    annotation_tile(condition, size = unit(0.3, "cm"),  annotation_name_gp= gpar(fontsize = 8)) |>
+    annotation_point(activation, size = unit(0.3, "cm"),    annotation_name_gp= gpar(fontsize = 8)) |>
+    annotation_tile(act, size = unit(0.3, "cm"),    annotation_name_gp= gpar(fontsize = 8)) |>
+    annotation_bar(size, size = unit(0.3, "cm"),    annotation_name_gp= gpar(fontsize = 8)) |>
+    annotation_line(age, size = unit(0.3, "cm"),    annotation_name_gp= gpar(fontsize = 8))
 ```
 
 ![](man/fragments/figures/unnamed-chunk-20-1.png)<!-- -->
