@@ -636,7 +636,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   orientation = NULL
   col_name = NULL
   col_orientation = NULL
-  
+  my_function = NULL
   
   .column = enquo(.column) 
   .row = enquo(.row) 
