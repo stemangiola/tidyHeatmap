@@ -27,6 +27,7 @@ This package uses [ComplexHeatmap](https://bioconductor.org/packages/release/bio
 Function | Description
 ------------ | -------------
 `heatmap` | Plots base heatmap
+`group_by` | `dplyr` function - groups heatpmap rows/columns
 `annotation_tile` | Adds tile annotation to the heatmap
 `annotation_point` | Adds point annotation to the heatmap
 `annotation_bar` | Adds bar annotation to the heatmap
@@ -41,7 +42,8 @@ Function | Description
 `save_pdf` | Saves the PDF of the heatmap
 `+` | Integrate heatmaps side-by-side
 `as_ComplexHeatmap` | Convert the tidyHeatmap output to ComplexHeatmap for non-standard "drawing"
-`group_by` | Applied to the input dataset, groups heatpmap rows/columns
+`wrap_heatmap` | Allows the integration with the `patchwork` package
+
 
 ## Installation
 

@@ -47,6 +47,7 @@ as graphical engine.
 | Function            | Description                                                                 |
 |---------------------|-----------------------------------------------------------------------------|
 | `heatmap`           | Plots base heatmap                                                          |
+| `group_by`          | `dplyr` function - groups heatpmap rows/columns                             |
 | `annotation_tile`   | Adds tile annotation to the heatmap                                         |
 | `annotation_point`  | Adds point annotation to the heatmap                                        |
 | `annotation_bar`    | Adds bar annotation to the heatmap                                          |
@@ -61,6 +62,7 @@ as graphical engine.
 | `save_pdf`          | Saves the PDF of the heatmap                                                |
 | `+`                 | Integrate heatmaps side-by-side                                             |
 | `as_ComplexHeatmap` | Convert the tidyHeatmap output to ComplexHeatmap for non-standard “drawing” |
+| `wrap_heatmap`      | Allows the integration with the `patchwork` package                         |
 
 ## Installation
 
@@ -290,9 +292,7 @@ mtcars_tidy |>
 ```
 
     ## Warning: `add_tile()` was deprecated in tidyHeatmap 1.9.0.
-    ## Please use `annotation_tile()` instead
-    ## This warning is displayed once every 8 hours.
-    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
+    ## ℹ Please use `annotation_tile()` instead
 
 ![](man/fragments/figures/unnamed-chunk-16-1.png)<!-- -->
 
