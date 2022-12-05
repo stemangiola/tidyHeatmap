@@ -133,60 +133,69 @@
 <td>Plots base heatmap</td>
 </tr>
 <tr class="even">
+<td><code>group_by</code></td>
+<td>
+<code>dplyr</code> function - groups heatpmap rows/columns</td>
+</tr>
+<tr class="odd">
 <td><code>annotation_tile</code></td>
 <td>Adds tile annotation to the heatmap</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>annotation_point</code></td>
 <td>Adds point annotation to the heatmap</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>annotation_bar</code></td>
 <td>Adds bar annotation to the heatmap</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>annotation_line</code></td>
 <td>Adds line annotation to the heatmap</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>layer_point</code></td>
 <td>Adds layer of symbols on top of the heatmap</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>layer_square</code></td>
 <td>Adds layer of symbols on top of the heatmap</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>layer_diamond</code></td>
 <td>Adds layer of symbols on top of the heatmap</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>layer_arrow_up</code></td>
 <td>Adds layer of symbols on top of the heatmap</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>layer_arrow_down</code></td>
 <td>Add layer of symbols on top of the heatmap</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>split_rows</code></td>
 <td>Splits the rows based on the dendogram</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>split_columns</code></td>
 <td>Splits the columns based on the dendogram</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>save_pdf</code></td>
 <td>Saves the PDF of the heatmap</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>+</code></td>
 <td>Integrate heatmaps side-by-side</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>as_ComplexHeatmap</code></td>
 <td>Convert the tidyHeatmap output to ComplexHeatmap for non-standard “drawing”</td>
+</tr>
+<tr class="odd">
+<td><code>wrap_heatmap</code></td>
+<td>Allows the integration with the <code>patchwork</code> package</td>
 </tr>
 </tbody>
 </table>
@@ -385,9 +394,7 @@
 <span>        palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"white"</span>, <span class="st">"blue"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">## Warning: `add_tile()` was deprecated in tidyHeatmap 1.9.0.</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="co">## Please use `annotation_tile()` instead</span></span>
-<span id="cb15-3"><a href="#cb15-3"></a><span class="co">## This warning is displayed once every 8 hours.</span></span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="co">## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></span></code></pre></div>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="co">## ℹ Please use `annotation_tile()` instead</span></span></code></pre></div>
 <p><img src="man/fragments/figures/unnamed-chunk-16-1.png"><!-- --></p>
 <p>We can use grid::colorRamp2 function for tile annotation for specific color scales</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
