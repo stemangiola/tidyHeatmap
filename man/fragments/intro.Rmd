@@ -37,6 +37,8 @@ Function | Description
 `layer_diamond` | Adds layer of symbols on top of the heatmap
 `layer_arrow_up` | Adds layer of symbols on top of the heatmap
 `layer_arrow_down` | Add layer of symbols on top of the heatmap
+`layer_star` | Add layer of symbols on top of the heatmap
+`layer_asterisk` | Add layer of symbols on top of the heatmap
 `split_rows` | Splits the rows based on the dendogram
 `split_columns` | Splits the columns based on the dendogram
 `save_pdf` | Saves the PDF of the heatmap
