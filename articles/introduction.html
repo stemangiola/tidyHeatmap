@@ -78,7 +78,7 @@
       <h1 data-toc-skip>Overview of the tidyHeatmap package</h1>
                         <h4 data-toc-skip class="author">Stefano Mangiola</h4>
             
-            <h4 data-toc-skip class="date">2022-12-05</h4>
+            <h4 data-toc-skip class="date">2022-12-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stemangiola/tidyHeatmap/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -173,6 +173,14 @@
 </tr>
 <tr class="odd">
 <td><code>layer_arrow_down</code></td>
+<td>Add layer of symbols on top of the heatmap</td>
+</tr>
+<tr class="even">
+<td><code>layer_star</code></td>
+<td>Add layer of symbols on top of the heatmap</td>
+</tr>
+<tr class="odd">
+<td><code>layer_asterisk</code></td>
 <td>Add layer of symbols on top of the heatmap</td>
 </tr>
 <tr class="even">
@@ -660,19 +668,19 @@
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] circlize_0.4.15       png_0.1-8             rprojroot_2.0.3      </span></span>
-<span><span class="co">##  [4] digest_0.6.30         foreach_1.5.2         utf8_1.2.2           </span></span>
-<span><span class="co">##  [7] R6_2.5.1              stats4_4.2.2          evaluate_0.18        </span></span>
+<span><span class="co">##  [4] digest_0.6.31         foreach_1.5.2         utf8_1.2.2           </span></span>
+<span><span class="co">##  [7] R6_2.5.1              stats4_4.2.2          evaluate_0.19        </span></span>
 <span><span class="co">## [10] highr_0.9             pillar_1.8.1          GlobalOptions_0.1.2  </span></span>
-<span><span class="co">## [13] rlang_1.0.6           jquerylib_0.1.4       S4Vectors_0.36.0     </span></span>
-<span><span class="co">## [16] GetoptLong_1.0.5      rmarkdown_2.18        pkgdown_2.0.6        </span></span>
+<span><span class="co">## [13] rlang_1.0.6           jquerylib_0.1.4       S4Vectors_0.36.1     </span></span>
+<span><span class="co">## [16] GetoptLong_1.0.5      rmarkdown_2.19        pkgdown_2.0.7        </span></span>
 <span><span class="co">## [19] labeling_0.4.2        textshaping_0.3.6     desc_1.4.2           </span></span>
 <span><span class="co">## [22] stringr_1.5.0         munsell_0.5.0         compiler_4.2.2       </span></span>
 <span><span class="co">## [25] xfun_0.35             pkgconfig_2.0.3       systemfonts_1.0.4    </span></span>
-<span><span class="co">## [28] BiocGenerics_0.44.0   shape_1.4.6           htmltools_0.5.3      </span></span>
+<span><span class="co">## [28] BiocGenerics_0.44.0   shape_1.4.6           htmltools_0.5.4      </span></span>
 <span><span class="co">## [31] tidyselect_1.2.0      gridExtra_2.3         tibble_3.1.8         </span></span>
 <span><span class="co">## [34] IRanges_2.32.0        codetools_0.2-18      matrixStats_0.63.0   </span></span>
 <span><span class="co">## [37] dendextend_1.16.0     viridisLite_0.4.1     fansi_1.0.3          </span></span>
-<span><span class="co">## [40] withr_2.5.0           crayon_1.5.2          jsonlite_1.8.3       </span></span>
+<span><span class="co">## [40] withr_2.5.0           crayon_1.5.2          jsonlite_1.8.4       </span></span>
 <span><span class="co">## [43] gtable_0.3.1          lifecycle_1.0.3       magrittr_2.0.3       </span></span>
 <span><span class="co">## [46] scales_1.2.1          cli_3.4.1             stringi_1.7.8        </span></span>
 <span><span class="co">## [49] cachem_1.0.6          farver_2.1.1          viridis_0.6.2        </span></span>
@@ -704,7 +712,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
