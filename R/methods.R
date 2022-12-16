@@ -859,6 +859,106 @@ setGeneric("layer_diamond", function(.data,	...)
 #'
 setMethod("layer_diamond", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="diamond") })
 
+#' Adds a layer of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description layer_star() from a `InputHeatmap` object, adds a symbol annotation layer over the heatmap tiles.
+#'
+#' @importFrom rlang enquo
+#' 
+#'
+#' @name layer_star
+#' @rdname layer_star-method
+#'
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm |> layer_star()
+#'
+#'
+#' @export
+setGeneric("layer_star", function(.data,	...)
+  standardGeneric("layer_star"))
+
+#' layer_star
+#' 
+#' @docType methods
+#' @rdname layer_star-method
+#' 
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+setMethod("layer_star", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="star") })
+
+#' Adds a layer of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description layer_asterisk() from a `InputHeatmap` object, adds a symbol annotation layer over the heatmap tiles.
+#'
+#' @importFrom rlang enquo
+#' 
+#'
+#' @name layer_asterisk
+#' @rdname layer_asterisk-method
+#'
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#'
+#'
+#' @examples
+#'
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm |> layer_asterisk()
+#'
+#'
+#' @export
+setGeneric("layer_asterisk", function(.data,	...)
+  standardGeneric("layer_asterisk"))
+
+#' layer_asterisk
+#' 
+#' @docType methods
+#' @rdname layer_asterisk-method
+#' 
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+setMethod("layer_asterisk", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="asterisk") })
+
 #' Split the heatmap row-wise depending on the biggest branches in the cladogram.
 #'
 #' \lifecycle{maturing}
