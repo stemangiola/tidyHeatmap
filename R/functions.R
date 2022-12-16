@@ -406,7 +406,7 @@ add_annotation = function(my_input_heatmap,
 #'
 #' \lifecycle{maturing}
 #'
-#' @description layer_symbol() from a `InputHeatmap` object, adds a bar annotation layer.
+#' @description layer_symbol() from a `InputHeatmap` object, adds a symbol annotation layer.
 #'
 #' @importFrom rlang enquo
 #' @importFrom magrittr "%>%"
@@ -418,7 +418,7 @@ add_annotation = function(my_input_heatmap,
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
-#' @param symbol A character string of length one. The values allowed are "point" ,     "square" ,    "diamond" ,   "arrow_up" ,  "arrow_down"
+#' @param symbol A character string of length one. The values allowed are "point" ,     "square" ,    "diamond" ,   "arrow_up" ,  "arrow_down",  "star",  "asterisk"
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -472,7 +472,9 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 			square = 22,
 			diamond = 23,
 			arrow_up = 24,
-			arrow_down = 25
+			arrow_down = 25,
+			star = 8,
+			asterisk = 42
 		)
 	
 	if(!symbol %in% names(symbol_dictionary) | length(symbol) != 1) 
