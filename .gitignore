@@ -11,3 +11,5 @@ doc
 dev
 tidy_heatmap.Rcheck*
 
+/doc/
+/Meta/

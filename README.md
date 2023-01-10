@@ -15,16 +15,16 @@ production based on tidy principles. Journal of Open Source Software,
 
 Please have a look also to
 
--   [tidygate](https://github.com/stemangiola/tidygate/) for adding
-    custom gate information to your tibble
--   [tidySingleCellExperiment](https://stemangiola.github.io/tidySingleCellExperiment/)
-    for tidy manipulation of Seurat objects
--   [tidyseurat](https://stemangiola.github.io/tidyseurat/) for tidy
-    manipulation of Seurat objects
--   [tidybulk](https://stemangiola.github.io/tidybulk/) for tidy
-    high-level data analysis and manipulation
--   [tidySummarizedExperiment](https://stemangiola.github.io/tidySummarizedExperiment/)
-    for heatmaps produced with tidy principles
+- [tidygate](https://github.com/stemangiola/tidygate/) for adding custom
+  gate information to your tibble
+- [tidySingleCellExperiment](https://stemangiola.github.io/tidySingleCellExperiment/)
+  for tidy manipulation of Seurat objects
+- [tidyseurat](https://stemangiola.github.io/tidyseurat/) for tidy
+  manipulation of Seurat objects
+- [tidybulk](https://stemangiola.github.io/tidybulk/) for tidy
+  high-level data analysis and manipulation
+- [tidySummarizedExperiment](https://stemangiola.github.io/tidySummarizedExperiment/)
+  for heatmaps produced with tidy principles
 
 website:
 [stemangiola.github.io/tidyHeatmap](https://stemangiola.github.io/tidyHeatmap/)
@@ -36,11 +36,11 @@ as graphical engine.
 
 **Advantages:**
 
--   Modular annotation with just specifying column names
--   Custom grouping of rows is easy to specify providing a grouped tbl.
-    For example `df |> group_by(...)`
--   Labels size adjusted by row and column total number
--   Default use of Brewer and Viridis palettes
+- Modular annotation with just specifying column names
+- Custom grouping of rows is easy to specify providing a grouped tbl.
+  For example `df |> group_by(...)`
+- Labels size adjusted by row and column total number
+- Default use of Brewer and Viridis palettes
 
 ## Functions/utilities available
 
@@ -135,9 +135,9 @@ mtcars_tidy
 For plotting, you simply pipe the input data frame into heatmap,
 specifying:
 
--   The rows, cols relative column names (mandatory)
--   The value column name (mandatory)
--   The annotations column name(s)
+- The rows, cols relative column names (mandatory)
+- The value column name (mandatory)
+- The annotations column name(s)
 
 mtcars
 
@@ -530,6 +530,20 @@ heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row" ) %>%
 
 ![](man/fragments/figures/unnamed-chunk-29-1.png)<!-- -->
 
+### Add title using `draw` from `ComplexHeatmap`
+
+``` r
+mtcars_tidy |> 
+    heatmap(`Car name`, Property, Value,    scale = "row"   ) |>
+    as_ComplexHeatmap() |>
+    ComplexHeatmap::draw(
+        column_title = "TITLE", 
+        column_title_gp = gpar(fontsize = 16)
+    )
+```
+
+![](man/fragments/figures/unnamed-chunk-30-1.png)<!-- -->
+
 ## Using patchwork to integrate heatmaps
 
 ``` r
@@ -553,4 +567,15 @@ wrap_heatmap(p_heatmap) +
     plot_layout(width = c(1, 0.3, 1))
 ```
 
-![](man/fragments/figures/unnamed-chunk-30-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-31-1.png)<!-- -->
+
+### Add title using `ggtitle` from `ggplot2`
+
+``` r
+mtcars_tidy |> 
+    heatmap(`Car name`, Property, Value,  scale = "row" ) |>
+    wrap_heatmap() +
+        ggplot2::ggtitle("TITLE")
+```
+
+![](man/fragments/figures/unnamed-chunk-32-1.png)<!-- -->
