@@ -452,6 +452,19 @@ heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) %>%
 	ComplexHeatmap::draw(heatmap_legend_side = "left"	)
 ```
 
+### Add title using `draw` from `ComplexHeatmap`
+
+```{r}
+mtcars_tidy |> 
+    heatmap(`Car name`, Property, Value,    scale = "row"   ) |>
+    as_ComplexHeatmap() |>
+    ComplexHeatmap::draw(
+        column_title = "TITLE", 
+        column_title_gp = gpar(fontsize = 16)
+    )
+```
+
+
 ## Using patchwork to integrate heatmaps
 
 ```{r}
@@ -474,4 +487,13 @@ wrap_heatmap(p_heatmap) +
 	wrap_heatmap(p_heatmap) + 
 	plot_layout(width = c(1, 0.3, 1))
 
+```
+
+### Add title using `ggtitle` from `ggplot2`
+
+```{r}
+mtcars_tidy |> 
+    heatmap(`Car name`, Property, Value,  scale = "row" ) |>
+    wrap_heatmap() +
+		ggplot2::ggtitle("TITLE")
 ```

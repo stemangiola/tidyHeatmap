@@ -3,201 +3,26 @@ title: "Overview of the tidyHeatmap package"
 author: "Stefano Mangiola"
 date: "`r Sys.Date()`"
 package: tidyHeatmap
-output: rmarkdown::html_vignette
+output:
+  html_vignette:
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{Overview of the tidyHeatmap package}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
+<!-- badges: start -->
+[![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.02472/status.svg)](https://doi.org/10.21105/joss.02472)
+<!-- badges: end -->
 
-```{r, echo=FALSE, include=FALSE, }
-library(knitr)
-knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, cache.lazy = FALSE)
-
-library(magrittr)
-library(dplyr)
-library(tidyr)
-library(tidyHeatmap)
-library(purrr)
-
+```{r child="../man/fragments/intro.Rmd"}
 ```
 
-Tidy heatmap. This package is a tidy wrapper of the package [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html). The goal of this package is to interface tidy data frames with this powerful tool.
-
-**Advantages:**
-
-- Modular annotation with just specifying column names
-- Custom grouping of rows is easy to specify providing a grouped tbl. For example `df %>% group_by(...)`
-- Labels size adjusted by row and column total number
-- Default use of Brewer and Viridis palettes
-
-## Functions/utilities available
-
-Function | Description
------------- | -------------
-`heatmap` | Plot base heatmap
-`add_tile` | Add tile annotation to the heatmap
-`add_point` | Add point annotation to the heatmap
-`add_bar` | Add bar annotation to the heatmap
-`add_line` | Add line annotation to the heatmap
-`save_pdf` | Save the PDF of the heatmap
-
-## Installation
-
-To install the most up-to-date version
-
-```{r, eval=FALSE}
-
-devtools::install_github("stemangiola/tidyHeatmap")
-
-```
-
-To install the most stable version (however please keep in mind that this package is under a maturing lifecycle stage)
-
-```{r, eval=FALSE}
-
-install.packages("tidyHeatmap")
-
-```
-
-## Contribution
-
-If you want to contribute to the software, report issues or problems with the software or seek support please open an issue [here](https://github.com/stemangiola/tidyHeatmap/issues)
-
-## Input data frame
-
-The heatmaps visualise a multi-element, multi-feature dataset, annotated with independent variables. Each observation is a element-feature pair (e.g., person-physical characteristics).
-
-element | feature | value | independent_variables
------------- | ------------- | ------------- | -------------
-`chr` or `fctr` | `chr` or `fctr` | `numeric` | ...
-
-Let's transform the mtcars dataset into a tidy "element-feature-independent variables" data frame. Where the independent variables in this case are 'hp' and 'vs'.
-
-```{r, echo=FALSE, include=FALSE}
-library(dplyr)
-library(tidyr)
-library(tidyHeatmap)
-```
+# Session Info
 
 ```{r}
-mtcars_tidy = 
-	mtcars %>% 
-	as_tibble(rownames="Car name") %>% 
-	
-	# Scale
-	mutate_at(vars(-`Car name`, -hp, -vs), scale) %>%
-	
-	# tidyfy
-	gather(Property, Value, -`Car name`, -hp, -vs)
-
-mtcars_tidy
-```
-
-
-## Plot
-
-For plotting, you simply pipe the input data frame into heatmap, specifying:
-
-- The rows, cols relative column names (mandatory)
-- The value column name (mandatory)
-- The annotations column name(s)
-
-mtcars
-```{r}
-mtcars_heatmap = 
-	mtcars_tidy %>% 
-		heatmap(`Car name`, Property, Value	) %>%
-		add_tile(hp)
-
-mtcars_heatmap
-```
-
-## Save
-
-```{r eval=F}
-mtcars_heatmap %>% save_pdf("mtcars_heatmap.pdf")
-```
-
-## Grouping
-
-We can easily group the data (one group per dimension maximum, at the moment only the vertical dimension is supported) with dplyr, and the heatmap will be grouped accordingly
-
-```{r}
-mtcars_tidy %>% 
-	group_by(vs) %>%
-	heatmap(`Car name`, Property, Value	) %>%
-	add_tile(hp)
-```
-
-## Custom palettes
-
-We can easily use custom palette, using strings, hexadecimal color character vector, 
-
-```{r}
-mtcars_tidy %>% 
-	heatmap(
-		`Car name`, 
-		Property, 
-		Value,
-		palette_value = c("red", "white", "blue")
-	)
-```
-
-Or a grid::colorRamp2 function for higher flexibility
-
-```{r}
-mtcars_tidy %>% 
-	heatmap(
-		`Car name`, 
-		Property, 
-		Value,
-		palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
-	)
-```
-
-## Multiple groupings and annotations
-
-```{r}
-tidyHeatmap::pasilla %>%
-	group_by(location, type) %>%
-	heatmap(
-			.column = sample,
-			.row = symbol,
-			.value = `count normalised adjusted`
-		) %>%
-	add_tile(condition) %>%
-	add_tile(activation)
-```
-
-## Annotation types
-
-**This feature requires >= 0.99.20 version**
-
-"tile" (default), "point", "bar" and "line" are available
-
-```{r}
-# Create some more data points
-pasilla_plus = 
-	tidyHeatmap::pasilla %>%
-		dplyr::mutate(act = activation) %>% 
-		tidyr::nest(data = -sample) %>%
-		dplyr::mutate(size = rnorm(n(), 4,0.5)) %>%
-		dplyr::mutate(age = runif(n(), 50, 200)) %>%
-		tidyr::unnest(data) 
-
-# Plot
-pasilla_plus %>%
-		heatmap(
-			.column = sample,
-			.row = symbol,
-			.value = `count normalised adjusted`
-		) %>%
-	add_tile(condition) %>%
-	add_point(activation) %>%
-	add_tile(act) %>%
-	add_bar(size) %>%
-	add_line(age)
+sessionInfo()
 ```
 
