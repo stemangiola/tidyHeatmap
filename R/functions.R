@@ -446,7 +446,10 @@ add_annotation = function(my_input_heatmap,
 #'
 setGeneric("layer_symbol", function(.data,
 																		...,
-																		symbol = "point")
+																		symbol = "point", 
+                                    freetext = "",
+                                    color = "#161616",
+                                    size = 3)
 	standardGeneric("layer_symbol"))
 
 #' layer_symbol
@@ -461,7 +464,10 @@ setGeneric("layer_symbol", function(.data,
 #'
 setMethod("layer_symbol", "InputHeatmap", function(.data,
 																									 ...,
-																									 symbol = "point"){
+																									 symbol = "point",
+                                                   freetext = "",
+                                                   color = "#161616",
+                                                   size = 3){
 	
 	.data_drame = .data@data
 	
@@ -474,7 +480,8 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 			arrow_up = 24,
 			arrow_down = 25,
 			star = 8,
-			asterisk = 42
+			asterisk = 42,
+      freetext = 0
 		)
 	
 	if(!symbol %in% names(symbol_dictionary) | length(symbol) != 1) 
@@ -502,8 +509,20 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 					row = !!.vertical  %>%  as.factor() %>% as.integer()
 				) |>
 				filter(...) |>
-				select(column, row) |>
-				mutate(shape = symbol_dictionary[[symbol]])
+        mutate(
+          shape = symbol_dictionary[[symbol]],
+          freetext = !!enquo(freetext),
+          color = !!enquo(color),
+          size = !!enquo(size)
+        ) %>%
+#        {
+#          if(!is.null(freetext_col)){
+#            mutate(freetext = !!enquo(freetext_col)) %>%
+#          }else{
+#            mutate(freetext = "") %>%
+#          }
+#        } %>%
+        select(column, row, shape, freetext, color, size)
 		)
 	
 	.data
