@@ -612,11 +612,25 @@
 <span>    <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span>heatmap_legend_side <span class="op">=</span> <span class="st">"left"</span>   <span class="op">)</span></span></code></pre></div>
 <p><img src="man/fragments/figures/unnamed-chunk-29-1.png"><!-- --></p>
 </div>
+<div class="section level3">
+<h3 id="add-title-using-draw-from-complexheatmap">Add title using <code>draw</code> from <code>ComplexHeatmap</code>
+<a class="anchor" aria-label="anchor" href="#add-title-using-draw-from-complexheatmap"></a>
+</h3>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    scale <span class="op">=</span> <span class="st">"row"</span>   <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="reference/as_ComplexHeatmap-method.html">as_ComplexHeatmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span></span>
+<span>        column_title <span class="op">=</span> <span class="st">"TITLE"</span>, </span>
+<span>        column_title_gp <span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<p><img src="man/fragments/figures/unnamed-chunk-30-1.png"><!-- --></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="using-patchwork-to-integrate-heatmaps">Using patchwork to integrate heatmaps<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate-heatmaps"></a>
 </h2>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span></span>
@@ -635,7 +649,18 @@
 <span>    <span class="va">p_ggplot</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="reference/wrap_heatmap-method.html">wrap_heatmap</a></span><span class="op">(</span><span class="va">p_heatmap</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-30-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/unnamed-chunk-31-1.png"><!-- --></p>
+<div class="section level3">
+<h3 id="add-title-using-ggtitle-from-ggplot2">Add title using <code>ggtitle</code> from <code>ggplot2</code>
+<a class="anchor" aria-label="anchor" href="#add-title-using-ggtitle-from-ggplot2"></a>
+</h3>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,  scale <span class="op">=</span> <span class="st">"row"</span> <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="reference/wrap_heatmap-method.html">wrap_heatmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>        <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"TITLE"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="man/fragments/figures/unnamed-chunk-32-1.png"><!-- --></p>
+</div>
 </div>
 </div>
 
