@@ -55,14 +55,29 @@ setGeneric(
 #' @return A wrapped_patch object
 setMethod("wrap_heatmap", "InputHeatmap", function(panel = NULL, plot = NULL, full = NULL, clip = TRUE, ignore_tag = FALSE, padding = NULL){
 	
-	if(!is.null(padding))
+
+	# Update panel with padding if set
+	if(!is.null(padding)){
+		# Use the trick for avoiding plotting twice with `draw`
+		t = tempfile()
+		pdf(file=t)
+		
 		panel = 
 			as_ComplexHeatmap(panel) |> 
 			draw( padding = padding)
+		
+		invisible(dev.off())
+		invisible(file.remove(t))
+		
+	}
+		
 	
-	
-		patchwork::wrap_elements(grid::grid.grabExpr(ComplexHeatmap::draw(ComplexHeatmap::draw(methods::show(panel)))))
-	
+	panel |> 
+		methods::show() |> 
+		ComplexHeatmap::draw() |> 
+		ComplexHeatmap::draw() |> 
+		grid::grid.grabExpr() |> 
+		patchwork::wrap_elements(plot = plot, full = full, clip = clip)
 	
 })
 
