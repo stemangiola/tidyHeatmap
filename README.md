@@ -559,7 +559,7 @@ p_heatmap =
         row_names_gp = gpar(fontsize = 7)
     ) 
 
-p_ggplot = tibble(value = 1:10) %>% ggplot(aes(value)) + geom_density()
+p_ggplot = data.frame(value = 1:10) |> ggplot(aes(value)) + geom_density()
 
 wrap_heatmap(p_heatmap) + 
     p_ggplot +
@@ -567,12 +567,13 @@ wrap_heatmap(p_heatmap) +
     # Add padding for better aesthetics
     wrap_heatmap(
         p_heatmap,
-        padding = unit(c(-10, -1, -1, -10), "points" )
+        padding = grid::unit(c(-30, -0, -0, -10), "points" ),
+        clip = FALSE
     ) + 
     plot_layout(width = c(1, 0.3, 1))
 ```
 
-![](man/fragments/figures/unnamed-chunk-31-1.png)<!-- -->![](man/fragments/figures/unnamed-chunk-31-2.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-31-1.png)<!-- -->
 
 ### Add title using `ggtitle` from `ggplot2`
 
