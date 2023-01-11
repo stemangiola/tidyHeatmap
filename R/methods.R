@@ -36,7 +36,7 @@ InputHeatmap<-setClass(
 		left_annotation = tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list(), further_arguments = list()),
 		group_top_annotation = list(),
 		group_left_annotation = list(),
-		layer_symbol = tibble(column = integer(), row = integer(), shape = integer())
+		layer_symbol = tibble(column = integer(), row = integer(), shape = integer(), freetext = character(), color = character(), size = integer())
 	)
 )
 
@@ -49,8 +49,8 @@ InputHeatmap<-setClass(
 #'
 #' @importFrom methods show
 #' @importFrom tibble rowid_to_column
-#' @importFrom grid grid.points
-#' 
+#' @importFrom grid grid.points grid.text
+#'
 #'
 #' @name as_ComplexHeatmap
 #'
@@ -130,15 +130,23 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 			
 			# Filter just points to label
 			inner_join(tidyHeatmap@layer_symbol, by = c("row", "column")) |>
-			select(`index_column_wise`, `shape`)
+			select(`index_column_wise`, `shape`, `freetext`, `color`, `size`)
 		
-		if(nrow(ind)>0)
+    ind_symbol = ind %>% filter(shape != 0)
+    ind_freetext = ind %>% filter(shape == 0)
+		if(nrow(ind_symbol)>0)
 			grid.points(
-				x[ind$index_column_wise], y[ind$index_column_wise], 
-				pch = ind$shape , 
-				size = unit(3, "mm"), 
-				gp = gpar(col = NULL, fill="#161616")
+				x[ind_symbol$index_column_wise], y[ind_symbol$index_column_wise], 
+				pch = ind_symbol$shape , 
+				size = unit(ind_symbol$size, "mm"), 
+				gp = gpar(col = NULL, fill=ind_symbol$color)
 			)
+    
+    if(nrow(ind_freetext) > 0){
+      grid.text(
+        ind_freetext$freetext, x[ind_freetext$index_column_wise], y[ind_freetext$index_column_wise], 
+        gp = gpar(fontsize = ind_freetext$size, col = ind_freetext$color))
+    }
 	}
 	
 	return(do.call(Heatmap, tidyHeatmap@input))
