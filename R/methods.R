@@ -1020,7 +1020,7 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data, ...){ .data |>	layer
 #'   tidyHeatmap::N52 |>
 #'   mutate(my_text = "t") |>
 #'   tidyHeatmap::heatmap(
-#'     .row = text_ct,
+#'     .row = symbol_ct,
 #'     .column = UBR,
 #'     .value = `read count normalised log`
 #' ) 
@@ -1042,8 +1042,6 @@ setGeneric("layer_text", function(.data,
 #' @docType methods
 #' @rdname layer_text-method
 #' 
-#' @keywords internal
-#' @noRd
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
