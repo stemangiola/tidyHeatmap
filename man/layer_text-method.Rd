@@ -32,7 +32,7 @@ library(dplyr)
 
 hm = 
   tidyHeatmap::N52 |>
-  mutate(my_text = "t")
+  mutate(my_text = "t") |>
   tidyHeatmap::heatmap(
     .row = text_ct,
     .column = UBR,
