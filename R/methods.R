@@ -1028,6 +1028,7 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data, ...){ .data |>	layer
 #' 
 #' hm |> layer_text()
 #'
+#' @export
 setGeneric("layer_text", function(.data,
 																	...,
 																	.text,

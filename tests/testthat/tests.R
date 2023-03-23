@@ -682,3 +682,31 @@ test_that("patchwork padding",{
 	vdiffr::expect_doppelganger("patchwork padding", p)
 	
 })
+
+test_that("text",{
+	
+	text_df = 
+		tidyHeatmap::pasilla |>
+		mutate(my_size = 5) |>
+		mutate(my_text = "a") |> 
+		filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10))
+	
+	# Text without size
+	p = 
+		text_df |> 
+
+		heatmap(
+			.column = sample,
+			.row = symbol,
+			.value = `count normalised adjusted`,
+			scale = "row"
+		) |>
+
+		layer_text(
+			.text="gg"
+		)
+	
+	
+	vdiffr::expect_doppelganger("text base", p)
+	
+})
