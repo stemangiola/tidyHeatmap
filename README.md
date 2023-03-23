@@ -52,6 +52,7 @@ as graphical engine.
 | `annotation_point`  | Adds point annotation to the heatmap                                        |
 | `annotation_bar`    | Adds bar annotation to the heatmap                                          |
 | `annotation_line`   | Adds line annotation to the heatmap                                         |
+| `layer_text`        | Add layer of text on top of the heatmap                                     |
 | `layer_point`       | Adds layer of symbols on top of the heatmap                                 |
 | `layer_square`      | Adds layer of symbols on top of the heatmap                                 |
 | `layer_diamond`     | Adds layer of symbols on top of the heatmap                                 |
@@ -146,7 +147,14 @@ mtcars_heatmap <-
     mtcars_tidy |> 
     heatmap(`Car name`, Property, Value,    scale = "row"   ) |>
     annotation_tile(hp)
+```
 
+    ## Warning: Using one column matrices in `filter()` was deprecated in dplyr 1.1.0.
+    ## ℹ Please use one dimensional logical vectors instead.
+    ## ℹ The deprecated feature was likely used in the dplyr package.
+    ##   Please report the issue at <]8;;https://github.com/tidyverse/dplyr/issueshttps://github.com/tidyverse/dplyr/issues]8;;>.
+
+``` r
 mtcars_heatmap
 ```
 
@@ -429,6 +437,40 @@ tidyHeatmap::pasilla |>
 
 ![](man/fragments/figures/unnamed-chunk-22-1.png)<!-- -->
 
+# Layer text
+
+Add a text layer on top of the heatmap
+
+``` r
+tidyHeatmap::pasilla |>
+    
+    # filter
+    filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) |>
+    
+    # Add dynamic text
+    mutate(my_text = "mt", my_size = 7) |> 
+    
+    # Plot
+    heatmap(
+        .column = sample,
+        .row = symbol,
+        .value = `count normalised adjusted`,   
+        scale = "row"
+    ) |> 
+    layer_text(
+        `count normalised adjusted log` > 6 & sample == "untreated3", 
+        .value = "a", 
+        .size = 15
+    ) |> 
+    layer_text(
+    `count normalised adjusted log` > 6 & sample == "untreated2", 
+    .value = my_text,
+    .size = my_size
+)
+```
+
+![](man/fragments/figures/unnamed-chunk-23-1.png)<!-- -->
+
 # Adding heatmap side-by-side
 
 ``` r
@@ -437,7 +479,7 @@ p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row")
 p_heatmap + p_heatmap
 ```
 
-![](man/fragments/figures/unnamed-chunk-23-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-24-1.png)<!-- -->
 
 # ComplexHeatmap further styling
 
@@ -452,7 +494,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-24-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-25-1.png)<!-- -->
 
 ## Drop row clustering
 
@@ -465,7 +507,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-25-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
 
 ## Reorder rows elements
 
@@ -480,7 +522,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-27-1.png)<!-- -->
 
 ## Size of dendrograms
 
@@ -495,7 +537,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-27-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-28-1.png)<!-- -->
 
 ## Size of rows/columns titles and names
 
@@ -512,7 +554,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-28-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-29-1.png)<!-- -->
 
 ## External `ComplexHeatmap` functionalities
 
@@ -528,7 +570,7 @@ heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row" ) %>%
     ComplexHeatmap::draw(heatmap_legend_side = "left"   )
 ```
 
-![](man/fragments/figures/unnamed-chunk-29-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-30-1.png)<!-- -->
 
 ### Add title using `draw` from `ComplexHeatmap`
 
@@ -542,7 +584,7 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/unnamed-chunk-30-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-31-1.png)<!-- -->
 
 ## Using patchwork to integrate heatmaps
 
@@ -573,7 +615,7 @@ wrap_heatmap(p_heatmap) +
     plot_layout(width = c(1, 0.3, 1))
 ```
 
-![](man/fragments/figures/unnamed-chunk-31-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-32-1.png)<!-- -->
 
 ### Add title using `ggtitle` from `ggplot2`
 
@@ -584,4 +626,4 @@ mtcars_tidy |>
         ggplot2::ggtitle("TITLE")
 ```
 
-![](man/fragments/figures/unnamed-chunk-32-1.png)<!-- -->
+![](man/fragments/figures/unnamed-chunk-33-1.png)<!-- -->

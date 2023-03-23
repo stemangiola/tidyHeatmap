@@ -510,3 +510,4 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 	
 	
 })
+

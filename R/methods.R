@@ -11,7 +11,8 @@ InputHeatmap<-setClass(
 		top_annotation = "tbl",
 		left_annotation = "tbl",
 		arguments = "list" ,
-		layer_symbol = "tbl"
+		layer_symbol = "tbl",
+		layer_text = "tbl"
 	),
 	prototype=list(
 		palette_discrete=
@@ -36,7 +37,9 @@ InputHeatmap<-setClass(
 		left_annotation = tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list(), further_arguments = list()),
 		group_top_annotation = list(),
 		group_left_annotation = list(),
-		layer_symbol = tibble(column = integer(), row = integer(), shape = integer())
+		layer_symbol = tibble(column = integer(), row = integer(), shape = integer()),
+		layer_text = tibble(column = integer(), row = integer(), text = character(), size = numeric())
+		
 	)
 )
 
@@ -49,7 +52,7 @@ InputHeatmap<-setClass(
 #'
 #' @importFrom methods show
 #' @importFrom tibble rowid_to_column
-#' @importFrom grid grid.points
+#' @importFrom grid grid.points grid.text
 #' 
 #'
 #' @name as_ComplexHeatmap
@@ -124,21 +127,44 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	
 	# On-top layer
 	tidyHeatmap@input$layer_fun = function(j, i, x, y, w, h, fill) {
+		
+		
+		# Add symbol
 		ind = 
 			tibble(row = i, column = j) |>
 			rowid_to_column("index_column_wise") |>
 			
 			# Filter just points to label
-			inner_join(tidyHeatmap@layer_symbol, by = c("row", "column")) |>
-			select(`index_column_wise`, `shape`)
+			inner_join(tidyHeatmap@layer_symbol, by = c("row", "column"))
 		
-		if(nrow(ind)>0)
+		# Return graphical elements
+		if(nrow(ind)>0){
 			grid.points(
 				x[ind$index_column_wise], y[ind$index_column_wise], 
 				pch = ind$shape , 
 				size = unit(3, "mm"), 
 				gp = gpar(col = NULL, fill="#161616")
 			)
+		}
+		
+		# Add text
+		ind_text =
+			tibble(row = i, column = j) |>
+			rowid_to_column("index_column_wise") |>
+			
+			# Filter just points to label
+			inner_join(tidyHeatmap@layer_text, by = c("row", "column")) 
+		
+		# Return graphical elements
+		if(nrow(ind_text) > 0){
+			grid.text(
+				ind_text$text,
+				x[ind_text$index_column_wise],
+				y[ind_text$index_column_wise],
+				gp = gpar(fontsize = ind_text$size, col = "#000000")
+			)
+		}
+		
 	}
 	
 	return(do.call(Heatmap, tidyHeatmap@input))
@@ -249,13 +275,13 @@ heatmap_ <-
 		
 		# Check if scale is of correct type
 		if(scale %in% c("none", "row", "column", "both") |> not()) stop("tidyHeatmap says: the scale parameter has to be one of c(\"none\", \"row\", \"column\", \"both\")")
-
+		
 		# # Message about change of style, once per session
 		# if(length(palette_grouping)==0 & getOption("tidyHeatmap_white_group_message",TRUE)) {
 		# 	message("tidyHeatmap says: (once per session) from release 1.2.3 the grouping labels have white background by default. To add color for one-ay grouping specify palette_grouping = list(c(\"red\", \"blue\"))")
 		# 	options("tidyHeatmap_white_group_message"=FALSE) 
 		# }
-
+		
 		# Message about change of scale, once per session
 		if(scale == "none" & getOption("tidyHeatmap_default_scaling_none",TRUE)) {
 			message("tidyHeatmap says: (once per session) from release 1.7.0 the scaling is set to \"none\" by default. Please use scale = \"row\", \"column\" or \"both\" to apply scaling")
@@ -265,7 +291,7 @@ heatmap_ <-
 		.row = enquo(.row)
 		.column = enquo(.column)
 		.value <- enquo(.value)
-
+		
 		# Validation
 		.data |> validation(!!.column, !!.row, !!.value)
 		
@@ -276,7 +302,7 @@ heatmap_ <-
 			deprecate_warn("1.7.0", "tidyHeatmap::heatmap(.scale = )", details = "Please use scale (without dot prefix) instead: heatmap(scale = ...)")
 			
 			scale = .scale
-
+			
 		}
 		
 		.data |> 
@@ -378,8 +404,8 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #'
 #' @export
 setGeneric("annotation_tile", function(.data,
-																.column,
-																palette = NULL, size = NULL, ...)
+																			 .column,
+																			 palette = NULL, size = NULL, ...)
 	standardGeneric("annotation_tile"))
 
 #' annotation_tile
@@ -390,8 +416,8 @@ setGeneric("annotation_tile", function(.data,
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("annotation_tile", "InputHeatmap", function(.data,
-																							 .column,
-																							 palette = NULL, size = NULL,...){
+																											.column,
+																											palette = NULL, size = NULL,...){
 	
 	.column = enquo(.column)
 	
@@ -462,8 +488,8 @@ setMethod("annotation_tile", "InputHeatmap", function(.data,
 #'
 #' @export
 setGeneric("annotation_point", function(.data,
-																.column,
-																palette = NULL, size = NULL,...)
+																				.column,
+																				palette = NULL, size = NULL,...)
 	standardGeneric("annotation_point"))
 
 #' annotation_point
@@ -474,8 +500,8 @@ setGeneric("annotation_point", function(.data,
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("annotation_point", "InputHeatmap", function(.data,
-																							 .column,
-																							 palette = NULL, size = NULL,...){
+																											 .column,
+																											 palette = NULL, size = NULL,...){
 	
 	.column = enquo(.column)
 	
@@ -524,8 +550,8 @@ setMethod("annotation_point", "InputHeatmap", function(.data,
 #'
 #' @export
 setGeneric("annotation_line", function(.data,
-																 .column,
-																 palette = NULL,size = NULL, ...)
+																			 .column,
+																			 palette = NULL,size = NULL, ...)
 	standardGeneric("annotation_line"))
 
 #' annotation_line
@@ -537,8 +563,8 @@ setGeneric("annotation_line", function(.data,
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("annotation_line", "InputHeatmap", function(.data,
-																								.column,
-																								palette = NULL, size = NULL,...){
+																											.column,
+																											palette = NULL, size = NULL,...){
 	
 	.column = enquo(.column)
 	
@@ -587,8 +613,8 @@ setMethod("annotation_line", "InputHeatmap", function(.data,
 #'
 #' @export
 setGeneric("annotation_bar", function(.data,
-																.column,
-																palette = NULL, size = NULL,...)
+																			.column,
+																			palette = NULL, size = NULL,...)
 	standardGeneric("annotation_bar"))
 
 #' annotation_bar
@@ -599,8 +625,8 @@ setGeneric("annotation_bar", function(.data,
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("annotation_bar", "InputHeatmap", function(.data,
-																							 .column,
-																							 palette = NULL, size = NULL,...){
+																										 .column,
+																										 palette = NULL, size = NULL,...){
 	
 	.column = enquo(.column)
 	
@@ -897,7 +923,7 @@ setMethod("layer_diamond", "InputHeatmap", function(.data, ...){ .data |>	layer_
 #'
 #' @export
 setGeneric("layer_star", function(.data,	...)
-  standardGeneric("layer_star"))
+	standardGeneric("layer_star"))
 
 #' layer_star
 #' 
@@ -947,7 +973,7 @@ setMethod("layer_star", "InputHeatmap", function(.data, ...){ .data |>	layer_sym
 #'
 #' @export
 setGeneric("layer_asterisk", function(.data,	...)
-  standardGeneric("layer_asterisk"))
+	standardGeneric("layer_asterisk"))
 
 #' layer_asterisk
 #' 
@@ -958,6 +984,119 @@ setGeneric("layer_asterisk", function(.data,	...)
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("layer_asterisk", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="asterisk") })
+
+
+#' Adds a layers of texts above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description layer_text() from a `InputHeatmap` object, adds a text annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom magrittr "%>%"
+#' 
+#' 
+#'
+#' @name layer_text
+#' @rdname layer_text-method
+#'
+#' @param .data A `InputHeatmap` 
+#' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param .value A column name or character string. 
+#' @param .size A column name or a double. 
+#'
+#'
+#' @details It uses `ComplexHeatmap` as visualisation tool.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#' 
+#' 
+#' @examples
+#'
+#' library(dplyr)
+#' 
+#' hm = 
+#'   tidyHeatmap::N52 |>
+#'   mutate(my_text = "t") |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' ) 
+#' 
+#' hm |> layer_text(.value = "a")
+#' hm |> layer_text(.value = my_text)
+#'
+#' @export
+setGeneric("layer_text", function(.data,
+																	...,
+																	.value,
+																	.size = NULL)
+	standardGeneric("layer_text"))
+
+#' layer_text
+#' 
+#' @importFrom rlang quo_is_null
+#' 
+#' @docType methods
+#' @rdname layer_text-method
+#' 
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+setMethod("layer_text", "InputHeatmap", function(.data,
+																								 ...,
+																								 .value,
+																								 .size = NULL){
+	
+	.data_drame = .data@data
+	.size = enquo(.size)
+	
+	# Comply with CRAN NOTES
+	. = NULL
+	column = NULL
+	row = NULL
+	
+	# Make col names
+	# Column names
+	.horizontal = .data@arguments$.horizontal
+	.vertical = .data@arguments$.vertical
+	.abundance = .data@arguments$.abundance
+	
+	# Extract the abundance matrix for dimensions of the text
+	abundance_mat = .data@input[[1]]
+
+	# Append which cells have to be signed
+	.data@layer_text= 
+		.data@layer_text |>
+		bind_rows(
+			
+			.data_drame |>
+				droplevels() |>
+				mutate(
+					column = !!.horizontal %>%  as.factor()  %>%  as.integer(),
+					row = !!.vertical  %>%  as.factor() %>% as.integer()
+				) |>
+				filter(...) |>
+
+				mutate(text := as.character( !!enquo(.value) )) |> 
+				
+				# Add size
+				when(
+					quo_is_null(.size) ~ mutate(., size = min(12, 320 / max(dim(abundance_mat)) )) ,
+					~ mutate(., size := !!.size )
+					) |> 
+				
+				select(column, row, text, size) 
+				
+
+		)
+	
+	.data
+	
+	
+})
 
 #' Split the heatmap row-wise depending on the biggest branches in the cladogram.
 #'
