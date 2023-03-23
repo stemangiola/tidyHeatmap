@@ -32,6 +32,7 @@ Function | Description
 `annotation_point` | Adds point annotation to the heatmap
 `annotation_bar` | Adds bar annotation to the heatmap
 `annotation_line` | Adds line annotation to the heatmap
+`layer_text` | Add layer of text on top of the heatmap
 `layer_point` | Adds layer of symbols on top of the heatmap
 `layer_square` | Adds layer of symbols on top of the heatmap
 `layer_diamond` | Adds layer of symbols on top of the heatmap
@@ -362,6 +363,38 @@ tidyHeatmap::pasilla |>
 	layer_point(
 		`count normalised adjusted log` > 6 & sample == "untreated3" 
 	)
+```
+
+# Layer text
+
+Add a text layer on top of the heatmap
+
+```{r}
+tidyHeatmap::pasilla |>
+	
+	# filter
+	filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) |>
+	
+	# Add dynamic text
+	mutate(my_text = "mt", my_size = 7) |> 
+	
+	# Plot
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row"
+	) |> 
+	layer_text(
+		`count normalised adjusted log` > 6 & sample == "untreated3", 
+		.value = "a", 
+		.size = 15
+	) |> 
+	layer_text(
+	`count normalised adjusted log` > 6 & sample == "untreated2", 
+	.value = my_text,
+	.size = my_size
+)
 ```
 
 # Adding heatmap side-by-side
