@@ -1010,10 +1010,7 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data, ...){ .data |>	layer
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-#' @docType methods
 #' 
-#' @keywords internal
-#' @noRd
 #' 
 #' @examples
 #'
