@@ -1002,7 +1002,8 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data, ...){ .data |>	layer
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
-#' @param text A character string of length one. The values allowed are "point" ,     "square" ,    "diamond" ,   "arrow_up" ,  "arrow_down",  "star",  "asterisk"
+#' @param .value A column name or character string. 
+#' @param .size A column name or a double. 
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -1020,18 +1021,20 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data, ...){ .data |>	layer
 #' 
 #' hm = 
 #'   tidyHeatmap::N52 |>
+#'   mutate(my_text = "t")
 #'   tidyHeatmap::heatmap(
 #'     .row = text_ct,
 #'     .column = UBR,
 #'     .value = `read count normalised log`
-#' )
+#' ) 
 #' 
-#' hm |> layer_text()
+#' hm |> layer_text(.value = "a")
+#' hm |> layer_text(.value = my_text)
 #'
 #' @export
 setGeneric("layer_text", function(.data,
 																	...,
-																	.text,
+																	.value,
 																	.size = NULL)
 	standardGeneric("layer_text"))
 
@@ -1049,7 +1052,7 @@ setGeneric("layer_text", function(.data,
 #'
 setMethod("layer_text", "InputHeatmap", function(.data,
 																								 ...,
-																								 .text,
+																								 .value,
 																								 .size = NULL){
 	
 	.data_drame = .data@data
@@ -1082,7 +1085,7 @@ setMethod("layer_text", "InputHeatmap", function(.data,
 				) |>
 				filter(...) |>
 
-				mutate(text := !!enquo(.text)) |> 
+				mutate(text := as.character( !!enquo(.value) )) |> 
 				
 				# Add size
 				when(

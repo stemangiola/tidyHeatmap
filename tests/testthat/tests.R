@@ -701,43 +701,43 @@ test_that("text",{
 	vdiffr::expect_doppelganger(
 		"text base",
 		base_heatmap |> 
-			layer_text(.text="gg")
+			layer_text(.value="gg")
 	)
 	
 	# Text column
 	vdiffr::expect_doppelganger(
 		"text with text column",
 		base_heatmap |> 
-			layer_text(.text=my_text)
+			layer_text(.value=my_text)
 	)
 	
 	# Size
 	vdiffr::expect_doppelganger(
 		"text with size",
 		base_heatmap |> 
-			layer_text(.text="gg", .size = 5)
+			layer_text(.value="gg", .size = 5)
 	)
 	
 	# Size column
 	vdiffr::expect_doppelganger(
 		"text with size column",
 		base_heatmap |> 
-			layer_text(.text="gg", .size = my_size)
+			layer_text(.value="gg", .size = my_size)
 	)
 	
 	# Two texts
 	vdiffr::expect_doppelganger(
 		"text multiple",
 		base_heatmap |> 
-			layer_text( `count normalised adjusted log` > 6 & sample == "untreated3" , .text="gg") |> 
-			layer_text( `count normalised adjusted log` < 6 & sample == "untreated3" , .text="ll") 
+			layer_text( `count normalised adjusted log` > 6 & sample == "untreated3" , .value="gg") |> 
+			layer_text( `count normalised adjusted log` < 6 & sample == "untreated3" , .value="ll") 
 	)
 	
 	# Complex
 	vdiffr::expect_doppelganger(
 		"text complex",
 		base_heatmap |> 
-			layer_text( `count normalised adjusted log` > 6 & sample == "untreated3" , .text="ll", .size = 10) |> 
-			layer_text( `count normalised adjusted log` < 6 & sample == "untreated3" , .text=my_text, .size = my_size) 
+			layer_text( `count normalised adjusted log` > 6 & sample == "untreated3" , .value="ll", .size = 10) |> 
+			layer_text( `count normalised adjusted log` < 6 & sample == "untreated3" , .value=my_text, .size = my_size) 
 	)
 })
