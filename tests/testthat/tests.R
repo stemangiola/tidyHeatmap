@@ -685,28 +685,59 @@ test_that("patchwork padding",{
 
 test_that("text",{
 	
-	text_df = 
+	base_heatmap = 
 		tidyHeatmap::pasilla |>
 		mutate(my_size = 5) |>
 		mutate(my_text = "a") |> 
-		filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10))
-	
-	# Text without size
-	p = 
-		text_df |> 
-
+		filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) |> 
 		heatmap(
 			.column = sample,
 			.row = symbol,
 			.value = `count normalised adjusted`,
 			scale = "row"
-		) |>
-
-		layer_text(
-			.text="gg"
-		)
+		) 
 	
+	# Base plot
+	vdiffr::expect_doppelganger(
+		"text base",
+		base_heatmap |> 
+			layer_text(.text="gg")
+	)
 	
-	vdiffr::expect_doppelganger("text base", p)
+	# Text column
+	vdiffr::expect_doppelganger(
+		"text with text column",
+		base_heatmap |> 
+			layer_text(.text=my_text)
+	)
 	
+	# Size
+	vdiffr::expect_doppelganger(
+		"text with size",
+		base_heatmap |> 
+			layer_text(.text="gg", .size = 5)
+	)
+	
+	# Size column
+	vdiffr::expect_doppelganger(
+		"text with size column",
+		base_heatmap |> 
+			layer_text(.text="gg", .size = my_size)
+	)
+	
+	# Two texts
+	vdiffr::expect_doppelganger(
+		"text multiple",
+		base_heatmap |> 
+			layer_text( `count normalised adjusted log` > 6 & sample == "untreated3" , .text="gg") |> 
+			layer_text( `count normalised adjusted log` < 6 & sample == "untreated3" , .text="ll") 
+	)
+	
+	# Complex
+	vdiffr::expect_doppelganger(
+		"text complex",
+		base_heatmap |> 
+			layer_text( `count normalised adjusted log` > 6 & sample == "untreated3" , .text="ll", .size = 10) |> 
+			layer_text( `count normalised adjusted log` < 6 & sample == "untreated3" , .text=my_text, .size = my_size) 
+	)
 })
