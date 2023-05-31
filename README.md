@@ -129,7 +129,7 @@ mtcars_tidy
     ##  8 Mazda RX4       110     0 gear         0.424
     ##  9 Mazda RX4       110     0 carb         0.735
     ## 10 Mazda RX4 Wag   110     0 mpg          0.151
-    ## # … with 278 more rows
+    ## # ℹ 278 more rows
 
 ## Plotting
 
@@ -152,7 +152,10 @@ mtcars_heatmap <-
     ## Warning: Using one column matrices in `filter()` was deprecated in dplyr 1.1.0.
     ## ℹ Please use one dimensional logical vectors instead.
     ## ℹ The deprecated feature was likely used in the dplyr package.
-    ##   Please report the issue at <]8;;https://github.com/tidyverse/dplyr/issueshttps://github.com/tidyverse/dplyr/issues]8;;>.
+    ##   Please report the issue at <https://github.com/tidyverse/dplyr/issues>.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
 
 ``` r
 mtcars_heatmap
@@ -165,6 +168,29 @@ mtcars_heatmap
 ``` r
 mtcars_heatmap |> save_pdf("mtcars_heatmap.pdf")
 ```
+
+## Clustering
+
+Choose alternative clustering distance and methods.
+
+``` r
+tidyHeatmap::pasilla |>
+    
+    heatmap(
+        .column = sample,
+        .row = symbol,
+        .value = `count normalised adjusted`,   
+        scale = "row",
+        
+        # Arguments passed to ComplexHeatmap 
+        clustering_distance_rows = "manhattan",
+        clustering_distance_columns = "manhattan",
+        clustering_method_rows = "ward.D",
+        clustering_method_columns = "ward.D"
+    ) 
+```
+
+![](man/fragments/figures/distance-1.png)<!-- -->
 
 ## Grouping and splitting
 
@@ -303,6 +329,9 @@ mtcars_tidy |>
 
     ## Warning: `add_tile()` was deprecated in tidyHeatmap 1.9.0.
     ## ℹ Please use `annotation_tile()` instead
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
 
 ![](man/fragments/figures/unnamed-chunk-16-1.png)<!-- -->
 

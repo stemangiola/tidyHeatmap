@@ -128,6 +128,28 @@ mtcars_heatmap
 mtcars_heatmap |> save_pdf("mtcars_heatmap.pdf")
 ```
 
+## Clustering
+
+Choose alternative clustering distance and methods.
+
+```{r distance}
+
+tidyHeatmap::pasilla |>
+	
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row",
+		
+		# Arguments passed to ComplexHeatmap 
+		clustering_distance_rows = "manhattan",
+		clustering_distance_columns = "manhattan",
+		clustering_method_rows = "ward.D",
+		clustering_method_columns = "ward.D"
+	) 
+```
+
 ## Grouping and splitting
 
 We can easily group the data (one group per dimension maximum, at the moment only the vertical dimension is supported) with dplyr, and the heatmap will be grouped accordingly
@@ -364,6 +386,7 @@ tidyHeatmap::pasilla |>
 		`count normalised adjusted log` > 6 & sample == "untreated3" 
 	)
 ```
+
 
 # Layer text
 
