@@ -6,9 +6,9 @@
 \alias{layer_square,InputHeatmap-method}
 \title{Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
 \usage{
-layer_square(.data, ...)
+layer_square(.data, .size = NULL, ...)
 
-\S4method{layer_square}{InputHeatmap}(.data, ...)
+\S4method{layer_square}{InputHeatmap}(.data, .size = NULL, ...)
 }
 \arguments{
 \item{.data}{A `InputHeatmap`}

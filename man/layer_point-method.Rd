@@ -6,9 +6,9 @@
 \alias{layer_point,InputHeatmap-method}
 \title{Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
 \usage{
-layer_point(.data, ...)
+layer_point(.data, .size = NULL, ...)
 
-\S4method{layer_point}{InputHeatmap}(.data, ...)
+\S4method{layer_point}{InputHeatmap}(.data, .size = NULL, ...)
 }
 \arguments{
 \item{.data}{A `InputHeatmap`}
