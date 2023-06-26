@@ -354,6 +354,9 @@ tidyHeatmap::pasilla |>
 	# filter
 	filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) |>
 	
+	# Add dynamic size
+	mutate(my_size = runif(n(), 1,5)) |> 
+	
 	heatmap(
 		.column = sample,
 		.row = symbol,
@@ -361,7 +364,15 @@ tidyHeatmap::pasilla |>
 		scale = "row"
 	) |> 
 	layer_point(
-		`count normalised adjusted log` > 6 & sample == "untreated3" 
+		`count normalised adjusted log` > 6 & sample == "untreated3"
+	) |>
+	layer_square(
+		`count normalised adjusted log` > 6 & sample == "untreated2",
+		.size = my_size
+	) |>
+	layer_arrow_up(
+		`count normalised adjusted log` > 6 & sample == "untreated1",
+		.size = 4
 	)
 ```
 

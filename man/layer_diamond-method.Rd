@@ -6,9 +6,9 @@
 \alias{layer_diamond,InputHeatmap-method}
 \title{Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
 \usage{
-layer_diamond(.data, ...)
+layer_diamond(.data, .size = NULL, ...)
 
-\S4method{layer_diamond}{InputHeatmap}(.data, ...)
+\S4method{layer_diamond}{InputHeatmap}(.data, .size = NULL, ...)
 }
 \arguments{
 \item{.data}{A `InputHeatmap`}

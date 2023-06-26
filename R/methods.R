@@ -128,7 +128,6 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	# On-top layer
 	tidyHeatmap@input$layer_fun = function(j, i, x, y, w, h, fill) {
 		
-		
 		# Add symbol
 		ind = 
 			tibble(row = i, column = j) |>
@@ -142,7 +141,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 			grid.points(
 				x[ind$index_column_wise], y[ind$index_column_wise], 
 				pch = ind$shape , 
-				size = unit(3, "mm"), 
+				size = unit(ind$size, "mm"), 
 				gp = gpar(col = NULL, fill="#161616")
 			)
 		}
@@ -672,7 +671,8 @@ setMethod("annotation_bar", "InputHeatmap", function(.data,
 #'
 #'
 #' @export
-setGeneric("layer_arrow_up", function(.data,	...)
+setGeneric("layer_arrow_up", function(.data,..., 
+																			.size = NULL)
 	standardGeneric("layer_arrow_up"))
 
 #' layer_arrow_up
@@ -683,7 +683,8 @@ setGeneric("layer_arrow_up", function(.data,	...)
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("layer_arrow_up", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="arrow_up") })
+setMethod("layer_arrow_up", "InputHeatmap", function(.data,..., 
+																										 .size = NULL){ .data |>	layer_symbol(..., symbol="arrow_up", .size = !!enquo(.size)) })
 
 #' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'
@@ -723,7 +724,8 @@ setMethod("layer_arrow_up", "InputHeatmap", function(.data, ...){ .data |>	layer
 #'
 #'
 #' @export
-setGeneric("layer_arrow_down", function(.data,	...)
+setGeneric("layer_arrow_down", function(.data,..., 
+																				.size = NULL)
 	standardGeneric("layer_arrow_down"))
 
 #' layer_arrow_down
@@ -734,7 +736,8 @@ setGeneric("layer_arrow_down", function(.data,	...)
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("layer_arrow_down", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="arrow_down") })
+setMethod("layer_arrow_down", "InputHeatmap", function(.data,..., 
+																											 .size = NULL){ .data |>	layer_symbol(..., symbol="arrow_down", .size = !!enquo(.size)) })
 
 #' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'
@@ -773,7 +776,8 @@ setMethod("layer_arrow_down", "InputHeatmap", function(.data, ...){ .data |>	lay
 #'
 #'
 #' @export
-setGeneric("layer_point", function(.data,	...)
+setGeneric("layer_point", function(.data,..., 
+																	 .size = NULL)
 	standardGeneric("layer_point"))
 
 #' layer_point
@@ -784,7 +788,8 @@ setGeneric("layer_point", function(.data,	...)
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("layer_point", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="point") })
+setMethod("layer_point", "InputHeatmap", function(.data,..., 
+																									.size = NULL){ .data |>	layer_symbol(..., symbol="point", .size = !!enquo(.size)) })
 
 #' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'
@@ -823,7 +828,8 @@ setMethod("layer_point", "InputHeatmap", function(.data, ...){ .data |>	layer_sy
 #'
 #'
 #' @export
-setGeneric("layer_square", function(.data,	...)
+setGeneric("layer_square", function(.data,..., 
+																		.size = NULL)
 	standardGeneric("layer_square"))
 
 #' layer_square
@@ -833,7 +839,8 @@ setGeneric("layer_square", function(.data,	...)
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("layer_square", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="square") })
+setMethod("layer_square", "InputHeatmap", function(.data,..., 
+																									 .size = NULL){ .data |>	layer_symbol(..., symbol="square", .size = !!enquo(.size)) })
 
 #' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'
@@ -872,7 +879,8 @@ setMethod("layer_square", "InputHeatmap", function(.data, ...){ .data |>	layer_s
 #'
 #'
 #' @export
-setGeneric("layer_diamond", function(.data,	...)
+setGeneric("layer_diamond", function(.data,..., 
+																		 .size = NULL)
 	standardGeneric("layer_diamond"))
 
 #' layer_diamond
@@ -883,7 +891,8 @@ setGeneric("layer_diamond", function(.data,	...)
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("layer_diamond", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="diamond") })
+setMethod("layer_diamond", "InputHeatmap", function(.data,..., 
+																										.size = NULL){ .data |>	layer_symbol(..., symbol="diamond", .size = !!enquo(.size)) })
 
 #' Adds a layer of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'
@@ -922,7 +931,8 @@ setMethod("layer_diamond", "InputHeatmap", function(.data, ...){ .data |>	layer_
 #'
 #'
 #' @export
-setGeneric("layer_star", function(.data,	...)
+setGeneric("layer_star", function(.data,..., 
+																	.size = NULL)
 	standardGeneric("layer_star"))
 
 #' layer_star
@@ -933,7 +943,8 @@ setGeneric("layer_star", function(.data,	...)
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("layer_star", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="star") })
+setMethod("layer_star", "InputHeatmap", function(.data,..., 
+																								 .size = NULL){ .data |>	layer_symbol(..., symbol="star", .size = !!enquo(.size)) })
 
 #' Adds a layer of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'
@@ -972,7 +983,8 @@ setMethod("layer_star", "InputHeatmap", function(.data, ...){ .data |>	layer_sym
 #'
 #'
 #' @export
-setGeneric("layer_asterisk", function(.data,	...)
+setGeneric("layer_asterisk", function(.data,..., 
+																			.size = NULL)
 	standardGeneric("layer_asterisk"))
 
 #' layer_asterisk
@@ -983,7 +995,8 @@ setGeneric("layer_asterisk", function(.data,	...)
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
-setMethod("layer_asterisk", "InputHeatmap", function(.data, ...){ .data |>	layer_symbol(..., symbol="asterisk") })
+setMethod("layer_asterisk", "InputHeatmap", function(.data,..., 
+																										 .size = NULL){ .data |>	layer_symbol(..., symbol="asterisk", .size = !!enquo(.size)) })
 
 
 #' Adds a layers of texts above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
@@ -1079,7 +1092,6 @@ setMethod("layer_text", "InputHeatmap", function(.data,
 					row = !!.vertical  %>%  as.factor() %>% as.integer()
 				) |>
 				filter(...) |>
-
 				mutate(text := as.character( !!enquo(.value) )) |> 
 				
 				# Add size

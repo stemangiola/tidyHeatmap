@@ -6,9 +6,9 @@
 \alias{layer_arrow_down,InputHeatmap-method}
 \title{Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
 \usage{
-layer_arrow_down(.data, ...)
+layer_arrow_down(.data, .size = NULL, ...)
 
-\S4method{layer_arrow_down}{InputHeatmap}(.data, ...)
+\S4method{layer_arrow_down}{InputHeatmap}(.data, .size = NULL, ...)
 }
 \arguments{
 \item{.data}{A `InputHeatmap`}

@@ -446,7 +446,8 @@ add_annotation = function(my_input_heatmap,
 #'
 setGeneric("layer_symbol", function(.data,
 																		...,
-																		symbol = "point")
+																		symbol = "point",
+																		.size = NULL)
 	standardGeneric("layer_symbol"))
 
 #' layer_symbol
@@ -461,10 +462,11 @@ setGeneric("layer_symbol", function(.data,
 #'
 setMethod("layer_symbol", "InputHeatmap", function(.data,
 																									 ...,
-																									 symbol = "point"){
+																									 symbol = "point",
+																									 .size = NULL){
 	
 	.data_drame = .data@data
-	
+	.size = enquo(.size)
 	
 	symbol_dictionary = 
 		list(
@@ -491,6 +493,9 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 	.vertical = .data@arguments$.vertical
 	.abundance = .data@arguments$.abundance
 	
+	# Extract the abundance matrix for dimensions of the text
+	abundance_mat = .data@input[[1]]
+	
 	# Append which cells have to be signed
 	.data@layer_symbol= 
 		.data@layer_symbol |>
@@ -502,8 +507,15 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 					row = !!.vertical  %>%  as.factor() %>% as.integer()
 				) |>
 				filter(...) |>
-				select(column, row) |>
-				mutate(shape = symbol_dictionary[[symbol]])
+				mutate(shape = symbol_dictionary[[!!symbol]]) |> 
+				
+				# Add size
+				when(
+					quo_is_null(.size) ~ mutate(., size = min(3, 80 / max(dim(abundance_mat)) )) ,
+					~ mutate(., size := !!.size )
+				) |> 
+				
+				select(column, row, shape, size) 
 		)
 	
 	.data
