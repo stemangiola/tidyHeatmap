@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.1</span>
       </span>
     </div>
 
@@ -78,7 +78,7 @@
       <h1 data-toc-skip>Overview of the tidyHeatmap package</h1>
                         <h4 data-toc-skip class="author">Stefano Mangiola</h4>
             
-            <h4 data-toc-skip class="date">2023-03-23</h4>
+            <h4 data-toc-skip class="date">2023-06-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stemangiola/tidyHeatmap/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -523,6 +523,9 @@
 <span>    <span class="co"># filter</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">symbol</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="../reference/pasilla.html">pasilla</a></span><span class="op">$</span><span class="va">symbol</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    </span>
+<span>    <span class="co"># Add dynamic size</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>my_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">1</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    </span>
 <span>    <span class="fu"><a href="../reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        .column <span class="op">=</span> <span class="va">sample</span>,</span>
 <span>        .row <span class="op">=</span> <span class="va">symbol</span>,</span>
@@ -530,7 +533,15 @@
 <span>        scale <span class="op">=</span> <span class="st">"row"</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="../reference/layer_point-method.html">layer_point</a></span><span class="op">(</span></span>
-<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated3"</span> </span>
+<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated3"</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="../reference/layer_square-method.html">layer_square</a></span><span class="op">(</span></span>
+<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated2"</span>,</span>
+<span>        .size <span class="op">=</span> <span class="va">my_size</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="../reference/layer_arrow_up-method.html">layer_arrow_up</a></span><span class="op">(</span></span>
+<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated1"</span>,</span>
+<span>        .size <span class="op">=</span> <span class="fl">4</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
 </div>
@@ -719,12 +730,12 @@
 </h2>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.2.3 (2023-03-15)</span></span>
+<pre><code><span><span class="co">## R version 4.3.1 (2023-06-16)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 20.04.5 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 20.04.6 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0 </span></span>
 <span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
@@ -733,40 +744,43 @@
 <span><span class="co">##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
 <span><span class="co">## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## time zone: UTC</span></span>
+<span><span class="co">## tzcode source: system (glibc)</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## attached base packages:</span></span>
 <span><span class="co">## [1] grid      stats     graphics  grDevices utils     datasets  methods  </span></span>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] patchwork_1.1.2    ggplot2_3.4.1      forcats_1.0.0      tidyHeatmap_1.10.0</span></span>
-<span><span class="co">## [5] tidyr_1.3.0        dplyr_1.1.1       </span></span>
+<span><span class="co">## [1] patchwork_1.1.2    ggplot2_3.4.2      forcats_1.0.0      tidyHeatmap_1.10.1</span></span>
+<span><span class="co">## [5] tidyr_1.3.0        dplyr_1.1.2       </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] circlize_0.4.15       png_0.1-8             rprojroot_2.0.3      </span></span>
-<span><span class="co">##  [4] digest_0.6.31         foreach_1.5.2         utf8_1.2.3           </span></span>
-<span><span class="co">##  [7] R6_2.5.1              stats4_4.2.3          evaluate_0.20        </span></span>
-<span><span class="co">## [10] highr_0.10            pillar_1.9.0          GlobalOptions_0.1.2  </span></span>
-<span><span class="co">## [13] rlang_1.1.0           jquerylib_0.1.4       S4Vectors_0.36.2     </span></span>
-<span><span class="co">## [16] GetoptLong_1.0.5      rmarkdown_2.20        pkgdown_2.0.7        </span></span>
-<span><span class="co">## [19] labeling_0.4.2        textshaping_0.3.6     desc_1.4.2           </span></span>
-<span><span class="co">## [22] stringr_1.5.0         munsell_0.5.0         compiler_4.2.3       </span></span>
-<span><span class="co">## [25] xfun_0.37             pkgconfig_2.0.3       systemfonts_1.0.4    </span></span>
-<span><span class="co">## [28] BiocGenerics_0.44.0   shape_1.4.6           htmltools_0.5.4      </span></span>
-<span><span class="co">## [31] tidyselect_1.2.0      gridExtra_2.3         tibble_3.2.1         </span></span>
-<span><span class="co">## [34] IRanges_2.32.0        codetools_0.2-19      matrixStats_0.63.0   </span></span>
-<span><span class="co">## [37] dendextend_1.16.0     viridisLite_0.4.1     fansi_1.0.4          </span></span>
-<span><span class="co">## [40] withr_2.5.0           crayon_1.5.2          jsonlite_1.8.4       </span></span>
-<span><span class="co">## [43] gtable_0.3.3          lifecycle_1.0.3       magrittr_2.0.3       </span></span>
-<span><span class="co">## [46] scales_1.2.1          cli_3.6.0             stringi_1.7.12       </span></span>
-<span><span class="co">## [49] cachem_1.0.7          farver_2.1.1          viridis_0.6.2        </span></span>
-<span><span class="co">## [52] fs_1.6.1              doParallel_1.0.17     bslib_0.4.2          </span></span>
-<span><span class="co">## [55] ragg_1.2.5            generics_0.1.3        vctrs_0.6.1          </span></span>
-<span><span class="co">## [58] rjson_0.2.21          RColorBrewer_1.1-3    iterators_1.0.14     </span></span>
-<span><span class="co">## [61] tools_4.2.3           glue_1.6.2            purrr_1.0.1          </span></span>
-<span><span class="co">## [64] parallel_4.2.3        fastmap_1.1.1         yaml_2.3.7           </span></span>
-<span><span class="co">## [67] clue_0.3-64           colorspace_2.1-0      cluster_2.1.4        </span></span>
-<span><span class="co">## [70] ComplexHeatmap_2.14.0 memoise_2.0.1         knitr_1.42           </span></span>
-<span><span class="co">## [73] sass_0.4.5</span></span></code></pre>
+<span><span class="co">##  [1] gtable_0.3.3          circlize_0.4.15       shape_1.4.6          </span></span>
+<span><span class="co">##  [4] rjson_0.2.21          xfun_0.39             bslib_0.5.0          </span></span>
+<span><span class="co">##  [7] GlobalOptions_0.1.2   vctrs_0.6.3           tools_4.3.1          </span></span>
+<span><span class="co">## [10] generics_0.1.3        stats4_4.3.1          parallel_4.3.1       </span></span>
+<span><span class="co">## [13] tibble_3.2.1          fansi_1.0.4           highr_0.10           </span></span>
+<span><span class="co">## [16] cluster_2.1.4         pkgconfig_2.0.3       RColorBrewer_1.1-3   </span></span>
+<span><span class="co">## [19] desc_1.4.2            S4Vectors_0.38.1      lifecycle_1.0.3      </span></span>
+<span><span class="co">## [22] farver_2.1.1          compiler_4.3.1        stringr_1.5.0        </span></span>
+<span><span class="co">## [25] textshaping_0.3.6     munsell_0.5.0         codetools_0.2-19     </span></span>
+<span><span class="co">## [28] ComplexHeatmap_2.16.0 clue_0.3-64           htmltools_0.5.5      </span></span>
+<span><span class="co">## [31] sass_0.4.6            yaml_2.3.7            pillar_1.9.0         </span></span>
+<span><span class="co">## [34] pkgdown_2.0.7         crayon_1.5.2          jquerylib_0.1.4      </span></span>
+<span><span class="co">## [37] cachem_1.0.8          iterators_1.0.14      viridis_0.6.3        </span></span>
+<span><span class="co">## [40] foreach_1.5.2         tidyselect_1.2.0      digest_0.6.31        </span></span>
+<span><span class="co">## [43] stringi_1.7.12        purrr_1.0.1           labeling_0.4.2       </span></span>
+<span><span class="co">## [46] rprojroot_2.0.3       fastmap_1.1.1         colorspace_2.1-0     </span></span>
+<span><span class="co">## [49] cli_3.6.1             magrittr_2.0.3        utf8_1.2.3           </span></span>
+<span><span class="co">## [52] withr_2.5.0           scales_1.2.1          rmarkdown_2.22       </span></span>
+<span><span class="co">## [55] matrixStats_1.0.0     gridExtra_2.3         ragg_1.2.5           </span></span>
+<span><span class="co">## [58] png_0.1-8             GetoptLong_1.0.5      memoise_2.0.1        </span></span>
+<span><span class="co">## [61] evaluate_0.21         knitr_1.43            IRanges_2.34.1       </span></span>
+<span><span class="co">## [64] doParallel_1.0.17     viridisLite_0.4.2     rlang_1.1.1          </span></span>
+<span><span class="co">## [67] dendextend_1.17.1     glue_1.6.2            BiocGenerics_0.46.0  </span></span>
+<span><span class="co">## [70] jsonlite_1.8.5        R6_2.5.1              systemfonts_1.0.4    </span></span>
+<span><span class="co">## [73] fs_1.6.2</span></span></code></pre>
 </div>
   </div>
 

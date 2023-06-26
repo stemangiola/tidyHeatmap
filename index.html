@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidyHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.1</span>
       </span>
     </div>
 
@@ -275,7 +275,7 @@
 <span id="cb4-11"><a href="#cb4-11"></a><span class="co">##  8 Mazda RX4       110     0 gear         0.424</span></span>
 <span id="cb4-12"><a href="#cb4-12"></a><span class="co">##  9 Mazda RX4       110     0 carb         0.735</span></span>
 <span id="cb4-13"><a href="#cb4-13"></a><span class="co">## 10 Mazda RX4 Wag   110     0 mpg          0.151</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="co">## # … with 278 more rows</span></span></code></pre></div>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">## # ℹ 278 more rows</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a>
@@ -294,8 +294,11 @@
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## Warning: Using one column matrices in `filter()` was deprecated in dplyr 1.1.0.</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="co">## ℹ Please use one dimensional logical vectors instead.</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">## ℹ The deprecated feature was likely used in the dplyr package.</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">##   Please report the issue at &lt;]8;;https://github.com/tidyverse/dplyr/issueshttps://github.com/tidyverse/dplyr/issues]8;;&gt;.</span></span></code></pre></div>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">## ℹ The deprecated feature was likely used in the tidyHeatmap package.</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">##   Please report the issue at &lt;https://github.com/stemangiola/tidyHeatmap&gt;.</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">## This warning is displayed once every 8 hours.</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">## generated.</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_heatmap</span></span></code></pre></div>
 <p><img src="man/fragments/figures/unnamed-chunk-7-1.png"><!-- --></p>
@@ -410,7 +413,10 @@
 <span>        palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"white"</span>, <span class="st">"blue"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">## Warning: `add_tile()` was deprecated in tidyHeatmap 1.9.0.</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="co">## ℹ Please use `annotation_tile()` instead</span></span></code></pre></div>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="co">## ℹ Please use `annotation_tile()` instead</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="co">## This warning is displayed once every 8 hours.</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="co">## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="co">## generated.</span></span></code></pre></div>
 <p><img src="man/fragments/figures/unnamed-chunk-16-1.png"><!-- --></p>
 <p>We can use grid::colorRamp2 function for tile annotation for specific color scales</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
@@ -516,6 +522,9 @@
 <span>    <span class="co"># filter</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">symbol</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span><span class="op">$</span><span class="va">symbol</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    </span>
+<span>    <span class="co"># Add dynamic size</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span>my_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>, <span class="fl">1</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        .column <span class="op">=</span> <span class="va">sample</span>,</span>
 <span>        .row <span class="op">=</span> <span class="va">symbol</span>,</span>
@@ -523,7 +532,15 @@
 <span>        scale <span class="op">=</span> <span class="st">"row"</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/layer_point-method.html">layer_point</a></span><span class="op">(</span></span>
-<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated3"</span> </span>
+<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated3"</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="reference/layer_square-method.html">layer_square</a></span><span class="op">(</span></span>
+<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated2"</span>,</span>
+<span>        .size <span class="op">=</span> <span class="va">my_size</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="reference/layer_arrow_up-method.html">layer_arrow_up</a></span><span class="op">(</span></span>
+<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated1"</span>,</span>
+<span>        .size <span class="op">=</span> <span class="fl">4</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 <p><img src="man/fragments/figures/unnamed-chunk-22-1.png"><!-- --></p>
 </div>

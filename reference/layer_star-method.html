@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.1</span>
       </span>
     </div>
 
@@ -60,10 +60,10 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">layer_star</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">layer_star</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span>, .size <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for InputHeatmap</span></span>
-<span><span class="fu">layer_star</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">layer_star</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span>, .size <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -74,6 +74,10 @@
 
 <dt>...</dt>
 <dd><p>Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the &amp; operator. Only rows for which all conditions evaluate to TRUE are kept.</p></dd>
+
+
+<dt>.size</dt>
+<dd><p>A column name or a double. The size of the elements of the layer.</p></dd>
 
 </dl></div>
     <div id="value">
