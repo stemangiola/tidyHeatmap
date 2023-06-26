@@ -648,6 +648,7 @@ setMethod("annotation_bar", "InputHeatmap", function(.data,
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param .size A column name or a double. The size of the elements of the layer.
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -701,6 +702,7 @@ setMethod("layer_arrow_up", "InputHeatmap", function(.data,...,
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param .size A column name or a double. The size of the elements of the layer.
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -753,6 +755,7 @@ setMethod("layer_arrow_down", "InputHeatmap", function(.data,...,
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param .size A column name or a double. The size of the elements of the layer.
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -805,6 +808,7 @@ setMethod("layer_point", "InputHeatmap", function(.data,...,
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param .size A column name or a double. The size of the elements of the layer.
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -856,6 +860,7 @@ setMethod("layer_square", "InputHeatmap", function(.data,...,
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param .size A column name or a double. The size of the elements of the layer.
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -908,6 +913,7 @@ setMethod("layer_diamond", "InputHeatmap", function(.data,...,
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param .size A column name or a double. The size of the elements of the layer.
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -960,6 +966,7 @@ setMethod("layer_star", "InputHeatmap", function(.data,...,
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
+#' @param .size A column name or a double. The size of the elements of the layer.
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -1016,7 +1023,7 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data,...,
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
 #' @param .value A column name or character string. 
-#' @param .size A column name or a double. 
+#' @param .size A column name or a double. The size of the elements of the layer.
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.

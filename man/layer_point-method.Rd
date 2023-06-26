@@ -6,14 +6,16 @@
 \alias{layer_point,InputHeatmap-method}
 \title{Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
 \usage{
-layer_point(.data, .size = NULL, ...)
+layer_point(.data, ..., .size = NULL)
 
-\S4method{layer_point}{InputHeatmap}(.data, .size = NULL, ...)
+\S4method{layer_point}{InputHeatmap}(.data, ..., .size = NULL)
 }
 \arguments{
 \item{.data}{A `InputHeatmap`}
 
 \item{...}{Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.}
+
+\item{.size}{A column name or a double. The size of the elements of the layer.}
 }
 \value{
 A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
