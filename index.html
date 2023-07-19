@@ -301,7 +301,7 @@
 <span id="cb6-7"><a href="#cb6-7"></a><span class="co">## generated.</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_heatmap</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-7-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/heatmap-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="saving">Saving<a class="anchor" aria-label="anchor" href="#saving"></a>
@@ -310,10 +310,31 @@
 <code class="sourceCode R"><span><span class="va">mtcars_heatmap</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/save_pdf-methods.html">save_pdf</a></span><span class="op">(</span><span class="st">"mtcars_heatmap.pdf"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="clustering">Clustering<a class="anchor" aria-label="anchor" href="#clustering"></a>
+</h2>
+<p>Choose alternative clustering distance and methods.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
+<span>    </span>
+<span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
+<span>        .column <span class="op">=</span> <span class="va">sample</span>,</span>
+<span>        .row <span class="op">=</span> <span class="va">symbol</span>,</span>
+<span>        .value <span class="op">=</span> <span class="va">`count normalised adjusted`</span>,   </span>
+<span>        scale <span class="op">=</span> <span class="st">"row"</span>,</span>
+<span>        </span>
+<span>        <span class="co"># Arguments passed to ComplexHeatmap </span></span>
+<span>        clustering_distance_rows <span class="op">=</span> <span class="st">"manhattan"</span>,</span>
+<span>        clustering_distance_columns <span class="op">=</span> <span class="st">"manhattan"</span>,</span>
+<span>        clustering_method_rows <span class="op">=</span> <span class="st">"ward.D"</span>,</span>
+<span>        clustering_method_columns <span class="op">=</span> <span class="st">"ward.D"</span></span>
+<span>    <span class="op">)</span> </span></code></pre></div>
+<p><img src="man/fragments/figures/distance-1.png"><!-- --></p>
+</div>
+<div class="section level2">
 <h2 id="grouping-and-splitting">Grouping and splitting<a class="anchor" aria-label="anchor" href="#grouping-and-splitting"></a>
 </h2>
 <p>We can easily group the data (one group per dimension maximum, at the moment only the vertical dimension is supported) with dplyr, and the heatmap will be grouped accordingly</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Make up more groupings</span></span>
 <span><span class="va">mtcars_tidy_groupings</span> <span class="op">=</span> </span>
 <span>    <span class="va">mtcars_tidy</span> <span class="op">|&gt;</span></span>
@@ -323,9 +344,9 @@
 <span>    <span class="fu">group_by</span><span class="op">(</span><span class="va">vs</span>, <span class="va">property_group</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    scale <span class="op">=</span> <span class="st">"row"</span>   <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-9-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/grouping-1.png"><!-- --></p>
 <p>We can provide colour palettes to groupings</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy_groupings</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">group_by</span><span class="op">(</span><span class="va">vs</span>, <span class="va">property_group</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -341,16 +362,16 @@
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-10-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/grouping2-1.png"><!-- --></p>
 <p>We can split based on the cladogram</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    scale <span class="op">=</span> <span class="st">"row"</span>   <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/split-methods.html">split_rows</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/split-methods.html">split_columns</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-11-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/split-1.png"><!-- --></p>
 <p>We can split on kmean clustering (using ComplexHeatmap options, it is stochastic)</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    </span>
@@ -358,13 +379,13 @@
 <span>        row_km <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>        column_km <span class="op">=</span> <span class="fl">2</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-12-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/split2-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="custom-palettes">Custom palettes<a class="anchor" aria-label="anchor" href="#custom-palettes"></a>
 </h2>
 <p>We can easily use custom palette, using strings, hexadecimal color character vector,</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, </span>
@@ -373,9 +394,9 @@
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>,</span>
 <span>        palette_value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"white"</span>, <span class="st">"blue"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-13-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/custom-1.png"><!-- --></p>
 <p>A better-looking blue-to-red palette</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, </span>
@@ -387,9 +408,9 @@
 <span>            <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">11</span>, <span class="st">"RdBu"</span><span class="op">)</span></span>
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-14-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/redblue-1.png"><!-- --></p>
 <p>Or a grid::colorRamp2 function for higher flexibility</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, </span>
@@ -398,9 +419,9 @@
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>,</span>
 <span>        palette_value <span class="op">=</span> <span class="fu">circlize</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/circlize/man/colorRamp2.html" class="external-link">colorRamp2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-15-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/flexible-1.png"><!-- --></p>
 <p>We can use custom colors for tile annotation</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, </span>
@@ -412,14 +433,14 @@
 <span>        <span class="va">hp</span>, </span>
 <span>        palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"white"</span>, <span class="st">"blue"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">## Warning: `add_tile()` was deprecated in tidyHeatmap 1.9.0.</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="co">## ℹ Please use `annotation_tile()` instead</span></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="co">## This warning is displayed once every 8 hours.</span></span>
-<span id="cb17-4"><a href="#cb17-4"></a><span class="co">## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
-<span id="cb17-5"><a href="#cb17-5"></a><span class="co">## generated.</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-16-1.png"><!-- --></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">## Warning: `add_tile()` was deprecated in tidyHeatmap 1.9.0.</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="co">## ℹ Please use `annotation_tile()` instead</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="co">## This warning is displayed once every 8 hours.</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="co">## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="co">## generated.</span></span></code></pre></div>
+<p><img src="man/fragments/figures/customtile-1.png"><!-- --></p>
 <p>We can use grid::colorRamp2 function for tile annotation for specific color scales</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, </span>
@@ -431,12 +452,12 @@
 <span>        <span class="va">hp</span>, </span>
 <span>        palette <span class="op">=</span> <span class="fu">circlize</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/circlize/man/colorRamp2.html" class="external-link">colorRamp2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">300</span><span class="op">)</span>, <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-17-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/customtile2-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="multiple-groupings-and-annotations">Multiple groupings and annotations<a class="anchor" aria-label="anchor" href="#multiple-groupings-and-annotations"></a>
 </h2>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">group_by</span><span class="op">(</span><span class="va">location</span>, <span class="va">type</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -447,9 +468,9 @@
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">activation</span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-18-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/multiple-1.png"><!-- --></p>
 <p>Remove legends, adding aesthetics to annotations in a modular fashion, using <code>ComplexHeatmap</code> arguments</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">group_by</span><span class="op">(</span><span class="va">location</span>, <span class="va">type</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -461,13 +482,13 @@
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">condition</span>, show_legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">activation</span>, show_legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-19-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/nolegend-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="annotation-types">Annotation types<a class="anchor" aria-label="anchor" href="#annotation-types"></a>
 </h2>
 <p>“tile”, “point”, “bar” and “line” are available</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create some more data points</span></span>
 <span><span class="va">pasilla_plus</span> <span class="op">&lt;-</span> </span>
 <span>    <span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
@@ -490,13 +511,13 @@
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">act</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_bar-method.html">annotation_bar</a></span><span class="op">(</span><span class="va">size</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_line-method.html">annotation_line</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-20-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/manyannotations-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="annotation-size">Annotation size<a class="anchor" aria-label="anchor" href="#annotation-size"></a>
 </h2>
 <p>We can customise annotation sizes using the <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code>, and the size of their names using in-built <code>ComplexHeatmap</code> arguments</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pasilla_plus</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        .column <span class="op">=</span> <span class="va">sample</span>,</span>
@@ -509,14 +530,14 @@
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">act</span>, size <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.3</span>, <span class="st">"cm"</span><span class="op">)</span>,    annotation_name_gp<span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_bar-method.html">annotation_bar</a></span><span class="op">(</span><span class="va">size</span>, size <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.3</span>, <span class="st">"cm"</span><span class="op">)</span>,    annotation_name_gp<span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_line-method.html">annotation_line</a></span><span class="op">(</span><span class="va">age</span>, size <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.3</span>, <span class="st">"cm"</span><span class="op">)</span>,    annotation_name_gp<span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-21-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/size-1.png"><!-- --></p>
 </div>
 </div>
 <div class="section level1">
 <h1 id="layer-symbol">Layer symbol<a class="anchor" aria-label="anchor" href="#layer-symbol"></a>
 </h1>
 <p>Add a layer on top of the heatmap</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
 <span>    </span>
 <span>    <span class="co"># filter</span></span>
@@ -542,13 +563,13 @@
 <span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated1"</span>,</span>
 <span>        .size <span class="op">=</span> <span class="fl">4</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-22-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/layer-1.png"><!-- --></p>
 </div>
 <div class="section level1">
 <h1 id="layer-text">Layer text<a class="anchor" aria-label="anchor" href="#layer-text"></a>
 </h1>
 <p>Add a text layer on top of the heatmap</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
 <span>    </span>
 <span>    <span class="co"># filter</span></span>
@@ -574,16 +595,16 @@
 <span>    .value <span class="op">=</span> <span class="va">my_text</span>,</span>
 <span>    .size <span class="op">=</span> <span class="va">my_size</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-23-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/layertext-1.png"><!-- --></p>
 </div>
 <div class="section level1">
 <h1 id="adding-heatmap-side-by-side">Adding heatmap side-by-side<a class="anchor" aria-label="anchor" href="#adding-heatmap-side-by-side"></a>
 </h1>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_heatmap</span> <span class="op">=</span> <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">mtcars_tidy</span>, <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>, scale <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">p_heatmap</span> <span class="op">+</span> <span class="va">p_heatmap</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-24-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/sidebyside-1.png"><!-- --></p>
 </div>
 <div class="section level1">
 <h1 id="complexheatmap-further-styling">ComplexHeatmap further styling<a class="anchor" aria-label="anchor" href="#complexheatmap-further-styling"></a>
@@ -591,31 +612,31 @@
 <div class="section level2">
 <h2 id="add-cell-borders">Add cell borders<a class="anchor" aria-label="anchor" href="#add-cell-borders"></a>
 </h2>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    </span>
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>, </span>
 <span>        rect_gp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"#161616"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-25-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/borders-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="drop-row-clustering">Drop row clustering<a class="anchor" aria-label="anchor" href="#drop-row-clustering"></a>
 </h2>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    </span>
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>, </span>
 <span>        cluster_rows <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-26-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/droprow-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="reorder-rows-elements">Reorder rows elements<a class="anchor" aria-label="anchor" href="#reorder-rows-elements"></a>
 </h2>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org/" class="external-link">forcats</a></span><span class="op">)</span></span>
 <span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -624,12 +645,12 @@
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>, </span>
 <span>        cluster_rows <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-27-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/reorder-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="size-of-dendrograms">Size of dendrograms<a class="anchor" aria-label="anchor" href="#size-of-dendrograms"></a>
 </h2>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -638,12 +659,12 @@
 <span>        column_dend_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.2</span>, <span class="st">"cm"</span><span class="op">)</span>, </span>
 <span>        row_dend_width <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.2</span>, <span class="st">"cm"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-28-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/sizedendro-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="size-of-rowscolumns-titles-and-names">Size of rows/columns titles and names<a class="anchor" aria-label="anchor" href="#size-of-rowscolumns-titles-and-names"></a>
 </h2>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -654,7 +675,7 @@
 <span>        column_title_gp <span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">7</span><span class="op">)</span>,</span>
 <span>        row_title_gp <span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-29-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/sizecolumns-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="external-complexheatmap-functionalities">External <code>ComplexHeatmap</code> functionalities<a class="anchor" aria-label="anchor" href="#external-complexheatmap-functionalities"></a>
@@ -663,17 +684,17 @@
 <div class="section level3">
 <h3 id="chainging-side-of-legends">Chainging side of legends<a class="anchor" aria-label="anchor" href="#chainging-side-of-legends"></a>
 </h3>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">mtcars_tidy</span>, <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>, scale <span class="op">=</span> <span class="st">"row"</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="reference/as_ComplexHeatmap-method.html">as_ComplexHeatmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span>heatmap_legend_side <span class="op">=</span> <span class="st">"left"</span>   <span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-30-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/sidelegend-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="add-title-using-draw-from-complexheatmap">Add title using <code>draw</code> from <code>ComplexHeatmap</code>
 <a class="anchor" aria-label="anchor" href="#add-title-using-draw-from-complexheatmap"></a>
 </h3>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    scale <span class="op">=</span> <span class="st">"row"</span>   <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/as_ComplexHeatmap-method.html">as_ComplexHeatmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -681,13 +702,13 @@
 <span>        column_title <span class="op">=</span> <span class="st">"TITLE"</span>, </span>
 <span>        column_title_gp <span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-31-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/title-1.png"><!-- --></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="using-patchwork-to-integrate-heatmaps">Using patchwork to integrate heatmaps<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate-heatmaps"></a>
 </h2>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span></span>
@@ -712,17 +733,17 @@
 <span>        clip <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-32-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/patchworkintegrate-1.png"><!-- --></p>
 <div class="section level3">
 <h3 id="add-title-using-ggtitle-from-ggplot2">Add title using <code>ggtitle</code> from <code>ggplot2</code>
 <a class="anchor" aria-label="anchor" href="#add-title-using-ggtitle-from-ggplot2"></a>
 </h3>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,  scale <span class="op">=</span> <span class="st">"row"</span> <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/wrap_heatmap-method.html">wrap_heatmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>        <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"TITLE"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="man/fragments/figures/unnamed-chunk-33-1.png"><!-- --></p>
+<p><img src="man/fragments/figures/title2-1.png"><!-- --></p>
 </div>
 </div>
 </div>
