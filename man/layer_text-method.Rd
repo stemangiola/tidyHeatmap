@@ -17,7 +17,7 @@ layer_text(.data, ..., .value, .size = NULL)
 
 \item{.value}{A column name or character string.}
 
-\item{.size}{A column name or a double.}
+\item{.size}{A column name or a double. The size of the elements of the layer.}
 }
 \value{
 A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`

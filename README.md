@@ -151,8 +151,8 @@ mtcars_heatmap <-
 
     ## Warning: Using one column matrices in `filter()` was deprecated in dplyr 1.1.0.
     ## ℹ Please use one dimensional logical vectors instead.
-    ## ℹ The deprecated feature was likely used in the dplyr package.
-    ##   Please report the issue at <https://github.com/tidyverse/dplyr/issues>.
+    ## ℹ The deprecated feature was likely used in the tidyHeatmap package.
+    ##   Please report the issue at <https://github.com/stemangiola/tidyHeatmap>.
     ## This warning is displayed once every 8 hours.
     ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
     ## generated.
@@ -161,7 +161,7 @@ mtcars_heatmap <-
 mtcars_heatmap
 ```
 
-![](man/fragments/figures/unnamed-chunk-7-1.png)<!-- -->
+![](man/fragments/figures/heatmap-1.png)<!-- -->
 
 ## Saving
 
@@ -210,7 +210,7 @@ mtcars_tidy_groupings |>
     annotation_tile(hp)
 ```
 
-![](man/fragments/figures/unnamed-chunk-9-1.png)<!-- -->
+![](man/fragments/figures/grouping-1.png)<!-- -->
 
 We can provide colour palettes to groupings
 
@@ -232,7 +232,7 @@ mtcars_tidy_groupings |>
     annotation_tile(hp)
 ```
 
-![](man/fragments/figures/unnamed-chunk-10-1.png)<!-- -->
+![](man/fragments/figures/grouping2-1.png)<!-- -->
 
 We can split based on the cladogram
 
@@ -243,7 +243,7 @@ mtcars_tidy |>
     split_columns(2)
 ```
 
-![](man/fragments/figures/unnamed-chunk-11-1.png)<!-- -->
+![](man/fragments/figures/split-1.png)<!-- -->
 
 We can split on kmean clustering (using ComplexHeatmap options, it is
 stochastic)
@@ -258,7 +258,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-12-1.png)<!-- -->
+![](man/fragments/figures/split2-1.png)<!-- -->
 
 ## Custom palettes
 
@@ -276,7 +276,7 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/unnamed-chunk-13-1.png)<!-- -->
+![](man/fragments/figures/custom-1.png)<!-- -->
 
 A better-looking blue-to-red palette
 
@@ -294,7 +294,7 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/unnamed-chunk-14-1.png)<!-- -->
+![](man/fragments/figures/redblue-1.png)<!-- -->
 
 Or a grid::colorRamp2 function for higher flexibility
 
@@ -309,7 +309,7 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/unnamed-chunk-15-1.png)<!-- -->
+![](man/fragments/figures/flexible-1.png)<!-- -->
 
 We can use custom colors for tile annotation
 
@@ -333,7 +333,7 @@ mtcars_tidy |>
     ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
     ## generated.
 
-![](man/fragments/figures/unnamed-chunk-16-1.png)<!-- -->
+![](man/fragments/figures/customtile-1.png)<!-- -->
 
 We can use grid::colorRamp2 function for tile annotation for specific
 color scales
@@ -352,7 +352,7 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/unnamed-chunk-17-1.png)<!-- -->
+![](man/fragments/figures/customtile2-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -369,7 +369,7 @@ tidyHeatmap::pasilla |>
     annotation_tile(activation)
 ```
 
-![](man/fragments/figures/unnamed-chunk-18-1.png)<!-- -->
+![](man/fragments/figures/multiple-1.png)<!-- -->
 
 Remove legends, adding aesthetics to annotations in a modular fashion,
 using `ComplexHeatmap` arguments
@@ -388,7 +388,7 @@ tidyHeatmap::pasilla |>
     annotation_tile(activation, show_legend = FALSE)
 ```
 
-![](man/fragments/figures/unnamed-chunk-19-1.png)<!-- -->
+![](man/fragments/figures/nolegend-1.png)<!-- -->
 
 ## Annotation types
 
@@ -419,7 +419,7 @@ pasilla_plus |>
     annotation_line(age)
 ```
 
-![](man/fragments/figures/unnamed-chunk-20-1.png)<!-- -->
+![](man/fragments/figures/manyannotations-1.png)<!-- -->
 
 ## Annotation size
 
@@ -441,7 +441,7 @@ pasilla_plus |>
     annotation_line(age, size = unit(0.3, "cm"),    annotation_name_gp= gpar(fontsize = 8))
 ```
 
-![](man/fragments/figures/unnamed-chunk-21-1.png)<!-- -->
+![](man/fragments/figures/size-1.png)<!-- -->
 
 # Layer symbol
 
@@ -453,6 +453,9 @@ tidyHeatmap::pasilla |>
     # filter
     filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) |>
     
+    # Add dynamic size
+    mutate(my_size = runif(n(), 1,5)) |> 
+    
     heatmap(
         .column = sample,
         .row = symbol,
@@ -460,11 +463,19 @@ tidyHeatmap::pasilla |>
         scale = "row"
     ) |> 
     layer_point(
-        `count normalised adjusted log` > 6 & sample == "untreated3" 
+        `count normalised adjusted log` > 6 & sample == "untreated3"
+    ) |>
+    layer_square(
+        `count normalised adjusted log` > 6 & sample == "untreated2",
+        .size = my_size
+    ) |>
+    layer_arrow_up(
+        `count normalised adjusted log` > 6 & sample == "untreated1",
+        .size = 4
     )
 ```
 
-![](man/fragments/figures/unnamed-chunk-22-1.png)<!-- -->
+![](man/fragments/figures/layer-1.png)<!-- -->
 
 # Layer text
 
@@ -498,7 +509,7 @@ tidyHeatmap::pasilla |>
 )
 ```
 
-![](man/fragments/figures/unnamed-chunk-23-1.png)<!-- -->
+![](man/fragments/figures/layertext-1.png)<!-- -->
 
 # Adding heatmap side-by-side
 
@@ -508,7 +519,7 @@ p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row")
 p_heatmap + p_heatmap
 ```
 
-![](man/fragments/figures/unnamed-chunk-24-1.png)<!-- -->
+![](man/fragments/figures/sidebyside-1.png)<!-- -->
 
 # ComplexHeatmap further styling
 
@@ -523,7 +534,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-25-1.png)<!-- -->
+![](man/fragments/figures/borders-1.png)<!-- -->
 
 ## Drop row clustering
 
@@ -536,7 +547,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-26-1.png)<!-- -->
+![](man/fragments/figures/droprow-1.png)<!-- -->
 
 ## Reorder rows elements
 
@@ -551,7 +562,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-27-1.png)<!-- -->
+![](man/fragments/figures/reorder-1.png)<!-- -->
 
 ## Size of dendrograms
 
@@ -566,7 +577,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-28-1.png)<!-- -->
+![](man/fragments/figures/sizedendro-1.png)<!-- -->
 
 ## Size of rows/columns titles and names
 
@@ -583,7 +594,7 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/unnamed-chunk-29-1.png)<!-- -->
+![](man/fragments/figures/sizecolumns-1.png)<!-- -->
 
 ## External `ComplexHeatmap` functionalities
 
@@ -599,7 +610,7 @@ heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row" ) %>%
     ComplexHeatmap::draw(heatmap_legend_side = "left"   )
 ```
 
-![](man/fragments/figures/unnamed-chunk-30-1.png)<!-- -->
+![](man/fragments/figures/sidelegend-1.png)<!-- -->
 
 ### Add title using `draw` from `ComplexHeatmap`
 
@@ -613,7 +624,7 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/unnamed-chunk-31-1.png)<!-- -->
+![](man/fragments/figures/title-1.png)<!-- -->
 
 ## Using patchwork to integrate heatmaps
 
@@ -644,7 +655,7 @@ wrap_heatmap(p_heatmap) +
     plot_layout(width = c(1, 0.3, 1))
 ```
 
-![](man/fragments/figures/unnamed-chunk-32-1.png)<!-- -->
+![](man/fragments/figures/patchworkintegrate-1.png)<!-- -->
 
 ### Add title using `ggtitle` from `ggplot2`
 
@@ -655,4 +666,4 @@ mtcars_tidy |>
         ggplot2::ggtitle("TITLE")
 ```
 
-![](man/fragments/figures/unnamed-chunk-33-1.png)<!-- -->
+![](man/fragments/figures/title2-1.png)<!-- -->
