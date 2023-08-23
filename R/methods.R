@@ -37,7 +37,7 @@ InputHeatmap<-setClass(
 		left_annotation = tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list(), further_arguments = list()),
 		group_top_annotation = list(),
 		group_left_annotation = list(),
-		layer_symbol = tibble(column = integer(), row = integer(), shape = integer()),
+		layer_symbol = tibble(column = integer(), row = integer(), shape = integer(), size = numeric()),
 		layer_text = tibble(column = integer(), row = integer(), text = character(), size = numeric())
 		
 	)
@@ -86,6 +86,8 @@ setGeneric("as_ComplexHeatmap", function(tidyHeatmap) standardGeneric("as_Comple
 #'
 #' @importFrom ComplexHeatmap columnAnnotation
 #' @importFrom ComplexHeatmap rowAnnotation
+#' @importFrom grid convertUnit
+#' @importFrom grid unit
 #'
 #' @docType methods
 #' @rdname as_ComplexHeatmap-method
@@ -141,7 +143,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 			grid.points(
 				x[ind$index_column_wise], y[ind$index_column_wise], 
 				pch = ind$shape , 
-				size = unit(ind$size, "mm"), 
+				size = ind$size, 
 				gp = gpar(col = NULL, fill="#161616")
 			)
 		}
@@ -160,7 +162,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 				ind_text$text,
 				x[ind_text$index_column_wise],
 				y[ind_text$index_column_wise],
-				gp = gpar(fontsize = ind_text$size, col = "#000000")
+				gp = gpar(fontsize = convertUnit(ind_text$size, "pt", valueOnly=TRUE), col = "#000000")
 			)
 		}
 		
