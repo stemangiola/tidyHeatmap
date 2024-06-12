@@ -5,6 +5,11 @@
 \alias{as_ComplexHeatmap}
 \alias{as_ComplexHeatmap,InputHeatmap-method}
 \title{Creates a  `ComplexHeatmap` object for less standard plot manipulation (e.g. changing legend position)}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 as_ComplexHeatmap(tidyHeatmap)
 
@@ -33,4 +38,13 @@ tidyHeatmap::heatmap(
 ) |>
 as_ComplexHeatmap()
 
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
+
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }

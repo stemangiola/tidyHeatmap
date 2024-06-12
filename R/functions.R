@@ -42,11 +42,10 @@
 #'
 #' @return A `ComplexHeatmap` object
 #'
-#'
-#'
-#'
-#'
-#'
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 input_heatmap = function(.data,
 												.horizontal,
 												.vertical,
@@ -295,11 +294,10 @@ add_grouping = function(my_input_heatmap){
 #'
 #' @return A `ComplexHeatmap` object
 #'
-#'
-#'
-#'
-#'
-#'
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 add_annotation = function(my_input_heatmap,
 												 annotation,
 												 type = rep("tile", length(quo_names(annotation))),
@@ -444,6 +442,10 @@ add_annotation = function(my_input_heatmap,
 #' 
 #' hm |> layer_symbol()
 #'
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("layer_symbol", function(.data,
 																		...,
 																		symbol = "point",

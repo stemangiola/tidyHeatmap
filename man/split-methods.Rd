@@ -7,6 +7,11 @@
 \alias{split_columns}
 \alias{split_columns,InputHeatmap-method}
 \title{Split the heatmap row-wise depending on the biggest branches in the cladogram.}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 split_rows(.data, number_of_groups)
 
@@ -69,4 +74,13 @@ hm =
 
 hm |> split_columns(2)
 
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
+
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }

@@ -78,7 +78,10 @@ InputHeatmap<-setClass(
 #' @rdname as_ComplexHeatmap-method
 #'
 #' @export
-#' 
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("as_ComplexHeatmap", function(tidyHeatmap) standardGeneric("as_ComplexHeatmap"))
 
 
@@ -91,7 +94,10 @@ setGeneric("as_ComplexHeatmap", function(tidyHeatmap) standardGeneric("as_Comple
 #' @rdname as_ComplexHeatmap-method
 #'
 #' @export
-#' 
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	
 	# Fix CRAN notes
@@ -178,6 +184,10 @@ setMethod("show", "InputHeatmap", function(object){
 
 #' @rdname plot_arithmetic
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 "+.InputHeatmap" <- function(e1, e2) {
 	
 	as_ComplexHeatmap(e1) + as_ComplexHeatmap(e2)
@@ -231,6 +241,10 @@ setMethod("show", "InputHeatmap", function(object){
 #' @rdname heatmap-method
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("heatmap", function(.data,
 															 .row, 
 															 .column,
@@ -402,6 +416,10 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #'  )
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("annotation_tile", function(.data,
 																			 .column,
 																			 palette = NULL, size = NULL, ...)
@@ -486,6 +504,10 @@ setMethod("annotation_tile", "InputHeatmap", function(.data,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("annotation_point", function(.data,
 																				.column,
 																				palette = NULL, size = NULL,...)
@@ -548,6 +570,10 @@ setMethod("annotation_point", "InputHeatmap", function(.data,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("annotation_line", function(.data,
 																			 .column,
 																			 palette = NULL,size = NULL, ...)
@@ -611,6 +637,10 @@ setMethod("annotation_line", "InputHeatmap", function(.data,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("annotation_bar", function(.data,
 																			.column,
 																			palette = NULL, size = NULL,...)
@@ -672,6 +702,10 @@ setMethod("annotation_bar", "InputHeatmap", function(.data,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("layer_arrow_up", function(.data,..., 
 																			.size = NULL)
 	standardGeneric("layer_arrow_up"))
@@ -726,6 +760,10 @@ setMethod("layer_arrow_up", "InputHeatmap", function(.data,...,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("layer_arrow_down", function(.data,..., 
 																				.size = NULL)
 	standardGeneric("layer_arrow_down"))
@@ -779,6 +817,10 @@ setMethod("layer_arrow_down", "InputHeatmap", function(.data,...,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("layer_point", function(.data,..., 
 																	 .size = NULL)
 	standardGeneric("layer_point"))
@@ -832,6 +874,10 @@ setMethod("layer_point", "InputHeatmap", function(.data,...,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("layer_square", function(.data,..., 
 																		.size = NULL)
 	standardGeneric("layer_square"))
@@ -884,6 +930,10 @@ setMethod("layer_square", "InputHeatmap", function(.data,...,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("layer_diamond", function(.data,..., 
 																		 .size = NULL)
 	standardGeneric("layer_diamond"))
@@ -895,7 +945,6 @@ setGeneric("layer_diamond", function(.data,...,
 #' 
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
 setMethod("layer_diamond", "InputHeatmap", function(.data,..., 
 																										.size = NULL){ .data |>	layer_symbol(..., symbol="diamond", .size = !!enquo(.size)) })
 
@@ -937,6 +986,10 @@ setMethod("layer_diamond", "InputHeatmap", function(.data,...,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("layer_star", function(.data,..., 
 																	.size = NULL)
 	standardGeneric("layer_star"))
@@ -948,7 +1001,6 @@ setGeneric("layer_star", function(.data,...,
 #' 
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
 setMethod("layer_star", "InputHeatmap", function(.data,..., 
 																								 .size = NULL){ .data |>	layer_symbol(..., symbol="star", .size = !!enquo(.size)) })
 
@@ -990,6 +1042,10 @@ setMethod("layer_star", "InputHeatmap", function(.data,...,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("layer_asterisk", function(.data,..., 
 																			.size = NULL)
 	standardGeneric("layer_asterisk"))
@@ -1001,7 +1057,6 @@ setGeneric("layer_asterisk", function(.data,...,
 #' 
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
 setMethod("layer_asterisk", "InputHeatmap", function(.data,..., 
 																										 .size = NULL){ .data |>	layer_symbol(..., symbol="asterisk", .size = !!enquo(.size)) })
 
@@ -1049,6 +1104,10 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data,...,
 #' hm |> layer_text(.value = my_text)
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("layer_text", function(.data,
 																	...,
 																	.value,
@@ -1064,7 +1123,6 @@ setGeneric("layer_text", function(.data,
 #' 
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
 setMethod("layer_text", "InputHeatmap", function(.data,
 																								 ...,
 																								 .value,
@@ -1156,6 +1214,10 @@ setMethod("layer_text", "InputHeatmap", function(.data,
 #' hm |> split_rows(2)
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("split_rows", function(.data,
 																	number_of_groups)
 	standardGeneric("split_rows"))
@@ -1168,7 +1230,6 @@ setGeneric("split_rows", function(.data,
 #' 
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
 setMethod("split_rows", "InputHeatmap", function(.data,
 																								 number_of_groups){
 	
@@ -1233,6 +1294,10 @@ setMethod("split_rows", "InputHeatmap", function(.data,
 #' hm |> split_columns(2)
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("split_columns", function(.data,
 																		 number_of_groups)
 	standardGeneric("split_columns"))
@@ -1244,7 +1309,6 @@ setGeneric("split_columns", function(.data,
 #' 
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
 setMethod("split_columns", "InputHeatmap", function(.data,
 																										number_of_groups){
 	
@@ -1310,7 +1374,10 @@ setMethod("split_columns", "InputHeatmap", function(.data,
 #' @docType methods
 #' @rdname save_pdf-methods
 #' @export
-#'
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("save_pdf", function(.heatmap,
 																filename,
 																width = NULL,
@@ -1351,8 +1418,6 @@ setGeneric("save_pdf", function(.heatmap,
 #' @param width A `double`. Plot width
 #' @param height A `double`. Plot height
 #' @param units	A character string. units ("in", "cm", or "mm")
-#' 
-#' 
 setMethod("save_pdf", "Heatmap", .save_pdf)
 
 #' save_pdf
@@ -1362,8 +1427,6 @@ setMethod("save_pdf", "Heatmap", .save_pdf)
 #' @param width A `double`. Plot width
 #' @param height A `double`. Plot height
 #' @param units	A character string. units ("in", "cm", or "mm")
-#' 
-#' 
 setMethod("save_pdf", "InputHeatmap", .save_pdf)
 
 

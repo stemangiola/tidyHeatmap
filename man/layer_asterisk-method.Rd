@@ -5,6 +5,9 @@
 \alias{layer_asterisk}
 \alias{layer_asterisk,InputHeatmap-method}
 \title{Adds a layer of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 layer_asterisk(.data, ..., .size = NULL)
 
@@ -44,4 +47,9 @@ hm =
 hm |> layer_asterisk()
 
 
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }

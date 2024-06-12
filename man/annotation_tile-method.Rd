@@ -5,6 +5,9 @@
 \alias{annotation_tile}
 \alias{annotation_tile,InputHeatmap-method}
 \title{Adds a tile annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 annotation_tile(.data, .column, palette = NULL, size = NULL, ...)
 
@@ -54,4 +57,9 @@ hm |>
     palette = circlize::colorRamp2(c(0, 3,10), c("white", "green", "red"))
  )
 
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }

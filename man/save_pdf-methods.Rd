@@ -4,6 +4,9 @@
 \name{save_pdf}
 \alias{save_pdf}
 \title{Save plot on PDF file}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 save_pdf(
   .heatmap,
@@ -47,4 +50,9 @@ It simply save an `Heatmap` to a PDF file use pdf() function in the back end
  save_pdf(tempfile())
 
 
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }

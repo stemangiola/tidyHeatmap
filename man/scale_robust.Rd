@@ -3,6 +3,9 @@
 \name{scale_robust}
 \alias{scale_robust}
 \title{Scale counts in a robust way against sd == 0}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 scale_robust(y)
 }
@@ -14,4 +17,9 @@ A scaled and centred numerical array
 }
 \description{
 Scale counts in a robust way against sd == 0
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }
