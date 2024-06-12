@@ -5,6 +5,9 @@
 \alias{annotation_line}
 \alias{annotation_line,InputHeatmap-method}
 \title{Adds a line annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 annotation_line(.data, .column, palette = NULL, size = NULL, ...)
 
@@ -48,4 +51,9 @@ hm =
 hm |> annotation_line(inflection)
 
 
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }

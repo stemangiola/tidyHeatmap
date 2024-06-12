@@ -5,6 +5,9 @@
 \alias{layer_arrow_up}
 \alias{layer_arrow_up,InputHeatmap-method}
 \title{Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 layer_arrow_up(.data, ..., .size = NULL)
 
@@ -44,4 +47,9 @@ hm =
 hm |> layer_arrow_up()
 
 
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }
