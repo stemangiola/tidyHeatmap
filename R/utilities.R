@@ -723,7 +723,14 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 				
 				# If it is a list of colors
 				else
-					colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
+				    if (class(.x) == "factor") {
+				      color_vector <- palette_annotation$discrete[[.y]] %>% setNames(levels(.x))
+				      color_vector[!is.na(names(color_vector))]
+				      
+				    } else {
+				      colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
+				    }			
+			  
 			} else if (.x %>% class %in% c("integer", "numerical", "numeric", "double")){
 				
 				# If is colorRamp 
