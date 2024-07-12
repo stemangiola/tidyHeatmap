@@ -723,7 +723,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 				
 				# If it is a list of colors
 				else
-				    if (class(.x) == "factor") {
+				    if (is(.x, "factor")) {
 				      color_vector <- palette_annotation$discrete[[.y]] %>% setNames(levels(.x))
 				      color_vector[!is.na(names(color_vector))]
 				      
