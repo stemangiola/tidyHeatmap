@@ -665,6 +665,29 @@ test_that("tile colorRamp2 palette",{
 	
 })
 
+test_that("annotation tile factor colour order",{
+  
+  # If factor levels correctly interpreted, colour palette should read in order: 
+  # "first_level", "second_level", "third_level", "fourth_level"
+
+  p = 
+    tidyHeatmap::pasilla |> 
+    distinct(sample) |>
+    mutate(group = rep(c("first_level", "third_level", "second_level", "fourth_level"), length.out = n())) |>
+    mutate(group = factor(group, levels = c("first_level", "second_level", "third_level", "fourth_level"))) |>
+    right_join(tidyHeatmap::pasilla, by = "sample") |>
+    tidyHeatmap::heatmap(
+      .column = sample,
+      .row = symbol,
+      .value = `count normalised adjusted log`,
+      scale = "row"
+    )  |>
+    annotation_tile(group, c("#FF004B", "#FF00FF", "#9700FF", "#2000FF"))
+  
+  vdiffr::expect_doppelganger("tile factor custom palette", p)
+  
+})
+
 
 test_that("patchwork padding",{
 	
