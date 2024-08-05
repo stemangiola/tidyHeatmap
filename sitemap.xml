@@ -1,177 +1,61 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/introduction.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/N52.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_annotation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_attr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_bar-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_line-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_point-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_tile-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/annot_to_list.html</loc>
-  </url>
-  <url>
-    <loc>/reference/annotation_bar-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/annotation_line-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/annotation_point-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/annotation_tile-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as_ComplexHeatmap-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as_matrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_if_counts_is_na.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_if_duplicated_genes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_if_wrong_input.html</loc>
-  </url>
-  <url>
-    <loc>/reference/drop_class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/error_if_log_transformed.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_abundance_norm_if_exists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_elements.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_elements_features.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_elements_features_abundance.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_sample_counts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_sample_transcript.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_sample_transcript_counts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_x_y_annotation_columns.html</loc>
-  </url>
-  <url>
-    <loc>/reference/heatmap-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ifelse2_pipe.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ifelse_pipe.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/input_heatmap.html</loc>
-  </url>
-  <url>
-    <loc>/reference/layer_arrow_down-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/layer_arrow_up-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/layer_asterisk-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/layer_diamond-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/layer_point-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/layer_square-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/layer_star-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/layer_text-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parse_formula.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pasilla.html</loc>
-  </url>
-  <url>
-    <loc>/reference/prepend.html</loc>
-  </url>
-  <url>
-    <loc>/reference/quo_names.html</loc>
-  </url>
-  <url>
-    <loc>/reference/save_pdf-Heatmap-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/save_pdf-InputHeatmap-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/save_pdf-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scale_design.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scale_robust.html</loc>
-  </url>
-  <url>
-    <loc>/reference/select_closest_pairs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/split-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/wrap_heatmap-method.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/introduction.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/N52.html</loc></url>
+<url><loc>/reference/add_annotation.html</loc></url>
+<url><loc>/reference/add_attr.html</loc></url>
+<url><loc>/reference/add_bar-method.html</loc></url>
+<url><loc>/reference/add_class.html</loc></url>
+<url><loc>/reference/add_line-method.html</loc></url>
+<url><loc>/reference/add_point-method.html</loc></url>
+<url><loc>/reference/add_tile-method.html</loc></url>
+<url><loc>/reference/annot_to_list.html</loc></url>
+<url><loc>/reference/annotation_bar-method.html</loc></url>
+<url><loc>/reference/annotation_line-method.html</loc></url>
+<url><loc>/reference/annotation_point-method.html</loc></url>
+<url><loc>/reference/annotation_tile-method.html</loc></url>
+<url><loc>/reference/as_ComplexHeatmap-method.html</loc></url>
+<url><loc>/reference/as_matrix.html</loc></url>
+<url><loc>/reference/check_if_counts_is_na.html</loc></url>
+<url><loc>/reference/check_if_duplicated_genes.html</loc></url>
+<url><loc>/reference/check_if_wrong_input.html</loc></url>
+<url><loc>/reference/drop_class.html</loc></url>
+<url><loc>/reference/error_if_log_transformed.html</loc></url>
+<url><loc>/reference/get_abundance_norm_if_exists.html</loc></url>
+<url><loc>/reference/get_elements.html</loc></url>
+<url><loc>/reference/get_elements_features.html</loc></url>
+<url><loc>/reference/get_elements_features_abundance.html</loc></url>
+<url><loc>/reference/get_sample_counts.html</loc></url>
+<url><loc>/reference/get_sample_transcript.html</loc></url>
+<url><loc>/reference/get_sample_transcript_counts.html</loc></url>
+<url><loc>/reference/get_x_y_annotation_columns.html</loc></url>
+<url><loc>/reference/heatmap-method.html</loc></url>
+<url><loc>/reference/ifelse2_pipe.html</loc></url>
+<url><loc>/reference/ifelse_pipe.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/input_heatmap.html</loc></url>
+<url><loc>/reference/layer_arrow_down-method.html</loc></url>
+<url><loc>/reference/layer_arrow_up-method.html</loc></url>
+<url><loc>/reference/layer_asterisk-method.html</loc></url>
+<url><loc>/reference/layer_diamond-method.html</loc></url>
+<url><loc>/reference/layer_point-method.html</loc></url>
+<url><loc>/reference/layer_square-method.html</loc></url>
+<url><loc>/reference/layer_star-method.html</loc></url>
+<url><loc>/reference/layer_text-method.html</loc></url>
+<url><loc>/reference/parse_formula.html</loc></url>
+<url><loc>/reference/pasilla.html</loc></url>
+<url><loc>/reference/prepend.html</loc></url>
+<url><loc>/reference/quo_names.html</loc></url>
+<url><loc>/reference/save_pdf-Heatmap-method.html</loc></url>
+<url><loc>/reference/save_pdf-InputHeatmap-method.html</loc></url>
+<url><loc>/reference/save_pdf-methods.html</loc></url>
+<url><loc>/reference/scale_design.html</loc></url>
+<url><loc>/reference/scale_robust.html</loc></url>
+<url><loc>/reference/select_closest_pairs.html</loc></url>
+<url><loc>/reference/split-methods.html</loc></url>
+<url><loc>/reference/wrap_heatmap-method.html</loc></url>
 </urlset>
+

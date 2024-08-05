@@ -6,20 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overview of the tidyHeatmap package • tidyHeatmap</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Overview of the tidyHeatmap package">
-<meta property="og:description" content="tidyHeatmap">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.10.3</span>
       </span>
     </div>
 
@@ -45,7 +44,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -59,7 +58,7 @@
 <li>
   <a href="https://github.com/stemangiola/tidyHeatmap/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -70,7 +69,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><script src="introduction_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
@@ -78,9 +77,9 @@
       <h1 data-toc-skip>Overview of the tidyHeatmap package</h1>
                         <h4 data-toc-skip class="author">Stefano Mangiola</h4>
             
-            <h4 data-toc-skip class="date">2023-07-19</h4>
+            <h4 data-toc-skip class="date">2024-08-05</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/stemangiola/tidyHeatmap/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/stemangiola/tidyHeatmap/blob/master/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
 
     </div>
@@ -751,13 +750,12 @@
 </h2>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.3.1 (2023-06-16)</span></span>
-<span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<pre><code><span><span class="co">## R version 4.4.1 (2024-06-14)</span></span>
+<span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">## Running under: Ubuntu 20.04.6 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0 </span></span>
-<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span></span>
+<span><span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so;  LAPACK version 3.9.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
@@ -773,43 +771,39 @@
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] patchwork_1.1.2    ggplot2_3.4.2      forcats_1.0.0      tidyHeatmap_1.10.1</span></span>
-<span><span class="co">## [5] tidyr_1.3.0        dplyr_1.1.2       </span></span>
+<span><span class="co">## [1] patchwork_1.2.0    ggplot2_3.5.1      forcats_1.0.0      tidyHeatmap_1.10.3</span></span>
+<span><span class="co">## [5] tidyr_1.3.1        dplyr_1.1.4       </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] gtable_0.3.3          circlize_0.4.15       shape_1.4.6          </span></span>
-<span><span class="co">##  [4] rjson_0.2.21          xfun_0.39             bslib_0.5.0          </span></span>
-<span><span class="co">##  [7] GlobalOptions_0.1.2   vctrs_0.6.3           tools_4.3.1          </span></span>
-<span><span class="co">## [10] generics_0.1.3        stats4_4.3.1          parallel_4.3.1       </span></span>
-<span><span class="co">## [13] tibble_3.2.1          fansi_1.0.4           highr_0.10           </span></span>
-<span><span class="co">## [16] cluster_2.1.4         pkgconfig_2.0.3       RColorBrewer_1.1-3   </span></span>
-<span><span class="co">## [19] desc_1.4.2            S4Vectors_0.38.1      lifecycle_1.0.3      </span></span>
-<span><span class="co">## [22] farver_2.1.1          compiler_4.3.1        stringr_1.5.0        </span></span>
-<span><span class="co">## [25] textshaping_0.3.6     munsell_0.5.0         codetools_0.2-19     </span></span>
-<span><span class="co">## [28] ComplexHeatmap_2.16.0 clue_0.3-64           htmltools_0.5.5      </span></span>
-<span><span class="co">## [31] sass_0.4.7            yaml_2.3.7            pillar_1.9.0         </span></span>
-<span><span class="co">## [34] pkgdown_2.0.7         crayon_1.5.2          jquerylib_0.1.4      </span></span>
-<span><span class="co">## [37] cachem_1.0.8          iterators_1.0.14      viridis_0.6.3        </span></span>
-<span><span class="co">## [40] foreach_1.5.2         tidyselect_1.2.0      digest_0.6.33        </span></span>
-<span><span class="co">## [43] stringi_1.7.12        purrr_1.0.1           labeling_0.4.2       </span></span>
-<span><span class="co">## [46] rprojroot_2.0.3       fastmap_1.1.1         colorspace_2.1-0     </span></span>
-<span><span class="co">## [49] cli_3.6.1             magrittr_2.0.3        utf8_1.2.3           </span></span>
-<span><span class="co">## [52] withr_2.5.0           scales_1.2.1          rmarkdown_2.23       </span></span>
-<span><span class="co">## [55] matrixStats_1.0.0     gridExtra_2.3         ragg_1.2.5           </span></span>
-<span><span class="co">## [58] png_0.1-8             GetoptLong_1.0.5      memoise_2.0.1        </span></span>
-<span><span class="co">## [61] evaluate_0.21         knitr_1.43            IRanges_2.34.1       </span></span>
-<span><span class="co">## [64] doParallel_1.0.17     viridisLite_0.4.2     rlang_1.1.1          </span></span>
-<span><span class="co">## [67] dendextend_1.17.1     glue_1.6.2            BiocGenerics_0.46.0  </span></span>
-<span><span class="co">## [70] jsonlite_1.8.7        R6_2.5.1              systemfonts_1.0.4    </span></span>
-<span><span class="co">## [73] fs_1.6.2</span></span></code></pre>
+<span><span class="co">##  [1] viridis_0.6.5         sass_0.4.9            utf8_1.2.4           </span></span>
+<span><span class="co">##  [4] generics_0.1.3        shape_1.4.6.1         digest_0.6.36        </span></span>
+<span><span class="co">##  [7] magrittr_2.0.3        RColorBrewer_1.1-3    evaluate_0.24.0      </span></span>
+<span><span class="co">## [10] iterators_1.0.14      circlize_0.4.16       fastmap_1.2.0        </span></span>
+<span><span class="co">## [13] foreach_1.5.2         doParallel_1.0.17     jsonlite_1.8.8       </span></span>
+<span><span class="co">## [16] GlobalOptions_0.1.2   gridExtra_2.3         ComplexHeatmap_2.18.0</span></span>
+<span><span class="co">## [19] purrr_1.0.2           fansi_1.0.6           viridisLite_0.4.2    </span></span>
+<span><span class="co">## [22] scales_1.3.0          codetools_0.2-20      textshaping_0.4.0    </span></span>
+<span><span class="co">## [25] jquerylib_0.1.4       cli_3.6.3             rlang_1.1.4          </span></span>
+<span><span class="co">## [28] crayon_1.5.3          munsell_0.5.1         withr_3.0.1          </span></span>
+<span><span class="co">## [31] cachem_1.1.0          yaml_2.3.10           tools_4.4.1          </span></span>
+<span><span class="co">## [34] parallel_4.4.1        colorspace_2.1-1      GetoptLong_1.0.5     </span></span>
+<span><span class="co">## [37] BiocGenerics_0.48.1   vctrs_0.6.5           R6_2.5.1             </span></span>
+<span><span class="co">## [40] png_0.1-8             stats4_4.4.1          matrixStats_1.3.0    </span></span>
+<span><span class="co">## [43] lifecycle_1.0.4       S4Vectors_0.40.2      fs_1.6.4             </span></span>
+<span><span class="co">## [46] IRanges_2.36.0        clue_0.3-65           cluster_2.1.6        </span></span>
+<span><span class="co">## [49] ragg_1.3.2            dendextend_1.17.1     pkgconfig_2.0.3      </span></span>
+<span><span class="co">## [52] desc_1.4.3            gtable_0.3.5          pkgdown_2.1.0        </span></span>
+<span><span class="co">## [55] pillar_1.9.0          bslib_0.8.0           glue_1.7.0           </span></span>
+<span><span class="co">## [58] systemfonts_1.1.0     highr_0.11            xfun_0.46            </span></span>
+<span><span class="co">## [61] tibble_3.2.1          tidyselect_1.2.1      knitr_1.48           </span></span>
+<span><span class="co">## [64] farver_2.1.2          rjson_0.2.21          htmltools_0.5.8.1    </span></span>
+<span><span class="co">## [67] labeling_0.4.3        rmarkdown_2.27        compiler_4.4.1</span></span></code></pre>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -822,16 +816,16 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
