@@ -906,15 +906,15 @@
 <text transform='translate(445.19,510.31) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='57.38px' lengthAdjust='spacingAndGlyphs'>untreated1</text>
 <rect x='79.52' y='52.55' width='220.74' height='8.97' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <text x='189.89' y='59.78' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='38.25px' lengthAdjust='spacingAndGlyphs'>paired-end</text>
-<rect x='79.52' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
-<rect x='134.70' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
+<rect x='79.52' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #377EB8;' />
+<rect x='134.70' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #377EB8;' />
 <rect x='189.89' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
 <rect x='245.07' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
 <rect x='303.09' y='52.55' width='165.56' height='8.97' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <text x='385.87' y='59.78' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='39.58px' lengthAdjust='spacingAndGlyphs'>single-read</text>
 <rect x='303.09' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
-<rect x='358.28' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
-<rect x='413.46' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
+<rect x='358.28' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #377EB8;' />
+<rect x='413.46' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #377EB8;' />
 <text x='471.48' y='73.73' style='font-size: 12.00px; font-family: sans;' textLength='48.04px' lengthAdjust='spacingAndGlyphs'>condition</text>
 <rect x='52.55' y='79.52' width='8.97' height='194.85' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <text transform='translate(59.78,176.94) rotate(-90)' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='41.35px' lengthAdjust='spacingAndGlyphs'>Intracellular</text>
@@ -1227,6 +1227,6 @@
 <text x='672.27' y='237.13' style='font-size: 10.00px; font-family: sans;' textLength='31.13px' lengthAdjust='spacingAndGlyphs'>treated</text>
 <text x='672.27' y='248.47' style='font-size: 10.00px; font-family: sans;' textLength='42.26px' lengthAdjust='spacingAndGlyphs'>untreated</text>
 <rect x='658.10' y='228.02' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #E41A1C;' />
-<rect x='658.10' y='239.36' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #999999;' />
+<rect x='658.10' y='239.36' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #377EB8;' />
 </g>
 </svg>

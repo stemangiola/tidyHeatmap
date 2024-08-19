@@ -1,3 +1,6 @@
+# Specify undefined global variables for R CMD check
+utils::globalVariables(c("shape", "size", "text", ":="))
+
 #the class definition
 InputHeatmap<-setClass(
 	"InputHeatmap",  
