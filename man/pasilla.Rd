@@ -7,10 +7,18 @@
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 504 rows and 8 columns.
 }
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 pasilla
 }
 \description{
 Example data set Pasilla
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }
 \keyword{datasets}

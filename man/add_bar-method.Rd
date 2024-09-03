@@ -5,6 +5,9 @@
 \alias{add_bar}
 \alias{add_bar,InputHeatmap-method}
 \title{DEPRECATED. Adds a bar annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 add_bar(.data, .column, palette = NULL, size = NULL, ...)
 
@@ -53,4 +56,9 @@ print("DEPRECATED")
 print("DEPRECATED") 
 
 
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }

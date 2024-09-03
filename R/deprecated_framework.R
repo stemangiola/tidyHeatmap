@@ -496,6 +496,10 @@ annot_to_list_OLD = function(.data){
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("add_bar", function(.data,
 															 .column,
 															 palette = NULL, size = NULL,...)
@@ -531,6 +535,10 @@ setGeneric("add_bar", function(.data,
 #' print("DEPRECATED") 
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("add_tile", function(.data,
 																.column,
 																palette = NULL, size = NULL, ...)
@@ -587,6 +595,10 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("add_point", function(.data,
 																 .column,
 																 palette = NULL, size = NULL,...)
@@ -643,6 +655,10 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #'
 #'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("add_line", function(.data,
 																.column,
 																palette = NULL,size = NULL, ...)

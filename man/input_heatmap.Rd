@@ -3,6 +3,9 @@
 \name{input_heatmap}
 \alias{input_heatmap}
 \title{input_heatmap}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 input_heatmap(
   .data,
@@ -43,4 +46,9 @@ input_heatmap() takes a tbl object and easily produces a ComplexHeatmap plot, wi
 }
 \details{
 To be added.
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }
