@@ -1,7 +1,7 @@
 citHeader("To cite tidyHeatmap in publications use:")
 
-bibEntry(
-  entry    = "Article",
+bibentry(
+  bibtype    = "Article",
   title    = "tidyHeatmap: an R package for modular heatmap production based on tidy principles",
   author   = "Mangiola S., Papenfuss A.",
   journal  = "Journal of Open Source Software",
