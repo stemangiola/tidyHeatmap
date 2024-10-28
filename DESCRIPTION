@@ -1,7 +1,7 @@
 Type: Package
 Package: tidyHeatmap
 Title: A Tidy Implementation of Heatmap
-Version: 1.10.4
+Version: 1.10.5
 Authors@R: 
     c(person(given = "Stefano",
            family = "Mangiola",
@@ -25,7 +25,7 @@ Description: This is a tidy implementation for heatmap.  At the
 License: GPL-3
 URL: https://www.r-project.org,
     https://github.com/stemangiola/tidyHeatmap
-BugReports: https://github.com/stemangiola/tidyHeatmap
+BugReports: https://github.com/stemangiola/tidyHeatmap/issues
 Depends: 
     R (>= 3.6)
 Imports: 
