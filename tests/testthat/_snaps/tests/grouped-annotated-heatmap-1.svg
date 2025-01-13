@@ -786,19 +786,19 @@
 <text transform='translate(354.35,534.33) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='33.37px' lengthAdjust='spacingAndGlyphs'>11458</text>
 <text transform='translate(381.58,534.33) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='33.37px' lengthAdjust='spacingAndGlyphs'>11450</text>
 <text transform='translate(408.81,534.33) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='33.37px' lengthAdjust='spacingAndGlyphs'>11467</text>
-<rect x='64.35' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #9E0142;' />
-<rect x='91.57' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #FEE999;' />
-<rect x='118.80' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E05248;' />
-<rect x='146.03' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #EDF7A3;' />
-<rect x='173.25' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #EDF7A3;' />
-<rect x='200.48' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #EDF7A3;' />
-<rect x='227.71' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #4FA0B0;' />
-<rect x='254.93' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #A0D8A2;' />
+<rect x='64.35' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E05248;' />
+<rect x='91.57' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #EDF7A3;' />
+<rect x='118.80' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #4FA0B0;' />
+<rect x='146.03' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #A0D8A2;' />
+<rect x='173.25' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
+<rect x='200.48' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
+<rect x='227.71' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #EDF7A3;' />
+<rect x='254.93' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
 <rect x='282.16' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #4FA0B0;' />
-<rect x='309.38' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #4FA0B0;' />
-<rect x='336.61' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
-<rect x='363.84' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
-<rect x='391.06' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
+<rect x='309.38' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #EDF7A3;' />
+<rect x='336.61' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #FEE999;' />
+<rect x='363.84' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #4FA0B0;' />
+<rect x='391.06' y='52.55' width='27.23' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #9E0142;' />
 <text x='421.12' y='63.76' style='font-size: 12.00px; font-family: sans;' textLength='86.71px' lengthAdjust='spacingAndGlyphs'>CAPRA_TOTAL</text>
 <rect x='52.55' y='69.56' width='8.97' height='79.35' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <text transform='translate(59.78,109.23) rotate(-90)' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='5.34px' lengthAdjust='spacingAndGlyphs'>E</text>

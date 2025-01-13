@@ -10,7 +10,7 @@ get_specific_annotation_columns = function(.data, .col){
 	.col = enquo(.col)
 	
 	# x-annotation df
-	n_x = .data %>% distinct_at(vars(!!.col)) %>% nrow
+	n_x = .data %>% select(!!.col) |> distinct() %>% nrow
 	
 	# element wise columns
 	.data %>%
@@ -21,7 +21,8 @@ get_specific_annotation_columns = function(.data, .col){
 				.x %>%
 				ifelse_pipe(
 					.data %>%
-						distinct_at(vars(!!.col, .x)) %>%
+					  select(!!.col, all_of(.x)) |> 
+						distinct() %>%
 						nrow %>%
 						equals(n_x),
 					~ .x,
@@ -48,7 +49,7 @@ subset = 		function(.data,
 	.data %>%
 		
 		# Selecting the right columns
-		select(	!!.column,	get_specific_annotation_columns(.data, !!.column)	) %>%
+		select(	!!.column,	all_of(get_specific_annotation_columns(.data, !!.column)	)) %>%
 		distinct()
 	
 }

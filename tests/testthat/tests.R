@@ -638,7 +638,7 @@ test_that("plus operator",{
 			scale = "row"
 		)
 	
-	p = p+p
+	p = ( p+p ) |> expect_warning("Heatmap/annotation names are duplicated")
 	
 	
 	vdiffr::expect_doppelganger("plus operator", p)

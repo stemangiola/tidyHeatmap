@@ -175,7 +175,7 @@ scale_design = function(df, .formula) {
     ungroup() %>%
     spread(cov, value) %>%
     arrange(as.integer(sample_idx)) %>%
-    select(`(Intercept)`, one_of(parse_formula(.formula)))
+    select(`(Intercept)`, any_of(parse_formula(.formula)))
 }
 
 #' Add attribute to abject
@@ -648,7 +648,8 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   annotation_function = type_to_annot_function[type]
   
   # Create dataset
-  quo_names(annotation) %>%
+  df = 
+    quo_names(annotation) %>%
 	  as_tibble %>%
 	  rename(col_name = value) %>%
 	  
@@ -657,22 +658,27 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  
 	  # Add orientation
 	  left_join(x_y_annot_cols,  by = "col_name") %>%
-	  mutate(col_orientation = map_chr(orientation, ~ .x %>% when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) %>%
+	  mutate(col_orientation = map_chr(orientation, ~ .x %>% when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) 
+
+  
+  df = df %>%
 	  
 	  # Add data
 	  mutate(
 	    data = map2(
 	      col_name,
 	      col_orientation,
-	      ~
-	        .data_ %>%
+	      ~ .data_ %>%
 	        ungroup() %>%
-	        select(.y, .x) %>%
+	        select(all_of(c(.y, .x))) %>%
 	        distinct() %>% 
-	        arrange_at(vars(.y)) %>%
-	        pull(.x)
+	        arrange(all_of((.y))) %>%
+	        select(all_of(.x)) |> 
+	        pull(1)
 	    )
-	  )  %>%
+	  ) 
+  
+  df = df %>%
 	    
 	  # Add function
 	  mutate(my_function = annotation_function) %>%
@@ -697,7 +703,9 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  	} 
 
 	    
-  })) %>%
+  })) 
+  
+  df = df %>%
 	  
 	  # # Check if NA in annotations
 	  # mutate_at(vars(!!annotation), function(x) {
@@ -743,7 +751,9 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 				
 			}
 			else NULL
-		})) %>%
+		})) 
+  
+  df = df %>%
 	  	
 	  mutate(further_arguments = map2(
 	  	col_name, my_function,
@@ -982,7 +992,7 @@ get_group_annotation_OPTIMISED_NOT_FINISHED = function(.data, .column, .row, .ab
         ~
           .data_ %>%
           ungroup() %>%
-          select(.y, .x) %>%
+          select(all_of(c(.y, .x))) %>%
           distinct() %>%
           arrange_at(vars(.y)) %>%
           pull(.x)
