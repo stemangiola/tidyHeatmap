@@ -912,10 +912,10 @@
 <text transform='translate(340.72,510.31) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='44.04px' lengthAdjust='spacingAndGlyphs'>treated3</text>
 <text transform='translate(393.55,510.31) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='44.04px' lengthAdjust='spacingAndGlyphs'>treated2</text>
 <text transform='translate(446.37,510.31) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='44.04px' lengthAdjust='spacingAndGlyphs'>treated1</text>
-<rect x='98.90' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #377EB8;' />
-<rect x='151.72' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #377EB8;' />
-<rect x='204.54' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #377EB8;' />
-<rect x='257.36' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #377EB8;' />
+<rect x='98.90' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
+<rect x='151.72' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
+<rect x='204.54' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
+<rect x='257.36' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #999999;' />
 <rect x='310.18' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
 <rect x='363.01' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
 <rect x='415.83' y='52.55' width='52.82' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
@@ -1333,6 +1333,6 @@
 <text x='672.27' y='261.49' style='font-size: 10.00px; font-family: sans;' textLength='31.13px' lengthAdjust='spacingAndGlyphs'>treated</text>
 <text x='672.27' y='272.83' style='font-size: 10.00px; font-family: sans;' textLength='42.26px' lengthAdjust='spacingAndGlyphs'>untreated</text>
 <rect x='658.10' y='252.38' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #E41A1C;' />
-<rect x='658.10' y='263.72' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #377EB8;' />
+<rect x='658.10' y='263.72' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #999999;' />
 </g>
 </svg>

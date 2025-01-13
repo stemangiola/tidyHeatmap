@@ -764,3 +764,22 @@ test_that("text",{
 			layer_text( `count normalised adjusted log` < 6 & sample == "untreated3" , .value=my_text, .size = my_size) 
 	)
 })
+
+
+test_that("sample_swap",{
+
+df <- tribble(~Compound_Name, ~Compound_Class, ~col, ~log2fc,
+                   "L-homoserineAA", "AA", 1, 2.93,
+                   "cellobioseCH", "CH", 1, 2.09,
+                   "D-maltoseCH", "CH", 1, 3.08,
+                   "pectinCH", "CH", 1, -3.04,
+                   "raffinoseCH", "CH", 1, -2.10)
+
+vdiffr::expect_doppelganger(
+  "sample_swap",
+  df %>%
+    group_by(Compound_Class) %>%
+    heatmap(.row = Compound_Name, .col = col, .value = log2fc)
+  )
+
+})

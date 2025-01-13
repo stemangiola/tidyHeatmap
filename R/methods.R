@@ -323,6 +323,14 @@ heatmap_ <-
 		
 		.data |> 
 			
+		  # Hotfix for wrong grouping of elements
+		  # https://github.com/stemangiola/tidyHeatmap/issues/116
+		  # We have to find the root cause ASAP
+		  mutate(
+		    !!.column := as.factor(!!.column),
+		    !!.row := as.factor(!!.row)
+		  ) |> 
+		  
 			# # Check if data is rectangular
 			# ifelse_pipe(
 			# 	!check_if_data_rectangular((.), !!.column, !!.row, !!.value),
