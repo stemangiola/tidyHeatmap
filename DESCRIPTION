@@ -1,7 +1,7 @@
 Type: Package
 Package: tidyHeatmap
 Title: A Tidy Implementation of Heatmap
-Version: 1.10.5
+Version: 1.10.6
 Authors@R: 
     c(person(given = "Stefano",
            family = "Mangiola",
