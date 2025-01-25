@@ -714,6 +714,8 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	      
 	      # anno_numeric does not have height argument
 	      if(..2 %in% c("point","bar","line")) call_args = call_args |> c(list(height = size))
+	      else if(..2 %in% c("numeric")) call_args = call_args |> c(list(width = size))
+	      
 	      if(..2 %in% c("numeric") & !"bg_gp" %in% names(dots_args))
 	        call_args = call_args |> c(list(bg_gp = gpar(fill = "grey70", col = NA)))   
 	      
@@ -1277,8 +1279,14 @@ filter_args <- function(all_args, target_func, force_keep = NULL, invert = FALSE
   # Get the names of the formal arguments of the target function
   valid_args <- names(formals(target_func))
   
-  # Combine valid arguments with force_keep if provided
-  if (!is.null(force_keep)) {
+  # Check if force_keep is numeric
+  if (is.numeric(force_keep)) {
+    # Get the names of arguments at the specified positions
+    positional_args <- names(all_args)[force_keep]
+    # Combine with the valid arguments
+    valid_args <- unique(c(valid_args, positional_args))
+  } else if (!is.null(force_keep)) {
+    # Combine with force_keep if it is not numeric
     valid_args <- unique(c(valid_args, force_keep))
   }
   

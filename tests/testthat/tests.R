@@ -419,7 +419,7 @@ test_that("multi-type",{
 
 	p = 
 		dplyr::group_by(tidyHeatmap::pasilla,		location, type) |>
-		dplyr::mutate(act = activation) |> 
+		dplyr::mutate(act = activation, act2 = activation) |> 
 		tidyr::nest(data = -sample) |>
 		dplyr::mutate(size = c(4.014422, 3.783935, 4.844936, 4.614196, 4.138012, 3.475512, 3.739565)) |>
 		dplyr::mutate(age = c(147 , 98,  96,  83, 105, 198,  73)) |>
@@ -427,10 +427,12 @@ test_that("multi-type",{
 		tidyHeatmap::heatmap(
 			.column = sample,
 			.row = symbol,
-			.value = `count normalised adjusted`
+			.value = `count normalised adjusted`, 
+			transform = log1p
 		) |>
 		annotation_tile(condition) |>
 		annotation_point(activation) |>
+	  annotation_numeric(act2) |>
 		annotation_tile(act) |>
 		annotation_bar(size) |>
 		annotation_line(age)
@@ -438,6 +440,29 @@ test_that("multi-type",{
 	
 	vdiffr::expect_doppelganger("multi-type", p)
 	
+})
+
+test_that("align-numeric",{
+  
+  library(magrittr)
+  
+  p = 
+    dplyr::group_by(tidyHeatmap::pasilla,		location, type) |>
+    dplyr::mutate(act = activation, act2 = activation) |> 
+    tidyr::nest(data = -sample) |>
+    dplyr::mutate(size = c(4.014422, 3.783935, 4.844936, 4.614196, 4.138012, 3.475512, 3.739565)) |>
+    dplyr::mutate(age = c(147 , 98,  96,  83, 105, 198,  73)) |>
+    tidyr::unnest(data) |>
+    tidyHeatmap::heatmap(
+      .column = sample,
+      .row = symbol,
+      .value = `count normalised adjusted`, 
+      transform = log1p
+    ) |>
+    annotation_numeric(act2, align_to = "right") 
+  
+  vdiffr::expect_doppelganger("numeric-right", p)
+  
 })
 
 test_that("save_pdf",{

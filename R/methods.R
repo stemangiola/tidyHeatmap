@@ -114,7 +114,8 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	  tidyHeatmap@top_annotation |> annot_to_list()
 	) |>
 	  list_drop_null() |> 
-	  filter_args(HeatmapAnnotation, force_keep = "mpg") # force keep because columnAnnotation, which calls HeatmapAnnotation has ellipse as first argument. Pretty peculiar setup
+	  filter_args(HeatmapAnnotation, force_keep = tidyHeatmap@top_annotation |> nrow() |> seq_len()) # force keep because columnAnnotation, which calls HeatmapAnnotation has ellipse as first argument. Pretty peculiar setup |>
+	
 	
 	tidyHeatmap@input$top_annotation <- 
 	  if (length(top_annotations) > 0 && !is.null(top_annotations)) {
@@ -128,7 +129,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	  tidyHeatmap@left_annotation |> annot_to_list()
 	) |>
 	  list_drop_null() |> 
-	  filter_args(HeatmapAnnotation, force_keep = "mpg") # force keep because columnAnnotation, which calls HeatmapAnnotation has ellipse as first argument. Pretty peculiar setup
+	  filter_args(HeatmapAnnotation, force_keep = tidyHeatmap@left_annotation |> nrow() |> seq_len()) # force keep because columnAnnotation, which calls HeatmapAnnotation has ellipse as first argument. Pretty peculiar setup
 	
 	tidyHeatmap@input$left_annotation <- 
 	  if (length(left_annotations) > 0 && !is.null(left_annotations)) {
@@ -685,6 +686,10 @@ setMethod("annotation_bar", "InputHeatmap", function(.data,
 #' @param .column Vector of quotes
 #' @param palette A character vector of colours, or a function such as colorRamp2 (see examples).
 #' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
+#' @param labels_format A function to format the numeric labels. By default, 
+#' it formats numbers to two decimal places using `sprintf("%.2f", x)`. You can
+#' supply any function that takes a numeric vector and returns a character vector
+#' for customised formatting.
 #' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container.
 #'
 #' @details It uses `ComplexHeatmap` as the visualisation tool.
@@ -710,7 +715,7 @@ setMethod("annotation_bar", "InputHeatmap", function(.data,
 #' @source [Mangiola and Papenfuss, 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("annotation_numeric", function(.data,
                                           .column,
-                                          palette = NULL, size = NULL, ...)
+                                          palette = NULL, size = NULL, labels_format = function(x) sprintf("%.1f", x), ...)
   standardGeneric("annotation_numeric"))
 
 #' annotation_numeric
@@ -722,10 +727,10 @@ setGeneric("annotation_numeric", function(.data,
 #'
 setMethod("annotation_numeric", "InputHeatmap", function(.data,
                                                          .column,
-                                                         palette = NULL, size = NULL, ...) {
+                                                         palette = NULL, size = NULL, labels_format = function(x) sprintf("%.1f", x), ...) {
   .column <- enquo(.column)
   
-  .data |> add_annotation(!!.column, type = "numeric", size = size, ...)
+  .data |> add_annotation(!!.column, type = "numeric", size = size, labels_format = labels_format, ...)
 })
 
 #' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
