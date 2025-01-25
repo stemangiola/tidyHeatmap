@@ -1,7 +1,7 @@
 Type: Package
 Package: tidyHeatmap
 Title: A Tidy Implementation of Heatmap
-Version: 1.10.6
+Version: 1.11.0
 Authors@R: 
     c(person(given = "Stefano",
            family = "Mangiola",
@@ -67,5 +67,5 @@ Biarch: true
 biocViews: AssayDomain, Infrastructure
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Language: en-US

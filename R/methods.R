@@ -92,6 +92,7 @@ setGeneric("as_ComplexHeatmap", function(tidyHeatmap) standardGeneric("as_Comple
 #'
 #' @importFrom ComplexHeatmap columnAnnotation
 #' @importFrom ComplexHeatmap rowAnnotation
+#' @importFrom ComplexHeatmap HeatmapAnnotation
 #'
 #' @docType methods
 #' @rdname as_ComplexHeatmap-method
@@ -108,31 +109,33 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	index_column_wise = NULL
 	shape = NULL
 	
-	tidyHeatmap@input$top_annotation = 
-		c(
-			tidyHeatmap@group_top_annotation,
-			tidyHeatmap@top_annotation |> annot_to_list()
-		) |>
-		list_drop_null() |>
-		when(
-			
-			# is.null needed for check Windows CRAN servers
-			length(.) |> gt(0) && !is.null(.) ~ do.call("columnAnnotation", . ),
-			~ NULL
-		)
+	top_annotations <- c(
+	  tidyHeatmap@group_top_annotation,
+	  tidyHeatmap@top_annotation |> annot_to_list()
+	) |>
+	  list_drop_null() |> 
+	  filter_args(HeatmapAnnotation, force_keep = "mpg") # force keep because columnAnnotation, which calls HeatmapAnnotation has ellipse as first argument. Pretty peculiar setup
 	
-	tidyHeatmap@input$left_annotation = 
-		c(
-			tidyHeatmap@group_left_annotation,
-			tidyHeatmap@left_annotation |> annot_to_list()
-		) |>
-		list_drop_null()  |>
-		when(
-			
-			# is.null needed for check Windows CRAN servers
-			length(.) |> gt(0) && !is.null(.)	~ do.call("rowAnnotation", . ),
-			~ NULL
-		)
+	tidyHeatmap@input$top_annotation <- 
+	  if (length(top_annotations) > 0 && !is.null(top_annotations)) {
+	    do.call("columnAnnotation", top_annotations)
+	  } else {
+	    NULL
+	  }
+	
+	left_annotations <- c(
+	  tidyHeatmap@group_left_annotation,
+	  tidyHeatmap@left_annotation |> annot_to_list()
+	) |>
+	  list_drop_null() |> 
+	  filter_args(HeatmapAnnotation, force_keep = "mpg") # force keep because columnAnnotation, which calls HeatmapAnnotation has ellipse as first argument. Pretty peculiar setup
+	
+	tidyHeatmap@input$left_annotation <- 
+	  if (length(left_annotations) > 0 && !is.null(left_annotations)) {
+	    do.call("rowAnnotation", left_annotations)
+	  } else {
+	    NULL
+	  }
 	
 	# On-top layer
 	tidyHeatmap@input$layer_fun = function(j, i, x, y, w, h, fill) {
@@ -666,6 +669,64 @@ setMethod("annotation_bar", "InputHeatmap", function(.data,
 	
 })
 
+#' Adds a numeric annotation layer to an `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description `annotation_numeric()` from an `InputHeatmap` object adds a numeric annotation layer.
+#'
+#' @importFrom rlang enquo
+#' @importFrom grid unit 
+#'
+#' @name annotation_numeric
+#' @rdname annotation_numeric-method
+#'
+#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .column Vector of quotes
+#' @param palette A character vector of colours, or a function such as colorRamp2 (see examples).
+#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
+#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container.
+#'
+#' @details It uses `ComplexHeatmap` as the visualisation tool.
+#'
+#' @return An `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`.
+#'
+#' @examples
+#'
+#' hm = 
+#'   tidyHeatmap::N52 |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' hm |> annotation_numeric(score)
+#'
+#' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss, 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+setGeneric("annotation_numeric", function(.data,
+                                          .column,
+                                          palette = NULL, size = NULL, ...)
+  standardGeneric("annotation_numeric"))
+
+#' annotation_numeric
+#' 
+#' @docType methods
+#' @rdname annotation_numeric-method
+#' 
+#' @return An `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`.
+#'
+setMethod("annotation_numeric", "InputHeatmap", function(.data,
+                                                         .column,
+                                                         palette = NULL, size = NULL, ...) {
+  .column <- enquo(.column)
+  
+  .data |> add_annotation(!!.column, type = "numeric", size = size, ...)
+})
 
 #' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
 #'

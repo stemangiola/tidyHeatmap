@@ -617,11 +617,13 @@ ct_colors = function(ct)
 #' @importFrom ComplexHeatmap anno_points
 #' @importFrom ComplexHeatmap anno_barplot
 #' @importFrom ComplexHeatmap anno_lines
+#' @importFrom ComplexHeatmap anno_numeric
 type_to_annot_function = list(
   "tile" = NULL, #anno_simple, 
   "point" = anno_points, 
   "bar" = anno_barplot, 
-  "line" = anno_lines
+  "line" = anno_lines,
+  "numeric" = anno_numeric
 )
 
 get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation, palette_annotation, type, x_y_annot_cols, size, ...){
@@ -688,22 +690,45 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  # Apply annot function if not NULL otherwise pass original annotation
 	  # This because no function for ComplexHeatmap = to tile
 	  mutate(annot = pmap(list(data, type, orientation), ~  {
-	    
-	  	if(..3 == "column"){
-	  		if(..2 == "tile") return(..1)
-	  		else if(..2 == "point") return(anno_points(..1, which=..3, height = size) )
-	  		else if(..2 == "bar") return(anno_barplot(..1, which=..3, height = size) )
-	  		else if(..2 == "line") return(anno_lines(..1, which=..3, height = size) )
-	  	} 
-	  	else if(..3 == "row"){
-	  		if(..2 == "tile") return(..1)
-	  		else if(..2 == "point") return(anno_points(..1, which=..3, width = size) )
-	  		else if(..2 == "bar") return(anno_barplot(..1, which=..3, width = size) )
-	  		else if(..2 == "line") return(anno_lines(..1, which=..3, width = size) )
-	  	} 
+
+	    # Suppose ..1 = data, ..2 = type, ..3 = orientation
+	    # dots_args is your captured ellipsis list, e.g. dots_args <- list(border=TRUE, gp=gpar(...))
+	    if(..2 == "tile") {
+	      # "tile" just returns the original data (..1)
+	      return(..1)
+	    } else {
+	      # Match annotation "type" to the correct ComplexHeatmap function
+	      ann_fun <- switch(
+	        ..2,
+	        "point" = anno_points,
+	        "bar"   = anno_barplot,
+	        "line"  = anno_lines,
+	        "numeric" = anno_numeric,
+	        stop("Unsupported annotation type: ", ..2)
+	      )
+	      
+	      # Build the argument list for do.call
+	      # If you truly need different dimension args for row vs column
+	      # (e.g. width= vs. height=), handle that logic here.
+	      call_args <-  list(x     = ..1, which = ..3)
+	      
+	      # anno_numeric does not have height argument
+	      if(..2 %in% c("point","bar","line")) call_args = call_args |> c(list(height = size))
+	      if(..2 %in% c("numeric") & !"bg_gp" %in% names(dots_args))
+	        call_args = call_args |> c(list(bg_gp = gpar(fill = "grey70", col = NA)))   
+	      
+	      call_args = call_args |> c(dots_args |> filter_args(ann_fun))
+
+	      
+	      # Invoke the correct anno_* function with do.call
+	      return(do.call(ann_fun, call_args))
+	    }
 
 	    
-  })) 
+  },
+  # Pass dots here so they're available inside the inner function
+  dots_args
+  )) 
   
   df = df %>%
 	  
@@ -1245,4 +1270,22 @@ combine_lists_with_the_same_name = function(x){
 		tapply(unlist(x, use.names = FALSE), rep(names(x), lengths(x)), FUN = c)
 	}
 	
+}
+
+# Helper function to filter arguments for a specific function
+filter_args <- function(all_args, target_func, force_keep = NULL, invert = FALSE) {
+  # Get the names of the formal arguments of the target function
+  valid_args <- names(formals(target_func))
+  
+  # Combine valid arguments with force_keep if provided
+  if (!is.null(force_keep)) {
+    valid_args <- unique(c(valid_args, force_keep))
+  }
+  
+  # Filter or exclude arguments based on the invert parameter
+  if (invert) {
+    all_args[!names(all_args) %in% valid_args]
+  } else {
+    all_args[names(all_args) %in% valid_args]
+  }
 }
