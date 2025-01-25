@@ -718,7 +718,10 @@ setMethod("annotation_bar", "InputHeatmap", function(.data,
 #'     .value = `read count normalised log`
 #' )
 #' 
-#' hm |> annotation_numeric(score)
+#' hm |> annotation_numeric(inflection)
+#' 
+#' # Align to the right 
+#' hm |> annotation_numeric(inflection, align_to = "right")
 #'
 #' @export
 #' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 

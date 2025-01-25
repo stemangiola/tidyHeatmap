@@ -69,7 +69,10 @@ hm =
     .value = `read count normalised log`
 )
 
-hm |> annotation_numeric(score)
+hm |> annotation_numeric(inflection)
+
+# Align to the right 
+hm |> annotation_numeric(inflection, align_to = "right")
 
 }
 \references{

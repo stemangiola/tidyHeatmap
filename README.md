@@ -614,7 +614,7 @@ mtcars_tidy |>
   annotation_numeric(hp, align_to="right")
 ```
 
-![](man/fragments/figures/align%20numeric-1.png)<!-- -->
+![](man/fragments/figures/align_numeric-1.png)<!-- -->
 
 ## External `ComplexHeatmap` functionalities
 

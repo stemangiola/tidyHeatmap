@@ -512,7 +512,7 @@ mtcars_tidy |>
 
 This can be done only for `annotation_numeric` because of `ComplexHeatmap` requirements (?ComplexHeatmap::anno_numeric)
 
-```{r align numeric, fig.width=10, fig.height=10}
+```{r align_numeric, fig.width=10, fig.height=10}
 mtcars_tidy |> 
 	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
 	heatmap(
