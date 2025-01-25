@@ -44,28 +44,29 @@ as graphical engine.
 
 ## Functions/utilities available
 
-| Function            | Description                                                                 |
-|---------------------|-----------------------------------------------------------------------------|
-| `heatmap`           | Plots base heatmap                                                          |
-| `group_by`          | `dplyr` function - groups heatpmap rows/columns                             |
-| `annotation_tile`   | Adds tile annotation to the heatmap                                         |
-| `annotation_point`  | Adds point annotation to the heatmap                                        |
-| `annotation_bar`    | Adds bar annotation to the heatmap                                          |
-| `annotation_line`   | Adds line annotation to the heatmap                                         |
-| `layer_text`        | Add layer of text on top of the heatmap                                     |
-| `layer_point`       | Adds layer of symbols on top of the heatmap                                 |
-| `layer_square`      | Adds layer of symbols on top of the heatmap                                 |
-| `layer_diamond`     | Adds layer of symbols on top of the heatmap                                 |
-| `layer_arrow_up`    | Adds layer of symbols on top of the heatmap                                 |
-| `layer_arrow_down`  | Add layer of symbols on top of the heatmap                                  |
-| `layer_star`        | Add layer of symbols on top of the heatmap                                  |
-| `layer_asterisk`    | Add layer of symbols on top of the heatmap                                  |
-| `split_rows`        | Splits the rows based on the dendogram                                      |
-| `split_columns`     | Splits the columns based on the dendogram                                   |
-| `save_pdf`          | Saves the PDF of the heatmap                                                |
-| `+`                 | Integrate heatmaps side-by-side                                             |
-| `as_ComplexHeatmap` | Convert the tidyHeatmap output to ComplexHeatmap for non-standard “drawing” |
-| `wrap_heatmap`      | Allows the integration with the `patchwork` package                         |
+| Function             | Description                                                                 |
+|----------------------|-----------------------------------------------------------------------------|
+| `heatmap`            | Plots base heatmap                                                          |
+| `group_by`           | `dplyr` function - groups heatpmap rows/columns                             |
+| `annotation_tile`    | Adds tile annotation to the heatmap                                         |
+| `annotation_point`   | Adds point annotation to the heatmap                                        |
+| `annotation_bar`     | Adds bar annotation to the heatmap                                          |
+| `annotation_numeric` | Adds bar + number annotation to the heatmap                                 |
+| `annotation_line`    | Adds line annotation to the heatmap                                         |
+| `layer_text`         | Add layer of text on top of the heatmap                                     |
+| `layer_point`        | Adds layer of symbols on top of the heatmap                                 |
+| `layer_square`       | Adds layer of symbols on top of the heatmap                                 |
+| `layer_diamond`      | Adds layer of symbols on top of the heatmap                                 |
+| `layer_arrow_up`     | Adds layer of symbols on top of the heatmap                                 |
+| `layer_arrow_down`   | Add layer of symbols on top of the heatmap                                  |
+| `layer_star`         | Add layer of symbols on top of the heatmap                                  |
+| `layer_asterisk`     | Add layer of symbols on top of the heatmap                                  |
+| `split_rows`         | Splits the rows based on the dendogram                                      |
+| `split_columns`      | Splits the columns based on the dendogram                                   |
+| `save_pdf`           | Saves the PDF of the heatmap                                                |
+| `+`                  | Integrate heatmaps side-by-side                                             |
+| `as_ComplexHeatmap`  | Convert the tidyHeatmap output to ComplexHeatmap for non-standard “drawing” |
+| `wrap_heatmap`       | Allows the integration with the `patchwork` package                         |
 
 ## Installation
 
@@ -152,7 +153,8 @@ mtcars_heatmap <-
     ## Warning: Using one column matrices in `filter()` was deprecated in dplyr 1.1.0.
     ## ℹ Please use one dimensional logical vectors instead.
     ## ℹ The deprecated feature was likely used in the tidyHeatmap package.
-    ##   Please report the issue at <https://github.com/stemangiola/tidyHeatmap>.
+    ##   Please report the issue at
+    ##   <https://github.com/stemangiola/tidyHeatmap/issues>.
     ## This warning is displayed once every 8 hours.
     ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
     ## generated.
@@ -398,7 +400,7 @@ tidyHeatmap::pasilla |>
 # Create some more data points
 pasilla_plus <- 
     tidyHeatmap::pasilla |>
-    dplyr::mutate(act = activation) |> 
+    dplyr::mutate(activation_2 = activation, activation_3 = activation) |> 
     tidyr::nest(data = -sample) |>
     dplyr::mutate(size = rnorm(n(), 4,0.5)) |>
     dplyr::mutate(age = runif(n(), 50, 200)) |>
@@ -414,7 +416,8 @@ pasilla_plus |>
     ) |>
     annotation_tile(condition) |>
     annotation_point(activation) |>
-    annotation_tile(act) |>
+    annotation_numeric(activation_3) |>
+    annotation_tile(activation_2) |>
     annotation_bar(size) |>
     annotation_line(age)
 ```
@@ -436,7 +439,7 @@ pasilla_plus |>
     ) |>
     annotation_tile(condition, size = unit(0.3, "cm"),  annotation_name_gp= gpar(fontsize = 8)) |>
     annotation_point(activation, size = unit(0.3, "cm"),    annotation_name_gp= gpar(fontsize = 8)) |>
-    annotation_tile(act, size = unit(0.3, "cm"),    annotation_name_gp= gpar(fontsize = 8)) |>
+    annotation_tile(activation_2, size = unit(0.3, "cm"),   annotation_name_gp= gpar(fontsize = 8)) |>
     annotation_bar(size, size = unit(0.3, "cm"),    annotation_name_gp= gpar(fontsize = 8)) |>
     annotation_line(age, size = unit(0.3, "cm"),    annotation_name_gp= gpar(fontsize = 8))
 ```
@@ -554,7 +557,7 @@ mtcars_tidy |>
 ``` r
 library(forcats)
 mtcars_tidy |> 
-    mutate(`Car name` = fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+    mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
     heatmap(
         `Car name`, Property, Value,    
         scale = "row", 
@@ -568,7 +571,7 @@ mtcars_tidy |>
 
 ``` r
 mtcars_tidy |> 
-    mutate(`Car name` = fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+    mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
     heatmap(
         `Car name`, Property, Value,    
         scale = "row", 
@@ -583,7 +586,7 @@ mtcars_tidy |>
 
 ``` r
 mtcars_tidy |> 
-    mutate(`Car name` = fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+    mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
     heatmap(
         `Car name`, Property, Value,    
         scale = "row", 
@@ -595,6 +598,23 @@ mtcars_tidy |>
 ```
 
 ![](man/fragments/figures/sizecolumns-1.png)<!-- -->
+
+## Align numeric annotation
+
+This can be done only for `annotation_numeric` because of
+`ComplexHeatmap` requirements (?ComplexHeatmap::anno_numeric)
+
+``` r
+mtcars_tidy |> 
+    mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+    heatmap(
+        `Car name`, Property, Value,    
+        scale = "row"
+    ) |> 
+  annotation_numeric(hp, align_to="right")
+```
+
+![](man/fragments/figures/align%20numeric-1.png)<!-- -->
 
 ## External `ComplexHeatmap` functionalities
 
