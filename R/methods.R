@@ -114,7 +114,12 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	  tidyHeatmap@top_annotation |> annot_to_list()
 	) |>
 	  list_drop_null() |> 
-	  filter_args(HeatmapAnnotation, force_keep = tidyHeatmap@top_annotation |> nrow() |> seq_len()) # force keep because columnAnnotation, which calls HeatmapAnnotation has ellipse as first argument. Pretty peculiar setup |>
+	  filter_args(
+	    HeatmapAnnotation, 
+	    force_keep = 	    
+	      seq_len(nrow(tidyHeatmap@top_annotation) + length(tidyHeatmap@group_top_annotation))
+
+	   ) # force keep because columnAnnotation, which calls HeatmapAnnotation has ellipse as first argument. Pretty peculiar setup |>
 	
 	
 	tidyHeatmap@input$top_annotation <- 
@@ -129,7 +134,11 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	  tidyHeatmap@left_annotation |> annot_to_list()
 	) |>
 	  list_drop_null() |> 
-	  filter_args(HeatmapAnnotation, force_keep = tidyHeatmap@left_annotation |> nrow() |> seq_len()) # force keep because columnAnnotation, which calls HeatmapAnnotation has ellipse as first argument. Pretty peculiar setup
+	  filter_args(
+	    HeatmapAnnotation, 
+	    force_keep = 
+	      seq_len(nrow(tidyHeatmap@left_annotation) + length(tidyHeatmap@group_left_annotation))
+	   ) # force keep because columnAnnotation, which calls HeatmapAnnotation has ellipse as first argument. Pretty peculiar setup
 	
 	tidyHeatmap@input$left_annotation <- 
 	  if (length(left_annotations) > 0 && !is.null(left_annotations)) {
