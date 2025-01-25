@@ -699,7 +699,10 @@ setMethod("annotation_bar", "InputHeatmap", function(.data,
 #' it formats numbers to two decimal places using `sprintf("%.2f", x)`. You can
 #' supply any function that takes a numeric vector and returns a character vector
 #' for customised formatting.
-#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container.
+#' @param ... The arguments that will be passed to 
+#'   \code{\link[ComplexHeatmap:anno_numeric]{anno_numeric}} and 
+#'   \code{\link[ComplexHeatmap:HeatmapAnnotation]{HeatmapAnnotation}}
+#'   if you want to fine tune the aesthetics.
 #'
 #' @details It uses `ComplexHeatmap` as the visualisation tool.
 #'
