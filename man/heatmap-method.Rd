@@ -64,7 +64,7 @@ heatmap_(
 )
 }
 \arguments{
-\item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}
+\item{.data}{A `tbl_df` formatted as | <.row> | <.column> | <.value> | <...> |}
 
 \item{.row}{The name of the column vertically presented in the heatmap}
 

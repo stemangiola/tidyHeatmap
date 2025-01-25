@@ -14,7 +14,7 @@ annotation_tile(.data, .column, palette = NULL, size = NULL, ...)
 \S4method{annotation_tile}{InputHeatmap}(.data, .column, palette = NULL, size = NULL, ...)
 }
 \arguments{
-\item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}
+\item{.data}{a `InputHeatmap` object created calling `tidyHeatmap::heatmap()`}
 
 \item{.column}{Vector of quotes}
 
@@ -22,7 +22,10 @@ annotation_tile(.data, .column, palette = NULL, size = NULL, ...)
 
 \item{size}{A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.}
 
-\item{...}{The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container}
+\item{...}{The arguments that will be passed to 
+\code{\link[ComplexHeatmap:anno_block]{anno_block}} and 
+\code{\link[ComplexHeatmap:HeatmapAnnotation]{HeatmapAnnotation}}
+if you want to fine tune the aesthetics.}
 }
 \value{
 A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`

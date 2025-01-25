@@ -211,7 +211,7 @@ setMethod("show", "InputHeatmap", function(object){
 #'
 #' @name heatmap
 #'
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .data A `tbl_df` formatted as | <.row> | <.column> | <.value> | <...> |
 #' @param .row The name of the column vertically presented in the heatmap
 #' @param .column The name of the column horizontally presented in the heatmap
 #' @param .value The name of the column for the value of the element/feature pair
@@ -386,11 +386,14 @@ setMethod("heatmap", "tbl_df", heatmap_)
 #' @name annotation_tile
 #' @rdname annotation_tile-method
 #'
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .data a `InputHeatmap` object created calling `tidyHeatmap::heatmap()`
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
 #' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
-#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
+#' @param ... The arguments that will be passed to 
+#'   \code{\link[ComplexHeatmap:anno_block]{anno_block}} and 
+#'   \code{\link[ComplexHeatmap:HeatmapAnnotation]{HeatmapAnnotation}}
+#'   if you want to fine tune the aesthetics.
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
 #' 
@@ -480,12 +483,15 @@ setMethod("annotation_tile", "InputHeatmap", function(.data,
 #' @name annotation_point
 #' @rdname annotation_point-method
 #'
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .data a `InputHeatmap` object created calling `tidyHeatmap::heatmap()`
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
 #' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
-#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
-#'
+#' @param ... The arguments that will be passed to 
+#'   \code{\link[ComplexHeatmap:anno_points]{anno_points}} and 
+#'   \code{\link[ComplexHeatmap:HeatmapAnnotation]{HeatmapAnnotation}}
+#'   if you want to fine tune the aesthetics.
+#'   
 #' @details It uses `ComplexHeatmap` as visualisation tool.
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
@@ -546,12 +552,15 @@ setMethod("annotation_point", "InputHeatmap", function(.data,
 #' @name annotation_line
 #' @rdname annotation_line-method
 #'
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .data a `InputHeatmap` object created calling `tidyHeatmap::heatmap()`
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
 #' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
-#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
-#'
+#' @param ... The arguments that will be passed to 
+#'   \code{\link[ComplexHeatmap:anno_lines]{anno_lines}} and 
+#'   \code{\link[ComplexHeatmap:HeatmapAnnotation]{HeatmapAnnotation}}
+#'   if you want to fine tune the aesthetics.
+#'   
 #' @details It uses `ComplexHeatmap` as visualisation tool.
 #' 
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
@@ -613,11 +622,14 @@ setMethod("annotation_line", "InputHeatmap", function(.data,
 #' @name annotation_bar
 #' @rdname annotation_bar-method
 #'
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .data a `InputHeatmap` object created calling `tidyHeatmap::heatmap()`
 #' @param .column Vector of quotes
 #' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
 #' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
-#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
+#' @param ... The arguments that will be passed to 
+#'   \code{\link[ComplexHeatmap:anno_barplot]{anno_barplot}} and 
+#'   \code{\link[ComplexHeatmap:HeatmapAnnotation]{HeatmapAnnotation}}
+#'   if you want to fine tune the aesthetics.
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
 #' 
