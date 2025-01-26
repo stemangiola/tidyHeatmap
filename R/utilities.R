@@ -146,37 +146,37 @@ parse_formula <- function(fm) {
     as.character(attr(terms(fm), "variables"))[-1]
 }
 
-#' Scale design matrix
-#'
-#' @importFrom stats setNames
-#' @importFrom stats cov
-#'
-#' @param df A tibble
-#' @param .formula a formula
-#'
-#' @return A tibble
-#'
-#'
-scale_design = function(df, .formula) {
-  
-  # Comply with CRAN NOTES
-  value = sample_idx = `(Intercept)` =  NULL
-  
-  df %>%
-    setNames(c("sample_idx", "(Intercept)", parse_formula(.formula))) %>%
-    gather(cov, value,-sample_idx) %>%
-    group_by(cov) %>%
-    mutate(value = ifelse(
-      !grepl("Intercept", cov) &
-        length(union(c(0, 1), value)) != 2,
-      scale(value),
-      value
-    )) %>%
-    ungroup() %>%
-    spread(cov, value) %>%
-    arrange(as.integer(sample_idx)) %>%
-    select(`(Intercept)`, any_of(parse_formula(.formula)))
-}
+# #' Scale design matrix
+# #'
+# #' @importFrom stats setNames
+# #' @importFrom stats cov
+# #'
+# #' @param df A tibble
+# #' @param .formula a formula
+# #'
+# #' @return A tibble
+# #'
+# #'
+# scale_design = function(df, .formula) {
+  # 
+ #  # Comply with CRAN NOTES
+ #  value = sample_idx = `(Intercept)` =  NULL
+ #  
+ #  df %>%
+ #    setNames(c("sample_idx", "(Intercept)", parse_formula(.formula))) %>%
+ #    gather(cov, value,-sample_idx) %>%
+ #    group_by(cov) %>%
+ #    mutate(value = ifelse(
+ #      !grepl("Intercept", cov) &
+ #        length(union(c(0, 1), value)) != 2,
+ #      scale(value),
+ #      value
+ #    )) %>%
+ #    ungroup() %>%
+ #    pivot_wider(names_from = cov, values_from = value) %>%
+ #    arrange(as.integer(sample_idx)) %>%
+ #    select(`(Intercept)`, any_of(parse_formula(.formula)))
+ # }
 
 #' Add attribute to abject
 #'
@@ -860,7 +860,7 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
   	stop(sprintf("tidyHeatmap says: the grouping %s is not specific to row or columns. Maybe you just have one grouping.", x_y_annotation_cols %>% unlist() %>% .[x_y_annotation_cols %>% unlist() %>% duplicated()]))
   
   if(length(x_y_annotation_cols$row) > 0){
-       
+    
     # Row split
     row_split = 
       .data %>%
