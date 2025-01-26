@@ -198,20 +198,6 @@ setMethod("show", "InputHeatmap", function(object){
 		show()
 })
 
-# == title
-# Class for Concatenating Heatmaps and Annotations
-#
-# == detail 
-# This class is a super class for `Heatmap-class`, `HeatmapList-class` and
-# `HeatmapAnnotation-class` classes. It is only designed for ``+`` generic
-# method and the ``\%v\%v`` method so that above three classes can be appended to each other.
-#
-tidyHeatmap_additive = setClass("tidyHeatmap_additive")
-
-setClass(
-  "tidyHeatmap_additive",
-  contains = "HeatmapList"
-)
 
 #' @rdname plot_arithmetic
 #' 
@@ -224,30 +210,8 @@ setClass(
 #' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 "+.InputHeatmap" <- function(e1, e2) {
 	
-  p = add_heatmap(as_ComplexHeatmap(e1), as_ComplexHeatmap(e2))
-  
-  p = as(p, "tidyHeatmap_additive")
-  
-  p
+  add_heatmap(as_ComplexHeatmap(e1), as_ComplexHeatmap(e2)) 
 
-}
-
-
-
-
-#' @rdname plot_arithmetic next
-#' 
-#' @importFrom ComplexHeatmap add_heatmap
-#' 
-#' @export
-#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
-#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
-#'   doi:10.21105/joss.02472.
-#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
-"+.tidyHeatmap_additive" <- function(e1, e2) {
-  
-  add_heatmap(e1, as_ComplexHeatmap(e2))
-  
 }
 
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
