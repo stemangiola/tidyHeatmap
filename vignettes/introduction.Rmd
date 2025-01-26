@@ -20,16 +20,6 @@ knit: >
                 demo_metadata = TRUE
             )
         )
-        rmarkdown::render(
-            x,
-            output_file = "README.md",
-            output_format = "github_document",
-            output_dir = proj_root,
-            knit_root_dir = proj_root,
-            params = list(
-                demo_metadata = FALSE
-            )
-        )
     })
 ---
 
