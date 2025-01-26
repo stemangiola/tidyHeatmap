@@ -302,7 +302,21 @@
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="do">##   [3m[34m&lt;https://github.com/stemangiola/tidyHeatmap/issues&gt;[39m[23m.</span></span>
 <span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="do">## [90mThis warning is displayed once every 8 hours.[39m</span></span>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="do">## [90mCall `lifecycle::last_lifecycle_warnings()` to see where this warning was[39m</span></span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="do">## [90mgenerated.[39m</span></span></code></pre></div>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="do">## [90mgenerated.[39m</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="do">## Warning: [1m[22mReturning more (or less) than 1 row per `summarise()` group was deprecated in</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="do">## dplyr 1.1.0.</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="do">## [36mℹ[39m Please use `reframe()` instead.</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="do">## [36mℹ[39m When switching from `summarise()` to `reframe()`, remember that `reframe()`</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="do">##   always returns an ungrouped data frame and adjust accordingly.</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="do">## [36mℹ[39m The deprecated feature was likely used in the [34mdplyr[39m package.</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="do">##   Please report the issue at [3m[34m&lt;https://github.com/tidyverse/dplyr/issues&gt;[39m[23m.</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="do">## [90mThis warning is displayed once every 8 hours.[39m</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="do">## [90mCall `lifecycle::last_lifecycle_warnings()` to see where this warning was[39m</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="do">## [90mgenerated.[39m</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_heatmap</span></span></code></pre></div>
 <p><img src="man/fragments/figures/heatmap-1.png"><!-- --></p>
@@ -348,9 +362,11 @@
 <span>    <span class="fu">group_by</span><span class="op">(</span><span class="va">vs</span>, <span class="va">property_group</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    scale <span class="op">=</span> <span class="st">"row"</span>   <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/grouping-1.png"><!-- --></p>
 <p>We can provide colour palettes to groupings</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy_groupings</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">group_by</span><span class="op">(</span><span class="va">vs</span>, <span class="va">property_group</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -366,16 +382,20 @@
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/grouping2-1.png"><!-- --></p>
 <p>We can split based on the cladogram</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    scale <span class="op">=</span> <span class="st">"row"</span>   <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/split-methods.html">split_rows</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/split-methods.html">split_columns</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/split-1.png"><!-- --></p>
 <p>We can split on kmean clustering (using ComplexHeatmap options, it is stochastic)</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    </span>
@@ -383,13 +403,15 @@
 <span>        row_km <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>        column_km <span class="op">=</span> <span class="fl">2</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/split2-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="custom-palettes">Custom palettes<a class="anchor" aria-label="anchor" href="#custom-palettes"></a>
 </h2>
 <p>We can easily use custom palette, using strings, hexadecimal color character vector,</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, </span>
@@ -398,9 +420,11 @@
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>,</span>
 <span>        palette_value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"white"</span>, <span class="st">"blue"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/custom-1.png"><!-- --></p>
 <p>A better-looking blue-to-red palette</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, </span>
@@ -412,9 +436,11 @@
 <span>            <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">11</span>, <span class="st">"RdBu"</span><span class="op">)</span></span>
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/redblue-1.png"><!-- --></p>
 <p>Or a grid::colorRamp2 function for higher flexibility</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, </span>
@@ -423,9 +449,11 @@
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>,</span>
 <span>        palette_value <span class="op">=</span> <span class="fu">circlize</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/circlize/man/colorRamp2.html" class="external-link">colorRamp2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/flexible-1.png"><!-- --></p>
 <p>We can use custom colors for tile annotation</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, </span>
@@ -437,14 +465,17 @@
 <span>        <span class="va">hp</span>, </span>
 <span>        palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"white"</span>, <span class="st">"blue"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="do">## Warning: [1m[22m`add_tile()` was deprecated in tidyHeatmap 1.9.0.</span></span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="do">## [36mℹ[39m Please use `annotation_tile()` instead</span></span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="do">## [90mThis warning is displayed once every 8 hours.[39m</span></span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="do">## [90mCall `lifecycle::last_lifecycle_warnings()` to see where this warning was[39m</span></span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="do">## [90mgenerated.[39m</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="do">## Warning: [1m[22m`add_tile()` was deprecated in tidyHeatmap 1.9.0.</span></span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a><span class="do">## [36mℹ[39m Please use `annotation_tile()` instead</span></span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="do">## [90mThis warning is displayed once every 8 hours.[39m</span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a><span class="do">## [90mCall `lifecycle::last_lifecycle_warnings()` to see where this warning was[39m</span></span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a><span class="do">## [90mgenerated.[39m</span></span></code></pre></div>
 <p><img src="man/fragments/figures/customtile-1.png"><!-- --></p>
 <p>We can use grid::colorRamp2 function for tile annotation for specific color scales</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, </span>
@@ -456,12 +487,14 @@
 <span>        <span class="va">hp</span>, </span>
 <span>        palette <span class="op">=</span> <span class="fu">circlize</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/circlize/man/colorRamp2.html" class="external-link">colorRamp2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">300</span><span class="op">)</span>, <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/customtile2-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="multiple-groupings-and-annotations">Multiple groupings and annotations<a class="anchor" aria-label="anchor" href="#multiple-groupings-and-annotations"></a>
 </h2>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">group_by</span><span class="op">(</span><span class="va">location</span>, <span class="va">type</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -474,7 +507,7 @@
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">activation</span><span class="op">)</span></span></code></pre></div>
 <p><img src="man/fragments/figures/multiple-1.png"><!-- --></p>
 <p>Remove legends, adding aesthetics to annotations in a modular fashion, using <code>ComplexHeatmap</code> arguments</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">group_by</span><span class="op">(</span><span class="va">location</span>, <span class="va">type</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -492,7 +525,7 @@
 <h2 id="annotation-types">Annotation types<a class="anchor" aria-label="anchor" href="#annotation-types"></a>
 </h2>
 <p>“tile”, “point”, “bar” and “line” are available</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create some more data points</span></span>
 <span><span class="va">pasilla_plus</span> <span class="op">&lt;-</span> </span>
 <span>    <span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
@@ -522,7 +555,7 @@
 <h2 id="annotation-size">Annotation size<a class="anchor" aria-label="anchor" href="#annotation-size"></a>
 </h2>
 <p>We can customise annotation sizes using the <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code>, and the size of their names using in-built <code>ComplexHeatmap</code> arguments</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pasilla_plus</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        .column <span class="op">=</span> <span class="va">sample</span>,</span>
@@ -542,7 +575,7 @@
 <h1 id="layer-symbol">Layer symbol<a class="anchor" aria-label="anchor" href="#layer-symbol"></a>
 </h1>
 <p>Add a layer on top of the heatmap</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
 <span>    </span>
 <span>    <span class="co"># filter</span></span>
@@ -574,7 +607,7 @@
 <h1 id="layer-text">Layer text<a class="anchor" aria-label="anchor" href="#layer-text"></a>
 </h1>
 <p>Add a text layer on top of the heatmap</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
 <span>    </span>
 <span>    <span class="co"># filter</span></span>
@@ -605,7 +638,7 @@
 <div class="section level1">
 <h1 id="adding-heatmap-side-by-side">Adding heatmap side-by-side<a class="anchor" aria-label="anchor" href="#adding-heatmap-side-by-side"></a>
 </h1>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_heatmap</span> <span class="op">=</span> <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">mtcars_tidy</span>, <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>, scale <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">p_heatmap</span> <span class="op">+</span> <span class="va">p_heatmap</span></span></code></pre></div>
@@ -617,31 +650,35 @@
 <div class="section level2">
 <h2 id="add-cell-borders">Add cell borders<a class="anchor" aria-label="anchor" href="#add-cell-borders"></a>
 </h2>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    </span>
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>, </span>
 <span>        rect_gp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"#161616"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/borders-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="drop-row-clustering">Drop row clustering<a class="anchor" aria-label="anchor" href="#drop-row-clustering"></a>
 </h2>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    </span>
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>, </span>
 <span>        cluster_rows <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/droprow-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="reorder-rows-elements">Reorder rows elements<a class="anchor" aria-label="anchor" href="#reorder-rows-elements"></a>
 </h2>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org/" class="external-link">forcats</a></span><span class="op">)</span></span>
 <span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -650,12 +687,14 @@
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>, </span>
 <span>        cluster_rows <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/reorder-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="size-of-dendrograms">Size of dendrograms<a class="anchor" aria-label="anchor" href="#size-of-dendrograms"></a>
 </h2>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -664,12 +703,14 @@
 <span>        column_dend_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.2</span>, <span class="st">"cm"</span><span class="op">)</span>, </span>
 <span>        row_dend_width <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.2</span>, <span class="st">"cm"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb42-2"><a href="#cb42-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/sizedendro-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="size-of-rowscolumns-titles-and-names">Size of rows/columns titles and names<a class="anchor" aria-label="anchor" href="#size-of-rowscolumns-titles-and-names"></a>
 </h2>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -680,13 +721,15 @@
 <span>        column_title_gp <span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">7</span><span class="op">)</span>,</span>
 <span>        row_title_gp <span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/sizecolumns-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="align-numeric-annotation">Align numeric annotation<a class="anchor" aria-label="anchor" href="#align-numeric-annotation"></a>
 </h2>
 <p>This can be done only for <code>annotation_numeric</code> because of <code>ComplexHeatmap</code> requirements (?ComplexHeatmap::anno_numeric)</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -694,6 +737,8 @@
 <span>        scale <span class="op">=</span> <span class="st">"row"</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/annotation_numeric-method.html">annotation_numeric</a></span><span class="op">(</span><span class="va">hp</span>, align_to<span class="op">=</span><span class="st">"right"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/align_numeric-1.png"><!-- --></p>
 </div>
 <div class="section level2">
@@ -703,17 +748,19 @@
 <div class="section level3">
 <h3 id="chainging-side-of-legends">Chainging side of legends<a class="anchor" aria-label="anchor" href="#chainging-side-of-legends"></a>
 </h3>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">mtcars_tidy</span>, <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>, scale <span class="op">=</span> <span class="st">"row"</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="reference/as_ComplexHeatmap-method.html">as_ComplexHeatmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span>heatmap_legend_side <span class="op">=</span> <span class="st">"left"</span>   <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/sidelegend-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="add-title-using-draw-from-complexheatmap">Add title using <code>draw</code> from <code>ComplexHeatmap</code>
 <a class="anchor" aria-label="anchor" href="#add-title-using-draw-from-complexheatmap"></a>
 </h3>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    scale <span class="op">=</span> <span class="st">"row"</span>   <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/as_ComplexHeatmap-method.html">as_ComplexHeatmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -721,13 +768,15 @@
 <span>        column_title <span class="op">=</span> <span class="st">"TITLE"</span>, </span>
 <span>        column_title_gp <span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/title-1.png"><!-- --></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="using-patchwork-to-integrate-heatmaps">Using patchwork to integrate heatmaps<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate-heatmaps"></a>
 </h2>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span></span>
@@ -738,9 +787,11 @@
 <span>        scale <span class="op">=</span> <span class="st">"row"</span>, </span>
 <span>            show_heatmap_legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>        row_names_gp <span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> </span>
-<span></span>
-<span><span class="va">p_ggplot</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p_ggplot</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/wrap_heatmap-method.html">wrap_heatmap</a></span><span class="op">(</span><span class="va">p_heatmap</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="va">p_ggplot</span> <span class="op">+</span></span>
@@ -757,11 +808,13 @@
 <h3 id="add-title-using-ggtitle-from-ggplot2">Add title using <code>ggtitle</code> from <code>ggplot2</code>
 <a class="anchor" aria-label="anchor" href="#add-title-using-ggtitle-from-ggplot2"></a>
 </h3>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,  scale <span class="op">=</span> <span class="st">"row"</span> <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/wrap_heatmap-method.html">wrap_heatmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>        <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"TITLE"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a><span class="do">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span id="cb55-2"><a href="#cb55-2" tabindex="-1"></a><span class="do">## the matrix will NOT be numerical</span></span></code></pre></div>
 <p><img src="man/fragments/figures/title2-1.png"><!-- --></p>
 </div>
 </div>
