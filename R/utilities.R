@@ -148,7 +148,7 @@ parse_formula <- function(fm) {
 
 # #' Scale design matrix
 # #'
-# #' @importFrom stats setNames
+# #' @importFrom rlang set_names
 # #' @importFrom stats cov
 # #'
 # #' @param df A tibble
@@ -163,7 +163,7 @@ parse_formula <- function(fm) {
  #  value = sample_idx = `(Intercept)` =  NULL
  #  
  #  df %>%
- #    setNames(c("sample_idx", "(Intercept)", parse_formula(.formula))) %>%
+ #    set_names(c("sample_idx", "(Intercept)", parse_formula(.formula))) %>%
  #    gather(cov, value,-sample_idx) %>%
  #    group_by(cov) %>%
  #    mutate(value = ifelse(
@@ -759,11 +759,11 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 				# If it is a list of colors
 				else
 				    if (is(.x, "factor")) {
-				      color_vector <- palette_annotation$discrete[[.y]] %>% setNames(levels(.x))
+				      color_vector <- palette_annotation$discrete[[.y]] %>% set_names(levels(.x))
 				      color_vector[!is.na(names(color_vector))]
 				      
 				    } else {
-				      colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
+				      colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% set_names(unique(.x))
 				    }			
 			  
 			} else if (.x %>% class %in% c("integer", "numerical", "numeric", "double")){
@@ -814,6 +814,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 
 #' @importFrom grid unit
 #' @importFrom ComplexHeatmap anno_block
+#' @importFrom rlang set_names
 get_group_annotation = function(.data, .column, .row, .abundance, palette_annotation){
   
   # Comply with CRAN NOTES
@@ -845,7 +846,7 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
     mutate(data = map(data, ~ .x %>% pull(1))) %>%
     {
       df = (.)
-      pull(df, data) %>% setNames(pull(df, orientation))
+      pull(df, data) %>% set_names(pull(df, orientation))
     } %>%
     map(
       ~ .x %>% intersect(col_group)
@@ -880,10 +881,10 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
         # Extend colours arbitrarily
         length(unique(row_split))
       ) %>%
-      setNames(unique(row_split))
+      set_names(unique(row_split))
     
     # Old simple method
-    #palette_annotation[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
+    #palette_annotation[[1]][1:length(unique(row_split))] %>% set_names(unique(row_split))
     
     palette_text_row =  if_else(palette_fill_row %in% c("#FFFFFF", "white"), "#161616", "#ffffff")
   
@@ -925,10 +926,10 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
             # Extend colours arbitrarily
             length(unique(col_split))
           ) %>%
-        setNames(unique(col_split))
+        set_names(unique(col_split))
       
       # Old simple method
-      #palette_annotation[[1]][1:length(unique(col_split))] %>% setNames(unique(col_split))
+      #palette_annotation[[1]][1:length(unique(col_split))] %>% set_names(unique(col_split))
   
       palette_text_column =  if_else(palette_fill_column %in% c("#FFFFFF", "white"), "#161616", "#ffffff")
       
@@ -952,142 +953,142 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
   list( left_annotation = left_annotation, row_split = row_split, top_annotation = top_annotation, col_split = col_split )
 }
 
-get_group_annotation_OPTIMISED_NOT_FINISHED = function(.data, .column, .row, .abundance, palette_annotation){
-  
-  # Fix CRAN notes
-  value = NULL
-  col_name = NULL
-  col_orientation = NULL
-  annotation_function = NULL
-  
-  # Comply with CRAN NOTES
-  data = NULL
-  . = NULL
-  orientation = NULL
-  
-  # Make col names
-  .column = enquo(.column)
-  .row = enquo(.row)
-  .abundance = enquo(.abundance)
-  
-  # Setup default NULL
-  top_annotation = NULL
-  left_annotation = NULL
-  row_split = NULL
-  col_split = NULL
-  
-  # Column groups
-  col_group = get_grouping_columns(.data)
-  
-  # Dataframe of column orientation
-  x_y_annot_cols = .data %>% get_x_y_annotation_columns(!!.column,!!.row,!!.abundance) 
-  
-  
-  x_y_annotation_cols = 
-    x_y_annot_cols %>%
-    nest(data = -orientation) %>%
-    mutate(data = map(data, ~ .x %>% pull(1))) %>%
-    {
-      df = (.)
-      pull(df, data) %>% setNames(pull(df, orientation))
-    } %>%
-    map(
-      ~ .x %>% intersect(col_group)
-    )
-  
-  # Check if you have more than one grouping, at the moment just one is accepted
-  if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% gt(1))
-    stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
-  
-  # Create dataset
-  col_group %>%
-    as_tibble %>%
-    rename(col_name = value) %>%
-    
-    # delete if annotation is NULL
-    when(length(col_group)==0 ~ slice(., 0), ~ (.)) %>%
-    
-    # Add orientation
-    left_join(x_y_annot_cols,  by = "col_name") %>%
-    mutate(col_orientation = map_chr(orientation, ~ .x %>% when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) %>%
-    
-    # Add data
-    mutate(
-      data = map2(
-        col_name,
-        col_orientation,
-        ~
-          .data_ %>%
-          ungroup() %>%
-          select(all_of(c(.y, .x))) %>%
-          distinct() %>%
-          arrange_at(vars(.y)) %>%
-          pull(.x)
-      )
-    )  %>%
-    
-    # Add function
-    mutate(fx = annotation_function) 
-  
-  if(length(x_y_annotation_cols$row) > 0){
-    
-    # Row split
-    row_split = 
-      .data %>%
-      ungroup() %>%
-      distinct(!!.row, !!as.symbol(x_y_annotation_cols$row)) %>%
-      arrange(!!.row) %>%
-      pull(!!as.symbol(x_y_annotation_cols$row))
-    
-    # Create array of colors
-    palette_fill_row = palette_annotation[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
-    
-    left_annotation_args = 
-      list(
-        ct = anno_block(  
-          gp = gpar(fill = palette_fill_row ),
-          labels = row_split %>% unique %>% sort,
-          labels_gp = gpar(col = "white"),
-          which = "row"
-        )
-      )
-    
-    left_annotation = as.list(left_annotation_args)
-    
-    # Eliminate palette
-    palette_annotation = palette_annotation[-1]
-    
-  }
-  
-  if(length(x_y_annotation_cols$column) > 0){
-    # Col split
-    col_split = 
-      .data %>%
-      ungroup() %>%
-      distinct(!!.column, !!as.symbol(x_y_annotation_cols$column)) %>%
-      arrange(!!.column) %>%
-      pull(!!as.symbol(x_y_annotation_cols$column))
-    
-    # Create array of colors
-    palette_fill_column = palette_annotation[[1]][1:length(unique(col_split))] %>% setNames(unique(col_split))
-    
-    top_annotation_args = 
-      list(
-        ct = anno_block(  
-          gp = gpar(fill = palette_fill_column ),
-          labels = col_split %>% unique %>% sort,
-          labels_gp = gpar(col = "white"),
-          which = "column"
-        )
-      )
-    
-    top_annotation = as.list(top_annotation_args)
-  }
-  
-  
-  # Return
-  list( left_annotation = left_annotation, row_split = row_split, top_annotation = top_annotation, col_split = col_split )
-}
+# get_group_annotation_OPTIMISED_NOT_FINISHED = function(.data, .column, .row, .abundance, palette_annotation){
+#   
+#   # Fix CRAN notes
+#   value = NULL
+#   col_name = NULL
+#   col_orientation = NULL
+#   annotation_function = NULL
+#   
+#   # Comply with CRAN NOTES
+#   data = NULL
+#   . = NULL
+#   orientation = NULL
+#   
+#   # Make col names
+#   .column = enquo(.column)
+#   .row = enquo(.row)
+#   .abundance = enquo(.abundance)
+#   
+#   # Setup default NULL
+#   top_annotation = NULL
+#   left_annotation = NULL
+#   row_split = NULL
+#   col_split = NULL
+#   
+#   # Column groups
+#   col_group = get_grouping_columns(.data)
+#   
+#   # Dataframe of column orientation
+#   x_y_annot_cols = .data %>% get_x_y_annotation_columns(!!.column,!!.row,!!.abundance) 
+#   
+#   
+#   x_y_annotation_cols = 
+#     x_y_annot_cols %>%
+#     nest(data = -orientation) %>%
+#     mutate(data = map(data, ~ .x %>% pull(1))) %>%
+#     {
+#       df = (.)
+#       pull(df, data) %>% set_names(pull(df, orientation))
+#     } %>%
+#     map(
+#       ~ .x %>% intersect(col_group)
+#     )
+#   
+#   # Check if you have more than one grouping, at the moment just one is accepted
+#   if(x_y_annotation_cols %>% lapply(length) %>% unlist %>% max %>% gt(1))
+#     stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
+#   
+#   # Create dataset
+#   col_group %>%
+#     as_tibble %>%
+#     rename(col_name = value) %>%
+#     
+#     # delete if annotation is NULL
+#     when(length(col_group)==0 ~ slice(., 0), ~ (.)) %>%
+#     
+#     # Add orientation
+#     left_join(x_y_annot_cols,  by = "col_name") %>%
+#     mutate(col_orientation = map_chr(orientation, ~ .x %>% when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) %>%
+#     
+#     # Add data
+#     mutate(
+#       data = map2(
+#         col_name,
+#         col_orientation,
+#         ~
+#           .data_ %>%
+#           ungroup() %>%
+#           select(all_of(c(.y, .x))) %>%
+#           distinct() %>%
+#           arrange_at(vars(.y)) %>%
+#           pull(.x)
+#       )
+#     )  %>%
+#     
+#     # Add function
+#     mutate(fx = annotation_function) 
+#   
+#   if(length(x_y_annotation_cols$row) > 0){
+#     
+#     # Row split
+#     row_split = 
+#       .data %>%
+#       ungroup() %>%
+#       distinct(!!.row, !!as.symbol(x_y_annotation_cols$row)) %>%
+#       arrange(!!.row) %>%
+#       pull(!!as.symbol(x_y_annotation_cols$row))
+#     
+#     # Create array of colors
+#     palette_fill_row = palette_annotation[[1]][1:length(unique(row_split))] %>% set_names(unique(row_split))
+#     
+#     left_annotation_args = 
+#       list(
+#         ct = anno_block(  
+#           gp = gpar(fill = palette_fill_row ),
+#           labels = row_split %>% unique %>% sort,
+#           labels_gp = gpar(col = "white"),
+#           which = "row"
+#         )
+#       )
+#     
+#     left_annotation = as.list(left_annotation_args)
+#     
+#     # Eliminate palette
+#     palette_annotation = palette_annotation[-1]
+#     
+#   }
+#   
+#   if(length(x_y_annotation_cols$column) > 0){
+#     # Col split
+#     col_split = 
+#       .data %>%
+#       ungroup() %>%
+#       distinct(!!.column, !!as.symbol(x_y_annotation_cols$column)) %>%
+#       arrange(!!.column) %>%
+#       pull(!!as.symbol(x_y_annotation_cols$column))
+#     
+#     # Create array of colors
+#     palette_fill_column = palette_annotation[[1]][1:length(unique(col_split))] %>% set_names(unique(col_split))
+#     
+#     top_annotation_args = 
+#       list(
+#         ct = anno_block(  
+#           gp = gpar(fill = palette_fill_column ),
+#           labels = col_split %>% unique %>% sort,
+#           labels_gp = gpar(col = "white"),
+#           which = "column"
+#         )
+#       )
+#     
+#     top_annotation = as.list(top_annotation_args)
+#   }
+#   
+#   
+#   # Return
+#   list( left_annotation = left_annotation, row_split = row_split, top_annotation = top_annotation, col_split = col_split )
+# }
 
 get_grouping_columns = function(.data){
   
@@ -1140,6 +1141,7 @@ quo_names <- function(v) {
 #' annot_to_list
 #' 
 #' @importFrom purrr map_lgl
+#' @importFrom rlang set_names
 #' 
 #' @param .data A data frame
 #' 
@@ -1157,13 +1159,13 @@ annot_to_list = function(.data){
   
   .data %>% 
   	pull(annot) %>%
-  	setNames(.data %>% pull(col_name))  %>%
+    set_names(.data %>% pull(col_name))  %>%
     
     # If list is populated
     when(length(.) > 0 ~ (.) %>% c(
       col = list(.data %>%
                    filter(map_lgl(color, ~ .x %>% is.null %>% not)) %>%
-                   { setNames( pull(., color),  pull(., col_name))    })
+                   { set_names( pull(., color),  pull(., col_name))    })
     ) %>%
     	
     	# Add additional arguments
@@ -1256,7 +1258,7 @@ combine_elements_with_the_same_name = function(x){
 			
 		list_df %>% 
 			pull(vector) %>% 
-			setNames(list_df$name)
+			set_names(list_df$name)
 			
 		# x = unlist(x)
 		# tapply(unlist(x, use.names = FALSE), rep(names(x), lengths(x)), FUN = c)

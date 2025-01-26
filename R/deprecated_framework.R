@@ -311,7 +311,7 @@ get_top_left_annotation_OLD = function(.data_, .column, .row, .abundance, annota
 		ungroup() %>%
 		mutate(color = map2(annot, idx,  ~ {
 			if(.x %>% class %in% c("factor", "character", "logical"))
-				colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% setNames(unique(.x))
+				colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) %>% set_names(unique(.x))
 			else if (.x %>% class %in% c("integer", "numerical", "numeric", "double"))
 				colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) %>% colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
 			else NULL
@@ -367,7 +367,7 @@ get_group_annotation_OLD = function(.data, .column, .row, .abundance, annotation
 			mutate(data = map(data, ~ .x %>% pull(1))) %>%
 			{
 				df = (.)
-				pull(df, data) %>% setNames(pull(df, orientation))
+				pull(df, data) %>% set_names(pull(df, orientation))
 			} %>%
 			map(
 				~ .x %>% intersect(col_group)
@@ -388,7 +388,7 @@ get_group_annotation_OLD = function(.data, .column, .row, .abundance, annotation
 				pull(!!as.symbol(x_y_annotation_cols$row))
 			
 			# Create array of colors
-			palette_fill_row = palette_annotation$discrete[[1]][1:length(unique(row_split))] %>% setNames(unique(row_split))
+			palette_fill_row = palette_annotation$discrete[[1]][1:length(unique(row_split))] %>% set_names(unique(row_split))
 			
 			left_annotation_args = 
 				list(
@@ -417,7 +417,7 @@ get_group_annotation_OLD = function(.data, .column, .row, .abundance, annotation
 				pull(!!as.symbol(x_y_annotation_cols$column))
 			
 			# Create array of colors
-			palette_fill_column = palette_annotation$discrete[[1]][1:length(unique(col_split))] %>% setNames(unique(col_split))
+			palette_fill_column = palette_annotation$discrete[[1]][1:length(unique(col_split))] %>% set_names(unique(col_split))
 			
 			top_annotation_args = 
 				list(
@@ -453,13 +453,13 @@ annot_to_list_OLD = function(.data){
 	col_name = NULL
 	annot = NULL
 	
-	.data %>% pull(annot) %>% setNames(.data %>% pull(col_name))  %>%
+	.data %>% pull(annot) %>% set_names(.data %>% pull(col_name))  %>%
 		
 		# If list is populated
 		when(length(.) > 0 ~ (.) %>% c(
 			col = list(.data %>%
 								 	filter(map_lgl(color, ~ .x %>% is.null %>% `!`)) %>%
-								 	{ setNames( pull(., color),  pull(., col_name))    })
+								 	{ set_names( pull(., color),  pull(., col_name))    })
 		), ~ (.))
 	
 }
