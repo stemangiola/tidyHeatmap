@@ -1,7 +1,7 @@
 Type: Package
 Package: tidyHeatmap
 Title: A Tidy Implementation of Heatmap
-Version: 1.11.2
+Version: 1.11.3
 Authors@R: 
     c(person(given = "Stefano",
            family = "Mangiola",
@@ -27,7 +27,7 @@ URL: https://www.r-project.org,
     https://github.com/stemangiola/tidyHeatmap
 BugReports: https://github.com/stemangiola/tidyHeatmap/issues
 Depends: 
-    R (>= 4.1.0)
+    R (>= 4.3.0)
 Imports: 
     methods,
     stats,
