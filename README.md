@@ -1,5 +1,7 @@
-tidyHeatmap
+Overview of the tidyHeatmap package
 ================
+Stefano Mangiola
+2025-01-26
 
 <!-- badges: start -->
 
@@ -150,20 +152,14 @@ mtcars_heatmap <-
     annotation_tile(hp)
 ```
 
-    ## Warning: Using one column matrices in `filter()` was deprecated in dplyr 1.1.0.
-    ## ℹ Please use one dimensional logical vectors instead.
-    ## ℹ The deprecated feature was likely used in the tidyHeatmap package.
-    ##   Please report the issue at
-    ##   <https://github.com/stemangiola/tidyHeatmap/issues>.
-    ## This warning is displayed once every 8 hours.
-    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    ## generated.
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
 
 ``` r
 mtcars_heatmap
 ```
 
-![](man/fragments/figures/heatmap-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/heatmap-1.png)<!-- -->
 
 ## Saving
 
@@ -192,7 +188,7 @@ tidyHeatmap::pasilla |>
     ) 
 ```
 
-![](man/fragments/figures/distance-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/distance-1.png)<!-- -->
 
 ## Grouping and splitting
 
@@ -212,7 +208,10 @@ mtcars_tidy_groupings |>
     annotation_tile(hp)
 ```
 
-![](man/fragments/figures/grouping-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/grouping-1.png)<!-- -->
 
 We can provide colour palettes to groupings
 
@@ -234,7 +233,10 @@ mtcars_tidy_groupings |>
     annotation_tile(hp)
 ```
 
-![](man/fragments/figures/grouping2-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/grouping2-1.png)<!-- -->
 
 We can split based on the cladogram
 
@@ -245,7 +247,10 @@ mtcars_tidy |>
     split_columns(2)
 ```
 
-![](man/fragments/figures/split-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/split-1.png)<!-- -->
 
 We can split on kmean clustering (using ComplexHeatmap options, it is
 stochastic)
@@ -260,7 +265,10 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/split2-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/split2-1.png)<!-- -->
 
 ## Custom palettes
 
@@ -278,7 +286,10 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/custom-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/custom-1.png)<!-- -->
 
 A better-looking blue-to-red palette
 
@@ -296,7 +307,10 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/redblue-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/redblue-1.png)<!-- -->
 
 Or a grid::colorRamp2 function for higher flexibility
 
@@ -311,7 +325,10 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/flexible-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/flexible-1.png)<!-- -->
 
 We can use custom colors for tile annotation
 
@@ -329,13 +346,10 @@ mtcars_tidy |>
     )
 ```
 
-    ## Warning: `add_tile()` was deprecated in tidyHeatmap 1.9.0.
-    ## ℹ Please use `annotation_tile()` instead
-    ## This warning is displayed once every 8 hours.
-    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    ## generated.
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
 
-![](man/fragments/figures/customtile-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/customtile-1.png)<!-- -->
 
 We can use grid::colorRamp2 function for tile annotation for specific
 color scales
@@ -354,7 +368,10 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/customtile2-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/customtile2-1.png)<!-- -->
 
 ## Multiple groupings and annotations
 
@@ -371,7 +388,7 @@ tidyHeatmap::pasilla |>
     annotation_tile(activation)
 ```
 
-![](man/fragments/figures/multiple-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/multiple-1.png)<!-- -->
 
 Remove legends, adding aesthetics to annotations in a modular fashion,
 using `ComplexHeatmap` arguments
@@ -390,11 +407,11 @@ tidyHeatmap::pasilla |>
     annotation_tile(activation, show_legend = FALSE)
 ```
 
-![](man/fragments/figures/nolegend-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/nolegend-1.png)<!-- -->
 
 ## Annotation types
 
-“tile”, “point”, “bar” and “line” are available
+“tile”, “point”, “bar”, “line” and “numeric” are available
 
 ``` r
 # Create some more data points
@@ -422,7 +439,7 @@ pasilla_plus |>
     annotation_line(age)
 ```
 
-![](man/fragments/figures/manyannotations-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/manyannotations-1.png)<!-- -->
 
 ## Annotation size
 
@@ -444,7 +461,7 @@ pasilla_plus |>
     annotation_line(age, size = unit(0.3, "cm"),    annotation_name_gp= gpar(fontsize = 8))
 ```
 
-![](man/fragments/figures/size-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/size-1.png)<!-- -->
 
 # Layer symbol
 
@@ -478,7 +495,7 @@ tidyHeatmap::pasilla |>
     )
 ```
 
-![](man/fragments/figures/layer-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/layer-1.png)<!-- -->
 
 # Layer text
 
@@ -512,7 +529,7 @@ tidyHeatmap::pasilla |>
 )
 ```
 
-![](man/fragments/figures/layertext-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/layertext-1.png)<!-- -->
 
 # Adding heatmap side-by-side
 
@@ -522,7 +539,7 @@ p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row")
 p_heatmap + p_heatmap
 ```
 
-![](man/fragments/figures/sidebyside-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/sidebyside-1.png)<!-- -->
 
 # ComplexHeatmap further styling
 
@@ -537,7 +554,10 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/borders-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/borders-1.png)<!-- -->
 
 ## Drop row clustering
 
@@ -550,7 +570,10 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/droprow-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/droprow-1.png)<!-- -->
 
 ## Reorder rows elements
 
@@ -565,7 +588,10 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/reorder-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/reorder-1.png)<!-- -->
 
 ## Size of dendrograms
 
@@ -580,7 +606,10 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/sizedendro-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/sizedendro-1.png)<!-- -->
 
 ## Size of rows/columns titles and names
 
@@ -597,7 +626,10 @@ mtcars_tidy |>
     ) 
 ```
 
-![](man/fragments/figures/sizecolumns-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/sizecolumns-1.png)<!-- -->
 
 ## Align numeric annotation
 
@@ -614,7 +646,10 @@ mtcars_tidy |>
   annotation_numeric(hp, align_to="right")
 ```
 
-![](man/fragments/figures/align_numeric-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/align_numeric-1.png)<!-- -->
 
 ## External `ComplexHeatmap` functionalities
 
@@ -630,7 +665,10 @@ heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row" ) %>%
     ComplexHeatmap::draw(heatmap_legend_side = "left"   )
 ```
 
-![](man/fragments/figures/sidelegend-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/sidelegend-1.png)<!-- -->
 
 ### Add title using `draw` from `ComplexHeatmap`
 
@@ -644,7 +682,10 @@ mtcars_tidy |>
     )
 ```
 
-![](man/fragments/figures/title-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/title-1.png)<!-- -->
 
 ## Using patchwork to integrate heatmaps
 
@@ -660,7 +701,12 @@ p_heatmap =
             show_heatmap_legend = FALSE,
         row_names_gp = gpar(fontsize = 7)
     ) 
+```
 
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+``` r
 p_ggplot = data.frame(value = 1:10) |> ggplot(aes(value)) + geom_density()
 
 wrap_heatmap(p_heatmap) + 
@@ -675,7 +721,7 @@ wrap_heatmap(p_heatmap) +
     plot_layout(width = c(1, 0.3, 1))
 ```
 
-![](man/fragments/figures/patchworkintegrate-1.png)<!-- -->
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/patchworkintegrate-1.png)<!-- -->
 
 ### Add title using `ggtitle` from `ggplot2`
 
@@ -686,4 +732,59 @@ mtcars_tidy |>
         ggplot2::ggtitle("TITLE")
 ```
 
-![](man/fragments/figures/title2-1.png)<!-- -->
+    ## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,
+    ## the matrix will NOT be numerical
+
+![](/Users/a1234450/Documents/GitHub/tidyHeatmap/README_files/figure-gfm/title2-1.png)<!-- -->
+
+# Session Info
+
+``` r
+sessionInfo()
+```
+
+    ## R version 4.4.1 (2024-06-14)
+    ## Platform: x86_64-apple-darwin20
+    ## Running under: macOS Sonoma 14.6.1
+    ## 
+    ## Matrix products: default
+    ## BLAS:   /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/lib/libRblas.0.dylib 
+    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
+    ## 
+    ## locale:
+    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+    ## 
+    ## time zone: Australia/Adelaide
+    ## tzcode source: internal
+    ## 
+    ## attached base packages:
+    ## [1] grid      stats     graphics  grDevices utils     datasets  methods  
+    ## [8] base     
+    ## 
+    ## other attached packages:
+    ## [1] patchwork_1.3.0    ggplot2_3.5.1      forcats_1.0.0      tidyHeatmap_1.11.2
+    ## [5] tidyr_1.3.1        dplyr_1.1.4       
+    ## 
+    ## loaded via a namespace (and not attached):
+    ##  [1] viridis_0.6.5         utf8_1.2.4            sass_0.4.9           
+    ##  [4] generics_0.1.3        shape_1.4.6.1         digest_0.6.37        
+    ##  [7] magrittr_2.0.3        evaluate_1.0.1        RColorBrewer_1.1-3   
+    ## [10] iterators_1.0.14      circlize_0.4.16       fastmap_1.2.0        
+    ## [13] foreach_1.5.2         doParallel_1.0.17     rprojroot_2.0.4      
+    ## [16] jsonlite_1.8.9        GlobalOptions_0.1.2   gridExtra_2.3        
+    ## [19] ComplexHeatmap_2.21.1 purrr_1.0.2           viridisLite_0.4.2    
+    ## [22] scales_1.3.0          codetools_0.2-20      jquerylib_0.1.4      
+    ## [25] cli_3.6.3             rlang_1.1.4           crayon_1.5.3         
+    ## [28] munsell_0.5.1         withr_3.0.2           cachem_1.1.0         
+    ## [31] yaml_2.3.10           tools_4.4.1           parallel_4.4.1       
+    ## [34] colorspace_2.1-1      GetoptLong_1.0.5      BiocGenerics_0.51.3  
+    ## [37] vctrs_0.6.5           R6_2.5.1              png_0.1-8            
+    ## [40] magick_2.8.5          matrixStats_1.4.1     stats4_4.4.1         
+    ## [43] lifecycle_1.0.4       S4Vectors_0.43.2      IRanges_2.39.2       
+    ## [46] clue_0.3-66           cluster_2.1.6         dendextend_1.19.0    
+    ## [49] pkgconfig_2.0.3       gtable_0.3.6          pillar_1.10.0        
+    ## [52] bslib_0.8.0           Rcpp_1.0.13-1         glue_1.8.0           
+    ## [55] xfun_0.49             tibble_3.2.1          tidyselect_1.2.1     
+    ## [58] rstudioapi_0.16.0     knitr_1.49            farver_2.1.2         
+    ## [61] rjson_0.2.23          htmltools_0.5.8.1     labeling_0.4.3       
+    ## [64] rmarkdown_2.29        Cairo_1.6-2           compiler_4.4.1
