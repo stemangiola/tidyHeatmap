@@ -24,6 +24,7 @@
 #' @importFrom purrr when
 #' @importFrom rlang dots_list
 #' @importFrom methods new
+#' @importFrom tidyr pivot_wider
 #'
 #' @name input_heatmap
 #' @rdname input_heatmap
