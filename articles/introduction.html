@@ -338,7 +338,7 @@ specifying:</p>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_heatmap</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/heatmap-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/heatmap-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="saving">Saving<a class="anchor" aria-label="anchor" href="#saving"></a>
@@ -365,7 +365,7 @@ specifying:</p>
 <span>        clustering_method_rows <span class="op">=</span> <span class="st">"ward.D"</span>,</span>
 <span>        clustering_method_columns <span class="op">=</span> <span class="st">"ward.D"</span></span>
 <span>    <span class="op">)</span> </span></code></pre></div>
-<p><img src="introduction_files/figure-html/distance-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/distance-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="grouping-and-splitting">Grouping and splitting<a class="anchor" aria-label="anchor" href="#grouping-and-splitting"></a>
@@ -385,7 +385,7 @@ heatmap will be grouped accordingly</p>
 <span>    <span class="fu"><a href="../reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/grouping-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/grouping-1.png"><!-- --></p>
 <p>We can provide colour palettes to groupings</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy_groupings</span> <span class="op">|&gt;</span> </span>
@@ -405,7 +405,7 @@ heatmap will be grouped accordingly</p>
 <span>    <span class="fu"><a href="../reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/grouping2-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/grouping2-1.png"><!-- --></p>
 <p>We can split based on the cladogram</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
@@ -414,7 +414,7 @@ heatmap will be grouped accordingly</p>
 <span>    <span class="fu"><a href="../reference/split-methods.html">split_columns</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/split-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/split-1.png"><!-- --></p>
 <p>We can split on kmean clustering (using ComplexHeatmap options, it is
 stochastic)</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
@@ -427,7 +427,7 @@ stochastic)</p>
 <span>    <span class="op">)</span> </span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/split2-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/split2-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="custom-palettes">Custom palettes<a class="anchor" aria-label="anchor" href="#custom-palettes"></a>
@@ -445,7 +445,7 @@ character vector,</p>
 <span>    <span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/custom-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/custom-1.png"><!-- --></p>
 <p>A better-looking blue-to-red palette</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
@@ -461,7 +461,7 @@ character vector,</p>
 <span>    <span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/redblue-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/redblue-1.png"><!-- --></p>
 <p>Or a grid::colorRamp2 function for higher flexibility</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
@@ -474,7 +474,7 @@ character vector,</p>
 <span>    <span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/flexible-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/flexible-1.png"><!-- --></p>
 <p>We can use custom colors for tile annotation</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
@@ -495,7 +495,7 @@ character vector,</p>
 <span><span class="co">## <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
 <span><span class="co">## <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre>
-<p><img src="introduction_files/figure-html/customtile-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/customtile-1.png"><!-- --></p>
 <p>We can use grid::colorRamp2 function for tile annotation for specific
 color scales</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
@@ -512,7 +512,7 @@ color scales</p>
 <span>    <span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/customtile2-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/customtile2-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="multiple-groupings-and-annotations">Multiple groupings and annotations<a class="anchor" aria-label="anchor" href="#multiple-groupings-and-annotations"></a>
@@ -528,7 +528,7 @@ color scales</p>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">activation</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/multiple-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/multiple-1.png"><!-- --></p>
 <p>Remove legends, adding aesthetics to annotations in a modular
 fashion, using <code>ComplexHeatmap</code> arguments</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
@@ -543,7 +543,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">condition</span>, show_legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">activation</span>, show_legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/nolegend-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/nolegend-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="annotation-types">Annotation types<a class="anchor" aria-label="anchor" href="#annotation-types"></a>
@@ -573,7 +573,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>    <span class="fu"><a href="../reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">activation_2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/annotation_bar-method.html">annotation_bar</a></span><span class="op">(</span><span class="va">size</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/annotation_line-method.html">annotation_line</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/manyannotations-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/manyannotations-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="annotation-size">Annotation size<a class="anchor" aria-label="anchor" href="#annotation-size"></a>
@@ -594,7 +594,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>    <span class="fu"><a href="../reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">activation_2</span>, size <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.3</span>, <span class="st">"cm"</span><span class="op">)</span>,   annotation_name_gp<span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/annotation_bar-method.html">annotation_bar</a></span><span class="op">(</span><span class="va">size</span>, size <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.3</span>, <span class="st">"cm"</span><span class="op">)</span>,    annotation_name_gp<span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/annotation_line-method.html">annotation_line</a></span><span class="op">(</span><span class="va">age</span>, size <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.3</span>, <span class="st">"cm"</span><span class="op">)</span>,    annotation_name_gp<span class="op">=</span> <span class="fu">gpar</span><span class="op">(</span>fontsize <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/size-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/size-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="layer-symbol">Layer symbol<a class="anchor" aria-label="anchor" href="#layer-symbol"></a>
@@ -626,7 +626,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated1"</span>,</span>
 <span>        .size <span class="op">=</span> <span class="fl">4</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/layer-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/layer-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="layer-text">Layer text<a class="anchor" aria-label="anchor" href="#layer-text"></a>
@@ -658,7 +658,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>    .value <span class="op">=</span> <span class="va">my_text</span>,</span>
 <span>    .size <span class="op">=</span> <span class="va">my_size</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/layertext-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/layertext-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="adding-heatmap-side-by-side">Adding heatmap side-by-side<a class="anchor" aria-label="anchor" href="#adding-heatmap-side-by-side"></a>
@@ -667,7 +667,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <code class="sourceCode R"><span><span class="va">p_heatmap</span> <span class="op">=</span> <span class="fu"><a href="../reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">mtcars_tidy</span>, <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>, scale <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">p_heatmap</span> <span class="op">+</span> <span class="va">p_heatmap</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/sidebyside-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/sidebyside-1.png"><!-- --></p>
 </div>
 <div class="section level2">
 <h2 id="complexheatmap-further-styling">ComplexHeatmap further styling<a class="anchor" aria-label="anchor" href="#complexheatmap-further-styling"></a>
@@ -684,7 +684,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>    <span class="op">)</span> </span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/borders-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/borders-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="drop-row-clustering">Drop row clustering<a class="anchor" aria-label="anchor" href="#drop-row-clustering"></a>
@@ -698,7 +698,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>    <span class="op">)</span> </span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/droprow-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/droprow-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="reorder-rows-elements">Reorder rows elements<a class="anchor" aria-label="anchor" href="#reorder-rows-elements"></a>
@@ -714,7 +714,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>    <span class="op">)</span> </span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/reorder-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/reorder-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="size-of-dendrograms">Size of dendrograms<a class="anchor" aria-label="anchor" href="#size-of-dendrograms"></a>
@@ -730,7 +730,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>    <span class="op">)</span> </span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/sizedendro-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/sizedendro-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="size-of-rowscolumns-titles-and-names">Size of rows/columns titles and names<a class="anchor" aria-label="anchor" href="#size-of-rowscolumns-titles-and-names"></a>
@@ -748,7 +748,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>    <span class="op">)</span> </span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/sizecolumns-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/sizecolumns-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="align-numeric-annotation">Align numeric annotation<a class="anchor" aria-label="anchor" href="#align-numeric-annotation"></a>
@@ -766,7 +766,7 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>  <span class="fu"><a href="../reference/annotation_numeric-method.html">annotation_numeric</a></span><span class="op">(</span><span class="va">hp</span>, align_to<span class="op">=</span><span class="st">"right"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/align_numeric-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/align_numeric-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="external-complexheatmap-functionalities">External <code>ComplexHeatmap</code> functionalities<a class="anchor" aria-label="anchor" href="#external-complexheatmap-functionalities"></a>
@@ -784,7 +784,7 @@ drawing options.</p>
 <span>    <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html" class="external-link">draw</a></span><span class="op">(</span>heatmap_legend_side <span class="op">=</span> <span class="st">"left"</span>   <span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/sidelegend-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/sidelegend-1.png"><!-- --></p>
 </div>
 <div class="section level4">
 <h4 id="add-title-using-draw-from-complexheatmap">Add title using <code>draw</code> from
@@ -800,7 +800,7 @@ drawing options.</p>
 <span>    <span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/title-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/title-1.png"><!-- --></p>
 </div>
 </div>
 <div class="section level3">
@@ -833,7 +833,7 @@ drawing options.</p>
 <span>        clip <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/patchworkintegrate-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/patchworkintegrate-1.png"><!-- --></p>
 <div class="section level4">
 <h4 id="add-title-using-ggtitle-from-ggplot2">Add title using <code>ggtitle</code> from <code>ggplot2</code><a class="anchor" aria-label="anchor" href="#add-title-using-ggtitle-from-ggplot2"></a>
 </h4>
@@ -844,7 +844,7 @@ drawing options.</p>
 <span>        <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"TITLE"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<p><img src="introduction_files/figure-html/title2-1.png" width="960"></p>
+<p><img src="introduction_files/figure-html/title2-1.png"><!-- --></p>
 </div>
 </div>
 </div>
