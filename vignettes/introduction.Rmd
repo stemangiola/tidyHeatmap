@@ -23,6 +23,19 @@ knit: >
     })
 ---
 
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+  dpi = 150,
+  fig.retina = 1,
+  dev = "png",
+  dev.args = list(
+    png = list(type = "cairo-png", antialias = "subpixel" )
+  )
+)
+
+```
+
 <!-- badges: start -->
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02472/status.svg)](https://doi.org/10.21105/joss.02472)
@@ -120,7 +133,7 @@ library(tidyHeatmap)
 library(grid)
 ```
 
-```{r setup}
+```{r setup data}
 mtcars_tidy <- 
 	mtcars |> 
 	as_tibble(rownames="Car name") |> 
