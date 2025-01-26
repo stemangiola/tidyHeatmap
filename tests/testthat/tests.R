@@ -789,3 +789,42 @@ test_that("text",{
 			layer_text( `count normalised adjusted log` < 6 & sample == "untreated3" , .value=my_text, .size = my_size) 
 	)
 })
+
+
+test_that("group ordering",{
+  
+  library(dplyr)
+  
+  # from https://github.com/stemangiola/tidyHeatmap/issues/127
+  ds = data.frame(id = c("12.10-r1", "12.10-r2", "12.10_17w-r1", "12.10_17w-r2"),
+                  set = c("x", "x", "x", "x"),
+                  value = c(1, 2, 3, 4),
+                  group = c("g1", "g1", "g2", "g2"))
+  p = 
+    as_tibble(ds) |> 
+    group_by(group) |> 
+    heatmap(id, set, value)
+  
+  
+  vdiffr::expect_doppelganger("group ordering", p)
+  
+  # from https://github.com/stemangiola/tidyHeatmap/issues/116
+  example <- tribble(~Compound_Name, ~Compound_Class, ~col, ~log2fc,
+                     "L-homoserineAA", "AA", 1, 2.93,
+                     "cellobioseCH", "CH", 1, 2.09,
+                     "D-maltoseCH", "CH", 1, 3.08,
+                     "pectinCH", "CH", 1, -3.04,
+                     "raffinoseCH", "CH", 1, -2.10)
+  
+  p = 
+    example %>%
+    group_by(Compound_Class) %>%
+    heatmap(.row = Compound_Name, .col = col, .value = log2fc)
+  
+  vdiffr::expect_doppelganger("group ordering 2", p)
+  
+  
+})
+
+
+# not sure why I need the as_tibble here

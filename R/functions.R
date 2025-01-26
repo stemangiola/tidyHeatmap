@@ -122,7 +122,11 @@ input_heatmap = function(.data,
 		) %>%
 		
 		distinct(!!.vertical,!!.horizontal,!!.abundance) %>%
-		spread(!!.horizontal,!!.abundance)
+	  
+	  # Arrange both columns and rows
+	  # do not leave the order of appearence dictate the order of columns and rows
+	  pivot_wider(names_from =  !!.horizontal, values_from =  !!.abundance, names_sort = TRUE) |> 
+	  arrange(!!.vertical)
 	
 	abundance_mat =
 		abundance_tbl %>%
@@ -223,8 +227,9 @@ add_grouping = function(my_input_heatmap){
 	my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete %>% tail(-how_many_grouping)
 	
 	# See if I have grouping and setup framework
-	group_annotation = get_group_annotation(
-		my_input_heatmap@data,
+	group_annotation = 
+	  my_input_heatmap@data |>
+	  get_group_annotation(
 		!!.horizontal,
 		!!.vertical,
 		!!.abundance,
