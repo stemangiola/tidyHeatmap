@@ -3,22 +3,633 @@ title: "Overview of the tidyHeatmap package"
 author: "Stefano Mangiola"
 date: "`r Sys.Date()`"
 package: tidyHeatmap
-output:
-  html_vignette:
-    toc_float: true
+output: "html_vignette"
+params:
+  demo_metadata: true
 vignette: >
   %\VignetteIndexEntry{Overview of the tidyHeatmap package}
+  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+knit: >
+    (function(x, ...){
+        proj_root <- rprojroot::find_package_root_file() |> normalizePath()
+        rmarkdown::render(
+            x,
+            output_format = "html_document",
+            params = list(
+                demo_metadata = TRUE
+            )
+        )
+    })
 ---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+  dpi = 150,
+  fig.retina = 1,
+  dev = "png",
+  dev.args = list(
+    png = list(type = "cairo-png", antialias = "subpixel" )
+  )
+)
+
+```
 
 <!-- badges: start -->
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02472/status.svg)](https://doi.org/10.21105/joss.02472)
 <!-- badges: end -->
 
-```{r child="../man/fragments/intro.Rmd"}
+## Citation
+Mangiola et al., (2020). tidyHeatmap: an R package for modular heatmap production based on tidy principles. Journal of Open Source Software, 5(52), 2472, https://doi.org/10.21105/joss.02472
+
+Please have a look also to 
+
+- [tidygate](https://github.com/stemangiola/tidygate/) for adding custom gate information to your tibble 
+- [tidySingleCellExperiment](https://stemangiola.github.io/tidySingleCellExperiment/) for tidy manipulation of Seurat objects
+- [tidyseurat](https://stemangiola.github.io/tidyseurat/) for tidy manipulation of Seurat objects
+- [tidybulk](https://stemangiola.github.io/tidybulk/) for tidy high-level data analysis and manipulation 
+- [tidySummarizedExperiment](https://stemangiola.github.io/tidySummarizedExperiment/) for heatmaps produced with tidy principles
+
+website: [stemangiola.github.io/tidyHeatmap](https://stemangiola.github.io/tidyHeatmap/)
+
+`tidyHeatmap` is a package that introduces tidy principles to the creation of information-rich heatmaps. 
+This package uses [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) as graphical engine.
+
+**Advantages:**
+
+  - Modular annotation with just specifying column names
+  - Custom grouping of rows is easy to specify providing a grouped tbl.
+    For example `df |> group_by(...)`
+  - Labels size adjusted by row and column total number
+  - Default use of Brewer and Viridis palettes
+
+## Functions/utilities available
+
+Function | Description
+------------ | -------------
+`heatmap` | Plots base heatmap
+`group_by` | `dplyr` function - groups heatpmap rows/columns
+`annotation_tile` | Adds tile annotation to the heatmap
+`annotation_point` | Adds point annotation to the heatmap
+`annotation_bar` | Adds bar annotation to the heatmap
+`annotation_numeric` | Adds bar + number annotation to the heatmap
+`annotation_line` | Adds line annotation to the heatmap
+`layer_text` | Add layer of text on top of the heatmap
+`layer_point` | Adds layer of symbols on top of the heatmap
+`layer_square` | Adds layer of symbols on top of the heatmap
+`layer_diamond` | Adds layer of symbols on top of the heatmap
+`layer_arrow_up` | Adds layer of symbols on top of the heatmap
+`layer_arrow_down` | Add layer of symbols on top of the heatmap
+`layer_star` | Add layer of symbols on top of the heatmap
+`layer_asterisk` | Add layer of symbols on top of the heatmap
+`split_rows` | Splits the rows based on the dendogram
+`split_columns` | Splits the columns based on the dendogram
+`save_pdf` | Saves the PDF of the heatmap
+`+` | Integrate heatmaps side-by-side
+`as_ComplexHeatmap` | Convert the tidyHeatmap output to ComplexHeatmap for non-standard "drawing"
+`wrap_heatmap` | Allows the integration with the `patchwork` package
+
+
+## Installation
+
+To install the most up-to-date version
+
+```{r install, eval=FALSE}
+
+devtools::install_github("stemangiola/tidyHeatmap")
+
+
 ```
+
+
+To install the most stable version (however please keep in mind that this package is under a maturing lifecycle stage)
+
+```{r install2, eval=FALSE}
+
+install.packages("tidyHeatmap")
+
+```
+
+## Contribution
+
+If you want to contribute to the software, report issues or problems with the software or seek support please open an issue [here](https://github.com/stemangiola/tidyHeatmap/issues)
+
+## Input data frame
+
+The heatmaps visualise a multi-element, multi-feature dataset, annotated with independent variables. Each observation is a element-feature pair (e.g., person-physical characteristics).
+
+element | feature | value | independent_variables
+------------ | ------------- | ------------- | -------------
+`chr` or `fctr` | `chr` or `fctr` | `numeric` | ...
+
+Let's transform the mtcars dataset into a tidy "element-feature-independent variables" data frame. Where the independent variables in this case are 'hp' and 'vs'.
+
+```{r library, echo=FALSE, include=FALSE}
+library(dplyr)
+library(tidyr)
+library(tidyHeatmap)
+library(grid)
+```
+
+```{r setup data}
+mtcars_tidy <- 
+	mtcars |> 
+	as_tibble(rownames="Car name") |> 
+	
+	# Scale
+	mutate_at(vars(-`Car name`, -hp, -vs), scale) |>
+	
+	# tidyfy
+	pivot_longer(cols = -c(`Car name`, hp, vs), names_to = "Property", values_to = "Value")
+
+mtcars_tidy
+```
+
+
+## Plotting
+
+For plotting, you simply pipe the input data frame into heatmap, specifying:
+
+- The rows, cols relative column names (mandatory)
+- The value column name (mandatory)
+- The annotations column name(s)
+
+mtcars
+```{r heatmap, fig.width=10, fig.height=10}
+mtcars_heatmap <- 
+	mtcars_tidy |> 
+	heatmap(`Car name`, Property, Value,	scale = "row"	) |>
+	annotation_tile(hp)
+
+mtcars_heatmap
+```
+
+## Saving
+
+```{r save, eval=F}
+mtcars_heatmap |> save_pdf("mtcars_heatmap.pdf")
+```
+
+## Clustering
+
+Choose alternative clustering distance and methods.
+
+```{r distance, fig.width=10, fig.height=10}
+
+tidyHeatmap::pasilla |>
+	
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row",
+		
+		# Arguments passed to ComplexHeatmap 
+		clustering_distance_rows = "manhattan",
+		clustering_distance_columns = "manhattan",
+		clustering_method_rows = "ward.D",
+		clustering_method_columns = "ward.D"
+	) 
+```
+
+## Grouping and splitting
+
+We can easily group the data (one group per dimension maximum, at the moment only the vertical dimension is supported) with dplyr, and the heatmap will be grouped accordingly
+
+```{r grouping, fig.width=10, fig.height=10}
+# Make up more groupings
+mtcars_tidy_groupings = 
+	mtcars_tidy |>
+	mutate(property_group = if_else(Property %in% c("cyl", "disp"), "Engine", "Other"))
+
+mtcars_tidy_groupings |> 
+	group_by(vs, property_group) |>
+	heatmap(`Car name`, Property, Value,	scale = "row"	) |>
+	annotation_tile(hp)
+```
+
+We can provide colour palettes to groupings
+
+```{r grouping2, fig.width=10, fig.height=10}
+mtcars_tidy_groupings |> 
+	group_by(vs, property_group) |>
+	heatmap(
+		`Car name`, Property, Value	,	
+		scale = "row",
+		palette_grouping = list(
+			
+			# For first grouping (vs)
+			c("#66C2A5", "#FC8D62"), 
+			
+			# For second grouping (property_group)
+			c("#b58b4c", "#74a6aa")
+		)
+	) |>
+	annotation_tile(hp)
+
+```
+
+We can split based on the cladogram
+
+```{r split, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	heatmap(`Car name`, Property, Value,	scale = "row"	) |>
+	split_rows(2) |>
+	split_columns(2)
+```
+
+We can split on kmean clustering (using ComplexHeatmap options, it is stochastic)
+
+```{r split2, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, Property, Value,	
+		scale = "row",
+		row_km = 2,
+		column_km = 2
+	) 
+```
+
+
+## Custom palettes
+
+We can easily use custom palette, using strings, hexadecimal color character vector, 
+
+```{r custom, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,	
+		scale = "row",
+		palette_value = c("red", "white", "blue")
+	)
+```
+
+A better-looking blue-to-red palette
+
+```{r redblue, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,	
+		scale = "row",
+		palette_value = circlize::colorRamp2(
+			seq(-2, 2, length.out = 11), 
+			RColorBrewer::brewer.pal(11, "RdBu")
+		)
+	)
+
+```
+
+Or a grid::colorRamp2 function for higher flexibility
+
+```{r flexible, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,	
+		scale = "row",
+		palette_value = circlize::colorRamp2(c(-2, -1, 0, 1, 2), viridis::magma(5))
+	)
+```
+
+We can use custom colors for tile annotation 
+
+```{r customtile, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,	
+		scale = "row"
+	) |>
+	add_tile(
+		hp, 
+		palette = c("red", "white", "blue")
+	)
+```
+
+We can use grid::colorRamp2 function for tile annotation for specific color scales
+
+```{r customtile2, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, 
+		Property, 
+		Value,	
+		scale = "row"
+	) |>
+	annotation_tile(
+		hp, 
+		palette = circlize::colorRamp2(c(0, 100, 200, 300), viridis::magma(4))
+	)
+```
+
+## Multiple groupings and annotations
+
+```{r multiple, fig.width=10, fig.height=10}
+tidyHeatmap::pasilla |>
+	group_by(location, type) |>
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row"
+	) |>
+	annotation_tile(condition) |>
+	annotation_tile(activation)
+```
+
+Remove legends, adding aesthetics to annotations in a modular fashion, using `ComplexHeatmap` arguments
+
+```{r nolegend, fig.width=10, fig.height=10}
+
+tidyHeatmap::pasilla |>
+	group_by(location, type) |>
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row",
+		show_heatmap_legend = FALSE
+	) |>
+	annotation_tile(condition, show_legend = FALSE) |>
+	annotation_tile(activation, show_legend = FALSE)
+```
+
+## Annotation types
+
+"tile", "point", "bar", "line" and "numeric" are available
+
+```{r manyannotations, fig.width=10, fig.height=10}
+# Create some more data points
+pasilla_plus <- 
+	tidyHeatmap::pasilla |>
+	dplyr::mutate(activation_2 = activation, activation_3 = activation) |> 
+	tidyr::nest(data = -sample) |>
+	dplyr::mutate(size = rnorm(n(), 4,0.5)) |>
+	dplyr::mutate(age = runif(n(), 50, 200)) |>
+	tidyr::unnest(data) 
+
+# Plot
+pasilla_plus |>
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row"
+	) |>
+	annotation_tile(condition) |>
+	annotation_point(activation) |>
+	annotation_numeric(activation_3) |>
+	annotation_tile(activation_2) |>
+	annotation_bar(size) |>
+	annotation_line(age)
+```
+
+## Annotation size 
+
+We can customise annotation sizes using the `grid::unit()`, and the size of their names using in-built `ComplexHeatmap` arguments
+
+```{r size, fig.width=10, fig.height=10}
+pasilla_plus |>
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row"
+	) |>
+	annotation_tile(condition, size = unit(0.3, "cm"),	annotation_name_gp= gpar(fontsize = 8)) |>
+	annotation_point(activation, size = unit(0.3, "cm"),	annotation_name_gp= gpar(fontsize = 8)) |>
+	annotation_tile(activation_2, size = unit(0.3, "cm"),	annotation_name_gp= gpar(fontsize = 8)) |>
+	annotation_bar(size, size = unit(0.3, "cm"),	annotation_name_gp= gpar(fontsize = 8)) |>
+	annotation_line(age, size = unit(0.3, "cm"),	annotation_name_gp= gpar(fontsize = 8))
+```
+
+# Layer symbol
+
+Add a layer on top of the heatmap
+
+```{r layer, fig.width=10, fig.height=10}
+tidyHeatmap::pasilla |>
+	
+	# filter
+	filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) |>
+	
+	# Add dynamic size
+	mutate(my_size = runif(n(), 1,5)) |> 
+	
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row"
+	) |> 
+	layer_point(
+		`count normalised adjusted log` > 6 & sample == "untreated3"
+	) |>
+	layer_square(
+		`count normalised adjusted log` > 6 & sample == "untreated2",
+		.size = my_size
+	) |>
+	layer_arrow_up(
+		`count normalised adjusted log` > 6 & sample == "untreated1",
+		.size = 4
+	)
+```
+
+
+# Layer text
+
+Add a text layer on top of the heatmap
+
+```{r layertext, fig.width=10, fig.height=10}
+tidyHeatmap::pasilla |>
+	
+	# filter
+	filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) |>
+	
+	# Add dynamic text
+	mutate(my_text = "mt", my_size = 7) |> 
+	
+	# Plot
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row"
+	) |> 
+	layer_text(
+		`count normalised adjusted log` > 6 & sample == "untreated3", 
+		.value = "a", 
+		.size = 15
+	) |> 
+	layer_text(
+	`count normalised adjusted log` > 6 & sample == "untreated2", 
+	.value = my_text,
+	.size = my_size
+)
+```
+
+# Adding heatmap side-by-side
+
+```{r sidebyside, warning=FALSE, fig.width=10, fig.height=10}
+
+p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row") 
+
+p_heatmap + p_heatmap
+
+```
+
+# ComplexHeatmap further styling
+
+## Add cell borders
+
+```{r borders, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, Property, Value,	
+		scale = "row", 
+		rect_gp = grid::gpar(col = "#161616", lwd = 0.5)
+	) 
+```
+
+## Drop row clustering
+
+```{r droprow, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	heatmap(
+		`Car name`, Property, Value,	
+		scale = "row", 
+		cluster_rows = FALSE
+	) 
+```
+
+## Reorder rows elements
+
+```{r reorder, fig.width=10, fig.height=10}
+library(forcats)
+mtcars_tidy |> 
+	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	heatmap(
+		`Car name`, Property, Value,	
+		scale = "row", 
+		cluster_rows = FALSE
+	) 
+```
+
+## Size of dendrograms
+
+```{r sizedendro, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	heatmap(
+		`Car name`, Property, Value,	
+		scale = "row", 
+		column_dend_height = unit(0.2, "cm"), 
+		row_dend_width = unit(0.2, "cm")
+	) 
+```
+
+## Size of rows/columns titles and names
+
+```{r sizecolumns, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	heatmap(
+		`Car name`, Property, Value,	
+		scale = "row", 
+		row_names_gp = gpar(fontsize = 7),
+		column_names_gp = gpar(fontsize = 7),
+		column_title_gp = gpar(fontsize = 7),
+		row_title_gp = gpar(fontsize = 7)
+	) 
+```
+
+## Align numeric annotation
+
+This can be done only for `annotation_numeric` because of `ComplexHeatmap` requirements (?ComplexHeatmap::anno_numeric)
+
+```{r align_numeric, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	heatmap(
+		`Car name`, Property, Value,	
+		scale = "row"
+	) |> 
+  annotation_numeric(hp, align_to="right")
+```
+
+## External `ComplexHeatmap` functionalities
+
+ComplexHeatmap has some graphical functionalities that are not included in the standard functional framework. We can use `as_ComplexHeatmap` to convert our output before applying drawing options.
+
+### Chainging side of legends
+
+```{r sidelegend, fig.width=10, fig.height=10}
+
+heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) %>%
+	as_ComplexHeatmap() %>%
+	ComplexHeatmap::draw(heatmap_legend_side = "left"	)
+```
+
+### Add title using `draw` from `ComplexHeatmap`
+
+```{r title, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+    heatmap(`Car name`, Property, Value,    scale = "row"   ) |>
+    as_ComplexHeatmap() |>
+    ComplexHeatmap::draw(
+        column_title = "TITLE", 
+        column_title_gp = gpar(fontsize = 16)
+    )
+```
+
+
+## Using patchwork to integrate heatmaps
+
+```{r patchworkintegrate, fig.width=10, fig.height=10}
+library(ggplot2)
+library(patchwork)
+
+p_heatmap =
+	mtcars_tidy |> 
+	heatmap(
+		`Car name`, Property, Value,	
+		scale = "row", 
+			show_heatmap_legend = FALSE,
+		row_names_gp = gpar(fontsize = 7)
+	) 
+
+p_ggplot = data.frame(value = 1:10) |> ggplot(aes(value)) + geom_density()
+
+wrap_heatmap(p_heatmap) + 
+	p_ggplot +
+	
+	# Add padding for better aesthetics
+	wrap_heatmap(
+		p_heatmap,
+		padding = grid::unit(c(-30, -0, -0, -10), "points" ),
+		clip = FALSE
+	) + 
+	plot_layout(width = c(1, 0.3, 1))
+
+```
+
+### Add title using `ggtitle` from `ggplot2`
+
+```{r title2, fig.width=10, fig.height=10}
+mtcars_tidy |> 
+    heatmap(`Car name`, Property, Value,  scale = "row" ) |>
+    wrap_heatmap() +
+		ggplot2::ggtitle("TITLE")
+```
+
 
 # Session Info
 
