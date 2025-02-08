@@ -662,23 +662,22 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  left_join(x_y_annot_cols,  by = "col_name") %>%
 	  mutate(col_orientation = map_chr(orientation, ~ .x %>% when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) 
 
+
+  return_factor_ordering_by_col_or_row_names <- function(.data, col, orient) {
+    .data %>%
+      ungroup() %>%
+      select(all_of(c(orient, col))) %>%
+      distinct() %>% 
+      arrange(!!as.symbol(orient)) %>%
+      select(all_of(col)) %>% 
+      pull(1)
+  }
+
   
-  df = df %>%
-	  
-	  # Add data
-	  mutate(
-	    data = map2(
-	      col_name,
-	      col_orientation,
-	      ~ .data_ %>%
-	        ungroup() %>%
-	        select(all_of(c(.y, .x))) %>%
-	        distinct() %>% 
-	        arrange(all_of((.y))) %>%
-	        select(all_of(.x)) |> 
-	        pull(1)
-	    )
-	  ) 
+  # Add data
+  df = 
+    df %>%
+    mutate( data = map2(col_name,  col_orientation, ~ return_factor_ordering_by_col_or_row_names(!!.data_, .x, .y) ) ) 
   
   df = df %>%
 	    

@@ -826,5 +826,65 @@ test_that("group ordering",{
   
 })
 
+test_that("annotation ordering",{
+  
+  library(dplyr)
+  library(tibble)
+  
+  df <- tribble(
+    ~Species,    ~id, ~name_id,       ~measure,      ~value,
+    "setosa",     47, "47_setosa",     "Sepal.Length", 5.1,
+    "setosa",     47, "47_setosa",     "Sepal.Width",  3.8,
+    "setosa",     47, "47_setosa",     "Petal.Length", 1.6,
+    "setosa",     47, "47_setosa",     "Petal.Width",  0.2,
+    "virginica", 110, "110_virginica", "Sepal.Length", 7.2,
+    "virginica", 110, "110_virginica", "Sepal.Width",  3.6,
+    "virginica", 110, "110_virginica", "Petal.Length", 6.1,
+    "virginica", 110, "110_virginica", "Petal.Width",  2.5,
+    "setosa",     13, "13_setosa",     "Sepal.Length", 4.8,
+    "setosa",     13, "13_setosa",     "Sepal.Width",  3.0,
+    "setosa",     13, "13_setosa",     "Petal.Length", 1.4,
+    "setosa",     13, "13_setosa",     "Petal.Width",  0.1,
+    "virginica", 139, "139_virginica", "Sepal.Length", 6.0,
+    "virginica", 139, "139_virginica", "Sepal.Width",  3.0,
+    "virginica", 139, "139_virginica", "Petal.Length", 4.8,
+    "virginica", 139, "139_virginica", "Petal.Width",  1.8,
+    "setosa",     28, "28_setosa",     "Sepal.Length", 5.2,
+    "setosa",     28, "28_setosa",     "Sepal.Width",  3.5,
+    "setosa",     28, "28_setosa",     "Petal.Length", 1.5,
+    "setosa",     28, "28_setosa",     "Petal.Width",  0.2,
+    "setosa",      6, "6_setosa",      "Sepal.Length", 5.4,
+    "setosa",      6, "6_setosa",      "Sepal.Width",  3.9,
+    "setosa",      6, "6_setosa",      "Petal.Length", 1.7,
+    "setosa",      6, "6_setosa",      "Petal.Width",  0.4,
+    "virginica", 123, "123_virginica", "Sepal.Length", 7.7,
+    "virginica", 123, "123_virginica", "Sepal.Width",  2.8,
+    "virginica", 123, "123_virginica", "Petal.Length", 6.7,
+    "virginica", 123, "123_virginica", "Petal.Width",  2.0,
+    "versicolor", 70, "70_versicolor", "Sepal.Length", 5.6,
+    "versicolor", 70, "70_versicolor", "Sepal.Width",  2.5,
+    "versicolor", 70, "70_versicolor", "Petal.Length", 3.9,
+    "versicolor", 70, "70_versicolor", "Petal.Width",  1.1,
+    "virginica", 102, "102_virginica", "Sepal.Length", 5.8,
+    "virginica", 102, "102_virginica", "Sepal.Width",  2.7,
+    "virginica", 102, "102_virginica", "Petal.Length", 5.1,
+    "virginica", 102, "102_virginica", "Petal.Width",  1.9,
+    "versicolor", 54, "54_versicolor", "Sepal.Length", 5.5,
+    "versicolor", 54, "54_versicolor", "Sepal.Width",  2.3,
+    "versicolor", 54, "54_versicolor", "Petal.Length", 4.0,
+    "versicolor", 54, "54_versicolor", "Petal.Width",  1.3
+  )
+  
+  p = iris_long %>%
+    heatmap(name_id, measure, value) %>%
+    annotation_tile(Species)
+  
+  vdiffr::expect_doppelganger("annotation ordering", p)
+  
+
+  
+})
+
+
 
 # not sure why I need the as_tibble here
