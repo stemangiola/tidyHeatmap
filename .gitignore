@@ -10,6 +10,7 @@ Meta
 doc
 dev
 tidy_heatmap.Rcheck*
-
 /doc/
 /Meta/
+sccomp_draws_files
+.DS_Store
