@@ -831,7 +831,7 @@ test_that("annotation ordering",{
   library(dplyr)
   library(tibble)
   
-  df <- tribble(
+  iris_long <- tribble(
     ~Species,    ~id, ~name_id,       ~measure,      ~value,
     "setosa",     47, "47_setosa",     "Sepal.Length", 5.1,
     "setosa",     47, "47_setosa",     "Sepal.Width",  3.8,
