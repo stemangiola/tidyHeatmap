@@ -186,13 +186,6 @@ add_grouping = function(my_input_heatmap){
 	# Fix CRAN nots
 	.rows = NULL
 	
-	# Apply group_by if group_vars present
-	if (!is.null(my_input_heatmap@arguments$group_vars)) {
-		my_input_heatmap@data <- dplyr::group_by(
-			my_input_heatmap@data,
-			!!!my_input_heatmap@arguments$group_vars
-		)
-	}
 	
 	# Check if there are nested column in the data frame
 	if(my_input_heatmap@data %>% lapply(class)  %>% equals("list") %>% any)
@@ -203,17 +196,11 @@ add_grouping = function(my_input_heatmap){
 	.vertical = my_input_heatmap@arguments$.vertical
 	.abundance = my_input_heatmap@arguments$.abundance
 	
-	# Robustly handle missing groupings
-	group_attr <- attr(my_input_heatmap@data, "groups")
-	if (is.null(group_attr)) {
-		how_many_groups <- 0
-		how_many_grouping <- 0
-	} else {
-		how_many_groups <- nrow(group_attr)
-		how_many_grouping <- group_attr %>% dplyr::select(-.rows) %>% ncol
-	}
-
-	if (how_many_grouping == 0) return(my_input_heatmap)
+	# Number of groups
+	how_many_groups = my_input_heatmap@data %>% attr("groups") %>% nrow
+	
+	# Number of grouping
+	how_many_grouping = my_input_heatmap@data %>% attr("groups") %>% select(-.rows) %>% ncol
 	
 	# Add custom palette to discrete if any
 	my_input_heatmap@palette_discrete =
@@ -247,7 +234,10 @@ add_grouping = function(my_input_heatmap){
 		!!.horizontal,
 		!!.vertical,
 		!!.abundance,
-		palette_annotation
+		palette_annotation,
+		group_label_fontsize = my_input_heatmap@arguments$group_label_fontsize %||% 8,
+		group_label_show_box = my_input_heatmap@arguments$group_label_show_box %||% TRUE,
+		group_strip_height = my_input_heatmap@arguments$group_strip_height %||% unit(9, "pt")
 	)
 	
 	# Isolate top annotation
@@ -543,37 +533,4 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 	
 	
 })
-
-#' Add group annotation strips to a tidyHeatmap
-#'
-#' @param .data A tidyHeatmap object
-#' @param ... Grouping columns (unquoted, like dplyr::group_by)
-#' @param palette_grouping List of color vectors for each grouping
-#' @param group_label_fontsize Font size for group labels
-#' @param group_label_show_box Logical, show box around labels
-#' @param group_strip_height Height of row group strip (unit)
-#' @param group_strip_width Width of column group strip (unit)
-#' @return A tidyHeatmap object with group annotation
-#' @export
-annotation_group <- function(
-  .data,
-  ...,
-  palette_grouping = list(),
-  group_label_fontsize = 8,
-  group_label_show_box = TRUE,
-  group_strip_height = grid::unit(9, "pt"),
-  group_strip_width = grid::unit(9, "pt")
-) {
-  group_vars <- rlang::enquos(...)
-  if (length(group_vars) > 0) {
-    .data@arguments$group_vars <- group_vars
-  }
-  .data@arguments$palette_grouping <- palette_grouping
-  .data@arguments$group_label_fontsize <- group_label_fontsize
-  .data@arguments$group_label_show_box <- group_label_show_box
-  .data@arguments$group_strip_height <- group_strip_height
-  .data@arguments$group_strip_width <- group_strip_width
-  
-  add_grouping(.data)
-}
 

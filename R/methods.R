@@ -1530,5 +1530,40 @@ setMethod("save_pdf", "Heatmap", .save_pdf)
 #' @param units	A character string. units ("in", "cm", or "mm")
 setMethod("save_pdf", "InputHeatmap", .save_pdf)
 
+#' Add group annotation strips to a tidyHeatmap
+#'
+#' @param .data A tidyHeatmap object
+#' @param ... Grouping columns (unquoted, like dplyr::group_by)
+#' @param palette_grouping List of color vectors for each grouping
+#' @param group_label_fontsize Font size for group labels
+#' @param group_label_show_box Logical, show box around labels
+#' @param group_strip_height Height of row group strip (unit)
+#' @param group_strip_width Width of column group strip (unit)
+#' @return A tidyHeatmap object with group annotation
+#' @export
+annotation_group <- function(
+  .data,
+  ...,
+  palette_grouping = list(),
+  group_label_fontsize = 8,
+  group_label_show_box = TRUE,
+  group_strip_height = grid::unit(9, "pt"),
+  group_strip_width = grid::unit(9, "pt")
+) {
+  group_vars <- rlang::enquos(...)
+  if (length(group_vars) > 0) {
+    # Actually group the data
+    .data@data <- dplyr::group_by(.data@data, !!!group_vars)
+    .data@arguments$group_vars <- group_vars
+  }
+  .data@arguments$palette_grouping <- palette_grouping
+  .data@arguments$group_label_fontsize <- group_label_fontsize
+  .data@arguments$group_label_show_box <- group_label_show_box
+  .data@arguments$group_strip_height <- group_strip_height
+  .data@arguments$group_strip_width <- group_strip_width
+  
+  add_grouping(.data)
+}
+
 
 
