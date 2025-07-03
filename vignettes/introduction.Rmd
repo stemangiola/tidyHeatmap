@@ -60,8 +60,7 @@ This package uses [ComplexHeatmap](https://bioconductor.org/packages/release/bio
 **Advantages:**
 
   - Modular annotation with just specifying column names
-  - Custom grouping of rows is easy to specify providing a grouped tbl.
-    For example `df |> group_by(...)`
+  - Custom grouping of rows/columns is easy to specify with `annotation_group`, e.g. `heatmap(...) |> annotation_group(...)`
   - Labels size adjusted by row and column total number
   - Default use of Brewer and Viridis palettes
 
@@ -70,7 +69,7 @@ This package uses [ComplexHeatmap](https://bioconductor.org/packages/release/bio
 Function | Description
 ------------ | -------------
 `heatmap` | Plots base heatmap
-`group_by` | `dplyr` function - groups heatpmap rows/columns
+`annotation_group` | Adds group annotation strips and grouping to the heatmap (replaces group_by)
 `annotation_tile` | Adds tile annotation to the heatmap
 `annotation_point` | Adds point annotation to the heatmap
 `annotation_bar` | Adds bar annotation to the heatmap
@@ -205,30 +204,32 @@ mtcars_tidy_groupings =
 	mutate(property_group = if_else(Property %in% c("cyl", "disp"), "Engine", "Other"))
 
 mtcars_tidy_groupings |> 
-	group_by(vs, property_group) |>
-	heatmap(`Car name`, Property, Value,	scale = "row"	) |>
+	heatmap(`Car name`, Property, Value, scale = "row") |>
+	annotation_group(vs, property_group) |>
 	annotation_tile(hp)
 ```
 
-We can provide colour palettes to groupings
+You can provide colour palettes and other aesthetics to groupings
 
 ```{r grouping2, fig.width=10, fig.height=10}
 mtcars_tidy_groupings |> 
-	group_by(vs, property_group) |>
 	heatmap(
-		`Car name`, Property, Value	,	
-		scale = "row",
+		`Car name`, Property, Value ,  
+		scale = "row"
+	) |>
+	annotation_group(
+		vs, property_group,
 		palette_grouping = list(
-			
 			# For first grouping (vs)
 			c("#66C2A5", "#FC8D62"), 
-			
 			# For second grouping (property_group)
 			c("#b58b4c", "#74a6aa")
-		)
+		),
+		group_label_fontsize = 14,
+		show_group_name = TRUE,
+		group_strip_height = grid::unit(20, "pt")
 	) |>
 	annotation_tile(hp)
-
 ```
 
 We can split based on the cladogram
@@ -334,12 +335,32 @@ mtcars_tidy |>
 
 ```{r multiple, fig.width=10, fig.height=10}
 tidyHeatmap::pasilla |>
-	group_by(location, type) |>
 	heatmap(
 		.column = sample,
 		.row = symbol,
-		.value = `count normalised adjusted`,	
+		.value = `count normalised adjusted`,  
 		scale = "row"
+	) |>
+	annotation_group(location, type) |>
+	annotation_tile(condition) |>
+	annotation_tile(activation)
+```
+
+Example with custom aesthetics for annotation_group
+
+```{r multiple-aesthetics, fig.width=10, fig.height=10}
+tidyHeatmap::pasilla |>
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,  
+		scale = "row"
+	) |>
+	annotation_group(
+		location, type,
+		group_label_fontsize = 12,
+		group_strip_height = grid::unit(15, "pt"),
+		show_group_name = FALSE
 	) |>
 	annotation_tile(condition) |>
 	annotation_tile(activation)
@@ -350,7 +371,6 @@ Remove legends, adding aesthetics to annotations in a modular fashion, using `Co
 ```{r nolegend, fig.width=10, fig.height=10}
 
 tidyHeatmap::pasilla |>
-	group_by(location, type) |>
 	heatmap(
 		.column = sample,
 		.row = symbol,

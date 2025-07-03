@@ -47,18 +47,19 @@ pasilla_plus <-
 
 # Plot
 pasilla_plus |>
-	heatmap(
-		.column = sample,
-		.row = symbol,
-		.value = `count normalised adjusted`,	
-		scale = "row"
-	) |>
-	annotation_tile(condition) |>
-	annotation_point(activation) |>
-	annotation_numeric(activation_3) |>
-	annotation_tile(activation_2) |>
-	annotation_bar(size) |>
-	annotation_line(age)
+    heatmap(
+        .column = sample,
+        .row = symbol,
+        .value = `count normalised adjusted`,   
+        scale = "row"
+    ) |>
+    annotation_group(location) |>
+    annotation_tile(condition, show_legend = FALSE) |>
+    annotation_point(activation) |>
+    annotation_numeric(activation_3) |>
+    annotation_tile(activation_2) |>
+    annotation_bar(size) |>
+    annotation_line(age)
 ```
 
 <img src="man/figures/example_plot.png" width="100%" />
@@ -66,8 +67,7 @@ pasilla_plus |>
 **Advantages:**
 
 - Modular annotation with just specifying column names
-- Custom grouping of rows is easy to specify providing a grouped tbl.
-  For example `df |> group_by(...)`
+- Custom grouping of rows/columns is easy to specify with `annotation_group`, e.g. `heatmap(...) |> annotation_group(...)`
 - Labels size adjusted by row and column total number
 - Default use of Brewer and Viridis palettes
 
@@ -76,7 +76,7 @@ pasilla_plus |>
 | Function             | Description                                                                 |
 |----------------------|-----------------------------------------------------------------------------|
 | `heatmap`            | Plots base heatmap                                                          |
-| `group_by`           | `dplyr` function - groups heatpmap rows/columns                             |
+| `annotation_group`   | Adds group annotation strips and grouping to the heatmap                    |
 | `annotation_tile`    | Adds tile annotation to the heatmap                                         |
 | `annotation_point`   | Adds point annotation to the heatmap                                        |
 | `annotation_bar`     | Adds bar annotation to the heatmap                                          |
@@ -94,7 +94,7 @@ pasilla_plus |>
 | `split_columns`      | Splits the columns based on the dendogram                                   |
 | `save_pdf`           | Saves the PDF of the heatmap                                                |
 | `+`                  | Integrate heatmaps side-by-side                                             |
-| `as_ComplexHeatmap`  | Convert the tidyHeatmap output to ComplexHeatmap for non-standard “drawing” |
+| `as_ComplexHeatmap`  | Convert the tidyHeatmap output to ComplexHeatmap for non-standard "drawing" |
 | `wrap_heatmap`       | Allows the integration with the `patchwork` package                         |
 
 ## Installation
@@ -117,3 +117,5 @@ install.packages("tidyHeatmap")
 If you want to contribute to the software, report issues or problems
 with the software or seek support please open an issue
 [here](https://github.com/stemangiola/tidyHeatmap/issues)
+
+

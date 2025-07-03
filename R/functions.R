@@ -234,7 +234,10 @@ add_grouping = function(my_input_heatmap){
 		!!.horizontal,
 		!!.vertical,
 		!!.abundance,
-		palette_annotation
+		palette_annotation,
+		group_label_fontsize = my_input_heatmap@arguments$group_label_fontsize %||% 8,
+		show_group_name = my_input_heatmap@arguments$show_group_name %||% TRUE,
+		group_strip_height = my_input_heatmap@arguments$group_strip_height %||% unit(9, "pt")
 	)
 	
 	# Isolate top annotation

@@ -961,6 +961,7 @@
 <rect x='62.51' y='271.36' width='14.17' height='5.83' style='stroke-width: 0.75; stroke: none; fill: #FDBD6E;' />
 <rect x='52.55' y='280.02' width='8.97' height='227.46' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <text transform='translate(59.78,393.75) rotate(-90)' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='34.24px' lengthAdjust='spacingAndGlyphs'>Secretory</text>
+<text transform='translate(61.16,510.31) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='41.36px' lengthAdjust='spacingAndGlyphs'>location</text>
 <rect x='62.51' y='280.02' width='14.17' height='5.83' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
 <rect x='62.51' y='285.85' width='14.17' height='5.83' style='stroke-width: 0.75; stroke: none; fill: #ED6345;' />
 <rect x='62.51' y='291.69' width='14.17' height='5.83' style='stroke-width: 0.75; stroke: none; fill: #4274B3;' />
