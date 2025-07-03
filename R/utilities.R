@@ -1,5 +1,3 @@
-
-
 #' This is a generalisation of ifelse that accepts an object and return an objects
 #'
 #' @import dplyr
@@ -815,6 +813,19 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 #' @importFrom rlang set_names
 get_group_annotation = function(.data, .column, .row, .abundance, palette_annotation){
   
+  # Always define defaults at the top
+  group_label_fontsize <- 8
+  group_label_show_box <- TRUE
+  group_strip_height <- unit(9, "pt")
+  group_strip_width <- unit(9, "pt")
+  # Robustly get aesthetics from arguments if present, else use defaults
+  if (isS4(.data) && ("arguments" %in% slotNames(.data))) {
+    group_label_fontsize <- .data@arguments$group_label_fontsize %||% group_label_fontsize
+    group_label_show_box <- .data@arguments$group_label_show_box %||% group_label_show_box
+    group_strip_height <- .data@arguments$group_strip_height %||% group_strip_height
+    group_strip_width <- .data@arguments$group_strip_width %||% group_strip_width
+  }
+  
   # Comply with CRAN NOTES
   data = NULL
   . = NULL
@@ -891,9 +902,10 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
         ct = anno_block(  
           gp = gpar(fill = palette_fill_row ),
           labels = row_split %>% unique %>% sort,
-          labels_gp = gpar(col = palette_text_row, fontsize = 8),
+          labels_gp = gpar(col = palette_text_row, fontsize = group_label_fontsize),
           which = "row",
-          width = unit(9, "pt")
+          width = group_strip_width,
+          show_name = group_label_show_box
         )
       )
     
@@ -937,9 +949,10 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
           ct = anno_block(  
             gp = gpar(fill = palette_fill_column ),
             labels = col_split %>% unique %>% sort,
-            labels_gp = gpar(col = palette_text_column, fontsize = 8),
+            labels_gp = gpar(col = palette_text_column, fontsize = group_label_fontsize),
             which = "column",
-            height = unit(9, "pt")
+            height = group_strip_height,
+            show_name = group_label_show_box
           )
         )
       
@@ -1297,3 +1310,6 @@ filter_args <- function(all_args, target_func, force_keep = NULL, invert = FALSE
     all_args[names(all_args) %in% valid_args]
   }
 }
+
+# Fallback infix for default values
+`%||%` <- function(a, b) if (!is.null(a)) a else b

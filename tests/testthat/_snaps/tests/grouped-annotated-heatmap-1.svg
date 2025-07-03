@@ -808,6 +808,7 @@
 <text transform='translate(59.78,352.95) rotate(-90)' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>M</text>
 <rect x='52.55' y='452.14' width='8.97' height='79.35' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <text transform='translate(59.78,491.82) rotate(-90)' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>T</text>
+<text transform='translate(61.16,534.33) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='9.34px' lengthAdjust='spacingAndGlyphs'>ct</text>
 <text x='511.08' y='271.08' style='font-size: 10.00px; font-weight: bold; font-family: sans;' textLength='115.08px' lengthAdjust='spacingAndGlyphs'>read count normalised log</text>
 <text x='525.25' y='338.30' style='font-size: 10.00px; font-family: sans;' textLength='8.89px' lengthAdjust='spacingAndGlyphs'>-2</text>
 <text x='525.25' y='319.69' style='font-size: 10.00px; font-family: sans;' textLength='5.56px' lengthAdjust='spacingAndGlyphs'>0</text>

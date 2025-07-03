@@ -885,6 +885,147 @@ test_that("annotation ordering",{
   
 })
 
+test_that("annotation_group works with N52 Angiogenesis subset and no clustering errors", {
+  library(tidyHeatmap)
+  library(dplyr)
+
+  # Filter for Angiogenesis
+  df <- dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis")
+  
+  # Heatmap with group_by and add_grouping (legacy approach)
+  p1 <- 
+    df |>
+    group_by(CAPRA_TOTAL) |>
+    tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row",
+      cluster_rows = FALSE,
+      cluster_columns = FALSE
+    )
+
+
+ 
+    p2 <-
+      df |> 
+      tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row",
+      cluster_rows = FALSE,
+      cluster_columns = FALSE
+    ) |> 
+      annotation_group(CAPRA_TOTAL)
+
+    vdiffr::expect_doppelganger("plot_annotation_grouping", p1)
+    vdiffr::expect_doppelganger("plot_annotation_grouping", p2)
+})
+
+test_that("annotation_group aesthetics are respected", {
+  library(tidyHeatmap)
+  library(dplyr)
+  library(grid)
+  df <- tidyHeatmap::N52
+
+  # Custom aesthetics
+  p <- df |>
+    tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row",
+      cluster_rows = FALSE,
+      cluster_columns = FALSE
+    ) |> 
+    annotation_group(
+      CAPRA_TOTAL,
+      palette_grouping = list(c("#FF0000", "#00FF00", "#0000FF")),
+      group_label_fontsize = 16,
+      group_label_show_box = FALSE,
+      group_strip_height = unit(25, "pt"),
+      group_strip_width = unit(30, "pt")
+    )
+
+  expect_s4_class(p, "InputHeatmap")
+  # Check that the aesthetics are stored in the arguments
+  expect_equal(p@arguments$palette_grouping[[1]], c("#FF0000", "#00FF00", "#0000FF"))
+  expect_equal(p@arguments$group_label_fontsize, 16)
+  expect_false(p@arguments$group_label_show_box)
+  expect_equal(p@arguments$group_strip_height, unit(25, "pt"))
+  expect_equal(p@arguments$group_strip_width, unit(30, "pt"))
+  # Try rendering as ComplexHeatmap (should not error)
+  expect_silent(as_ComplexHeatmap(p))
+})
+
+test_that("annotation_group aesthetics create visible differences", {
+  library(tidyHeatmap)
+  library(dplyr)
+  library(grid)
+  df <- tidyHeatmap::N52
+
+  # Test with extreme values to make effects obvious
+  p1 <- df |>
+    tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row",
+      cluster_rows = FALSE,
+      cluster_columns = FALSE
+    ) |> 
+    annotation_group(
+      CAPRA_TOTAL,
+      palette_grouping = list(c("#FF0000", "#00FF00", "#0000FF")),
+      group_label_fontsize = 8,  # Default small
+      group_label_show_box = TRUE,  # Default show box
+      group_strip_height = unit(9, "pt"),  # Default small
+      group_strip_width = unit(9, "pt")  # Default small
+    )
+
+  p2 <- df |>
+    tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row",
+      cluster_rows = FALSE,
+      cluster_columns = FALSE
+    ) |> 
+    annotation_group(
+      CAPRA_TOTAL,
+      palette_grouping = list(c("#FF0000", "#00FF00", "#0000FF")),
+      group_label_fontsize = 20,  # Much larger font
+      group_label_show_box = FALSE,  # Hide box
+      group_strip_height = unit(50, "pt"),  # Much larger height
+      group_strip_width = unit(50, "pt")  # Much larger width
+    )
+
+  # Both should render successfully
+  expect_s4_class(p1, "InputHeatmap")
+  expect_s4_class(p2, "InputHeatmap")
+  
+  # Check that aesthetics are stored differently
+  expect_equal(p1@arguments$group_label_fontsize, 8)
+  expect_equal(p2@arguments$group_label_fontsize, 20)
+  expect_true(p1@arguments$group_label_show_box)
+  expect_false(p2@arguments$group_label_show_box)
+  expect_equal(p1@arguments$group_strip_height, unit(9, "pt"))
+  expect_equal(p2@arguments$group_strip_height, unit(50, "pt"))
+  expect_equal(p1@arguments$group_strip_width, unit(9, "pt"))
+  expect_equal(p2@arguments$group_strip_width, unit(50, "pt"))
+  
+  # Both should render as ComplexHeatmap without error
+  expect_silent(as_ComplexHeatmap(p1))
+  expect_silent(as_ComplexHeatmap(p2))
+  
+  # The two heatmaps should be different objects (different aesthetics)
+  hm1 <- as_ComplexHeatmap(p1)
+  hm2 <- as_ComplexHeatmap(p2)
+  expect_false(identical(hm1, hm2))
+})
+
 
 
 # not sure why I need the as_tibble here

@@ -48,6 +48,7 @@
 <text transform='translate(59.78,76.04) rotate(-90)' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='10.68px' lengthAdjust='spacingAndGlyphs'>AA</text>
 <rect x='52.55' y='132.13' width='8.97' height='426.05' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <text transform='translate(59.78,345.15) rotate(-90)' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='11.56px' lengthAdjust='spacingAndGlyphs'>CH</text>
+<text transform='translate(61.16,561.01) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='9.34px' lengthAdjust='spacingAndGlyphs'>ct</text>
 <text x='685.07' y='261.03' style='font-size: 10.00px; font-weight: bold; font-family: sans;' textLength='26.69px' lengthAdjust='spacingAndGlyphs'>log2fc</text>
 <text x='699.24' y='328.26' style='font-size: 10.00px; font-family: sans;' textLength='8.89px' lengthAdjust='spacingAndGlyphs'>-4</text>
 <text x='699.24' y='314.30' style='font-size: 10.00px; font-family: sans;' textLength='8.89px' lengthAdjust='spacingAndGlyphs'>-2</text>
