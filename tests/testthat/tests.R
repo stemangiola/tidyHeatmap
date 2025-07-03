@@ -885,6 +885,149 @@ test_that("annotation ordering",{
   
 })
 
+test_that("get_ordered_data function",{
+	
+	# Create a heatmap
+	hm <- tidyHeatmap::heatmap(
+		dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+		.column = UBR, 
+		.row = symbol_ct, 
+		.value = `read count normalised log`,
+		scale = "row"
+	)
+	
+	# Test get_ordered_data
+	result <- hm |> get_ordered_data()
+	
+	# Check that result is a list with correct elements
+	expect_type(result, "list")
+	expect_true(all(c("ordered_data", "row_order", "column_order", "abundance_matrix") %in% names(result)))
+	
+	# Check that ordered_data is a tibble
+	expect_s3_class(result$ordered_data, "tbl_df")
+	
+	# Check that row_order and column_order are character vectors
+	expect_type(result$row_order, "character")
+	expect_type(result$column_order, "character")
+	
+	# Check that abundance_matrix is a matrix
+	expect_true(is.matrix(result$abundance_matrix))
+	
+	# Check that the matrix dimensions match the ordering vectors
+	expect_equal(nrow(result$abundance_matrix), length(result$row_order))
+	expect_equal(ncol(result$abundance_matrix), length(result$column_order))
+	
+	# Check that matrix row and column names match the ordering
+	expect_equal(rownames(result$abundance_matrix), result$row_order)
+	expect_equal(colnames(result$abundance_matrix), result$column_order)
+})
 
+test_that("get_heatmap_order function",{
+	
+	# Create a heatmap
+	hm <- tidyHeatmap::heatmap(
+		dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+		.column = UBR, 
+		.row = symbol_ct, 
+		.value = `read count normalised log`,
+		scale = "row"
+	)
+	
+	# Test get_heatmap_order
+	order_info <- hm |> get_heatmap_order()
+	
+	# Check that result is a list with correct elements
+	expect_type(order_info, "list")
+	expect_true(all(c("rows", "columns") %in% names(order_info)))
+	
+	# Check that rows and columns are character vectors
+	expect_type(order_info$rows, "character")
+	expect_type(order_info$columns, "character")
+	
+	# Check that we have some ordering (not empty)
+	expect_gt(length(order_info$rows), 0)
+	expect_gt(length(order_info$columns), 0)
+})
+
+test_that("get_ordered_matrix function",{
+	
+	# Create a heatmap
+	hm <- tidyHeatmap::heatmap(
+		dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+		.column = UBR, 
+		.row = symbol_ct, 
+		.value = `read count normalised log`,
+		scale = "row"
+	)
+	
+	# Test get_ordered_matrix
+	ordered_matrix <- hm |> get_ordered_matrix()
+	
+	# Check that result is a matrix
+	expect_true(is.matrix(ordered_matrix))
+	
+	# Check that matrix has row and column names
+	expect_true(!is.null(rownames(ordered_matrix)))
+	expect_true(!is.null(colnames(ordered_matrix)))
+	
+	# Check that we have some data (not empty)
+	expect_gt(nrow(ordered_matrix), 0)
+	expect_gt(ncol(ordered_matrix), 0)
+})
+
+test_that("ordered data functions consistency",{
+	
+	# Create a heatmap
+	hm <- tidyHeatmap::heatmap(
+		dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+		.column = UBR, 
+		.row = symbol_ct, 
+		.value = `read count normalised log`,
+		scale = "row"
+	)
+	
+	# Get results from all three functions
+	full_result <- hm |> get_ordered_data()
+	order_info <- hm |> get_heatmap_order()
+	ordered_matrix <- hm |> get_ordered_matrix()
+	
+	# Check consistency between functions
+	expect_equal(full_result$row_order, order_info$rows)
+	expect_equal(full_result$column_order, order_info$columns)
+	expect_equal(full_result$abundance_matrix, ordered_matrix)
+	
+	# Check that matrix ordering matches order vectors
+	expect_equal(rownames(ordered_matrix), order_info$rows)
+	expect_equal(colnames(ordered_matrix), order_info$columns)
+})
+
+test_that("ordered data functions with grouped heatmap",{
+	
+	# Create a grouped heatmap
+	hm <- tidyHeatmap::heatmap(
+		dplyr::group_by(
+			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+			`Cell type`
+		),
+		.column = UBR, 
+		.row = symbol_ct, 
+		.value = `read count normalised log`,
+		scale = "row"
+	)
+	
+	# Test that functions work with grouped heatmaps
+	result <- hm |> get_ordered_data()
+	order_info <- hm |> get_heatmap_order()
+	ordered_matrix <- hm |> get_ordered_matrix()
+	
+	# Basic checks
+	expect_type(result, "list")
+	expect_type(order_info, "list")
+	expect_true(is.matrix(ordered_matrix))
+	
+	# Check consistency
+	expect_equal(result$row_order, order_info$rows)
+	expect_equal(result$column_order, order_info$columns)
+})
 
 # not sure why I need the as_tibble here
