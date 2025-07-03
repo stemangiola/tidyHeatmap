@@ -36,12 +36,14 @@ Created three new manual pages:
 
 Each includes complete documentation following roxygen2 format with usage examples.
 
-### 4. **`tests/testthat/tests.R`** - Unit Tests
-Added comprehensive test suite:
+### 4. **`tests/testthat/test-ordered-data.R`** - Dedicated Unit Tests
+Created comprehensive test suite in a dedicated file:
 - Individual function tests for all three methods
 - Consistency tests between methods
 - Grouped heatmap compatibility tests
-- Error handling and edge case validation
+- Edge case and error handling validation
+- Tests with different scaling options and annotations
+- Helper functions for test setup and reproducibility checks
 
 ### 5. **`README.md`** - User Documentation
 Added:
