@@ -1,5 +1,4 @@
-# Unit tests for ordered data extraction functions
-# Tests for get_ordered_data(), get_heatmap_order(), and get_ordered_matrix()
+# Unit tests for get_heatmap_data function
 
 library(testthat)
 library(tidyHeatmap)
@@ -30,191 +29,103 @@ create_grouped_test_heatmap <- function() {
   )
 }
 
-# Tests for get_ordered_data()
-test_that("get_ordered_data returns correct structure", {
+# Tests for get_heatmap_data()
+test_that("get_heatmap_data returns correct structure", {
   hm <- create_test_heatmap()
-  result <- hm |> get_ordered_data()
+  result <- hm |> get_heatmap_data()
   
   # Check that result is a list with correct elements
   expect_type(result, "list")
-  expect_true(all(c("ordered_data", "row_order", "column_order", "abundance_matrix") %in% names(result)))
-  expect_length(result, 4)
+  expect_true(all(c("matrix", "row_dend", "column_dend") %in% names(result)))
+  expect_length(result, 3)
 })
 
-test_that("get_ordered_data ordered_data is correct type and structure", {
+test_that("get_heatmap_data matrix is correct", {
   hm <- create_test_heatmap()
-  result <- hm |> get_ordered_data()
+  result <- hm |> get_heatmap_data()
   
-  # Check that ordered_data is a tibble
-  expect_s3_class(result$ordered_data, "tbl_df")
-  
-  # Check that ordered_data has the expected columns
-  original_cols <- colnames(hm@data)
-  expect_true(all(original_cols %in% colnames(result$ordered_data)))
-  
-  # Check that data is properly ordered (factors with correct levels)
-  row_col <- hm@arguments$.vertical
-  col_col <- hm@arguments$.horizontal
-  
-  expect_s3_class(result$ordered_data[[rlang::quo_name(row_col)]], "factor")
-  expect_s3_class(result$ordered_data[[rlang::quo_name(col_col)]], "factor")
-  
-  # Check that factor levels match the ordering
-  expect_equal(levels(result$ordered_data[[rlang::quo_name(row_col)]]), result$row_order)
-  expect_equal(levels(result$ordered_data[[rlang::quo_name(col_col)]]), result$column_order)
-})
-
-test_that("get_ordered_data ordering vectors are correct", {
-  hm <- create_test_heatmap()
-  result <- hm |> get_ordered_data()
-  
-  # Check that row_order and column_order are character vectors
-  expect_type(result$row_order, "character")
-  expect_type(result$column_order, "character")
-  
-  # Check that we have some ordering (not empty)
-  expect_gt(length(result$row_order), 0)
-  expect_gt(length(result$column_order), 0)
-  
-  # Check that ordering contains valid names
-  original_mat <- hm@input[[1]]
-  expect_true(all(result$row_order %in% rownames(original_mat)))
-  expect_true(all(result$column_order %in% colnames(original_mat)))
-})
-
-test_that("get_ordered_data abundance matrix is correct", {
-  hm <- create_test_heatmap()
-  result <- hm |> get_ordered_data()
-  
-  # Check that abundance_matrix is a matrix
-  expect_true(is.matrix(result$abundance_matrix))
-  
-  # Check that the matrix dimensions match the ordering vectors
-  expect_equal(nrow(result$abundance_matrix), length(result$row_order))
-  expect_equal(ncol(result$abundance_matrix), length(result$column_order))
-  
-  # Check that matrix row and column names match the ordering
-  expect_equal(rownames(result$abundance_matrix), result$row_order)
-  expect_equal(colnames(result$abundance_matrix), result$column_order)
-  
-  # Check that matrix contains numeric data
-  expect_true(is.numeric(result$abundance_matrix))
-})
-
-# Tests for get_heatmap_order()
-test_that("get_heatmap_order returns correct structure", {
-  hm <- create_test_heatmap()
-  order_info <- hm |> get_heatmap_order()
-  
-  # Check that result is a list with correct elements
-  expect_type(order_info, "list")
-  expect_true(all(c("rows", "columns") %in% names(order_info)))
-  expect_length(order_info, 2)
-})
-
-test_that("get_heatmap_order returns correct data types", {
-  hm <- create_test_heatmap()
-  order_info <- hm |> get_heatmap_order()
-  
-  # Check that rows and columns are character vectors
-  expect_type(order_info$rows, "character")
-  expect_type(order_info$columns, "character")
-  
-  # Check that we have some ordering (not empty)
-  expect_gt(length(order_info$rows), 0)
-  expect_gt(length(order_info$columns), 0)
-})
-
-test_that("get_heatmap_order contains valid names", {
-  hm <- create_test_heatmap()
-  order_info <- hm |> get_heatmap_order()
-  
-  # Check that ordering contains valid names from original matrix
-  original_mat <- hm@input[[1]]
-  expect_true(all(order_info$rows %in% rownames(original_mat)))
-  expect_true(all(order_info$columns %in% colnames(original_mat)))
-  
-  # Check that all original names are present (no missing data)
-  expect_setequal(order_info$rows, rownames(original_mat))
-  expect_setequal(order_info$columns, colnames(original_mat))
-})
-
-# Tests for get_ordered_matrix()
-test_that("get_ordered_matrix returns correct structure", {
-  hm <- create_test_heatmap()
-  ordered_matrix <- hm |> get_ordered_matrix()
-  
-  # Check that result is a matrix
-  expect_true(is.matrix(ordered_matrix))
+  # Check that matrix is a matrix
+  expect_true(is.matrix(result$matrix))
   
   # Check that matrix has row and column names
-  expect_true(!is.null(rownames(ordered_matrix)))
-  expect_true(!is.null(colnames(ordered_matrix)))
+  expect_true(!is.null(rownames(result$matrix)))
+  expect_true(!is.null(colnames(result$matrix)))
+  
+  # Check that matrix contains numeric data
+  expect_true(is.numeric(result$matrix))
   
   # Check that we have some data (not empty)
-  expect_gt(nrow(ordered_matrix), 0)
-  expect_gt(ncol(ordered_matrix), 0)
-})
-
-test_that("get_ordered_matrix contains correct data", {
-  hm <- create_test_heatmap()
-  ordered_matrix <- hm |> get_ordered_matrix()
+  expect_gt(nrow(result$matrix), 0)
+  expect_gt(ncol(result$matrix), 0)
+  
+  # Check that matrix contains the same data as original (just reordered)
   original_mat <- hm@input[[1]]
-  
-  # Check that matrix dimensions match original
-  expect_equal(nrow(ordered_matrix), nrow(original_mat))
-  expect_equal(ncol(ordered_matrix), ncol(original_mat))
-  
-  # Check that matrix contains the same data (just reordered)
-  expect_equal(sort(as.vector(ordered_matrix)), sort(as.vector(original_mat)))
-  
-  # Check that row and column names are valid
-  expect_true(all(rownames(ordered_matrix) %in% rownames(original_mat)))
-  expect_true(all(colnames(ordered_matrix) %in% colnames(original_mat)))
+  expect_equal(nrow(result$matrix), nrow(original_mat))
+  expect_equal(ncol(result$matrix), ncol(original_mat))
+  expect_equal(sort(as.vector(result$matrix)), sort(as.vector(original_mat)))
 })
 
-# Cross-function consistency tests
-test_that("all three functions return consistent results", {
+test_that("get_heatmap_data dendrograms are correct", {
   hm <- create_test_heatmap()
+  result <- hm |> get_heatmap_data()
   
-  # Get results from all three functions
-  full_result <- hm |> get_ordered_data()
-  order_info <- hm |> get_heatmap_order()
-  ordered_matrix <- hm |> get_ordered_matrix()
+  # Check that row_dend is a dendrogram
+  expect_s3_class(result$row_dend, "dendrogram")
   
-  # Check consistency between functions
-  expect_equal(full_result$row_order, order_info$rows)
-  expect_equal(full_result$column_order, order_info$columns)
-  expect_equal(full_result$abundance_matrix, ordered_matrix)
+  # Check that column_dend is a dendrogram
+  expect_s3_class(result$column_dend, "dendrogram")
   
-  # Check that matrix ordering matches order vectors
-  expect_equal(rownames(ordered_matrix), order_info$rows)
-  expect_equal(colnames(ordered_matrix), order_info$columns)
-  expect_equal(rownames(ordered_matrix), full_result$row_order)
-  expect_equal(colnames(ordered_matrix), full_result$column_order)
+  # Check that dendrograms have correct number of leaves
+  expect_equal(length(labels(result$row_dend)), nrow(result$matrix))
+  expect_equal(length(labels(result$column_dend)), ncol(result$matrix))
+})
+
+test_that("get_heatmap_data has consistent naming", {
+  hm <- create_test_heatmap()
+  result <- hm |> get_heatmap_data()
+  
+  # Check that dendrogram labels match matrix row/column names
+  expect_setequal(labels(result$row_dend), rownames(result$matrix))
+  expect_setequal(labels(result$column_dend), colnames(result$matrix))
+  
+  # Check that the order of dendrogram labels matches matrix order
+  expect_equal(labels(result$row_dend)[order.dendrogram(result$row_dend)], rownames(result$matrix))
+  expect_equal(labels(result$column_dend)[order.dendrogram(result$column_dend)], colnames(result$matrix))
+})
+
+test_that("get_heatmap_data works with different data types", {
+  hm <- create_test_heatmap()
+  result <- hm |> get_heatmap_data()
+  
+  # Check that matrix values are numeric
+  expect_true(is.numeric(result$matrix))
+  
+  # Check that dendrograms are proper objects
+  expect_true(inherits(result$row_dend, "dendrogram"))
+  expect_true(inherits(result$column_dend, "dendrogram"))
+  
+  # Check that all data is finite (no NAs, Infs)
+  expect_true(all(is.finite(result$matrix)))
 })
 
 # Tests with grouped heatmaps
-test_that("functions work with grouped heatmaps", {
+test_that("get_heatmap_data works with grouped heatmaps", {
   hm <- create_grouped_test_heatmap()
   
-  # Test that functions work with grouped heatmaps
-  result <- hm |> get_ordered_data()
-  order_info <- hm |> get_heatmap_order()
-  ordered_matrix <- hm |> get_ordered_matrix()
+  # Test that function works with grouped data
+  expect_no_error(result <- hm |> get_heatmap_data())
   
-  # Basic structure checks
+  # Check that result has correct structure
   expect_type(result, "list")
-  expect_type(order_info, "list")
-  expect_true(is.matrix(ordered_matrix))
+  expect_true(all(c("matrix", "row_dend", "column_dend") %in% names(result)))
   
-  # Check consistency between functions
-  expect_equal(result$row_order, order_info$rows)
-  expect_equal(result$column_order, order_info$columns)
-  expect_equal(result$abundance_matrix, ordered_matrix)
+  # Check that all components are valid
+  expect_true(is.matrix(result$matrix))
+  expect_s3_class(result$row_dend, "dendrogram")
+  expect_s3_class(result$column_dend, "dendrogram")
 })
 
-test_that("functions work with different scaling options", {
+test_that("get_heatmap_data works with different scaling options", {
   # Test with different scale options
   scales_to_test <- c("none", "row", "column", "both")
   
@@ -227,39 +138,36 @@ test_that("functions work with different scaling options", {
       scale = scale_option
     )
     
-    # Test that all functions work with different scaling
-    expect_no_error(result <- hm |> get_ordered_data())
-    expect_no_error(order_info <- hm |> get_heatmap_order())
-    expect_no_error(ordered_matrix <- hm |> get_ordered_matrix())
+    # Test that function works with different scaling
+    expect_no_error(result <- hm |> get_heatmap_data())
     
-    # Check basic consistency
-    expect_equal(result$row_order, order_info$rows)
-    expect_equal(result$column_order, order_info$columns)
+    # Check that result has correct structure
+    expect_type(result, "list")
+    expect_true(all(c("matrix", "row_dend", "column_dend") %in% names(result)))
+    expect_true(is.matrix(result$matrix))
+    expect_s3_class(result$row_dend, "dendrogram")
+    expect_s3_class(result$column_dend, "dendrogram")
   }
 })
 
 # Tests with annotations
-test_that("functions work with annotated heatmaps", {
+test_that("get_heatmap_data works with annotated heatmaps", {
   hm <- create_test_heatmap() |>
     annotation_tile(CAPRA_TOTAL)
   
-  # Test that functions work with annotations
-  result <- hm |> get_ordered_data()
-  order_info <- hm |> get_heatmap_order()
-  ordered_matrix <- hm |> get_ordered_matrix()
+  # Test that function works with annotations
+  expect_no_error(result <- hm |> get_heatmap_data())
   
   # Basic checks
   expect_type(result, "list")
-  expect_type(order_info, "list")
-  expect_true(is.matrix(ordered_matrix))
-  
-  # Check consistency
-  expect_equal(result$row_order, order_info$rows)
-  expect_equal(result$column_order, order_info$columns)
+  expect_true(all(c("matrix", "row_dend", "column_dend") %in% names(result)))
+  expect_true(is.matrix(result$matrix))
+  expect_s3_class(result$row_dend, "dendrogram")
+  expect_s3_class(result$column_dend, "dendrogram")
 })
 
 # Edge case tests
-test_that("functions handle single row/column cases", {
+test_that("get_heatmap_data handles small datasets", {
   # Create a heatmap with minimal data
   minimal_data <- tidyHeatmap::N52 |>
     dplyr::filter(Category == "Angiogenesis") |>
@@ -275,47 +183,37 @@ test_that("functions handle single row/column cases", {
     scale = "none"
   )
   
-  # Test that functions work with minimal data
-  expect_no_error(result <- hm |> get_ordered_data())
-  expect_no_error(order_info <- hm |> get_heatmap_order())
-  expect_no_error(ordered_matrix <- hm |> get_ordered_matrix())
+  # Test that function works with minimal data
+  expect_no_error(result <- hm |> get_heatmap_data())
   
-  # Check that we get some results
-  expect_gt(length(order_info$rows), 0)
-  expect_gt(length(order_info$columns), 0)
+  # Check that we get valid results
+  expect_gt(nrow(result$matrix), 0)
+  expect_gt(ncol(result$matrix), 0)
+  expect_s3_class(result$row_dend, "dendrogram")
+  expect_s3_class(result$column_dend, "dendrogram")
 })
 
-test_that("functions return reproducible results", {
-  # Test that functions return the same results when called multiple times
+test_that("get_heatmap_data returns reproducible results", {
+  # Test that function returns the same results when called multiple times
   hm <- create_test_heatmap()
   
-  # Call functions multiple times
-  result1 <- hm |> get_ordered_data()
-  result2 <- hm |> get_ordered_data()
-  
-  order1 <- hm |> get_heatmap_order()
-  order2 <- hm |> get_heatmap_order()
-  
-  matrix1 <- hm |> get_ordered_matrix()
-  matrix2 <- hm |> get_ordered_matrix()
+  # Call function multiple times
+  result1 <- hm |> get_heatmap_data()
+  result2 <- hm |> get_heatmap_data()
   
   # Check that results are identical
-  expect_equal(result1$row_order, result2$row_order)
-  expect_equal(result1$column_order, result2$column_order)
-  expect_equal(order1$rows, order2$rows)
-  expect_equal(order1$columns, order2$columns)
-  expect_equal(matrix1, matrix2)
+  expect_equal(result1$matrix, result2$matrix)
+  expect_equal(result1$row_dend, result2$row_dend)
+  expect_equal(result1$column_dend, result2$column_dend)
 })
 
 # Performance/memory tests
-test_that("functions don't modify original heatmap object", {
+test_that("get_heatmap_data doesn't modify original heatmap object", {
   hm_original <- create_test_heatmap()
   hm_copy <- hm_original
   
-  # Call functions
-  result <- hm_copy |> get_ordered_data()
-  order_info <- hm_copy |> get_heatmap_order()
-  ordered_matrix <- hm_copy |> get_ordered_matrix()
+  # Call function
+  result <- hm_copy |> get_heatmap_data()
   
   # Check that original object is unchanged
   expect_equal(hm_original@data, hm_copy@data)

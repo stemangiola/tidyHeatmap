@@ -1530,29 +1530,26 @@ setMethod("save_pdf", "Heatmap", .save_pdf)
 #' @param units	A character string. units ("in", "cm", or "mm")
 setMethod("save_pdf", "InputHeatmap", .save_pdf)
 
-#' Retrieve ordered data from a heatmap after clustering
+#' Retrieve heatmap data and dendrograms as plotted
 #'
 #' \lifecycle{maturing}
 #'
-#' @description get_ordered_data() extracts the original data ordered according to the heatmap's clustering results. This is useful for downstream analysis of clustered data.
+#' @description get_heatmap_data() extracts the heatmap matrix as it appears in the plot along with the row and column dendrograms, all with consistent naming.
 #'
-#' @importFrom ComplexHeatmap draw row_order column_order
-#' @importFrom dplyr filter mutate arrange
-#' @importFrom rlang !!
+#' @importFrom ComplexHeatmap draw row_order column_order row_dend column_dend
 #'
-#' @name get_ordered_data
-#' @rdname get_ordered_data-method
+#' @name get_heatmap_data
+#' @rdname get_heatmap_data-method
 #'
 #' @param .data A `InputHeatmap` object from tidyHeatmap::heatmap()
 #'
-#' @details This function converts the InputHeatmap to ComplexHeatmap, draws it to perform clustering, then extracts the row and column ordering to reorder the original data accordingly.
+#' @details This function converts the InputHeatmap to ComplexHeatmap, draws it to perform clustering, then extracts the ordered matrix and dendrograms exactly as they appear in the heatmap plot.
 #' 
 #' @return A list containing:
 #' \itemize{
-#'   \item ordered_data: The original tibble with rows and columns ordered as in the heatmap
-#'   \item row_order: Character vector of row names in heatmap order
-#'   \item column_order: Character vector of column names in heatmap order  
-#'   \item abundance_matrix: The abundance matrix with rows and columns in heatmap order
+#'   \item matrix: The abundance matrix with rows and columns ordered as in the heatmap
+#'   \item row_dend: The row dendrogram object
+#'   \item column_dend: The column dendrogram object
 #' }
 #'
 #' @examples
@@ -1564,26 +1561,27 @@ setMethod("save_pdf", "InputHeatmap", .save_pdf)
 #'     .value = `read count normalised log`
 #'   )
 #' 
-#' # Get ordered data
-#' result <- hm |> get_ordered_data()
-#' ordered_tibble <- result$ordered_data
-#' row_order <- result$row_order
+#' # Get heatmap data as plotted
+#' result <- hm |> get_heatmap_data()
+#' ordered_matrix <- result$matrix
+#' row_dendrogram <- result$row_dend
+#' column_dendrogram <- result$column_dend
 #'
 #' @export
 #' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
 #'   modular heatmap production based on tidy principles." Journal of Open Source Software.
 #'   doi:10.21105/joss.02472.
 #' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
-setGeneric("get_ordered_data", function(.data) standardGeneric("get_ordered_data"))
+setGeneric("get_heatmap_data", function(.data) standardGeneric("get_heatmap_data"))
 
-#' get_ordered_data
+#' get_heatmap_data
 #' 
 #' @docType methods
-#' @rdname get_ordered_data-method
+#' @rdname get_heatmap_data-method
 #' 
-#' @return A list containing ordered data, row order, column order, and abundance matrix
+#' @return A list containing the ordered matrix, row dendrogram, and column dendrogram
 #'
-setMethod("get_ordered_data", "InputHeatmap", function(.data) {
+setMethod("get_heatmap_data", "InputHeatmap", function(.data) {
 	
 	# Convert to ComplexHeatmap and draw it
 	ch <- .data |> as_ComplexHeatmap()
@@ -1596,157 +1594,18 @@ setMethod("get_ordered_data", "InputHeatmap", function(.data) {
 	# Get the abundance matrix from the original object
 	abundance_mat <- .data@input[[1]]
 	
-	# Extract row and column names in the heatmap order
-	ordered_row_names <- rownames(abundance_mat)[row_ord]
-	ordered_col_names <- colnames(abundance_mat)[col_ord]
+	# Create ordered matrix with consistent row and column names
+	ordered_matrix <- abundance_mat[row_ord, col_ord]
 	
-	# Get the original data
-	original_data <- .data@data
-	
-	# Get column names for merging
-	row_col <- .data@arguments$.vertical
-	col_col <- .data@arguments$.horizontal
-	val_col <- .data@arguments$.abundance
-	
-	# Create ordered data
-	ordered_data <- original_data |>
-		# Filter to only include data that appears in the heatmap
-		filter(
-			!!row_col %in% ordered_row_names,
-			!!col_col %in% ordered_col_names
-		) |>
-		# Convert to factors with levels in heatmap order
-		mutate(
-			!!row_col := factor(!!row_col, levels = ordered_row_names),
-			!!col_col := factor(!!col_col, levels = ordered_col_names)
-		) |>
-		# Sort by the factor levels
-		arrange(!!row_col, !!col_col)
+	# Get dendrograms
+	row_dendrogram <- ComplexHeatmap::row_dend(ch_drawn)
+	column_dendrogram <- ComplexHeatmap::column_dend(ch_drawn)
 	
 	return(list(
-		ordered_data = ordered_data,
-		row_order = ordered_row_names,
-		column_order = ordered_col_names,
-		abundance_matrix = abundance_mat[row_ord, col_ord]
+		matrix = ordered_matrix,
+		row_dend = row_dendrogram,
+		column_dend = column_dendrogram
 	))
-})
-
-#' Retrieve row and column ordering from a heatmap
-#'
-#' \lifecycle{maturing}
-#'
-#' @description get_heatmap_order() extracts just the row and column names in the order they appear in the heatmap after clustering.
-#'
-#' @importFrom ComplexHeatmap draw row_order column_order
-#'
-#' @name get_heatmap_order
-#' @rdname get_heatmap_order-method
-#'
-#' @param .data A `InputHeatmap` object from tidyHeatmap::heatmap()
-#'
-#' @details This function is a lighter version of get_ordered_data() that only returns the ordering information without reordering the original data.
-#' 
-#' @return A list containing:
-#' \itemize{
-#'   \item rows: Character vector of row names in heatmap order
-#'   \item columns: Character vector of column names in heatmap order
-#' }
-#'
-#' @examples
-#'
-#' hm <- tidyHeatmap::N52 |>
-#'   tidyHeatmap::heatmap(
-#'     .row = symbol_ct,
-#'     .column = UBR,
-#'     .value = `read count normalised log`
-#'   )
-#' 
-#' # Get ordering information
-#' order_info <- hm |> get_heatmap_order()
-#' print(order_info$rows)
-#' print(order_info$columns)
-#'
-#' @export
-#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
-#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
-#'   doi:10.21105/joss.02472.
-#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
-setGeneric("get_heatmap_order", function(.data) standardGeneric("get_heatmap_order"))
-
-#' get_heatmap_order
-#' 
-#' @docType methods
-#' @rdname get_heatmap_order-method
-#' 
-#' @return A list with rows and columns in heatmap order
-#'
-setMethod("get_heatmap_order", "InputHeatmap", function(.data) {
-	
-	ch <- .data |> as_ComplexHeatmap()
-	ch_drawn <- ComplexHeatmap::draw(ch)
-	
-	abundance_mat <- .data@input[[1]]
-	
-	list(
-		rows = rownames(abundance_mat)[ComplexHeatmap::row_order(ch_drawn)],
-		columns = colnames(abundance_mat)[ComplexHeatmap::column_order(ch_drawn)]
-	)
-})
-
-#' Retrieve the abundance matrix in heatmap order
-#'
-#' \lifecycle{maturing}
-#'
-#' @description get_ordered_matrix() extracts the abundance matrix with rows and columns ordered exactly as they appear in the heatmap.
-#'
-#' @importFrom ComplexHeatmap draw row_order column_order
-#'
-#' @name get_ordered_matrix
-#' @rdname get_ordered_matrix-method
-#'
-#' @param .data A `InputHeatmap` object from tidyHeatmap::heatmap()
-#'
-#' @details This function returns the underlying matrix used for the heatmap with rows and columns reordered according to the clustering results.
-#' 
-#' @return A matrix with rows and columns ordered as in the heatmap
-#'
-#' @examples
-#'
-#' hm <- tidyHeatmap::N52 |>
-#'   tidyHeatmap::heatmap(
-#'     .row = symbol_ct,
-#'     .column = UBR,
-#'     .value = `read count normalised log`
-#'   )
-#' 
-#' # Get ordered matrix
-#' ordered_matrix <- hm |> get_ordered_matrix()
-#' print(dim(ordered_matrix))
-#'
-#' @export
-#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
-#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
-#'   doi:10.21105/joss.02472.
-#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
-setGeneric("get_ordered_matrix", function(.data) standardGeneric("get_ordered_matrix"))
-
-#' get_ordered_matrix
-#' 
-#' @docType methods
-#' @rdname get_ordered_matrix-method
-#' 
-#' @return Matrix with rows and columns ordered as in the heatmap
-#'
-setMethod("get_ordered_matrix", "InputHeatmap", function(.data) {
-	
-	ch <- .data |> as_ComplexHeatmap()
-	ch_drawn <- ComplexHeatmap::draw(ch)
-	
-	abundance_mat <- .data@input[[1]]
-	row_ord <- ComplexHeatmap::row_order(ch_drawn)
-	col_ord <- ComplexHeatmap::column_order(ch_drawn)
-	
-	abundance_mat[row_ord, col_ord]
 })
 
 

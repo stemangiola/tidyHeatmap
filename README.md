@@ -71,9 +71,9 @@ pasilla_plus |>
 - Labels size adjusted by row and column total number
 - Default use of Brewer and Viridis palettes
 
-## Retrieve ordered data after clustering
+## Retrieve heatmap data and dendrograms
 
-After creating a heatmap, you can extract the data in the same order as displayed in the heatmap. This is useful for downstream analysis:
+After creating a heatmap, you can extract the matrix and dendrograms exactly as they appear in the plot:
 
 ``` r
 # Create heatmap
@@ -84,19 +84,15 @@ hm <- tidyHeatmap::N52 |>
     .value = `read count normalised log`
   )
 
-# Extract ordered data
-result <- hm |> get_ordered_data()
-ordered_tibble <- result$ordered_data  # Original data in heatmap order
-row_order <- result$row_order          # Row names in heatmap order
-column_order <- result$column_order    # Column names in heatmap order
+# Extract heatmap data as plotted
+result <- hm |> get_heatmap_data()
+ordered_matrix <- result$matrix        # Matrix with rows/columns in heatmap order
+row_dendrogram <- result$row_dend      # Row dendrogram object
+column_dendrogram <- result$column_dend # Column dendrogram object
 
-# Or get just the ordering information
-order_info <- hm |> get_heatmap_order()
-print(order_info$rows)     # Row names in order
-print(order_info$columns)  # Column names in order
-
-# Or get just the ordered matrix
-ordered_matrix <- hm |> get_ordered_matrix()
+# All have consistent row and column names
+print(rownames(ordered_matrix))
+print(labels(row_dendrogram))
 ```
 
 ## Functions/utilities available
@@ -120,9 +116,7 @@ ordered_matrix <- hm |> get_ordered_matrix()
 | `layer_asterisk`     | Add layer of symbols on top of the heatmap                                  |
 | `split_rows`         | Splits the rows based on the dendogram                                      |
 | `split_columns`      | Splits the columns based on the dendogram                                   |
-| `get_ordered_data`   | Retrieves original data ordered according to heatmap clustering            |
-| `get_heatmap_order`  | Retrieves row and column names in heatmap order                            |
-| `get_ordered_matrix` | Retrieves the abundance matrix in heatmap order                            |
+| `get_heatmap_data`   | Retrieves matrix and dendrograms exactly as plotted                       |
 | `save_pdf`           | Saves the PDF of the heatmap                                                |
 | `+`                  | Integrate heatmaps side-by-side                                             |
 | `as_ComplexHeatmap`  | Convert the tidyHeatmap output to ComplexHeatmap for non-standard "drawing" |
