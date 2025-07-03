@@ -74,7 +74,6 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
 <div class="section level1">
 <div class="page-header"><h1 id="the-tidyheatmap-package">The tidyHeatmap package<a class="anchor" aria-label="anchor" href="#the-tidyheatmap-package"></a>
 </h1></div>
@@ -122,6 +121,7 @@
 <span>        .value <span class="op">=</span> <span class="va">`count normalised adjusted`</span>,   </span>
 <span>        scale <span class="op">=</span> <span class="st">"row"</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="reference/annotation_group.html">annotation_group</a></span><span class="op">(</span><span class="va">location</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_point-method.html">annotation_point</a></span><span class="op">(</span><span class="va">activation</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_numeric-method.html">annotation_numeric</a></span><span class="op">(</span><span class="va">activation_3</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -254,31 +254,6 @@
 <p>If you want to contribute to the software, report issues or problems with the software or seek support please open an issue <a href="https://github.com/stemangiola/tidyHeatmap/issues" class="external-link">here</a></p>
 </div>
 </div>
-<div class="section level1">
-<h1 id="example-grouping-with-annotation_group-and-custom-aesthetics">Example: grouping with annotation_group and custom aesthetics<a class="anchor" aria-label="anchor" href="#example-grouping-with-annotation_group-and-custom-aesthetics"></a>
-</h1>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
-<span>    .column <span class="op">=</span> <span class="va">sample</span>,</span>
-<span>    .row <span class="op">=</span> <span class="va">symbol</span>,</span>
-<span>    .value <span class="op">=</span> <span class="va">`count normalised adjusted`</span>,</span>
-<span>    scale <span class="op">=</span> <span class="st">"row"</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/annotation_group.html">annotation_group</a></span><span class="op">(</span></span>
-<span>    <span class="va">location</span>, <span class="va">type</span>,</span>
-<span>    palette_grouping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#66C2A5"</span>, <span class="st">"#FC8D62"</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#b58b4c"</span>, <span class="st">"#74a6aa"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span>,</span>
-<span>    group_label_fontsize <span class="op">=</span> <span class="fl">12</span>,</span>
-<span>    show_group_name <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    group_strip_height <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">15</span>, <span class="st">"pt"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">activation</span><span class="op">)</span></span></code></pre></div>
-</div>
-
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
