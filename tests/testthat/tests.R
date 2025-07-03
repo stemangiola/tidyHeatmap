@@ -976,13 +976,11 @@ test_that("annotation_group passes aesthetics and works with grouping columns", 
     annotation_group(`Cell type`,
       palette_grouping = list(c("#FF0000", "#00FF00", "#0000FF", "#FFA500")),
       group_label_fontsize = 14,
-      group_name_fontsize = 10,
       show_group_name = TRUE,
       group_strip_height = unit(30, "pt")
     )
   expect_s4_class(p4, "InputHeatmap")
   expect_equal(p4@arguments$group_label_fontsize, 14)
-  expect_equal(p4@arguments$group_name_fontsize, 10)
   expect_true(p4@arguments$show_group_name)
   expect_equal(p4@arguments$group_strip_height, unit(30, "pt"))
   expect_silent(as_ComplexHeatmap(p4))

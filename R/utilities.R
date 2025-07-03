@@ -1,5 +1,3 @@
-
-
 #' This is a generalisation of ifelse that accepts an object and return an objects
 #'
 #' @import dplyr
@@ -816,7 +814,6 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 get_group_annotation = function(
   .data, .column, .row, .abundance, palette_annotation,
   group_label_fontsize = 8,
-  group_name_fontsize = 8,
   show_group_name = TRUE,
   group_strip_height = unit(9, "pt")
 ) {
