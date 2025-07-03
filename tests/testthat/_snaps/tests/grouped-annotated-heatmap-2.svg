@@ -912,7 +912,7 @@
 <rect x='245.07' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
 <rect x='303.09' y='52.55' width='165.56' height='8.97' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <text x='385.87' y='59.78' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='39.58px' lengthAdjust='spacingAndGlyphs'>single-read</text>
-<text x='471.48' y='61.16' style='font-size: 12.00px; font-family: sans;' textLength='9.34px' lengthAdjust='spacingAndGlyphs'>ct</text>
+<text x='471.48' y='61.16' style='font-size: 12.00px; font-family: sans;' textLength='22.69px' lengthAdjust='spacingAndGlyphs'>type</text>
 <rect x='303.09' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #E41A1C;' />
 <rect x='358.28' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #377EB8;' />
 <rect x='413.46' y='62.51' width='55.19' height='14.17' style='stroke-width: 0.75; stroke: none; fill: #377EB8;' />
@@ -954,7 +954,7 @@
 <rect x='62.51' y='268.46' width='14.17' height='5.90' style='stroke-width: 0.75; stroke: none; fill: #FDBD6E;' />
 <rect x='52.55' y='277.20' width='8.97' height='230.28' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <text transform='translate(59.78,392.34) rotate(-90)' text-anchor='middle' style='font-size: 8.00px; fill: #161616; font-family: sans;' textLength='34.24px' lengthAdjust='spacingAndGlyphs'>Secretory</text>
-<text transform='translate(61.16,510.31) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='9.34px' lengthAdjust='spacingAndGlyphs'>ct</text>
+<text transform='translate(61.16,510.31) rotate(-90)' text-anchor='end' style='font-size: 12.00px; font-family: sans;' textLength='41.36px' lengthAdjust='spacingAndGlyphs'>location</text>
 <rect x='62.51' y='277.20' width='14.17' height='5.90' style='stroke-width: 0.75; stroke: none; fill: #5E4FA2;' />
 <rect x='62.51' y='283.11' width='14.17' height='5.90' style='stroke-width: 0.75; stroke: none; fill: #ED6345;' />
 <rect x='62.51' y='289.01' width='14.17' height='5.90' style='stroke-width: 0.75; stroke: none; fill: #4274B3;' />

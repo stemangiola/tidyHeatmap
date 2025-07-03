@@ -816,7 +816,8 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 get_group_annotation = function(
   .data, .column, .row, .abundance, palette_annotation,
   group_label_fontsize = 8,
-  group_label_show_box = TRUE,
+  group_name_fontsize = 8,
+  show_group_name = TRUE,
   group_strip_height = unit(9, "pt")
 ) {
   
@@ -900,7 +901,7 @@ get_group_annotation = function(
             labels_gp = gpar(col = palette_text_row, fontsize = group_label_fontsize),
             which = "row",
             width = group_strip_height,
-            show_name = group_label_show_box
+            show_name = show_group_name
           )
         ),
         x_y_annotation_cols$row
@@ -950,7 +951,7 @@ get_group_annotation = function(
               labels_gp = gpar(col = palette_text_column, fontsize = group_label_fontsize),
               which = "column",
               height = group_strip_height,
-              show_name = group_label_show_box
+              show_name = show_group_name
             )
           ),
           x_y_annotation_cols$column

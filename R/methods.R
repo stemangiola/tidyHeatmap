@@ -243,7 +243,7 @@ setMethod("show", "InputHeatmap", function(object){
 #' 
 #' @details This function takes a tbl as an input and creates a `ComplexHeatmap` plot. The information is stored in a `InputHeatmap` object that is updated along the pipe statement, for example adding annotation layers. 
 #'
-#' @return A `InputHeatmap` objects that gets evaluated to a `ComplexHeatmap` object
+#' @return A `InputHeatmap` objects that gets evaluated to a `ComplexHeatmap`
 #'
 #'
 #'
@@ -1536,8 +1536,9 @@ setMethod("save_pdf", "InputHeatmap", .save_pdf)
 #' @param ... Grouping columns (unquoted, like dplyr::group_by)
 #' @param palette_grouping List of color vectors for each grouping
 #' @param group_label_fontsize Font size for group labels
-#' @param group_label_show_box Logical, show box around labels
-#' @param group_strip_height Height of row group strip (unit)
+#' @param group_name_fontsize Font size for group annotation name
+#' @param show_group_name Logical, show the group annotation name
+#' @param group_strip_height Height of group strip (unit)
 #' @param group_strip_width Width of column group strip (unit)
 #' @return A tidyHeatmap object with group annotation
 #' @export
@@ -1546,7 +1547,8 @@ annotation_group <- function(
   ...,
   palette_grouping = list(),
   group_label_fontsize = 8,
-  group_label_show_box = TRUE,
+  group_name_fontsize = 8,
+  show_group_name = TRUE,
   group_strip_height = grid::unit(9, "pt"),
   group_strip_width = grid::unit(9, "pt")
 ) {
@@ -1558,7 +1560,8 @@ annotation_group <- function(
   }
   .data@arguments$palette_grouping <- palette_grouping
   .data@arguments$group_label_fontsize <- group_label_fontsize
-  .data@arguments$group_label_show_box <- group_label_show_box
+  .data@arguments$group_name_fontsize <- group_name_fontsize
+  .data@arguments$show_group_name <- show_group_name
   .data@arguments$group_strip_height <- group_strip_height
   .data@arguments$group_strip_width <- group_strip_width
   

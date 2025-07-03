@@ -9,7 +9,8 @@ annotation_group(
   ...,
   palette_grouping = list(),
   group_label_fontsize = 8,
-  group_label_show_box = TRUE,
+  group_name_fontsize = 8,
+  show_group_name = TRUE,
   group_strip_height = grid::unit(9, "pt"),
   group_strip_width = grid::unit(9, "pt")
 )
@@ -23,9 +24,11 @@ annotation_group(
 
 \item{group_label_fontsize}{Font size for group labels}
 
-\item{group_label_show_box}{Logical, show box around labels}
+\item{group_name_fontsize}{Font size for group annotation name}
 
-\item{group_strip_height}{Height of row group strip (unit)}
+\item{show_group_name}{Logical, show the group annotation name}
+
+\item{group_strip_height}{Height of group strip (unit)}
 
 \item{group_strip_width}{Width of column group strip (unit)}
 }
