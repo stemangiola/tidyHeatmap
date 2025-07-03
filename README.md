@@ -47,19 +47,19 @@ pasilla_plus <-
 
 # Plot
 pasilla_plus |>
-	heatmap(
-		.column = sample,
-		.row = symbol,
-		.value = `count normalised adjusted`,	
-		scale = "row"
-	) |>
-	annotation_group(location) |>
-	annotation_tile(condition) |>
-	annotation_point(activation) |>
-	annotation_numeric(activation_3) |>
-	annotation_tile(activation_2) |>
-	annotation_bar(size) |>
-	annotation_line(age)
+    heatmap(
+        .column = sample,
+        .row = symbol,
+        .value = `count normalised adjusted`,   
+        scale = "row"
+    ) |>
+    annotation_group(location) |>
+    annotation_tile(condition, show_legend = FALSE) |>
+    annotation_point(activation) |>
+    annotation_numeric(activation_3) |>
+    annotation_tile(activation_2) |>
+    annotation_bar(size) |>
+    annotation_line(age)
 ```
 
 <img src="man/figures/example_plot.png" width="100%" />
