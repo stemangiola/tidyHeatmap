@@ -53,6 +53,7 @@ pasilla_plus |>
 		.value = `count normalised adjusted`,	
 		scale = "row"
 	) |>
+	annotation_group(location) |>
 	annotation_tile(condition) |>
 	annotation_point(activation) |>
 	annotation_numeric(activation_3) |>
@@ -117,26 +118,4 @@ If you want to contribute to the software, report issues or problems
 with the software or seek support please open an issue
 [here](https://github.com/stemangiola/tidyHeatmap/issues)
 
-# Example: grouping with annotation_group and custom aesthetics
 
-``` r
-tidyHeatmap::pasilla |>
-  heatmap(
-    .column = sample,
-    .row = symbol,
-    .value = `count normalised adjusted`,
-    scale = "row"
-  ) |>
-  annotation_group(
-    location, type,
-    palette_grouping = list(
-      c("#66C2A5", "#FC8D62"),
-      c("#b58b4c", "#74a6aa")
-    ),
-    group_label_fontsize = 12,
-    show_group_name = TRUE,
-    group_strip_height = grid::unit(15, "pt")
-  ) |>
-  annotation_tile(condition) |>
-  annotation_tile(activation)
-```

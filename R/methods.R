@@ -1532,17 +1532,69 @@ setMethod("save_pdf", "InputHeatmap", .save_pdf)
 
 #' Add group annotation strips to a tidyHeatmap
 #'
+#' @description `annotation_group()` adds group annotation strips to a tidyHeatmap object, 
+#' allowing you to visually group rows or columns based on categorical variables. This is 
+#' useful for highlighting biological or experimental groups in your heatmap.
+#'
 #' @param .data A tidyHeatmap object
 #' @param ... Grouping columns (unquoted, like dplyr::group_by)
-#' @param palette_grouping List of color vectors for each grouping
+#' @param palette_grouping List of color vectors for each grouping. Each element should be 
+#'   a vector of colors for the corresponding grouping variable.
 #' @param group_label_fontsize Font size for group labels
 #' @param show_group_name Logical, show the group annotation name
-#' @param group_strip_height Height of group strip (unit)
-#' @return A tidyHeatmap object with group annotation
+#' @param group_strip_height Height of group strip as a grid unit (default: 9pt)
+#' @return A tidyHeatmap object with group annotation strips added
+#' 
+#' @examples
+#' 
+#' # Basic usage with row grouping
+#' tidyHeatmap::N52 |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#'   ) |>
+#'   annotation_group(CAPRA_TOTAL)
+#' 
+#' # With custom colors and formatting
+#' tidyHeatmap::N52 |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#'   ) |>
+#'   annotation_group(
+#'     CAPRA_TOTAL,
+#'     palette_grouping = list(c("#E64B35", "#4DBBD5")),
+#'     group_label_fontsize = 10,
+#'     show_group_name = FALSE
+#'   )
+#' 
+#' # Multiple grouping variables
+#' tidyHeatmap::N52 |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#'   ) |>
+#'   annotation_group(
+#'     CAPRA_TOTAL, 
+#'     `Cell type`,
+#'     palette_grouping = list(
+#'       c("#E64B35", "#4DBBD5"),  # colors for CAPRA_TOTAL
+#'       c("#00A087", "#F39B7F")   # colors for Cell type
+#'     )
+#'   )
+#'
 #' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("annotation_group", function(.data, ...) standardGeneric("annotation_group"))
 
 #' @export
+#' @rdname annotation_group
 setMethod("annotation_group", "InputHeatmap", function(
   .data,
   ...,

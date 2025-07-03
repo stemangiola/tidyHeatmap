@@ -2,26 +2,89 @@
 % Please edit documentation in R/methods.R
 \name{annotation_group}
 \alias{annotation_group}
+\alias{annotation_group,InputHeatmap-method}
 \title{Add group annotation strips to a tidyHeatmap}
+\source{
+[Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+}
 \usage{
 annotation_group(.data, ...)
+
+\S4method{annotation_group}{InputHeatmap}(
+  .data,
+  ...,
+  palette_grouping = list(),
+  group_label_fontsize = 8,
+  show_group_name = FALSE,
+  group_strip_height = grid::unit(9, "pt")
+)
 }
 \arguments{
 \item{.data}{A tidyHeatmap object}
 
 \item{...}{Grouping columns (unquoted, like dplyr::group_by)}
 
-\item{palette_grouping}{List of color vectors for each grouping}
+\item{palette_grouping}{List of color vectors for each grouping. Each element should be 
+a vector of colors for the corresponding grouping variable.}
 
 \item{group_label_fontsize}{Font size for group labels}
 
 \item{show_group_name}{Logical, show the group annotation name}
 
-\item{group_strip_height}{Height of group strip (unit)}
+\item{group_strip_height}{Height of group strip as a grid unit (default: 9pt)}
 }
 \value{
-A tidyHeatmap object with group annotation
+A tidyHeatmap object with group annotation strips added
 }
 \description{
-Add group annotation strips to a tidyHeatmap
+`annotation_group()` adds group annotation strips to a tidyHeatmap object, 
+allowing you to visually group rows or columns based on categorical variables. This is 
+useful for highlighting biological or experimental groups in your heatmap.
+}
+\examples{
+
+# Basic usage with row grouping
+tidyHeatmap::N52 |>
+  tidyHeatmap::heatmap(
+    .row = symbol_ct,
+    .column = UBR,
+    .value = `read count normalised log`
+  ) |>
+  annotation_group(CAPRA_TOTAL)
+
+# With custom colors and formatting
+tidyHeatmap::N52 |>
+  tidyHeatmap::heatmap(
+    .row = symbol_ct,
+    .column = UBR,
+    .value = `read count normalised log`
+  ) |>
+  annotation_group(
+    CAPRA_TOTAL,
+    palette_grouping = list(c("#E64B35", "#4DBBD5")),
+    group_label_fontsize = 10,
+    show_group_name = FALSE
+  )
+
+# Multiple grouping variables
+tidyHeatmap::N52 |>
+  tidyHeatmap::heatmap(
+    .row = symbol_ct,
+    .column = UBR,
+    .value = `read count normalised log`
+  ) |>
+  annotation_group(
+    CAPRA_TOTAL, 
+    `Cell type`,
+    palette_grouping = list(
+      c("#E64B35", "#4DBBD5"),  # colors for CAPRA_TOTAL
+      c("#00A087", "#F39B7F")   # colors for Cell type
+    )
+  )
+
+}
+\references{
+Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+  modular heatmap production based on tidy principles." Journal of Open Source Software.
+  doi:10.21105/joss.02472.
 }
