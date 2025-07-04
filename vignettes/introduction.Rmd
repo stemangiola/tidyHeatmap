@@ -492,7 +492,7 @@ Add more than two heatmaps
 > 
 > Due to limitations in R's method dispatch, adding more than two tidyHeatmap heatmaps using the `+` operator (e.g. `p_heatmap + p_heatmap + p_heatmap`) may result in an error or unexpected behavior. 
 > 
-> To robustly combine more than two heatmaps, convert each to a ComplexHeatmap object first, this will use the `+` functionality of `CmplexHeatmap`.
+> To robustly combine more than two heatmaps, convert each to a ComplexHeatmap object first, this will use the `+` functionality of `CmplexHeatmap`. This ensures that all objects are compatible and can be combined using ComplexHeatmap's native addition functionality.
 
 ```{r 3-ways, warning=FALSE, fig.width=10, fig.height=6}
 as_ComplexHeatmap(p_heatmap) +
@@ -500,7 +500,36 @@ as_ComplexHeatmap(p_heatmap) +
   as_ComplexHeatmap(p_heatmap)
 ```
 
-This ensures that all objects are compatible and can be combined using ComplexHeatmap's native addition functionality.
+
+# Using patchwork to integrate across heatmaps and including ggplots
+
+```{r patchworkintegrate, fig.width=10, fig.height=6}
+library(ggplot2)
+library(patchwork)
+
+p_heatmap =
+	mtcars_tidy |> 
+	heatmap(
+		`Car name`, Property, Value,	
+		scale = "row", 
+			show_heatmap_legend = FALSE,
+		row_names_gp = gpar(fontsize = 7)
+	) 
+
+p_ggplot = data.frame(value = 1:10) |> ggplot(aes(value)) + geom_density()
+
+wrap_heatmap(p_heatmap) + 
+	p_ggplot +
+	
+	# Add padding for better aesthetics
+	wrap_heatmap(
+		p_heatmap,
+		padding = grid::unit(c(-30, -0, -0, -10), "points" ),
+		clip = FALSE
+	) + 
+	plot_layout(width = c(1, 0.3, 1))
+
+```
 
 # ComplexHeatmap further styling
 
@@ -607,35 +636,7 @@ mtcars_tidy |>
 ```
 
 
-## Using patchwork to integrate heatmaps
 
-```{r patchworkintegrate, fig.width=10, fig.height=10}
-library(ggplot2)
-library(patchwork)
-
-p_heatmap =
-	mtcars_tidy |> 
-	heatmap(
-		`Car name`, Property, Value,	
-		scale = "row", 
-			show_heatmap_legend = FALSE,
-		row_names_gp = gpar(fontsize = 7)
-	) 
-
-p_ggplot = data.frame(value = 1:10) |> ggplot(aes(value)) + geom_density()
-
-wrap_heatmap(p_heatmap) + 
-	p_ggplot +
-	
-	# Add padding for better aesthetics
-	wrap_heatmap(
-		p_heatmap,
-		padding = grid::unit(c(-30, -0, -0, -10), "points" ),
-		clip = FALSE
-	) + 
-	plot_layout(width = c(1, 0.3, 1))
-
-```
 
 ### Add title using `ggtitle` from `ggplot2`
 
