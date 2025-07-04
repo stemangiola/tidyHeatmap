@@ -243,7 +243,7 @@ setMethod("show", "InputHeatmap", function(object){
 #' 
 #' @details This function takes a tbl as an input and creates a `ComplexHeatmap` plot. The information is stored in a `InputHeatmap` object that is updated along the pipe statement, for example adding annotation layers. 
 #'
-#' @return A `InputHeatmap` objects that gets evaluated to a `ComplexHeatmap`
+#' @return An `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 #'
 #'
