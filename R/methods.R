@@ -214,6 +214,46 @@ setMethod("show", "InputHeatmap", function(object){
 
 }
 
+#' @rdname plot_arithmetic
+#' 
+#' @importFrom ComplexHeatmap add_heatmap
+#' 
+#' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+"+.HeatmapList" <- function(e1, e2) {
+	
+  if (inherits(e2, "InputHeatmap")) {
+    add_heatmap(e1, as_ComplexHeatmap(e2))
+  } else {
+    # Fall back to ComplexHeatmap's methods
+    NextMethod("+")
+  }
+
+}
+
+#' @rdname plot_arithmetic
+#' 
+#' @importFrom ComplexHeatmap add_heatmap
+#' 
+#' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+"+.AdditiveUnit" <- function(e1, e2) {
+	
+  if (inherits(e2, "InputHeatmap")) {
+    add_heatmap(e1, as_ComplexHeatmap(e2))
+  } else {
+    # Fall back to ComplexHeatmap's methods
+    NextMethod("+")
+  }
+
+}
+
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
 #'
 #' \lifecycle{maturing}

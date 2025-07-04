@@ -670,6 +670,29 @@ test_that("plus operator",{
 	
 })
 
+test_that("multiple heatmaps addition",{
+	
+	p = 
+		tidyHeatmap::heatmap(
+			dplyr::filter(tidyHeatmap::N52, Category == "Angiogenesis"),
+			.column = UBR, 
+			.row = symbol_ct, 
+			.value = `read count normalised log`,
+			scale = "row"
+		)
+	
+	# Test adding three heatmaps
+	p3 = ( p + p + p ) |> expect_warning("Heatmap/annotation names are duplicated")
+	expect_s4_class(p3, "HeatmapList")
+	
+	# Test adding four heatmaps  
+	p4 = ( p + p + p + p ) |> expect_warning("Heatmap/annotation names are duplicated")
+	expect_s4_class(p4, "HeatmapList")
+	
+	vdiffr::expect_doppelganger("multiple heatmaps addition", p3)
+	
+})
+
 test_that("tile colorRamp2 palette",{
 	
 	p = 
