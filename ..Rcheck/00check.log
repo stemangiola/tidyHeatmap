@@ -1,0 +1,14 @@
+* using log directory ‘/workspace/..Rcheck’
+* using R version 4.4.3 (2025-02-28)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 14.2.0-17ubuntu3) 14.2.0
+    GNU Fortran (Ubuntu 14.2.0-17ubuntu3) 14.2.0
+* running under: Ubuntu 25.04
+* using session charset: UTF-8
+* using options ‘--no-examples --no-tests --no-manual --no-vignettes’
+* checking for file ‘./DESCRIPTION’ ... ERROR
+Required field missing or empty:
+  ‘Author’
+* DONE
+Status: 1 ERROR
