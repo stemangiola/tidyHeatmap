@@ -71,6 +71,30 @@ pasilla_plus |>
 - Labels size adjusted by row and column total number
 - Default use of Brewer and Viridis palettes
 
+## Retrieve heatmap data and dendrograms
+
+After creating a heatmap, you can extract the matrix and dendrograms exactly as they appear in the plot:
+
+``` r
+# Create heatmap
+hm <- tidyHeatmap::N52 |>
+  tidyHeatmap::heatmap(
+    .row = symbol_ct,
+    .column = UBR,
+    .value = `read count normalised log`
+  )
+
+# Extract heatmap data as plotted
+result <- hm |> get_heatmap_data()
+ordered_matrix <- result$matrix        # Matrix with rows/columns in heatmap order
+row_dendrogram <- result$row_dend      # Row dendrogram object
+column_dendrogram <- result$column_dend # Column dendrogram object
+
+# All have consistent row and column names
+print(rownames(ordered_matrix))
+print(labels(row_dendrogram))
+```
+
 ## Functions/utilities available
 
 | Function             | Description                                                                 |
@@ -92,9 +116,10 @@ pasilla_plus |>
 | `layer_asterisk`     | Add layer of symbols on top of the heatmap                                  |
 | `split_rows`         | Splits the rows based on the dendogram                                      |
 | `split_columns`      | Splits the columns based on the dendogram                                   |
+| `get_heatmap_data`   | Retrieves matrix and dendrograms exactly as plotted                       |
 | `save_pdf`           | Saves the PDF of the heatmap                                                |
 | `+`                  | Integrate heatmaps side-by-side                                             |
-| `as_ComplexHeatmap`  | Convert the tidyHeatmap output to ComplexHeatmap for non-standard “drawing” |
+| `as_ComplexHeatmap`  | Convert the tidyHeatmap output to ComplexHeatmap for non-standard "drawing" |
 | `wrap_heatmap`       | Allows the integration with the `patchwork` package                         |
 
 ## Installation
