@@ -138,29 +138,6 @@
 </ul>
 </div>
 <div class="section level2">
-<h2 id="retrieve-heatmap-data-and-dendrograms">Retrieve heatmap data and dendrograms<a class="anchor" aria-label="anchor" href="#retrieve-heatmap-data-and-dendrograms"></a>
-</h2>
-<p>After creating a heatmap, you can extract the matrix and dendrograms exactly as they appear in the plot:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create heatmap</span></span>
-<span><span class="va">hm</span> <span class="op">&lt;-</span> <span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="reference/N52.html">N52</a></span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="fu"><a href="reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
-<span>    .row <span class="op">=</span> <span class="va">symbol_ct</span>,</span>
-<span>    .column <span class="op">=</span> <span class="va">UBR</span>,</span>
-<span>    .value <span class="op">=</span> <span class="va">`read count normalised log`</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Extract heatmap data as plotted</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">hm</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/get_heatmap_data-method.html">get_heatmap_data</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">ordered_matrix</span> <span class="op">&lt;-</span> <span class="va">result</span><span class="op">$</span><span class="va">matrix</span>        <span class="co"># Matrix with rows/columns in heatmap order</span></span>
-<span><span class="va">row_dendrogram</span> <span class="op">&lt;-</span> <span class="va">result</span><span class="op">$</span><span class="va">row_dend</span>      <span class="co"># Row dendrogram object</span></span>
-<span><span class="va">column_dendrogram</span> <span class="op">&lt;-</span> <span class="va">result</span><span class="op">$</span><span class="va">column_dend</span> <span class="co"># Column dendrogram object</span></span>
-<span></span>
-<span><span class="co"># All have consistent row and column names</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ordered_matrix</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/labels.html" class="external-link">labels</a></span><span class="op">(</span><span class="va">row_dendrogram</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
 <h2 id="functionsutilities-available">Functions/utilities available<a class="anchor" aria-label="anchor" href="#functionsutilities-available"></a>
 </h2>
 <table class="table">
@@ -243,10 +220,6 @@
 <td>Splits the columns based on the dendogram</td>
 </tr>
 <tr>
-<td><code>get_heatmap_data</code></td>
-<td>Retrieves matrix and dendrograms exactly as plotted</td>
-</tr>
-<tr>
 <td><code>save_pdf</code></td>
 <td>Saves the PDF of the heatmap</td>
 </tr>
@@ -269,10 +242,10 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>To install the most up-to-date version</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"stemangiola/tidyHeatmap"</span><span class="op">)</span></span></code></pre></div>
 <p>To install the most stable version (however please keep in mind that this package is under a maturing lifecycle stage)</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyHeatmap"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
