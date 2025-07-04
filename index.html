@@ -121,8 +121,7 @@
 <span>        .value <span class="op">=</span> <span class="va">`count normalised adjusted`</span>,   </span>
 <span>        scale <span class="op">=</span> <span class="st">"row"</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="reference/annotation_group.html">annotation_group</a></span><span class="op">(</span><span class="va">location</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">condition</span>, show_legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_point-method.html">annotation_point</a></span><span class="op">(</span><span class="va">activation</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_numeric-method.html">annotation_numeric</a></span><span class="op">(</span><span class="va">activation_3</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="reference/annotation_tile-method.html">annotation_tile</a></span><span class="op">(</span><span class="va">activation_2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -132,7 +131,7 @@
 <p><strong>Advantages:</strong></p>
 <ul>
 <li>Modular annotation with just specifying column names</li>
-<li>Custom grouping of rows/columns is easy to specify with <code>annotation_group</code>, e.g. <code>heatmap(...) |&gt; annotation_group(...)</code>
+<li>Custom grouping of rows is easy to specify providing a grouped tbl. For example <code>df |&gt; group_by(...)</code>
 </li>
 <li>Labels size adjusted by row and column total number</li>
 <li>Default use of Brewer and Viridis palettes</li>
@@ -156,8 +155,9 @@
 <td>Plots base heatmap</td>
 </tr>
 <tr>
-<td><code>annotation_group</code></td>
-<td>Adds group annotation strips and grouping to the heatmap</td>
+<td><code>group_by</code></td>
+<td>
+<code>dplyr</code> function - groups heatpmap rows/columns</td>
 </tr>
 <tr>
 <td><code>annotation_tile</code></td>
