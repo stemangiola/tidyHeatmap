@@ -782,11 +782,24 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  	
 	  mutate(further_arguments = map2(
 	  	col_name, my_function,
-	  	~ dots_args %>% 
-	  		
-	  		# If tile add size as further argument
-	  		when(!is_function(.y) ~ c(., list(simple_anno_size = size)), ~ (.))
-	  		
+	  	~ {
+	  	  # For tile annotations, filter dots_args for HeatmapAnnotation parameters
+	  	  if(!is_function(.y)) {
+	  	    # Load ComplexHeatmap namespace to access HeatmapAnnotation
+	  	    if(requireNamespace("ComplexHeatmap", quietly = TRUE)) {
+	  	      filtered_args <- try(filter_args(dots_args, ComplexHeatmap::HeatmapAnnotation), silent = TRUE)
+	  	      if(inherits(filtered_args, "try-error")) {
+	  	        # Fall back to original approach if filtering fails
+	  	        filtered_args <- dots_args
+	  	      }
+	  	    } else {
+	  	      filtered_args <- dots_args
+	  	    }
+	  	    c(filtered_args, list(simple_anno_size = size))
+	  	  } else {
+	  	    dots_args
+	  	  }
+	  	}
 	  )) %>% 	
 	  
 	  # Stop if annotations discrete bigger than palette
@@ -1278,6 +1291,18 @@ combine_lists_with_the_same_name = function(x){
 filter_args <- function(all_args, target_func, force_keep = NULL, invert = FALSE) {
   # Get the names of the formal arguments of the target function
   valid_args <- names(formals(target_func))
+  
+  # Add common legend and annotation parameters that should always be kept
+  # These are valid HeatmapAnnotation parameters that users commonly need
+  legend_annotation_params <- c(
+    "annotation_legend_param", "annotation_name_gp", "annotation_name_rot", 
+    "annotation_name_offset", "annotation_name_side", "show_annotation_name",
+    "legend_labels_gp", "legend_title_gp", "legend_grid_height", "legend_grid_width",
+    "legend_border", "show_legend", "legend_gap", "border"
+  )
+  
+  # Always include these parameters even if not in formal arguments
+  valid_args <- unique(c(valid_args, legend_annotation_params))
   
   # Check if force_keep is numeric
   if (is.numeric(force_keep)) {
