@@ -478,19 +478,35 @@ tidyHeatmap::pasilla |>
 
 # Adding heatmap side-by-side
 
-```{r sidebyside, warning=FALSE, fig.width=10, fig.height=10}
+```{r sidebyside, warning=FALSE, fig.width=10, fig.height=6}
 
 p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row") 
 
-p_heatmap + p_heatmap
+p_heatmap + p_heatmap 
 
 ```
+
+Add more than two heatmaps
+
+> **Note:**
+> 
+> Due to limitations in R's method dispatch, adding more than two tidyHeatmap heatmaps using the `+` operator (e.g. `p_heatmap + p_heatmap + p_heatmap`) may result in an error or unexpected behavior. 
+> 
+> To robustly combine more than two heatmaps, convert each to a ComplexHeatmap object first, this will use the `+` functionality of `CmplexHeatmap`.
+
+```{r 3-ways, warning=FALSE, fig.width=10, fig.height=6}
+as_ComplexHeatmap(p_heatmap) +
+  as_ComplexHeatmap(p_heatmap) +
+  as_ComplexHeatmap(p_heatmap)
+```
+
+This ensures that all objects are compatible and can be combined using ComplexHeatmap's native addition functionality.
 
 # ComplexHeatmap further styling
 
 ## Add cell borders
 
-```{r borders, fig.width=10, fig.height=10}
+```{r borders, fig.width=10, fig.height=6}
 mtcars_tidy |> 
 	heatmap(
 		`Car name`, Property, Value,	
@@ -501,7 +517,7 @@ mtcars_tidy |>
 
 ## Drop row clustering
 
-```{r droprow, fig.width=10, fig.height=10}
+```{r droprow, fig.width=10, fig.height=6}
 mtcars_tidy |> 
 	heatmap(
 		`Car name`, Property, Value,	
@@ -512,7 +528,7 @@ mtcars_tidy |>
 
 ## Reorder rows elements
 
-```{r reorder, fig.width=10, fig.height=10}
+```{r reorder, fig.width=10, fig.height=6}
 library(forcats)
 mtcars_tidy |> 
 	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
@@ -525,7 +541,7 @@ mtcars_tidy |>
 
 ## Size of dendrograms
 
-```{r sizedendro, fig.width=10, fig.height=10}
+```{r sizedendro, fig.width=10, fig.height=6}
 mtcars_tidy |> 
 	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
 	heatmap(
@@ -571,7 +587,7 @@ ComplexHeatmap has some graphical functionalities that are not included in the s
 
 ### Chainging side of legends
 
-```{r sidelegend, fig.width=10, fig.height=10}
+```{r sidelegend, fig.width=10, fig.height=6}
 
 heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) %>%
 	as_ComplexHeatmap() %>%
@@ -580,7 +596,7 @@ heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) %>%
 
 ### Add title using `draw` from `ComplexHeatmap`
 
-```{r title, fig.width=10, fig.height=10}
+```{r title, fig.width=10, fig.height=6}
 mtcars_tidy |> 
     heatmap(`Car name`, Property, Value,    scale = "row"   ) |>
     as_ComplexHeatmap() |>
