@@ -17,14 +17,14 @@ get_heatmap_data(.data)
 \item{.data}{A `InputHeatmap` object from tidyHeatmap::heatmap()}
 }
 \value{
-A list containing the ordered matrix, row dendrogram, and column dendrogram
-
 A list containing:
 \itemize{
   \item matrix: The abundance matrix with rows and columns ordered as in the heatmap
   \item row_dend: The row dendrogram object
   \item column_dend: The column dendrogram object
 }
+
+A list containing the ordered matrix, row dendrogram, and column dendrogram
 }
 \description{
 get_heatmap_data() extracts the heatmap matrix as it appears in the plot along with the row and column dendrograms, all with consistent naming.
