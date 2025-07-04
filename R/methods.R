@@ -1594,12 +1594,20 @@ setMethod("get_heatmap_data", "InputHeatmap", function(.data) {
 	# Get the abundance matrix from the original object
 	abundance_mat <- .data@input[[1]]
 	
+	# Handle grouped heatmaps (row_ord is a list) vs regular heatmaps (row_ord is a vector)
+	if (is.list(row_ord)) {
+		# For grouped heatmaps, concatenate all group orders and remove names
+		row_ord <- as.integer(unlist(row_ord))
+	}
+	
 	# Create ordered matrix with consistent row and column names
 	ordered_matrix <- abundance_mat[row_ord, col_ord]
 	
 	# Get dendrograms
 	row_dendrogram <- ComplexHeatmap::row_dend(ch_drawn)
 	column_dendrogram <- ComplexHeatmap::column_dend(ch_drawn)
+	
+
 	
 	return(list(
 		matrix = ordered_matrix,

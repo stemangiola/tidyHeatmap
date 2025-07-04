@@ -84,13 +84,13 @@ test_that("get_heatmap_data has consistent naming", {
   hm <- create_test_heatmap()
   result <- hm |> get_heatmap_data()
   
-  # Check that dendrogram labels match matrix row/column names
+  # Check that dendrogram labels match matrix row/column names (same set)
   expect_setequal(labels(result$row_dend), rownames(result$matrix))
   expect_setequal(labels(result$column_dend), colnames(result$matrix))
   
-  # Check that the order of dendrogram labels matches matrix order
-  expect_equal(labels(result$row_dend)[order.dendrogram(result$row_dend)], rownames(result$matrix))
-  expect_equal(labels(result$column_dend)[order.dendrogram(result$column_dend)], colnames(result$matrix))
+  # Check that dendrogram labels are in the same order as matrix row/column names
+  expect_equal(labels(result$row_dend), rownames(result$matrix))
+  expect_equal(labels(result$column_dend), colnames(result$matrix))
 })
 
 test_that("get_heatmap_data works with different data types", {
@@ -119,7 +119,14 @@ test_that("get_heatmap_data works with grouped heatmaps", {
   
   # Check that all components are valid
   expect_true(is.matrix(result$matrix))
-  expect_s3_class(result$row_dend, "dendrogram")
+  
+  # For grouped heatmaps, row_dend is a list of dendrograms (one per group)
+  expect_true(is.list(result$row_dend))
+  # Check that each element is a dendrogram
+  for (dend in result$row_dend) {
+    expect_s3_class(dend, "dendrogram")
+  }
+  
   expect_s3_class(result$column_dend, "dendrogram")
 })
 
@@ -166,12 +173,16 @@ test_that("get_heatmap_data works with annotated heatmaps", {
 
 # Edge case tests
 test_that("get_heatmap_data handles small datasets", {
-  # Create a heatmap with minimal data
+  # Create a heatmap with minimal but valid data by selecting specific rows/columns
   minimal_data <- tidyHeatmap::N52 |>
     dplyr::filter(Category == "Angiogenesis") |>
-    dplyr::slice(1:2) |>  # Only 2 rows
-    dplyr::select(symbol_ct, UBR, `read count normalised log`) |>
-    dplyr::filter(UBR %in% unique(UBR)[1:2])  # Only 2 columns
+    dplyr::filter(symbol_ct %in% c("E_CHI3L1", "E_COL3A1", "F_C5", "F_VWF")) |>  # Select specific symbols
+    dplyr::filter(UBR %in% c("11405", "11420", "11425")) |>  # Select specific UBR values
+    dplyr::select(symbol_ct, UBR, `read count normalised log`)
+  
+  # Verify we have sufficient data for a valid heatmap
+  expect_gte(length(unique(minimal_data$symbol_ct)), 2)
+  expect_gte(length(unique(minimal_data$UBR)), 2)
   
   hm <- tidyHeatmap::heatmap(
     minimal_data,
