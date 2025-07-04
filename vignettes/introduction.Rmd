@@ -494,7 +494,7 @@ Add more than two heatmaps
 > 
 > To robustly combine more than two heatmaps, convert each to a ComplexHeatmap object first, this will use the `+` functionality of `CmplexHeatmap`. This ensures that all objects are compatible and can be combined using ComplexHeatmap's native addition functionality.
 
-```{r 3-ways, warning=FALSE, fig.width=10, fig.height=6}
+```{r three_ways, warning=FALSE, fig.width=10, fig.height=6}
 as_ComplexHeatmap(p_heatmap) +
   as_ComplexHeatmap(p_heatmap) +
   as_ComplexHeatmap(p_heatmap)
