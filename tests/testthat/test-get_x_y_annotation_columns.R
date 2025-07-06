@@ -231,23 +231,14 @@ test_that("get_x_y_annotation_columns works with N52-like structure", {
   # Category and inflection should be gene (row) annotations
   expect_true("Category" %in% row_cols)
   expect_true("inflection" %in% row_cols)
-})
-
-# Test with missing abundance column specified
-test_that("get_x_y_annotation_columns handles abundance column correctly", {
-  test_data <- create_basic_test_data()
-  
-  # The abundance column should appear in both orientations in the result
-  result <- get_x_y_annotation_columns(test_data, sample, gene, count)
-  
-  column_cols <- result %>% filter(orientation == "column") %>% pull(col_name)
-  row_cols <- result %>% filter(orientation == "row") %>% pull(col_name)
   
   # count (abundance) should be in both orientations
   expect_true("count" %in% column_cols)
   expect_true("count" %in% row_cols)
 })
 
+# Test with missing abundance column specified
+# Removed due to redundancy with the N52-like structure test.
 # Test result structure and types
 test_that("get_x_y_annotation_columns returns correct structure", {
   test_data <- create_basic_test_data()
