@@ -1,4 +1,4 @@
-context("get_x_y_annotation_columns tests")
+context("tidyHeatmap:::get_x_y_annotation_columns tests")
 
 # Load required packages
 library(dplyr)
@@ -8,36 +8,42 @@ library(rlang)
 
 # Create test data sets for different scenarios
 create_basic_test_data <- function() {
-  tibble(
-    sample = c("S1", "S2", "S3", "S4"),
-    gene = c("G1", "G1", "G2", "G2"),
-    count = c(10, 20, 30, 40),
-    sample_type = c("A", "B", "A", "B"),  # annotation for samples
-    gene_pathway = c("P1", "P1", "P2", "P2"),  # annotation for genes
-    batch = c("B1", "B1", "B2", "B2"),  # could be either sample or gene annotation
-    irrelevant_col = c("X", "Y", "Z", "W")  # not related to either dimension
-  )
+  # Create rectangular data: all combinations of 2 samples and 2 genes
+  tidyr::expand_grid(
+    sample = c("S1", "S2"),
+    gene = c("G1", "G2")
+  ) %>%
+    dplyr::mutate(
+      count = c(10, 20, 30, 40),
+      sample_type = rep(c("A", "B"), each = 2),  # annotation for samples
+      gene_pathway = rep(c("P1", "P2"), times = 2),  # annotation for genes
+      batch = rep(c("B1", "B2"), each = 2),  # could be either sample or gene annotation
+      irrelevant_col = rep(c("X", "Y"), each = 2)  # not related to either dimension
+    )
 }
 
 create_complex_test_data <- function() {
-  tibble(
-    patient_id = rep(c("P1", "P2", "P3"), each = 4),
-    biomarker = rep(c("BM1", "BM2", "BM3", "BM4"), times = 3),
-    expression = runif(12),
-    age = rep(c(25, 35, 45), each = 4),  # patient annotation
-    gender = rep(c("M", "F", "M"), each = 4),  # patient annotation
-    pathway = rep(c("Path1", "Path2", "Path1", "Path2"), times = 3),  # biomarker annotation
-    category = rep(c("Cat1", "Cat2", "Cat1", "Cat2"), times = 3),  # biomarker annotation
-    treatment = rep(c("T1", "T2", "T3"), each = 4),  # patient annotation
-    tissue_type = rep(c("Normal", "Tumor"), each = 6)  # could be either
-  )
+  # Create rectangular data: all combinations of 3 patients and 4 biomarkers
+  tidyr::expand_grid(
+    patient_id = c("P1", "P2", "P3"),
+    biomarker = c("BM1", "BM2", "BM3", "BM4")
+  ) %>%
+    dplyr::mutate(
+      expression = runif(12),
+      age = rep(c(25, 35, 45), each = 4),  # patient annotation
+      gender = rep(c("M", "F", "M"), each = 4),  # patient annotation
+      pathway = rep(c("Path1", "Path2", "Path1", "Path2"), times = 3),  # biomarker annotation
+      category = rep(c("Cat1", "Cat2", "Cat1", "Cat2"), times = 3),  # biomarker annotation
+      treatment = rep(c("T1", "T2", "T3"), each = 4),  # patient annotation
+      tissue_type = rep(c("Normal", "Tumor"), each = 6)  # could be either
+    )
 }
 
 # Test basic functionality
-test_that("get_x_y_annotation_columns works with basic data", {
+test_that("tidyHeatmap:::get_x_y_annotation_columns works with basic data", {
   test_data <- create_basic_test_data()
   
-  result <- get_x_y_annotation_columns(test_data, sample, gene, count)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(test_data, sample, gene, count)
   
   # Should be a tibble with orientation and col_name columns
   expect_s3_class(result, "tbl_df")
@@ -63,10 +69,10 @@ test_that("get_x_y_annotation_columns works with basic data", {
 })
 
 # Test with more complex data structure
-test_that("get_x_y_annotation_columns handles complex data correctly", {
+test_that("tidyHeatmap:::get_x_y_annotation_columns handles complex data correctly", {
   test_data <- create_complex_test_data()
   
-  result <- get_x_y_annotation_columns(test_data, patient_id, biomarker, expression)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(test_data, patient_id, biomarker, expression)
   
   # Should identify patient-specific annotations
   column_cols <- result %>% filter(orientation == "column") %>% pull(col_name)
@@ -83,14 +89,14 @@ test_that("get_x_y_annotation_columns handles complex data correctly", {
 })
 
 # Test with empty data
-test_that("get_x_y_annotation_columns handles empty data", {
+test_that("tidyHeatmap:::get_x_y_annotation_columns handles empty data", {
   empty_data <- tibble(
     sample = character(0),
     gene = character(0),
     count = numeric(0)
   )
   
-  result <- get_x_y_annotation_columns(empty_data, sample, gene, count)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(empty_data, sample, gene, count)
   
   expect_s3_class(result, "tbl_df")
   expect_equal(names(result), c("orientation", "col_name"))
@@ -99,7 +105,8 @@ test_that("get_x_y_annotation_columns handles empty data", {
 })
 
 # Test with single row/column
-test_that("get_x_y_annotation_columns handles single row/column data", {
+test_that("tidyHeatmap:::get_x_y_annotation_columns handles single row/column data", {
+  # Single sample and single gene (still rectangular)
   single_data <- tibble(
     sample = "S1",
     gene = "G1",
@@ -108,7 +115,7 @@ test_that("get_x_y_annotation_columns handles single row/column data", {
     gene_annotation = "X"
   )
   
-  result <- get_x_y_annotation_columns(single_data, sample, gene, count)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(single_data, sample, gene, count)
   
   expect_s3_class(result, "tbl_df")
   expect_equal(names(result), c("orientation", "col_name"))
@@ -122,11 +129,11 @@ test_that("get_x_y_annotation_columns handles single row/column data", {
 })
 
 # Test with grouped data
-test_that("get_x_y_annotation_columns works with grouped data", {
+test_that("tidyHeatmap:::get_x_y_annotation_columns works with grouped data", {
   test_data <- create_basic_test_data() %>%
     group_by(sample_type)
   
-  result <- get_x_y_annotation_columns(test_data, sample, gene, count)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(test_data, sample, gene, count)
   
   # Should still work correctly and ungroup the data
   expect_s3_class(result, "tbl_df")
@@ -141,11 +148,11 @@ test_that("get_x_y_annotation_columns works with grouped data", {
 })
 
 # Test with list columns (should be filtered out)
-test_that("get_x_y_annotation_columns filters out list columns", {
+test_that("tidyHeatmap:::get_x_y_annotation_columns filters out list columns", {
   test_data <- create_basic_test_data() %>%
     mutate(list_col = list(c(1, 2), c(3, 4), c(5, 6), c(7, 8)))
   
-  result <- get_x_y_annotation_columns(test_data, sample, gene, count)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(test_data, sample, gene, count)
   
   # list_col should not appear in the result
   all_cols <- result %>% pull(col_name)
@@ -160,14 +167,14 @@ test_that("get_x_y_annotation_columns filters out list columns", {
 })
 
 # Test with factor columns
-test_that("get_x_y_annotation_columns handles factor columns", {
+test_that("tidyHeatmap:::get_x_y_annotation_columns handles factor columns", {
   test_data <- create_basic_test_data() %>%
     mutate(
       sample_type = factor(sample_type),
       gene_pathway = factor(gene_pathway)
     )
   
-  result <- get_x_y_annotation_columns(test_data, sample, gene, count)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(test_data, sample, gene, count)
   
   # Should handle factors correctly
   column_cols <- result %>% filter(orientation == "column") %>% pull(col_name)
@@ -178,16 +185,19 @@ test_that("get_x_y_annotation_columns handles factor columns", {
 })
 
 # Test with numeric annotation columns
-test_that("get_x_y_annotation_columns handles numeric annotations", {
-  test_data <- tibble(
-    sample = c("S1", "S2", "S3", "S4"),
-    gene = c("G1", "G1", "G2", "G2"),
-    count = c(10, 20, 30, 40),
-    sample_score = c(1.5, 2.5, 1.5, 2.5),  # numeric annotation for samples
-    gene_weight = c(10.1, 10.1, 20.2, 20.2)  # numeric annotation for genes
-  )
+test_that("tidyHeatmap:::get_x_y_annotation_columns handles numeric annotations", {
+  # Create rectangular data: all combinations of 2 samples and 2 genes
+  test_data <- tidyr::expand_grid(
+    sample = c("S1", "S2"),
+    gene = c("G1", "G2")
+  ) %>%
+    dplyr::mutate(
+      count = c(10, 20, 30, 40),
+      sample_score = rep(c(1.5, 2.5), each = 2),  # numeric annotation for samples
+      gene_weight = rep(c(10.1, 20.2), times = 2)  # numeric annotation for genes
+    )
   
-  result <- get_x_y_annotation_columns(test_data, sample, gene, count)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(test_data, sample, gene, count)
   
   column_cols <- result %>% filter(orientation == "column") %>% pull(col_name)
   row_cols <- result %>% filter(orientation == "row") %>% pull(col_name)
@@ -197,19 +207,21 @@ test_that("get_x_y_annotation_columns handles numeric annotations", {
 })
 
 # Test with real-world-like data (using structure similar to N52)
-test_that("get_x_y_annotation_columns works with N52-like structure", {
-  # Create data similar to N52 structure
-  n52_like_data <- tibble(
-    symbol_ct = rep(c("G1", "G2", "G3"), each = 4),
-    UBR = rep(c("S1", "S2", "S3", "S4"), times = 3),
-    `read count normalised log` = runif(12),
-    Category = rep(c("Cat1", "Cat2", "Cat1"), each = 4),  # gene annotation
-    `Cell type` = rep(c("TypeA", "TypeB", "TypeA", "TypeB"), times = 3),  # sample annotation
-    CAPRA_TOTAL = rep(c(1, 2, 3, 4), times = 3),  # sample annotation
-    inflection = rep(c(10, 20, 30), each = 4)  # gene annotation
-  )
+test_that("tidyHeatmap:::get_x_y_annotation_columns works with N52-like structure", {
+  # Create rectangular data: all combinations of 4 samples and 3 genes
+  n52_like_data <- tidyr::expand_grid(
+    symbol_ct = c("G1", "G2", "G3"),
+    UBR = c("S1", "S2", "S3", "S4")
+  ) %>%
+    dplyr::mutate(
+      `read count normalised log` = runif(12),
+      Category = rep(c("Cat1", "Cat2", "Cat1"), each = 4),  # gene annotation
+      `Cell type` = rep(c("TypeA", "TypeB", "TypeA", "TypeB"), times = 3),  # sample annotation
+      CAPRA_TOTAL = rep(c(1, 2, 3, 4), times = 3),  # sample annotation
+      inflection = rep(c(10, 20, 30), each = 4)  # gene annotation
+    )
   
-  result <- get_x_y_annotation_columns(
+  result <- tidyHeatmap:::get_x_y_annotation_columns(
     n52_like_data, 
     UBR, 
     symbol_ct, 
@@ -234,11 +246,11 @@ test_that("get_x_y_annotation_columns works with N52-like structure", {
 })
 
 # Test with missing abundance column specified
-test_that("get_x_y_annotation_columns handles abundance column correctly", {
+test_that("tidyHeatmap:::get_x_y_annotation_columns handles abundance column correctly", {
   test_data <- create_basic_test_data()
   
   # The abundance column should appear in both orientations in the result
-  result <- get_x_y_annotation_columns(test_data, sample, gene, count)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(test_data, sample, gene, count)
   
   column_cols <- result %>% filter(orientation == "column") %>% pull(col_name)
   row_cols <- result %>% filter(orientation == "row") %>% pull(col_name)
@@ -249,10 +261,10 @@ test_that("get_x_y_annotation_columns handles abundance column correctly", {
 })
 
 # Test result structure and types
-test_that("get_x_y_annotation_columns returns correct structure", {
+test_that("tidyHeatmap:::get_x_y_annotation_columns returns correct structure", {
   test_data <- create_basic_test_data()
   
-  result <- get_x_y_annotation_columns(test_data, sample, gene, count)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(test_data, sample, gene, count)
   
   # Check return type and structure
   expect_s3_class(result, "tbl_df")
@@ -272,15 +284,15 @@ test_that("get_x_y_annotation_columns returns correct structure", {
 })
 
 # Test with duplicate column names handling
-test_that("get_x_y_annotation_columns handles edge cases", {
-  # Test with minimal data
-  minimal_data <- tibble(
+test_that("tidyHeatmap:::get_x_y_annotation_columns handles edge cases", {
+  # Test with minimal rectangular data
+  minimal_data <- tidyr::expand_grid(
     x = c("A", "B"),
-    y = c("1", "2"), 
-    z = c(100, 200)
-  )
+    y = c("1", "2")
+  ) %>%
+    dplyr::mutate(z = c(100, 200, 300, 400))
   
-  result <- get_x_y_annotation_columns(minimal_data, x, y, z)
+  result <- tidyHeatmap:::get_x_y_annotation_columns(minimal_data, x, y, z)
   
   expect_s3_class(result, "tbl_df")
   expect_equal(names(result), c("orientation", "col_name"))
@@ -290,4 +302,27 @@ test_that("get_x_y_annotation_columns handles edge cases", {
   expect_true("x" %in% all_cols)
   expect_true("y" %in% all_cols)
   expect_true("z" %in% all_cols)
+})
+
+# Test with boolean column specific to row values in a rectangular matrix
+
+test_that("tidyHeatmap:::get_x_y_annotation_columns handles boolean row-specific annotation in rectangular data", {
+  # Create all combinations of 2 samples and 2 genes (rectangular)
+  test_data <- tidyr::expand_grid(
+    sample = c("S1", "S2"),
+    gene = c("G1", "G2")
+  ) %>%
+    dplyr::mutate(
+      count = c(10, 20, 30, 40),
+      is_special_gene = gene == "G2" # TRUE only for G2 rows
+    )
+
+  result <- tidyHeatmap:::get_x_y_annotation_columns(test_data, sample, gene, count)
+
+  # Should classify is_special_gene as a row annotation
+  row_cols <- result %>% filter(orientation == "row") %>% pull(col_name)
+  column_cols <- result %>% filter(orientation == "column") %>% pull(col_name)
+
+  expect_true("is_special_gene" %in% row_cols)
+  expect_false("is_special_gene" %in% column_cols)
 })
