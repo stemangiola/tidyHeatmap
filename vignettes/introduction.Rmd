@@ -498,11 +498,56 @@ tidyHeatmap::pasilla |>
 
 # Adding heatmap side-by-side
 
-```{r sidebyside, warning=FALSE, fig.width=10, fig.height=10}
+```{r sidebyside, warning=FALSE, fig.width=10, fig.height=6}
 
 p_heatmap = heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row") 
 
-p_heatmap + p_heatmap
+p_heatmap + p_heatmap 
+
+```
+
+Add more than two heatmaps
+
+> **Note:**
+> 
+> Due to limitations in R's method dispatch, adding more than two tidyHeatmap heatmaps using the `+` operator (e.g. `p_heatmap + p_heatmap + p_heatmap`) may result in an error or unexpected behavior. 
+> 
+> To robustly combine more than two heatmaps, convert each to a ComplexHeatmap object first, this will use the `+` functionality of `ComplexHeatmap`. This ensures that all objects are compatible and can be combined using ComplexHeatmap's native addition functionality.
+
+```{r three_ways, warning=FALSE, fig.width=10, fig.height=6}
+as_ComplexHeatmap(p_heatmap) +
+  as_ComplexHeatmap(p_heatmap) +
+  as_ComplexHeatmap(p_heatmap)
+```
+
+
+# Using patchwork to integrate across heatmaps and including ggplots
+
+```{r patchworkintegrate, fig.width=10, fig.height=6}
+library(ggplot2)
+library(patchwork)
+
+p_heatmap =
+	mtcars_tidy |> 
+	heatmap(
+		`Car name`, Property, Value,	
+		scale = "row", 
+			show_heatmap_legend = FALSE,
+		row_names_gp = gpar(fontsize = 7)
+	) 
+
+p_ggplot = data.frame(value = 1:10) |> ggplot(aes(value)) + geom_density()
+
+wrap_heatmap(p_heatmap) + 
+	p_ggplot +
+	
+	# Add padding for better aesthetics
+	wrap_heatmap(
+		p_heatmap,
+		padding = grid::unit(c(-30, -0, -0, -10), "points" ),
+		clip = FALSE
+	) + 
+	plot_layout(width = c(1, 0.3, 1))
 
 ```
 
@@ -510,7 +555,7 @@ p_heatmap + p_heatmap
 
 ## Add cell borders
 
-```{r borders, fig.width=10, fig.height=10}
+```{r borders, fig.width=10, fig.height=6}
 mtcars_tidy |> 
 	heatmap(
 		`Car name`, Property, Value,	
@@ -521,7 +566,7 @@ mtcars_tidy |>
 
 ## Drop row clustering
 
-```{r droprow, fig.width=10, fig.height=10}
+```{r droprow, fig.width=10, fig.height=6}
 mtcars_tidy |> 
 	heatmap(
 		`Car name`, Property, Value,	
@@ -532,7 +577,7 @@ mtcars_tidy |>
 
 ## Reorder rows elements
 
-```{r reorder, fig.width=10, fig.height=10}
+```{r reorder, fig.width=10, fig.height=6}
 library(forcats)
 mtcars_tidy |> 
 	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
@@ -545,7 +590,7 @@ mtcars_tidy |>
 
 ## Size of dendrograms
 
-```{r sizedendro, fig.width=10, fig.height=10}
+```{r sizedendro, fig.width=10, fig.height=6}
 mtcars_tidy |> 
 	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
 	heatmap(
@@ -591,7 +636,7 @@ ComplexHeatmap has some graphical functionalities that are not included in the s
 
 ### Chainging side of legends
 
-```{r sidelegend, fig.width=10, fig.height=10}
+```{r sidelegend, fig.width=10, fig.height=6}
 
 heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) %>%
 	as_ComplexHeatmap() %>%
@@ -600,7 +645,7 @@ heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) %>%
 
 ### Add title using `draw` from `ComplexHeatmap`
 
-```{r title, fig.width=10, fig.height=10}
+```{r title, fig.width=10, fig.height=6}
 mtcars_tidy |> 
     heatmap(`Car name`, Property, Value,    scale = "row"   ) |>
     as_ComplexHeatmap() |>
@@ -611,35 +656,7 @@ mtcars_tidy |>
 ```
 
 
-## Using patchwork to integrate heatmaps
 
-```{r patchworkintegrate, fig.width=10, fig.height=10}
-library(ggplot2)
-library(patchwork)
-
-p_heatmap =
-	mtcars_tidy |> 
-	heatmap(
-		`Car name`, Property, Value,	
-		scale = "row", 
-			show_heatmap_legend = FALSE,
-		row_names_gp = gpar(fontsize = 7)
-	) 
-
-p_ggplot = data.frame(value = 1:10) |> ggplot(aes(value)) + geom_density()
-
-wrap_heatmap(p_heatmap) + 
-	p_ggplot +
-	
-	# Add padding for better aesthetics
-	wrap_heatmap(
-		p_heatmap,
-		padding = grid::unit(c(-30, -0, -0, -10), "points" ),
-		clip = FALSE
-	) + 
-	plot_layout(width = c(1, 0.3, 1))
-
-```
 
 ### Add title using `ggtitle` from `ggplot2`
 

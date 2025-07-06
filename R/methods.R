@@ -243,7 +243,7 @@ setMethod("show", "InputHeatmap", function(object){
 #' 
 #' @details This function takes a tbl as an input and creates a `ComplexHeatmap` plot. The information is stored in a `InputHeatmap` object that is updated along the pipe statement, for example adding annotation layers. 
 #'
-#' @return A `InputHeatmap` objects that gets evaluated to a `ComplexHeatmap`
+#' @return An `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 #'
 #'
@@ -1558,6 +1558,31 @@ setMethod("save_pdf", "InputHeatmap", .save_pdf)
 #' 
 #' # With custom colors and formatting
 #' tidyHeatmap::N52 |>
+#' Retrieve heatmap data and dendrograms as plotted
+#'
+#' \lifecycle{maturing}
+#'
+#' @description get_heatmap_data() extracts the heatmap matrix as it appears in the plot along with the row and column dendrograms, all with consistent naming.
+#'
+#' @importFrom ComplexHeatmap draw row_order column_order row_dend column_dend
+#'
+#' @name get_heatmap_data
+#' @rdname get_heatmap_data-method
+#'
+#' @param .data A `InputHeatmap` object from tidyHeatmap::heatmap()
+#'
+#' @details This function converts the InputHeatmap to ComplexHeatmap, draws it to perform clustering, then extracts the ordered matrix and dendrograms exactly as they appear in the heatmap plot.
+#' 
+#' @return A list containing:
+#' \itemize{
+#'   \item matrix: The abundance matrix with rows and columns ordered as in the heatmap
+#'   \item row_dend: The row dendrogram object
+#'   \item column_dend: The column dendrogram object
+#' }
+#'
+#' @examples
+#'
+#' hm <- tidyHeatmap::N52 |>
 #'   tidyHeatmap::heatmap(
 #'     .row = symbol_ct,
 #'     .column = UBR,
@@ -1585,6 +1610,13 @@ setMethod("save_pdf", "InputHeatmap", .save_pdf)
 #'       c("#00A087", "#F39B7F")   # colors for Cell type
 #'     )
 #'   )
+#'   )
+#' 
+#' # Get heatmap data as plotted
+#' result <- hm |> get_heatmap_data()
+#' ordered_matrix <- result$matrix
+#' row_dendrogram <- result$row_dend
+#' column_dendrogram <- result$column_dend
 #'
 #' @export
 #' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
@@ -1614,6 +1646,50 @@ setMethod("annotation_group", "InputHeatmap", function(
   .data@arguments$group_strip_height <- group_strip_height
 
   add_grouping(.data)
+
+setGeneric("get_heatmap_data", function(.data) standardGeneric("get_heatmap_data"))
+
+#' get_heatmap_data
+#' 
+#' @docType methods
+#' @rdname get_heatmap_data-method
+#' 
+#' @return A list containing the ordered matrix, row dendrogram, and column dendrogram
+#'
+setMethod("get_heatmap_data", "InputHeatmap", function(.data) {
+	
+	# Convert to ComplexHeatmap and draw it
+	ch <- .data |> as_ComplexHeatmap()
+	ch_drawn <- ComplexHeatmap::draw(ch)
+	
+	# Get row and column orders
+	row_ord <- ComplexHeatmap::row_order(ch_drawn)
+	col_ord <- ComplexHeatmap::column_order(ch_drawn)
+	
+	# Get the abundance matrix from the original object
+	abundance_mat <- .data@input[[1]]
+	
+	# Handle grouped heatmaps (row_ord is a list) vs regular heatmaps (row_ord is a vector)
+	if (is.list(row_ord)) {
+		# For grouped heatmaps, concatenate all group orders and remove names
+		row_ord <- as.integer(unlist(row_ord))
+	}
+	
+	# Create ordered matrix with consistent row and column names
+	ordered_matrix <- abundance_mat[row_ord, col_ord]
+	
+	# Get dendrograms
+	row_dendrogram <- ComplexHeatmap::row_dend(ch_drawn)
+	column_dendrogram <- ComplexHeatmap::column_dend(ch_drawn)
+	
+
+	
+	return(list(
+		matrix = ordered_matrix,
+		row_dend = row_dendrogram,
+		column_dend = column_dendrogram
+	))
+
 })
 
 

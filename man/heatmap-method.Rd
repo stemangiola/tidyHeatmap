@@ -85,7 +85,7 @@ heatmap_(
 \item{...}{The arguments that will be passed to the Heatmap function of ComplexHeatmap backend}
 }
 \value{
-A `InputHeatmap` objects that gets evaluated to a `ComplexHeatmap`
+An `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 
 A `InputHeatmap` object
 
