@@ -4,7 +4,7 @@ context("get_x_y_annotation_columns tests")
 library(dplyr)
 library(tidyr)
 library(tibble)
-library(rlang)
+# Line removed as `rlang` is not used in this test file.
 
 # Create test data sets for different scenarios
 create_basic_test_data <- function() {
