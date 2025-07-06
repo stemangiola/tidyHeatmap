@@ -370,7 +370,7 @@ heatmap_ <-
 #' @rdname heatmap-method
 #' 
 #' @return A `InputHeatmap` object
-#'
+#' 
 setMethod("heatmap", "tbl", heatmap_)
 
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
@@ -462,35 +462,23 @@ setGeneric("annotation_tile", function(.data,
 #' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
 #'
 setMethod("annotation_tile", "InputHeatmap", function(.data,
-																											.column,
-																											palette = NULL, size = NULL,...){
-	
-	.column = enquo(.column)
-	
-	.data |> add_annotation(
-		!!.column,
-		type = "tile",
-		
-		# If annotation is discrete
-		palette_discrete = 
-			.data@data |> 
-			ungroup() |>
-			select(!!.column) |> 
-			sapply(class) |> 
-			when(. %in% c("factor", "character", "logical") &	!is.null(palette) ~ list(palette), ~ list()),
-		
-		# If annotation is continuous
-		palette_continuous = 
-			.data@data |> 
-			ungroup() |>
-			select(!!.column) |> 
-			sapply(class) |> 
-			when(. %in% c("integer", "numerical", "numeric", "double") &	!is.null(palette) ~ list(palette), ~ list()),
-		
-		size = size,
-		...
-	)
-	
+                                                    .column,
+                                                    palette = NULL, size = NULL, ...){
+  .column = enquo(.column)
+  dots <- rlang::dots_list(...)
+  col_sym <- rlang::as_name(.column)
+  # Use tidy evaluation for class checking
+  col_class <- .data@data |> dplyr::pull(!! .column) |> class()
+  .data |> add_annotation(
+    !!.column,
+    type = "tile",
+    palette_discrete =
+      if (col_class %in% c("factor", "character", "logical") & !is.null(palette)) list(palette) else list(),
+    palette_continuous =
+      if (col_class %in% c("integer", "numerical", "numeric", "double") & !is.null(palette)) list(palette) else list(),
+    size = size,
+    !!!dots
+  )
 })
 
 #' Adds a point annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`

@@ -25,7 +25,12 @@ annotation_tile(.data, .column, palette = NULL, size = NULL, ...)
 \item{...}{The arguments that will be passed to 
 \code{\link[ComplexHeatmap:anno_block]{anno_block}} and 
 \code{\link[ComplexHeatmap:HeatmapAnnotation]{HeatmapAnnotation}}
-if you want to fine tune the aesthetics.}
+if you want to fine tune the aesthetics. Important parameters include:
+\code{legend_labels_gp} for legend text styling (e.g., \code{grid::gpar(fontsize = 20)}),
+\code{legend_title_gp} for legend title styling,
+\code{annotation_name_gp} for annotation name styling,
+\code{legend_grid_height} and \code{legend_grid_width} for legend square sizes,
+and \code{show_legend} to control legend visibility.}
 }
 \value{
 A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`

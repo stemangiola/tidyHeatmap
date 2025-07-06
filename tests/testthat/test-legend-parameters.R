@@ -3,55 +3,6 @@
 
 context('legend parameters')
 
-test_that("filter_args function preserves legend parameters", {
-  # Test the filter_args function directly
-  
-  # Mock arguments that include legend parameters
-  test_args <- list(
-    legend_labels_gp = grid::gpar(fontsize = 20),
-    legend_title_gp = grid::gpar(fontsize = 18),
-    annotation_name_gp = grid::gpar(fontsize = 16),
-    legend_grid_height = grid::unit(8, "mm"),
-    legend_grid_width = grid::unit(8, "mm"),
-    show_legend = TRUE,
-    some_other_param = "value",
-    invalid_param = "should_be_removed"
-  )
-  
-  # Test that our filter_args function includes legend parameters
-  # Note: This test will pass as long as the function exists and doesn't error
-  expect_true(TRUE)  # Basic placeholder test
-  
-  # Test that legend parameters are recognized as important
-  legend_params <- c(
-    "legend_labels_gp", "legend_title_gp", "annotation_name_gp",
-    "legend_grid_height", "legend_grid_width", "show_legend",
-    "annotation_legend_param", "annotation_name_rot", "annotation_name_offset",
-    "annotation_name_side", "show_annotation_name", "legend_border"
-  )
-  
-  # All these should be recognized as valid parameters
-  expect_true(length(legend_params) > 0)
-  expect_true(all(nchar(legend_params) > 0))
-})
-
-test_that("legend parameter names are correctly defined", {
-  # Test that important legend parameters are defined
-  expected_params <- c(
-    "legend_labels_gp",      # Controls legend label text
-    "legend_title_gp",       # Controls legend title text  
-    "annotation_name_gp",    # Controls annotation name text
-    "legend_grid_height",    # Controls legend square height
-    "legend_grid_width",     # Controls legend square width
-    "show_legend",           # Controls legend visibility
-    "legend_border"          # Controls legend border
-  )
-  
-  # Test that these parameter names are non-empty strings
-  expect_true(all(is.character(expected_params)))
-  expect_true(all(nchar(expected_params) > 0))
-  expect_true(length(expected_params) == 7)
-})
 
 test_that("grid gpar objects can be created for legend styling", {
   # Test that we can create the grid objects users would typically use
@@ -164,6 +115,23 @@ test_that("legend parameters handle edge cases", {
   
   large_unit <- grid::unit(100, "mm")
   expect_s3_class(large_unit, "unit")
+})
+
+test_that("annotation_tile with legend_labels_gp as argument does not error and produces annotation", {
+  library(tidyHeatmap)
+  library(grid)
+  hm <- tidyHeatmap::N52 |>
+    dplyr::filter(Category == "Angiogenesis") |>
+    tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row"
+    ) |>
+    annotation_tile(CAPRA_TOTAL, legend_labels_gp = grid::gpar(fontsize = 20))
+  expect_equal(class(hm)[1], "InputHeatmap")
+  expect_true(nrow(hm@top_annotation) > 0)
+  expect_true("CAPRA_TOTAL" %in% hm@top_annotation$col_name)
 })
 
 # Integration test that would work with full package installation
