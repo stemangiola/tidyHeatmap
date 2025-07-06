@@ -713,9 +713,27 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	      # If you truly need different dimension args for row vs column
 	      # (e.g. width= vs. height=), handle that logic here.
 	      
-	      # anno_mark is special - it doesn't use x parameter, but requires at and labels
+	      # anno_mark is special - it processes boolean data to extract at and labels
 	      if(..2 == "mark") {
-	        call_args <- list(which = ..3)
+	        # Extract TRUE values from boolean column to get at and labels
+	        mark_data <- ..1
+	        
+	        # Get row/column names for the orientation
+	        if(..3 == "row") {
+	          row_names <- .data_ %>% ungroup() %>% distinct(!!.row) %>% arrange(!!.row) %>% pull(!!.row)
+	          mark_indices <- which(mark_data)
+	          mark_labels <- row_names[mark_indices]
+	        } else {
+	          col_names <- .data_ %>% ungroup() %>% distinct(!!.column) %>% arrange(!!.column) %>% pull(!!.column)
+	          mark_indices <- which(mark_data)
+	          mark_labels <- col_names[mark_indices]
+	        }
+	        
+	        call_args <- list(
+	          at = mark_indices,
+	          labels = mark_labels,
+	          which = ..3
+	        )
 	        # size handling for mark annotation
 	        if(!is.null(size)) call_args = call_args |> c(list(width = size))
 	      } else {

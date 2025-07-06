@@ -4,7 +4,16 @@
 
 This document describes the implementation of the `annotation_mark` feature for tidyHeatmap, as requested in [GitHub issue #17](https://github.com/stemangiola/tidyHeatmap/issues/17).
 
-The `annotation_mark` function adds the ability to mark specific rows or columns in a heatmap and connect them to text labels with lines, providing a powerful way to highlight important features in large heatmaps.
+The `annotation_mark` function adds the ability to mark specific rows or columns in a heatmap based on a boolean column and connect them to text labels with lines, providing a powerful way to highlight important features in large heatmaps.
+
+## Key Design Decision
+
+**Boolean Column Approach**: Unlike the original ComplexHeatmap `anno_mark` which requires explicit `at` indices and `labels`, the tidyHeatmap implementation follows the framework's pattern of using data columns. Users provide a boolean column, and the function automatically:
+
+1. Identifies TRUE values in the boolean column
+2. Determines whether it's a row or column annotation using existing tidyHeatmap machinery
+3. Extracts the corresponding row/column names as labels
+4. Calculates the appropriate indices for the `at` parameter
 
 ## Implementation Details
 
@@ -14,164 +23,112 @@ The `annotation_mark` function adds the ability to mark specific rows or columns
    - Added `@importFrom ComplexHeatmap anno_mark`
    - Added `"mark" = anno_mark` to `type_to_annot_function` mapping
    - Added `"mark"` case to the switch statement in `get_top_left_annotation`
-   - Added special handling for `anno_mark` parameters (doesn't use `x` parameter like other annotations)
+   - Added special handling for `anno_mark` parameters:
+     - Processes boolean data to extract TRUE positions
+     - Automatically determines row vs column orientation
+     - Extracts row/column names as labels
+     - Calculates indices for the `at` parameter
 
 2. **R/methods.R**
-   - Added `annotation_mark` generic function
-   - Added `annotation_mark` method for `InputHeatmap` class
+   - Added `annotation_mark` generic function and method
    - Comprehensive documentation with examples
+   - Follows tidyHeatmap pattern: takes `.data` and `.column` parameters
+   - Integrates with existing `add_annotation()` workflow
 
 3. **R/functions.R**
-   - Updated `add_annotation` documentation to include "mark" in type parameter
+   - Updated `add_annotation` documentation to include "mark" type
 
 4. **NAMESPACE**
    - Added `export(annotation_mark)`
    - Added `importFrom(ComplexHeatmap,anno_mark)`
 
-### Key Design Decisions
-
-#### Special Parameter Handling
-Unlike other annotation types that use data from a column in the dataset, `anno_mark` requires specific parameters:
-- `at`: Indices indicating which rows/columns to mark
-- `labels`: Text labels corresponding to the marked positions
-
-The implementation handles this by:
-- Detecting when `type == "mark"` in the annotation processing logic
-- Building a different argument list that doesn't include the `x` parameter
-- Passing `at` and `labels` directly from the `...` arguments
-
-#### Size Parameter Handling
-For `anno_mark`, the size parameter is handled as `width` rather than `height`, following ComplexHeatmap's conventions.
-
-#### Validation
-The implementation includes validation to ensure:
-- `at` parameter is provided (required)
-- `labels` parameter is provided (required)  
-- `at` and `labels` have the same length
-
-## Usage Examples
-
-### Basic Usage
+## Usage Pattern
 
 ```r
+library(dplyr)
 library(tidyHeatmap)
 
-# Create a heatmap
-hm <- tidyHeatmap::N52 |>
+# Create a boolean column to mark specific rows
+N52_marked <- N52 |>
+  group_by(symbol_ct) |>
+  summarise(inflection_high = max(inflection) > 5, .groups = "drop") |>
+  right_join(N52, by = "symbol_ct")
+
+# Create heatmap
+hm <- N52_marked |>
   tidyHeatmap::heatmap(
     .row = symbol_ct,
     .column = UBR,
     .value = `read count normalised log`
   )
 
-# Add mark annotations to specific rows
-hm |> annotation_mark(
-  symbol_ct, 
-  at = c(1, 5, 10), 
-  labels = c("Gene A", "Gene B", "Gene C"),
-  side = "right"
-)
+# Add mark annotation - automatically detects row annotation
+# and marks rows where inflection_high is TRUE
+hm |> annotation_mark(inflection_high)
 ```
 
-### Advanced Usage with Styling
+## Technical Implementation
+
+### Boolean Data Processing
+
+The key innovation is in the `get_top_left_annotation` function where mark annotations are handled specially:
 
 ```r
-# Add mark annotations with custom styling
-hm |> annotation_mark(
-  symbol_ct,
-  at = c(2, 4, 6, 8),
-  labels = c("Important Gene 1", "Important Gene 2", "Important Gene 3", "Important Gene 4"),
-  side = "left",
-  size = unit(3, "cm"),
-  link_gp = gpar(col = "red", lwd = 2),
-  labels_gp = gpar(fontsize = 10, col = "blue")
-)
+if(..2 == "mark") {
+  # Extract TRUE values from boolean column to get at and labels
+  mark_data <- ..1
+  
+  # Get row/column names for the orientation
+  if(..3 == "row") {
+    row_names <- .data_ %>% ungroup() %>% distinct(!!.row) %>% arrange(!!.row) %>% pull(!!.row)
+    mark_indices <- which(mark_data)
+    mark_labels <- row_names[mark_indices]
+  } else {
+    col_names <- .data_ %>% ungroup() %>% distinct(!!.column) %>% arrange(!!.column) %>% pull(!!.column)
+    mark_indices <- which(mark_data)
+    mark_labels <- col_names[mark_indices]
+  }
+  
+  call_args <- list(
+    at = mark_indices,
+    labels = mark_labels,
+    which = ..3
+  )
+}
 ```
 
-### Column Annotations
+### Automatic Orientation Detection
 
-```r
-# Mark specific columns
-hm |> annotation_mark(
-  UBR,
-  at = c(1, 3, 5),
-  labels = c("Sample A", "Sample B", "Sample C"),
-  side = "top"
-)
-```
+The function leverages tidyHeatmap's existing `get_x_y_annotation_columns` machinery to automatically determine whether the boolean column corresponds to rows or columns, making the interface consistent with other annotation functions.
 
-## Function Signature
+## Benefits
 
-```r
-annotation_mark(
-  .data,
-  .column,
-  at = NULL, 
-  labels = NULL,
-  side = NULL,
-  size = NULL, 
-  ...
-)
-```
+1. **Consistent Interface**: Follows tidyHeatmap's pattern of using data columns
+2. **Automatic Label Generation**: Uses actual row/column names as labels
+3. **Flexible**: Works with any boolean column in the data
+4. **Intuitive**: TRUE values get marked, FALSE values don't
+5. **Integrated**: Uses existing tidyHeatmap annotation infrastructure
 
-### Parameters
+## Example Use Cases
 
-- `.data`: A `InputHeatmap` object created calling `tidyHeatmap::heatmap()`
-- `.column`: Vector of quotes specifying the column to use for determining row/column orientation
-- `at`: A vector of indices indicating which rows/columns to mark (required)
-- `labels`: A character vector of labels corresponding to the marked positions (required)
-- `side`: The side on which to place the labels ("left", "right" for row annotations; "top", "bottom" for column annotations)
-- `size`: A grid::unit object for the width (row annotations) or height (column annotations)
-- `...`: Additional arguments passed to `ComplexHeatmap::anno_mark()` and `HeatmapAnnotation()`
-
-## Technical Architecture
-
-### Integration with tidyHeatmap Framework
-
-The implementation follows tidyHeatmap's established patterns:
-
-1. **Generic/Method Pattern**: Uses S4 generic and method dispatch like other annotation functions
-2. **Pipe-Friendly**: Returns `InputHeatmap` object for chaining with `|>`
-3. **Consistent API**: Follows same parameter conventions as other `annotation_*` functions
-4. **Type System**: Integrates with the existing annotation type system in `utilities.R`
-
-### ComplexHeatmap Integration
-
-The implementation leverages ComplexHeatmap's `anno_mark` function while providing a tidyHeatmap-style interface:
-
-- Automatically detects row vs column orientation
-- Handles size parameters appropriately  
-- Passes through all ComplexHeatmap customization options via `...`
-- Integrates with tidyHeatmap's annotation pipeline
-
-## Testing
-
-The implementation has been tested for:
-
-1. **Syntax Validation**: All R files parse correctly
-2. **Type System Integration**: Mark type properly integrated into annotation system
-3. **Parameter Validation**: Required parameters are validated
-4. **API Consistency**: Follows established tidyHeatmap patterns
+1. **Significant Genes**: Mark genes with p-value < 0.05
+2. **High Expression**: Mark samples with expression > threshold
+3. **Interesting Features**: Mark based on any boolean condition
+4. **Quality Control**: Mark samples/genes that pass QC criteria
 
 ## Future Enhancements
 
-Potential future improvements could include:
+- Support for custom label columns (use a different column for labels than the boolean column)
+- Support for custom positioning parameters
+- Integration with other tidyHeatmap features like grouping
 
-1. **Smart Positioning**: Automatic calculation of optimal label positions
-2. **Collision Detection**: Automatic adjustment when labels overlap
-3. **Data-Driven Marking**: Helper functions to automatically identify rows/columns to mark based on data criteria
-4. **Enhanced Styling**: Additional styling options specific to mark annotations
+## Verification
 
-## Compatibility
+The implementation has been verified to:
+- Parse correctly (no syntax errors)
+- Follow tidyHeatmap patterns
+- Integrate with existing annotation system
+- Include proper documentation and examples
+- Export correctly in NAMESPACE
 
-This implementation:
-- Is fully backward compatible with existing tidyHeatmap code
-- Follows tidyHeatmap's lifecycle and deprecation policies
-- Maintains consistency with existing annotation functions
-- Integrates seamlessly with the existing codebase
-
-## References
-
-- [GitHub Issue #17](https://github.com/stemangiola/tidyHeatmap/issues/17)
-- [ComplexHeatmap anno_mark documentation](https://jokergoo.github.io/ComplexHeatmap/reference/anno_mark.html)
-- [tidyHeatmap paper](https://joss.theoj.org/papers/10.21105/joss.02472)
+This implementation provides a clean, intuitive interface for marking specific rows or columns in heatmaps while maintaining consistency with the tidyHeatmap framework.
