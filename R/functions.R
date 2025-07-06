@@ -290,7 +290,7 @@ add_grouping = function(my_input_heatmap){
 #'
 #' @param my_input_heatmap A `InputHeatmap` formatted as | <SAMPLE> | <TRANSCRIPT> | <COUNT> | <...> |
 #' @param annotation Vector of quotes
-#' @param type A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\")
+#' @param type A character vector of the set c(\"tile\", \"point\", \"bar\", \"line\", \"numeric\", \"mark\")
 #' @param palette_discrete A list of character vectors. This is the list of palettes that will be used for horizontal and vertical discrete annotations. The discrete classification of annotations depends on the column type of your input tibble (e.g., character and factor).
 #' @param palette_continuous A list of character vectors. This is the list of palettes that will be used for horizontal and vertical continuous annotations. The continuous classification of annotations depends on the column type of your input tibble (e.g., integer, numerical, double).
 #' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.

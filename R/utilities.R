@@ -618,12 +618,14 @@ ct_colors = function(ct)
 #' @importFrom ComplexHeatmap anno_barplot
 #' @importFrom ComplexHeatmap anno_lines
 #' @importFrom ComplexHeatmap anno_numeric
+#' @importFrom ComplexHeatmap anno_mark
 type_to_annot_function = list(
   "tile" = NULL, #anno_simple, 
   "point" = anno_points, 
   "bar" = anno_barplot, 
   "line" = anno_lines,
-  "numeric" = anno_numeric
+  "numeric" = anno_numeric,
+  "mark" = anno_mark
 )
 
 get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation, palette_annotation, type, x_y_annot_cols, size, ...){
@@ -703,17 +705,26 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	        "bar"   = anno_barplot,
 	        "line"  = anno_lines,
 	        "numeric" = anno_numeric,
+	        "mark" = anno_mark,
 	        stop("Unsupported annotation type: ", ..2)
 	      )
 	      
 	      # Build the argument list for do.call
 	      # If you truly need different dimension args for row vs column
 	      # (e.g. width= vs. height=), handle that logic here.
-	      call_args <-  list(x     = ..1, which = ..3)
 	      
-	      # anno_numeric does not have height argument
-	      if(..2 %in% c("point","bar","line")) call_args = call_args |> c(list(height = size))
-	      else if(..2 %in% c("numeric")) call_args = call_args |> c(list(width = size))
+	      # anno_mark is special - it doesn't use x parameter, but requires at and labels
+	      if(..2 == "mark") {
+	        call_args <- list(which = ..3)
+	        # size handling for mark annotation
+	        if(!is.null(size)) call_args = call_args |> c(list(width = size))
+	      } else {
+	        call_args <-  list(x     = ..1, which = ..3)
+	        
+	        # anno_numeric does not have height argument
+	        if(..2 %in% c("point","bar","line")) call_args = call_args |> c(list(height = size))
+	        else if(..2 %in% c("numeric")) call_args = call_args |> c(list(width = size))
+	      }
 	      
 	      if(..2 %in% c("numeric") & !"bg_gp" %in% names(dots_args))
 	        call_args = call_args |> c(list(bg_gp = gpar(fill = "grey70", col = NA)))   

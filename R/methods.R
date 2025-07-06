@@ -370,7 +370,7 @@ heatmap_ <-
 #' @rdname heatmap-method
 #' 
 #' @return A `InputHeatmap` object
-#'
+#' 
 setMethod("heatmap", "tbl", heatmap_)
 
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
@@ -379,7 +379,7 @@ setMethod("heatmap", "tbl", heatmap_)
 #' @rdname heatmap-method
 #' 
 #' @return A `InputHeatmap` object
-#'
+#' 
 setMethod("heatmap", "tbl_df", heatmap_)
 
 # #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
@@ -763,6 +763,88 @@ setMethod("annotation_numeric", "InputHeatmap", function(.data,
   .column <- enquo(.column)
   
   .data |> add_annotation(!!.column, type = "numeric", size = size, labels_format = labels_format, ...)
+})
+
+#' Adds a mark annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
+#'
+#' \lifecycle{maturing}
+#'
+#' @description annotation_mark() from a `InputHeatmap` object, adds a mark annotation layer that connects specific rows or columns to labels with lines.
+#'
+#' @importFrom rlang enquo
+#' @importFrom grid unit 
+#'
+#' @name annotation_mark
+#' @rdname annotation_mark-method
+#'
+#' @param .data A `InputHeatmap` object created calling `tidyHeatmap::heatmap()`
+#' @param .column Vector of quotes specifying the column to use for determining row/column orientation  
+#' @param at A vector of indices indicating which rows/columns to mark. These should correspond to the position in the heatmap matrix.
+#' @param labels A character vector of labels corresponding to the marked positions.
+#' @param side The side on which to place the labels. Can be "left", "right" for row annotations or "top", "bottom" for column annotations.
+#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the width for row annotations or height for column annotations.
+#' @param ... The arguments that will be passed to 
+#'   \code{\link[ComplexHeatmap:anno_mark]{anno_mark}} and 
+#'   \code{\link[ComplexHeatmap:HeatmapAnnotation]{HeatmapAnnotation}}
+#'   if you want to fine tune the aesthetics.
+#'
+#' @details It uses `ComplexHeatmap` as the visualisation tool. This annotation type connects 
+#' specific rows or columns in the heatmap to text labels using lines. It's particularly 
+#' useful for highlighting specific features in large heatmaps.
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+#' @examples
+#'
+#' hm = 
+#'   tidyHeatmap::N52 |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#' )
+#' 
+#' # Mark specific rows with labels
+#' hm |> annotation_mark(
+#'   symbol_ct, 
+#'   at = c(1, 3, 5), 
+#'   labels = c("Gene A", "Gene B", "Gene C")
+#' )
+#'
+#' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+setGeneric("annotation_mark", function(.data,
+                                       .column,
+                                       at = NULL, 
+                                       labels = NULL,
+                                       side = NULL,
+                                       size = NULL, ...)
+  standardGeneric("annotation_mark"))
+
+#' annotation_mark
+#' 
+#' @docType methods
+#' @rdname annotation_mark-method
+#' 
+#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
+#'
+setMethod("annotation_mark", "InputHeatmap", function(.data,
+                                                      .column,
+                                                      at = NULL, 
+                                                      labels = NULL,
+                                                      side = NULL,
+                                                      size = NULL, ...) {
+  .column <- enquo(.column)
+  
+  # Validate required parameters
+  if(is.null(at)) stop("tidyHeatmap says: 'at' parameter is required for annotation_mark")
+  if(is.null(labels)) stop("tidyHeatmap says: 'labels' parameter is required for annotation_mark")
+  if(length(at) != length(labels)) stop("tidyHeatmap says: 'at' and 'labels' must have the same length")
+  
+  .data |> add_annotation(!!.column, type = "mark", size = size, at = at, labels = labels, side = side, ...)
 })
 
 #' Adds a layers of symbols above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
