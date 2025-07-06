@@ -1646,6 +1646,7 @@ setMethod("annotation_group", "InputHeatmap", function(
   .data@arguments$group_strip_height <- group_strip_height
 
   add_grouping(.data)
+})
 
 setGeneric("get_heatmap_data", function(.data) standardGeneric("get_heatmap_data"))
 
