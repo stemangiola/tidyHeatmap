@@ -1,5 +1,3 @@
-
-
 #' This is a generalisation of ifelse that accepts an object and return an objects
 #'
 #' @import dplyr
@@ -813,7 +811,12 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 #' @importFrom grid unit
 #' @importFrom ComplexHeatmap anno_block
 #' @importFrom rlang set_names
-get_group_annotation = function(.data, .column, .row, .abundance, palette_annotation){
+get_group_annotation = function(
+  .data, .column, .row, .abundance, palette_annotation,
+  group_label_fontsize = 8,
+  show_group_name = TRUE,
+  group_strip_height = unit(9, "pt")
+) {
   
   # Comply with CRAN NOTES
   data = NULL
@@ -887,14 +890,18 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
     palette_text_row =  if_else(palette_fill_row %in% c("#FFFFFF", "white"), "#161616", "#ffffff")
   
     left_annotation_args = 
-      list(
-        ct = anno_block(  
-          gp = gpar(fill = palette_fill_row ),
-          labels = row_split %>% unique %>% sort,
-          labels_gp = gpar(col = palette_text_row, fontsize = 8),
-          which = "row",
-          width = unit(9, "pt")
-        )
+      setNames(
+        list(
+          anno_block(  
+            gp = gpar(fill = palette_fill_row ),
+            labels = row_split %>% unique %>% sort,
+            labels_gp = gpar(col = palette_text_row, fontsize = group_label_fontsize),
+            which = "row",
+            width = group_strip_height,
+            show_name = show_group_name
+          )
+        ),
+        x_y_annotation_cols$row
       )
     
     left_annotation = as.list(left_annotation_args)
@@ -933,14 +940,18 @@ get_group_annotation = function(.data, .column, .row, .abundance, palette_annota
       
       
       top_annotation_args = 
-        list(
-          ct = anno_block(  
-            gp = gpar(fill = palette_fill_column ),
-            labels = col_split %>% unique %>% sort,
-            labels_gp = gpar(col = palette_text_column, fontsize = 8),
-            which = "column",
-            height = unit(9, "pt")
-          )
+        setNames(
+          list(
+            anno_block(  
+              gp = gpar(fill = palette_fill_column ),
+              labels = col_split %>% unique %>% sort,
+              labels_gp = gpar(col = palette_text_column, fontsize = group_label_fontsize),
+              which = "column",
+              height = group_strip_height,
+              show_name = show_group_name
+            )
+          ),
+          x_y_annotation_cols$column
         )
       
        top_annotation = as.list(top_annotation_args)

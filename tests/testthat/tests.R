@@ -885,6 +885,107 @@ test_that("annotation ordering",{
   
 })
 
+test_that("annotation_group passes aesthetics and works with grouping columns", {
+  library(tidyHeatmap)
+  library(dplyr)
+  library(grid)
+  df <- tidyHeatmap::N52
+
+  p0 <- df |>
+    group_by(CAPRA_TOTAL) |> 
+    tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row",
+      cluster_rows = FALSE,
+      cluster_columns = FALSE
+    ) 
+  
+  # Test with default aesthetics
+  p1 <- df |>
+    tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row",
+      cluster_rows = FALSE,
+      cluster_columns = FALSE
+    ) |> 
+    annotation_group(CAPRA_TOTAL)
+
+  vdiffr::expect_doppelganger("plot_annotation_group", p0)
+  vdiffr::expect_doppelganger("plot_annotation_group", p1)
+  
+  expect_s4_class(p1, "InputHeatmap")
+  expect_equal(p1@arguments$group_label_fontsize, 8)
+  expect_true(p1@arguments$show_group_name)
+  expect_equal(p1@arguments$group_strip_height, unit(9, "pt"))
+  expect_silent(as_ComplexHeatmap(p1))
+
+  # Test with custom aesthetics
+  p2 <- df |>
+    tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row",
+      cluster_rows = FALSE,
+      cluster_columns = FALSE
+    ) |> 
+    annotation_group(
+      CAPRA_TOTAL,
+      palette_grouping = list(c("#FF0000", "#00FF00", "#0000FF")),
+      group_label_fontsize = 20,
+      show_group_name = FALSE,
+      group_strip_height = unit(50, "pt")
+    )
+
+  expect_s4_class(p2, "InputHeatmap")
+  expect_equal(p2@arguments$palette_grouping[[1]], c("#FF0000", "#00FF00", "#0000FF"))
+  expect_equal(p2@arguments$group_label_fontsize, 20)
+  expect_false(p2@arguments$show_group_name)
+  expect_equal(p2@arguments$group_strip_height, unit(50, "pt"))
+  expect_silent(as_ComplexHeatmap(p2))
+
+  # Test with renamed grouping column
+  df2 <- df |> rename(a = CAPRA_TOTAL)
+  p3 <- df2 |>
+    tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row",
+      cluster_rows = FALSE,
+      cluster_columns = FALSE
+    ) |> 
+    annotation_group(a)
+  expect_s4_class(p3, "InputHeatmap")
+  expect_silent(as_ComplexHeatmap(p3))
+
+  # Test with row grouping (Cell type)
+  p4 <- df |>
+    tidyHeatmap::heatmap(
+      .column = UBR,
+      .row = symbol_ct,
+      .value = `read count normalised log`,
+      scale = "row",
+      cluster_rows = FALSE,
+      cluster_columns = FALSE
+    ) |> 
+    annotation_group(`Cell type`,
+      palette_grouping = list(c("#FF0000", "#00FF00", "#0000FF", "#FFA500")),
+      group_label_fontsize = 14,
+      show_group_name = TRUE,
+      group_strip_height = unit(30, "pt")
+    )
+  expect_s4_class(p4, "InputHeatmap")
+  expect_equal(p4@arguments$group_label_fontsize, 14)
+  expect_true(p4@arguments$show_group_name)
+  expect_equal(p4@arguments$group_strip_height, unit(30, "pt"))
+  expect_silent(as_ComplexHeatmap(p4))
+})
+
 
 
 # not sure why I need the as_tibble here
