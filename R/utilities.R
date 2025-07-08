@@ -590,11 +590,25 @@ get_x_y_annotation_columns = function(.data, .column, .row, .abundance){
     select_if(negate(is.list)) %>%
     ungroup() %>%
     {
-      # Rows
+      # Get column, row, and abundance column names
+      col_col <- quo_name(.column)
+      row_col <- quo_name(.row)
+      abundance_col <- quo_name(.abundance)
+      
+      # Columns for column orientation
+      col_orient <- colnames(subset(., !!.column))
+      # Columns for row orientation
+      row_orient <- colnames(subset(., !!.row))
+      
+      # Always include abundance column in both orientations
+      col_orient <- unique(c(col_orient, abundance_col))
+      row_orient <- unique(c(row_orient, abundance_col))
+      
       bind_rows(
-        (.) %>% subset(!!.column) %>% colnames %>% as_tibble %>% rename(column = value) %>% gather(orientation, col_name),
-        (.) %>% subset(!!.row) %>% colnames %>% as_tibble %>% rename(row = value) %>% gather(orientation, col_name)
-      )
+        tibble(orientation = "column", col_name = col_orient),
+        tibble(orientation = "row", col_name = row_orient)
+      ) %>%
+        distinct()
     }
 }
 
