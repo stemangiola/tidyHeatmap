@@ -260,3 +260,48 @@ validation.tidyHeatmap = function(.data,
 	)
 	
 }
+
+#' Check and handle NA/NaN values in annotation columns
+#'
+#' @import dplyr
+#' @import tidyr
+#' @importFrom tidyr replace_na
+#'
+#' @param .data A tibble containing annotation data
+#' @param annotation_cols Character vector of annotation column names to check
+#' @param na_replacement Character string to replace NA/NaN values with (default: "NA")
+#' @param show_warning Logical, whether to show warning when NA/NaN values are found (default: TRUE)
+#'
+#' @return A tibble with NA/NaN values replaced
+#'
+check_and_handle_annotation_na = function(.data, annotation_cols, na_replacement = "NA", show_warning = TRUE) {
+  
+  # Check if any of the annotation columns contain NA/NaN values
+  na_found = FALSE
+  na_columns = character(0)
+  
+  for (col in annotation_cols) {
+    if (col %in% colnames(.data)) {
+      col_data = .data[[col]]
+      if (any(is.na(col_data) | is.nan(col_data))) {
+        na_found = TRUE
+        na_columns = c(na_columns, col)
+      }
+    }
+  }
+  
+  # Show warning if NA/NaN values are found
+  if (na_found && show_warning) {
+    warning("tidyHeatmap says: You have NA/NaN values in your annotation columns: ", 
+            paste(na_columns, collapse = ", "), 
+            ". These will be replaced with '", na_replacement, "'.")
+  }
+  
+  # Replace NA/NaN values in the specified columns
+  if (na_found) {
+    .data = .data %>%
+      mutate(across(all_of(annotation_cols), ~replace_na(., na_replacement)))
+  }
+  
+  return(.data)
+}
