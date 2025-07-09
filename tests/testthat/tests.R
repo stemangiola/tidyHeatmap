@@ -986,6 +986,28 @@ test_that("annotation_group passes aesthetics and works with grouping columns", 
   expect_silent(as_ComplexHeatmap(p4))
 })
 
+test_that("NA/NaN handling in annotations", {
+  # Create test data with NA/NaN values in annotations
+  test_data <- data.frame(
+    sample = c("s1", "s2", "s3"),
+    gene = c("g1", "g1", "g1"),
+    value = c(1.5, 2.1, 1.8),
+    status = c("active", NA, "inactive"),
+    stringsAsFactors = FALSE
+  ) %>% as_tibble()
+  
+  # Test that NA/NaN values are handled gracefully with warning
+  expect_warning(
+    p <- test_data %>%
+      heatmap(sample, gene, value) %>%
+      annotation_tile(status),
+    "tidyHeatmap says: You have NA/NaN values in your annotation data. These will be replaced with 'NA'."
+  )
+  
+  # Verify the heatmap is created successfully
+  expect_s4_class(p, "InputHeatmap")
+})
+
 
 
 # not sure why I need the as_tibble here
