@@ -274,6 +274,7 @@ validation.tidyHeatmap = function(.data,
 #'
 #' @return A tibble with NA/NaN values replaced
 #'
+#' @noRd
 check_and_handle_annotation_na = function(.data, annotation_cols, na_replacement = "NA", show_warning = TRUE) {
   
   # Check if any of the annotation columns contain NA/NaN values
