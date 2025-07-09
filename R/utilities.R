@@ -3,6 +3,7 @@
 #' @import dplyr
 #' @import tidyr
 #' @importFrom purrr as_mapper
+#' @importFrom tidyr replace_na
 #'
 #' @param .x A tibble
 #' @param .p A boolean
@@ -677,6 +678,17 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
     df %>%
     mutate( data = map2(col_name,  col_orientation, ~ return_factor_ordering_by_col_or_row_names(!!.data_, .x, .y) ) ) 
   
+  # Check and handle NA/NaN values in data before processing
+  df = df %>%
+    mutate(data = map(data, ~ {
+      if (length(.x) > 0 && any(is.na(.x) | is.nan(.x))) {
+        warning("tidyHeatmap says: You have NA/NaN values in your annotation data. These will be replaced with 'NA'.")
+        replace_na(.x, "NA")
+      } else {
+        .x
+      }
+    }))
+  
   df = df %>%
 	    
 	  # Add function
@@ -730,12 +742,6 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   )) 
   
   df = df %>%
-	  
-	  # # Check if NA in annotations
-	  # mutate_at(vars(!!annotation), function(x) {
-	  # 	if(any(is.na(x))) { warning("tidyHeatmap says: You have NAs into your annotation column"); replace_na(x, "NA"); } 
-	  # 	else { x } 
-	  # } ) %>% 
 	  
 		# Add color indexes separately for each orientation
 		mutate(annot_type = map_chr(annot, ~ .x %>% when(class(.) %in% c("factor", "character", "logical") ~ "discrete",
@@ -871,6 +877,12 @@ get_group_annotation = function(
       arrange(!!.row) %>%
       pull(!!as.symbol(x_y_annotation_cols$row))
     
+    # Handle NA/NaN values in row_split
+    if (any(is.na(row_split) | is.nan(row_split))) {
+      warning("tidyHeatmap says: You have NA/NaN values in your row grouping column. These will be replaced with 'NA'.")
+      row_split = replace_na(row_split, "NA")
+    }
+    
     # Create array of colours
     palette_fill_row = 
       colorRampPalette(
@@ -919,6 +931,12 @@ get_group_annotation = function(
         distinct(!!.column, !!as.symbol(x_y_annotation_cols$column)) %>%
         arrange(!!.column) %>%
         pull(!!as.symbol(x_y_annotation_cols$column))
+      
+      # Handle NA/NaN values in col_split
+      if (any(is.na(col_split) | is.nan(col_split))) {
+        warning("tidyHeatmap says: You have NA/NaN values in your column grouping column. These will be replaced with 'NA'.")
+        col_split = replace_na(col_split, "NA")
+      }
       
       # Create array of colours
       palette_fill_column = 
