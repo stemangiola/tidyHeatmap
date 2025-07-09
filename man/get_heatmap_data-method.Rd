@@ -4,19 +4,32 @@
 \name{get_heatmap_data}
 \alias{get_heatmap_data}
 \alias{get_heatmap_data,InputHeatmap-method}
-\title{Retrieve heatmap data and dendrograms as plotted}
+\title{Add group annotation strips to a tidyHeatmap}
 \source{
 [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 }
 \usage{
-get_heatmap_data(.data)
+annotation_group(.data, ...)
 
 \S4method{get_heatmap_data}{InputHeatmap}(.data)
 }
 \arguments{
 \item{.data}{A `InputHeatmap` object from tidyHeatmap::heatmap()}
+
+\item{...}{Grouping columns (unquoted, like dplyr::group_by)}
+
+\item{palette_grouping}{List of color vectors for each grouping. Each element should be 
+a vector of colors for the corresponding grouping variable.}
+
+\item{group_label_fontsize}{Font size for group labels}
+
+\item{show_group_name}{Logical, show the group annotation name}
+
+\item{group_strip_height}{Height of group strip as a grid unit (default: 9pt)}
 }
 \value{
+A tidyHeatmap object with group annotation strips added
+
 A list containing:
 \itemize{
   \item matrix: The abundance matrix with rows and columns ordered as in the heatmap
@@ -27,14 +40,32 @@ A list containing:
 A list containing the ordered matrix, row dendrogram, and column dendrogram
 }
 \description{
+`annotation_group()` adds group annotation strips to a tidyHeatmap object, 
+allowing you to visually group rows or columns based on categorical variables. This is 
+useful for highlighting biological or experimental groups in your heatmap.
+
 get_heatmap_data() extracts the heatmap matrix as it appears in the plot along with the row and column dendrograms, all with consistent naming.
 }
 \details{
-\lifecycle{maturing}
-
 This function converts the InputHeatmap to ComplexHeatmap, draws it to perform clustering, then extracts the ordered matrix and dendrograms exactly as they appear in the heatmap plot.
 }
 \examples{
+
+# Basic usage with row grouping
+tidyHeatmap::N52 |>
+  tidyHeatmap::heatmap(
+    .row = symbol_ct,
+    .column = UBR,
+    .value = `read count normalised log`
+  ) |>
+  annotation_group(CAPRA_TOTAL)
+
+# With custom colors and formatting
+tidyHeatmap::N52 |>
+Retrieve heatmap data and dendrograms as plotted
+
+\lifecycle{maturing}
+
 
 hm <- tidyHeatmap::N52 |>
   tidyHeatmap::heatmap(
@@ -63,6 +94,7 @@ tidyHeatmap::N52 |>
       c("#E64B35", "#4DBBD5"),  # colors for CAPRA_TOTAL
       c("#00A087", "#F39B7F")   # colors for Cell type
     )
+  )
   )
 
 # Get heatmap data as plotted
