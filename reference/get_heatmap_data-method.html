@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.8</span>
       </span>
     </div>
 
@@ -105,11 +105,34 @@
 <span class="r-in"><span>    .row <span class="op">=</span> <span class="va">symbol_ct</span>,</span></span>
 <span class="r-in"><span>    .column <span class="op">=</span> <span class="va">UBR</span>,</span></span>
 <span class="r-in"><span>    .value <span class="op">=</span> <span class="va">`read count normalised log`</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="annotation_group.html">annotation_group</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">CAPRA_TOTAL</span>,</span></span>
+<span class="r-in"><span>    palette_grouping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#E64B35"</span>, <span class="st">"#4DBBD5"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    group_label_fontsize <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    show_group_name <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Multiple grouping variables</span></span></span>
+<span class="r-in"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="N52.html">N52</a></span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="fu"><a href="heatmap-method.html">heatmap</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    .row <span class="op">=</span> <span class="va">symbol_ct</span>,</span></span>
+<span class="r-in"><span>    .column <span class="op">=</span> <span class="va">UBR</span>,</span></span>
+<span class="r-in"><span>    .value <span class="op">=</span> <span class="va">`read count normalised log`</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="annotation_group.html">annotation_group</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">CAPRA_TOTAL</span>, </span></span>
+<span class="r-in"><span>    <span class="va">`Cell type`</span>,</span></span>
+<span class="r-in"><span>    palette_grouping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#E64B35"</span>, <span class="st">"#4DBBD5"</span><span class="op">)</span>,  <span class="co"># colors for CAPRA_TOTAL</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00A087"</span>, <span class="st">"#F39B7F"</span><span class="op">)</span>   <span class="co"># colors for Cell type</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-plt img"><img src="get_heatmap_data-method-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get heatmap data as plotted</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">hm</span> <span class="op">|&gt;</span> <span class="fu">get_heatmap_data</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="get_heatmap_data-method-1.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="get_heatmap_data-method-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">ordered_matrix</span> <span class="op">&lt;-</span> <span class="va">result</span><span class="op">$</span><span class="va">matrix</span></span></span>
 <span class="r-in"><span><span class="va">row_dendrogram</span> <span class="op">&lt;-</span> <span class="va">result</span><span class="op">$</span><span class="va">row_dend</span></span></span>
 <span class="r-in"><span><span class="va">column_dendrogram</span> <span class="op">&lt;-</span> <span class="va">result</span><span class="op">$</span><span class="va">column_dend</span></span></span>
