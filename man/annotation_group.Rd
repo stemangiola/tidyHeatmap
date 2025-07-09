@@ -15,7 +15,7 @@ annotation_group(.data, ...)
   ...,
   palette_grouping = list(),
   group_label_fontsize = 8,
-  show_group_name = FALSE,
+  show_group_name = TRUE,
   group_strip_height = grid::unit(9, "pt")
 )
 }

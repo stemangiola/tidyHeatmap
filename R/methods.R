@@ -1558,6 +1558,64 @@ setMethod("save_pdf", "InputHeatmap", .save_pdf)
 #' 
 #' # With custom colors and formatting
 #' tidyHeatmap::N52 |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#'   ) |>
+#'   annotation_group(
+#'     CAPRA_TOTAL,
+#'     palette_grouping = list(c("#E64B35", "#4DBBD5")),
+#'     group_label_fontsize = 10,
+#'     show_group_name = FALSE
+#'   )
+#' 
+#' # Multiple grouping variables
+#' tidyHeatmap::N52 |>
+#'   tidyHeatmap::heatmap(
+#'     .row = symbol_ct,
+#'     .column = UBR,
+#'     .value = `read count normalised log`
+#'   ) |>
+#'   annotation_group(
+#'     CAPRA_TOTAL, 
+#'     `Cell type`,
+#'     palette_grouping = list(
+#'       c("#E64B35", "#4DBBD5"),  # colors for CAPRA_TOTAL
+#'       c("#00A087", "#F39B7F")   # colors for Cell type
+#'     )
+#'   )
+#' 
+#' @export
+#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
+#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
+#'   doi:10.21105/joss.02472.
+#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
+setGeneric("annotation_group", function(.data, ...) standardGeneric("annotation_group"))
+
+#' @export
+#' @rdname annotation_group
+setMethod("annotation_group", "InputHeatmap", function(
+  .data,
+  ...,
+  palette_grouping = list(),
+  group_label_fontsize = 8,
+  show_group_name = TRUE,
+  group_strip_height = grid::unit(9, "pt")
+) {
+  group_vars <- rlang::enquos(...)
+  if (length(group_vars) > 0) {
+    .data@data <- dplyr::group_by(.data@data, !!!group_vars)
+    .data@arguments$group_vars <- group_vars
+  }
+  .data@arguments$palette_grouping <- palette_grouping
+  .data@arguments$group_label_fontsize <- group_label_fontsize
+  .data@arguments$show_group_name <- show_group_name
+  .data@arguments$group_strip_height <- group_strip_height
+
+  add_grouping(.data)
+})
+
 #' Retrieve heatmap data and dendrograms as plotted
 #'
 #' \lifecycle{maturing}
@@ -1610,7 +1668,6 @@ setMethod("save_pdf", "InputHeatmap", .save_pdf)
 #'       c("#00A087", "#F39B7F")   # colors for Cell type
 #'     )
 #'   )
-#'   )
 #' 
 #' # Get heatmap data as plotted
 #' result <- hm |> get_heatmap_data()
@@ -1623,31 +1680,6 @@ setMethod("save_pdf", "InputHeatmap", .save_pdf)
 #'   modular heatmap production based on tidy principles." Journal of Open Source Software.
 #'   doi:10.21105/joss.02472.
 #' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
-setGeneric("annotation_group", function(.data, ...) standardGeneric("annotation_group"))
-
-#' @export
-#' @rdname annotation_group
-setMethod("annotation_group", "InputHeatmap", function(
-  .data,
-  ...,
-  palette_grouping = list(),
-  group_label_fontsize = 8,
-  show_group_name = TRUE,
-  group_strip_height = grid::unit(9, "pt")
-) {
-  group_vars <- rlang::enquos(...)
-  if (length(group_vars) > 0) {
-    .data@data <- dplyr::group_by(.data@data, !!!group_vars)
-    .data@arguments$group_vars <- group_vars
-  }
-  .data@arguments$palette_grouping <- palette_grouping
-  .data@arguments$group_label_fontsize <- group_label_fontsize
-  .data@arguments$show_group_name <- show_group_name
-  .data@arguments$group_strip_height <- group_strip_height
-
-  add_grouping(.data)
-})
-
 setGeneric("get_heatmap_data", function(.data) standardGeneric("get_heatmap_data"))
 
 #' get_heatmap_data
@@ -1670,10 +1702,14 @@ setMethod("get_heatmap_data", "InputHeatmap", function(.data) {
 	# Get the abundance matrix from the original object
 	abundance_mat <- .data@input[[1]]
 	
-	# Handle grouped heatmaps (row_ord is a list) vs regular heatmaps (row_ord is a vector)
+	# Handle grouped heatmaps (row_ord and col_ord might be lists) vs regular heatmaps
 	if (is.list(row_ord)) {
 		# For grouped heatmaps, concatenate all group orders and remove names
 		row_ord <- as.integer(unlist(row_ord))
+	}
+	if (is.list(col_ord)) {
+		# For grouped heatmaps, concatenate all group orders and remove names
+		col_ord <- as.integer(unlist(col_ord))
 	}
 	
 	# Create ordered matrix with consistent row and column names

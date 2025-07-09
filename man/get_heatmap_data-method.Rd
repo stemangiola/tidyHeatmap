@@ -41,6 +41,28 @@ hm <- tidyHeatmap::N52 |>
     .row = symbol_ct,
     .column = UBR,
     .value = `read count normalised log`
+  ) |>
+  annotation_group(
+    CAPRA_TOTAL,
+    palette_grouping = list(c("#E64B35", "#4DBBD5")),
+    group_label_fontsize = 10,
+    show_group_name = FALSE
+  )
+
+# Multiple grouping variables
+tidyHeatmap::N52 |>
+  tidyHeatmap::heatmap(
+    .row = symbol_ct,
+    .column = UBR,
+    .value = `read count normalised log`
+  ) |>
+  annotation_group(
+    CAPRA_TOTAL, 
+    `Cell type`,
+    palette_grouping = list(
+      c("#E64B35", "#4DBBD5"),  # colors for CAPRA_TOTAL
+      c("#00A087", "#F39B7F")   # colors for Cell type
+    )
   )
 
 # Get heatmap data as plotted

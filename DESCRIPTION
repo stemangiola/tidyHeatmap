@@ -1,7 +1,7 @@
 Type: Package
 Package: tidyHeatmap
 Title: A Tidy Implementation of Heatmap
-Version: 1.11.7
+Version: 1.11.8
 Authors@R: 
     c(person(given = "Stefano",
            family = "Mangiola",
@@ -12,6 +12,7 @@ Authors@R:
            role = c("ctb"),
            email = "papenfuss@wehi.edu.au")
            )
+Author: Stefano Mangiola [aut, cre], Anthony Papenfuss [ctb]
 Maintainer: Stefano Mangiola <mangiolastefano@gmail.com>
 Description: This is a tidy implementation for heatmap.  At the
     moment it is based on the (great) package 'ComplexHeatmap'.  The goal
