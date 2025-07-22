@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.12.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.12.1</span>
       </span>
     </div>
 
@@ -124,43 +124,43 @@
 
 
 <dl><dt id="arg--data">.data<a class="anchor" aria-label="anchor" href="#arg--data"></a></dt>
-<dd><p>A `tbl_df` formatted as | &lt;.row&gt; | &lt;.column&gt; | &lt;.value&gt; | &lt;...&gt; |</p></dd>
+<dd><p>A `tbl_df` formatted as | &lt;ELEMENT&gt; | &lt;FEATURE&gt; | &lt;VALUE&gt; | &lt;...&gt; |</p></dd>
 
 
 <dt id="arg--row">.row<a class="anchor" aria-label="anchor" href="#arg--row"></a></dt>
-<dd><p>The name of the column vertically presented in the heatmap</p></dd>
+<dd><p>The name of the column to use as rows</p></dd>
 
 
 <dt id="arg--column">.column<a class="anchor" aria-label="anchor" href="#arg--column"></a></dt>
-<dd><p>The name of the column horizontally presented in the heatmap</p></dd>
+<dd><p>The name of the column to use as columns</p></dd>
 
 
 <dt id="arg--value">.value<a class="anchor" aria-label="anchor" href="#arg--value"></a></dt>
-<dd><p>The name of the column for the value of the element/feature pair</p></dd>
+<dd><p>The name of the column to use as values</p></dd>
 
 
 <dt id="arg-transform">transform<a class="anchor" aria-label="anchor" href="#arg-transform"></a></dt>
-<dd><p>A function, used to transform .value row-wise (e.g., transform = log1p)</p></dd>
+<dd><p>A function to transform the data (optional)</p></dd>
 
 
 <dt id="arg-scale">scale<a class="anchor" aria-label="anchor" href="#arg-scale"></a></dt>
-<dd><p>A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")</p></dd>
+<dd><p>One of "none", "row", "column", or "both" for scaling</p></dd>
 
 
 <dt id="arg-palette-value">palette_value<a class="anchor" aria-label="anchor" href="#arg-palette-value"></a></dt>
-<dd><p>A character vector This is the palette that will be used as gradient for .value. For example c("red", "white", "blue"). For higher flexibility you can use circlize::colorRamp2\(c\(-2, -1, 0, 1, 2\), viridis::magma\(5\)\)</p></dd>
+<dd><p>A character vector of colors or a function for value colors</p></dd>
 
 
 <dt id="arg-palette-grouping">palette_grouping<a class="anchor" aria-label="anchor" href="#arg-palette-grouping"></a></dt>
-<dd><p>A list of character vectors. This is the list of palettes that will be used for grouping. For example list(RColorBrewer::brewer.pal(8, "Accent")) or list(c("#B3E2CD", "#FDCDAC", "#CBD5E8")) or list(c("black", "red"))</p></dd>
+<dd><p>A list of color palettes for grouping annotations</p></dd>
 
 
 <dt id="arg--scale">.scale<a class="anchor" aria-label="anchor" href="#arg--scale"></a></dt>
-<dd><p>DEPRECATED. please use scale instead \( with no dot prefix \).</p></dd>
+<dd><p>DEPRECATED: Use scale instead</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>The arguments that will be passed to the Heatmap function of ComplexHeatmap backend</p></dd>
+<dd><p>Additional arguments passed to ComplexHeatmap</p></dd>
 
 </dl></div>
     <div id="value">

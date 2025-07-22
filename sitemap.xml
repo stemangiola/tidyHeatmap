@@ -7,11 +7,7 @@
 <url><loc>/reference/N52.html</loc></url>
 <url><loc>/reference/add_annotation.html</loc></url>
 <url><loc>/reference/add_attr.html</loc></url>
-<url><loc>/reference/add_bar-method.html</loc></url>
 <url><loc>/reference/add_class.html</loc></url>
-<url><loc>/reference/add_line-method.html</loc></url>
-<url><loc>/reference/add_point-method.html</loc></url>
-<url><loc>/reference/add_tile-method.html</loc></url>
 <url><loc>/reference/annot_to_list.html</loc></url>
 <url><loc>/reference/annotation_bar-method.html</loc></url>
 <url><loc>/reference/annotation_group.html</loc></url>
@@ -50,6 +46,7 @@
 <url><loc>/reference/layer_text-method.html</loc></url>
 <url><loc>/reference/parse_formula.html</loc></url>
 <url><loc>/reference/pasilla.html</loc></url>
+<url><loc>/reference/plus-.InputHeatmap.html</loc></url>
 <url><loc>/reference/prepend.html</loc></url>
 <url><loc>/reference/quo_names.html</loc></url>
 <url><loc>/reference/save_pdf-Heatmap-method.html</loc></url>
