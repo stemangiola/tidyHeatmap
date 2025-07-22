@@ -300,7 +300,7 @@ mtcars_tidy |>
 		Value,	
 		scale = "row"
 	) |>
-	add_tile(
+	annotation_tile(
 		hp, 
 		palette = c("red", "white", "blue")
 	)
