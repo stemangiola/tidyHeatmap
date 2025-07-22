@@ -1,50 +1,4 @@
-# Specify undefined global variables for R CMD check
-utils::globalVariables(c("shape", "size", "text", ":="))
-
-#the class definition
-InputHeatmap<-setClass(
-	"InputHeatmap",  
-	slots = list(
-		input = "list", 
-		data = "tbl",
-		palette_discrete = "list", 
-		palette_continuous = "list",
-		group_top_annotation = "list",
-		group_left_annotation = "list",
-		top_annotation = "tbl",
-		left_annotation = "tbl",
-		arguments = "list" ,
-		layer_symbol = "tbl",
-		layer_text = "tbl"
-	),
-	prototype=list(
-		palette_discrete=
-			list(
-				brewer.pal(9, "Set1"),
-				brewer.pal(8, "Set2"),
-				brewer.pal(12, "Set3"),
-				brewer.pal(8, "Dark2"),
-				brewer.pal(8, "Accent"),
-				brewer.pal(8, "Pastel2")
-			), 
-		palette_continuous=
-			list(
-				brewer.pal(11, "Spectral") |> rev(),
-				viridis(n = 5),
-				magma(n = 5),
-				brewer.pal(11, "PRGn"),
-				brewer.pal(11, "BrBG")
-			),
-		input = list(),
-		top_annotation =  tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list(), further_arguments = list()),
-		left_annotation = tibble(col_name = character(), orientation = character(), col_orientation = character(), data = list(),      fx = list(),    annot = list(),     annot_type= character(),   idx = integer(), color = list(), further_arguments = list()),
-		group_top_annotation = list(),
-		group_left_annotation = list(),
-		layer_symbol = tibble(column = integer(), row = integer(), shape = integer()),
-		layer_text = tibble(column = integer(), row = integer(), text = character(), size = numeric())
-		
-	)
-)
+# Methods for InputHeatmap class
 
 
 #' Creates a  `ComplexHeatmap` object for less standard plot manipulation (e.g. changing legend position)
@@ -199,7 +153,11 @@ setMethod("show", "InputHeatmap", function(object){
 })
 
 
-#' @rdname plot_arithmetic
+#' Add two tidyHeatmap objects together
+#' 
+#' @param e1 First tidyHeatmap object
+#' @param e2 Second tidyHeatmap object
+#' @return A combined ComplexHeatmap object
 #' 
 #' @importFrom ComplexHeatmap add_heatmap
 #' 
@@ -265,6 +223,16 @@ setMethod("show", "InputHeatmap", function(object){
 #' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
 #'   modular heatmap production based on tidy principles." Journal of Open Source Software.
 #'   doi:10.21105/joss.02472.
+#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
+#' @param .row The name of the column to use as rows
+#' @param .column The name of the column to use as columns  
+#' @param .value The name of the column to use as values
+#' @param transform A function to transform the data (optional)
+#' @param scale One of "none", "row", "column", or "both" for scaling
+#' @param palette_value A character vector of colors or a function for value colors
+#' @param palette_grouping A list of color palettes for grouping annotations
+#' @param .scale DEPRECATED: Use scale instead
+#' @param ... Additional arguments passed to ComplexHeatmap
 #' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("heatmap", function(.data,
 															 .row, 
@@ -280,7 +248,6 @@ setGeneric("heatmap", function(.data,
 															 ...) standardGeneric("heatmap"))
 
 #' Creates a  `InputHeatmap` object from `tbl_df` on evaluation creates a `ComplexHeatmap`
-#' @inheritParams heatmap
 #' 
 #' @docType methods
 #' @rdname heatmap-method

@@ -64,25 +64,25 @@ heatmap_(
 )
 }
 \arguments{
-\item{.data}{A `tbl_df` formatted as | <.row> | <.column> | <.value> | <...> |}
+\item{.data}{A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |}
 
-\item{.row}{The name of the column vertically presented in the heatmap}
+\item{.row}{The name of the column to use as rows}
 
-\item{.column}{The name of the column horizontally presented in the heatmap}
+\item{.column}{The name of the column to use as columns}
 
-\item{.value}{The name of the column for the value of the element/feature pair}
+\item{.value}{The name of the column to use as values}
 
-\item{transform}{A function, used to transform .value row-wise (e.g., transform = log1p)}
+\item{transform}{A function to transform the data (optional)}
 
-\item{scale}{A character string. Possible values are c(\"none\", \"row\", \"column\", \"both\")}
+\item{scale}{One of "none", "row", "column", or "both" for scaling}
 
-\item{palette_value}{A character vector This is the palette that will be used as gradient for .value. For example c("red", "white", "blue"). For higher flexibility you can use circlize::colorRamp2\(c\(-2, -1, 0, 1, 2\), viridis::magma\(5\)\)}
+\item{palette_value}{A character vector of colors or a function for value colors}
 
-\item{palette_grouping}{A list of character vectors. This is the list of palettes that will be used for grouping. For example list(RColorBrewer::brewer.pal(8, "Accent")) or list(c("#B3E2CD", "#FDCDAC", "#CBD5E8")) or list(c("black", "red"))}
+\item{palette_grouping}{A list of color palettes for grouping annotations}
 
-\item{.scale}{DEPRECATED. please use scale instead \( with no dot prefix \).}
+\item{.scale}{DEPRECATED: Use scale instead}
 
-\item{...}{The arguments that will be passed to the Heatmap function of ComplexHeatmap backend}
+\item{...}{Additional arguments passed to ComplexHeatmap}
 }
 \value{
 An `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`

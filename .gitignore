@@ -14,3 +14,24 @@ tidy_heatmap.Rcheck*
 /Meta/
 sccomp_draws_files
 .DS_Store
+# Additional exclusions for R CMD check
+..Rcheck/
+.Rcheck/
+*.Rcheck
+# Hidden files and directories
+.coveralls.yml
+.travis.yml
+.github/
+.git/
+# Vignette build artifacts
+vignettes/*.html
+# Documentation build artifacts
+inst/doc/
+# Temporary files
+*.tmp
+*.temp
+# Additional hidden files
+.Rhistory
+.coveralls.yml
+.travis.yml
+docs/.txt

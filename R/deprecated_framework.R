@@ -495,7 +495,7 @@ annot_to_list_OLD = function(.data){
 #' print("DEPRECATED") 
 #'
 #'
-#' @export
+#' @noRd
 #' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
 #'   modular heatmap production based on tidy principles." Journal of Open Source Software.
 #'   doi:10.21105/joss.02472.
@@ -534,7 +534,7 @@ setGeneric("add_bar", function(.data,
 #'
 #' print("DEPRECATED") 
 #'
-#' @export
+#' @noRd
 #' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
 #'   modular heatmap production based on tidy principles." Journal of Open Source Software.
 #'   doi:10.21105/joss.02472.
@@ -594,7 +594,7 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 #' print("DEPRECATED") 
 #'
 #'
-#' @export
+#' @noRd
 #' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
 #'   modular heatmap production based on tidy principles." Journal of Open Source Software.
 #'   doi:10.21105/joss.02472.
@@ -654,7 +654,7 @@ setMethod("add_point", "InputHeatmap", function(.data,
 #' print("DEPRECATED") 
 #'
 #'
-#' @export
+#' @noRd
 #' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
 #'   modular heatmap production based on tidy principles." Journal of Open Source Software.
 #'   doi:10.21105/joss.02472.
@@ -715,7 +715,7 @@ setMethod("add_line", "InputHeatmap", function(.data,
 #' print("DEPRECATED") 
 #'
 #'
-#' @export
+#' @noRd
 setGeneric("add_bar", function(.data,
 																			.column,
 																			palette = NULL, size = NULL,...)

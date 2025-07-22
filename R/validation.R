@@ -217,10 +217,13 @@ validation <- function(.data,
 	UseMethod("validation", .data)
 }
 
+#' @noRd
 validation.default =  validation_default
 
+#' @noRd
 validation.tbl_df = validation_default
 	
+#' @noRd
 validation.tidyHeatmap = function(.data,
 															 .sample = NULL,
 															 .transcript = NULL,
