@@ -817,6 +817,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 #' @importFrom grid unit
 #' @importFrom ComplexHeatmap anno_block
 #' @importFrom rlang set_names
+#' @importFrom stats setNames
 get_group_annotation = function(
   .data, .column, .row, .abundance, palette_annotation,
   group_label_fontsize = 8,

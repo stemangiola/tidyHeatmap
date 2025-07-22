@@ -44,18 +44,9 @@ knitr::opts_chunk$set(
 ## Citation
 Mangiola et al., (2020). tidyHeatmap: an R package for modular heatmap production based on tidy principles. Journal of Open Source Software, 5(52), 2472, https://doi.org/10.21105/joss.02472
 
-Please have a look also to 
-
-- [tidygate](https://github.com/stemangiola/tidygate/) for adding custom gate information to your tibble 
-- [tidySingleCellExperiment](https://stemangiola.github.io/tidySingleCellExperiment/) for tidy manipulation of Seurat objects
-- [tidyseurat](https://stemangiola.github.io/tidyseurat/) for tidy manipulation of Seurat objects
-- [tidybulk](https://stemangiola.github.io/tidybulk/) for tidy high-level data analysis and manipulation 
-- [tidySummarizedExperiment](https://stemangiola.github.io/tidySummarizedExperiment/) for heatmaps produced with tidy principles
-
-website: [stemangiola.github.io/tidyHeatmap](https://stemangiola.github.io/tidyHeatmap/)
-
 `tidyHeatmap` is a package that introduces tidy principles to the creation of information-rich heatmaps. 
 This package uses [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) as graphical engine.
+website: [stemangiola.github.io/tidyHeatmap](https://stemangiola.github.io/tidyHeatmap/)
 
 **Advantages:**
 

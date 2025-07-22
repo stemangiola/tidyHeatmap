@@ -20,19 +20,6 @@ Mangiola et al., (2020). tidyHeatmap: an R package for modular heatmap
 production based on tidy principles. Journal of Open Source Software,
 5(52), 2472, <https://doi.org/10.21105/joss.02472>
 
-Please have a look also to
-
-- [tidygate](https://github.com/stemangiola/tidygate/) for adding custom
-  gate information to your tibble
-- [tidySingleCellExperiment](https://stemangiola.github.io/tidySingleCellExperiment/)
-  for tidy manipulation of Seurat objects
-- [tidyseurat](https://stemangiola.github.io/tidyseurat/) for tidy
-  manipulation of Seurat objects
-- [tidybulk](https://stemangiola.github.io/tidybulk/) for tidy
-  high-level data analysis and manipulation
-- [tidySummarizedExperiment](https://stemangiola.github.io/tidySummarizedExperiment/)
-  for heatmaps produced with tidy principles
-
 ## Full documentation [here](https://stemangiola.github.io/tidyHeatmap/articles/introduction.html)
 
 ``` r
