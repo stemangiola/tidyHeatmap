@@ -464,93 +464,16 @@ annot_to_list_OLD = function(.data){
 	
 }
 
-#' DEPRECATED. Adds a bar annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
-#'
-#' \lifecycle{maturing}
-#'
-#' @description add_bar() from a `InputHeatmap` object, adds a bar annotation layer.
-#'
-#' @importFrom rlang enquo
-#' @importFrom magrittr "%>%"
-#' @importFrom grid unit 
-#' 
-#'
-#' @name add_bar
-#' @rdname add_bar-method
-#'
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
-#' @param .column Vector of quotes
-#' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
-#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
-#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
-#'
-#' @details It uses `ComplexHeatmap` as visualisation tool.
-#' 
-#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
-#'
-#'
-#' @examples
-#'
-#' print("DEPRECATED") 
-#'
-#'
-#' @noRd
-#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
-#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
-#'   doi:10.21105/joss.02472.
-#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("add_bar", function(.data,
 															 .column,
 															 palette = NULL, size = NULL,...)
 	standardGeneric("add_bar"))
 
-#' DEPRECATED. Adds a tile annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
-#'
-#' \lifecycle{maturing}
-#'
-#' @description add_tile() from a `InputHeatmap` object, adds a tile annotation layer.
-#'
-#' @importFrom rlang enquo
-#' @importFrom magrittr "%>%"
-#' @importFrom grid unit 
-#'
-#' @name add_tile
-#' @rdname add_tile-method
-#'
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
-#' @param .column Vector of quotes
-#' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
-#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
-#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
-#'
-#' @details It uses `ComplexHeatmap` as visualisation tool.
-#' 
-#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
-#'
-#'
-#' @examples
-#'
-#' print("DEPRECATED") 
-#'
-#' @noRd
-#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
-#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
-#'   doi:10.21105/joss.02472.
-#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("add_tile", function(.data,
 																.column,
 																palette = NULL, size = NULL, ...)
 	standardGeneric("add_tile"))
 
-#' DEPRECATED. add_tile
-#' 
-#' @docType methods
-#' @rdname add_tile-method
-#' 
-#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
 setMethod("add_tile", "InputHeatmap", function(.data,
 																							 .column,
 																							 palette = NULL, size = NULL,...){
@@ -563,54 +486,11 @@ setMethod("add_tile", "InputHeatmap", function(.data,
 	
 })
 
-#' DEPRECATED. Adds a point annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
-#'
-#' \lifecycle{maturing}
-#'
-#' @description add_point() from a `InputHeatmap` object, adds a point annotation layer.
-#'
-#' @importFrom rlang enquo
-#' @importFrom magrittr "%>%"
-#' @importFrom grid unit 
-#' 
-#'
-#' @name add_point
-#' @rdname add_point-method
-#'
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
-#' @param .column Vector of quotes
-#' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
-#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
-#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
-#'
-#' @details It uses `ComplexHeatmap` as visualisation tool.
-#' 
-#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
-#'
-#'
-#' @examples
-#'
-#' print("DEPRECATED") 
-#'
-#'
-#' @noRd
-#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
-#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
-#'   doi:10.21105/joss.02472.
-#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("add_point", function(.data,
 																 .column,
 																 palette = NULL, size = NULL,...)
 	standardGeneric("add_point"))
 
-#' DEPRECATED. add_point
-#' 
-#' @docType methods
-#' @rdname add_point-method
-#' 
-#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
 setMethod("add_point", "InputHeatmap", function(.data,
 																								.column,
 																								palette = NULL, size = NULL,...){
@@ -623,55 +503,11 @@ setMethod("add_point", "InputHeatmap", function(.data,
 	
 })
 
-#' DEPRECATED. Adds a line annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
-#'
-#' \lifecycle{maturing}
-#'
-#' @description add_line() from a `InputHeatmap` object, adds a line annotation layer.
-#'
-#' @importFrom rlang enquo
-#' @importFrom magrittr "%>%"
-#' @importFrom grid unit 
-#' 
-#'
-#' @name add_line
-#' @rdname add_line-method
-#'
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
-#' @param .column Vector of quotes
-#' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
-#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
-#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
-#'
-#' @details It uses `ComplexHeatmap` as visualisation tool.
-#' 
-#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
-#'
-#'
-#' @examples
-#'
-#' print("DEPRECATED") 
-#'
-#'
-#' @noRd
-#' @references Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for 
-#'   modular heatmap production based on tidy principles." Journal of Open Source Software.
-#'   doi:10.21105/joss.02472.
-#' @source [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 setGeneric("add_line", function(.data,
-																.column,
-																palette = NULL,size = NULL, ...)
-	standardGeneric("add_line"))
+                                 .column,
+                                 palette = NULL, size = NULL, ...)
+  standardGeneric("add_line"))
 
-#' DEPRECATED. add_line
-#' 
-#' @docType methods
-#' @rdname add_line-method
-#' 
-#'
-#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
 setMethod("add_line", "InputHeatmap", function(.data,
 																							 .column,
 																							 palette = NULL, size = NULL,...){
@@ -684,50 +520,11 @@ setMethod("add_line", "InputHeatmap", function(.data,
 	
 })
 
-#' DEPRECATED. Adds a bar annotation layer to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`
-#'
-#' \lifecycle{maturing}
-#'
-#' @description add_bar() from a `InputHeatmap` object, adds a bar annotation layer.
-#'
-#' @importFrom rlang enquo
-#' @importFrom magrittr "%>%"
-#' @importFrom grid unit 
-#' 
-#'
-#' @name add_bar
-#' @rdname add_bar-method
-#'
-#' @param .data A `tbl_df` formatted as | <ELEMENT> | <FEATURE> | <VALUE> | <...> |
-#' @param .column Vector of quotes
-#' @param palette A character vector of colors, or a function such as colorRamp2 (see examples).
-#' @param size A grid::unit object, e.g. unit(2, "cm"). This is the height or width of the annotation depending on the orientation.
-#' @param ... The arguments that will be passed to top_annotation or left_annotation of the ComplexHeatmap container
-#'
-#' @details It uses `ComplexHeatmap` as visualisation tool.
-#' 
-#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
-#'
-#'
-#' @examples
-#'
-#' print("DEPRECATED") 
-#'
-#'
-#' @noRd
 setGeneric("add_bar", function(.data,
 																			.column,
 																			palette = NULL, size = NULL,...)
 	standardGeneric("add_bar"))
 
-#' DEPRECATED. add_bar
-#' 
-#' @docType methods
-#' @rdname add_bar-method
-#' 
-#' @return A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`
-#'
 setMethod("add_bar", "InputHeatmap", function(.data,
 																							.column,
 																							palette = NULL, size = NULL,...){
