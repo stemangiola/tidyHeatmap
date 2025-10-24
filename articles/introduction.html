@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.12.1</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@ Mangiola</h4>
             
             <h4 data-toc-skip class="date">2025-10-24</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/stemangiola/tidyHeatmap/blob/color-symbol-and-text/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/stemangiola/tidyHeatmap/blob/remove-titles-example/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
 
     </div>
@@ -624,63 +624,12 @@ fashion, using <code>ComplexHeatmap</code> arguments</p>
 <span>        .size <span class="op">=</span> <span class="fl">4</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/layer-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="complex-layer-symbol-example-with-colors">Complex layer symbol example with colors<a class="anchor" aria-label="anchor" href="#complex-layer-symbol-example-with-colors"></a>
-</h3>
-<p>Advanced example showing different symbols with custom colors and
-sizes</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="../reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
-<span>    </span>
-<span>    <span class="co"># filter</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">symbol</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="../reference/pasilla.html">pasilla</a></span><span class="op">$</span><span class="va">symbol</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    </span>
-<span>    <span class="co"># Add dynamic color and size columns</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>        my_color <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">7</span> <span class="op">~</span> <span class="st">"#57fb77"</span>,</span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">~</span> <span class="st">"darkorange"</span>, </span>
-<span>            <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"#fb7ef9"</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>        my_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>    </span>
-<span>    <span class="fu"><a href="../reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
-<span>        .column <span class="op">=</span> <span class="va">sample</span>,</span>
-<span>        .row <span class="op">=</span> <span class="va">symbol</span>,</span>
-<span>        .value <span class="op">=</span> <span class="va">`count normalised adjusted`</span>,   </span>
-<span>        scale <span class="op">=</span> <span class="st">"row"</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="../reference/layer_point-method.html">layer_point</a></span><span class="op">(</span></span>
-<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated3"</span>,</span>
-<span>        .color <span class="op">=</span> <span class="st">"red"</span>,</span>
-<span>        .size <span class="op">=</span> <span class="fl">5</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="../reference/layer_diamond-method.html">layer_diamond</a></span><span class="op">(</span></span>
-<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated1"</span>,</span>
-<span>        .color <span class="op">=</span> <span class="st">"green"</span>,</span>
-<span>        .size <span class="op">=</span> <span class="fl">6</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="../reference/layer_star-method.html">layer_star</a></span><span class="op">(</span></span>
-<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">7</span>,</span>
-<span>        .color <span class="op">=</span> <span class="st">"purple"</span>,</span>
-<span>        .size <span class="op">=</span> <span class="fl">4</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span></span>
-<span>    <span class="co"># Dynamically color and size</span></span>
-<span>    <span class="fu"><a href="../reference/layer_square-method.html">layer_square</a></span><span class="op">(</span></span>
-<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated2"</span>,</span>
-<span>        .color <span class="op">=</span> <span class="va">my_color</span>,</span>
-<span>        .size <span class="op">=</span> <span class="va">my_size</span></span>
-<span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/layer-complex-1.png"><!-- --></p>
-</div>
 </div>
 <div class="section level2">
 <h2 id="layer-text">Layer text<a class="anchor" aria-label="anchor" href="#layer-text"></a>
 </h2>
 <p>Add a text layer on top of the heatmap</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="../reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
 <span>    </span>
 <span>    <span class="co"># filter</span></span>
@@ -707,72 +656,11 @@ sizes</p>
 <span>    .size <span class="op">=</span> <span class="va">my_size</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/layertext-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="complex-layer-text-example-with-colors">Complex layer text example with colors<a class="anchor" aria-label="anchor" href="#complex-layer-text-example-with-colors"></a>
-</h3>
-<p>Advanced example showing text layers with custom colors, sizes, and
-dynamic content</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="../reference/pasilla.html">pasilla</a></span> <span class="op">|&gt;</span></span>
-<span>    </span>
-<span>    <span class="co"># filter</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">symbol</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">tidyHeatmap</span><span class="fu">::</span><span class="va"><a href="../reference/pasilla.html">pasilla</a></span><span class="op">$</span><span class="va">symbol</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    </span>
-<span>    <span class="co"># Add dynamic text content and styling</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>        text_content <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">7</span> <span class="op">~</span> <span class="st">"***"</span>,</span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">~</span> <span class="st">"**"</span>, </span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">5</span> <span class="op">~</span> <span class="st">"*"</span>,</span>
-<span>            <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">""</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>        text_color <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">7</span> <span class="op">~</span> <span class="st">"darkred"</span>,</span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">~</span> <span class="st">"darkorange"</span>, </span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">5</span> <span class="op">~</span> <span class="st">"darkgreen"</span>,</span>
-<span>            <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"darkgray"</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>        text_size <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">7</span> <span class="op">~</span> <span class="fl">12</span>,</span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">~</span> <span class="fl">10</span>, </span>
-<span>            <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">5</span> <span class="op">~</span> <span class="fl">8</span>,</span>
-<span>            <span class="cn">TRUE</span> <span class="op">~</span> <span class="fl">6</span></span>
-<span>        <span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>    </span>
-<span>    <span class="fu"><a href="../reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
-<span>        .column <span class="op">=</span> <span class="va">sample</span>,</span>
-<span>        .row <span class="op">=</span> <span class="va">symbol</span>,</span>
-<span>        .value <span class="op">=</span> <span class="va">`count normalised adjusted`</span>,   </span>
-<span>        scale <span class="op">=</span> <span class="st">"row"</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="../reference/layer_text-method.html">layer_text</a></span><span class="op">(</span></span>
-<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated3"</span>, </span>
-<span>        .value <span class="op">=</span> <span class="st">"HIGH"</span>,</span>
-<span>        .color <span class="op">=</span> <span class="st">"red"</span>,</span>
-<span>        .size <span class="op">=</span> <span class="fl">12</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="../reference/layer_text-method.html">layer_text</a></span><span class="op">(</span></span>
-<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">5</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated1"</span>, </span>
-<span>        .value <span class="op">=</span> <span class="st">"↑"</span>,</span>
-<span>        .color <span class="op">=</span> <span class="st">"blue"</span>,</span>
-<span>        .size <span class="op">=</span> <span class="fl">10</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span></span>
-<span>    <span class="co"># Dynamically set text content, color and size</span></span>
-<span>    <span class="fu"><a href="../reference/layer_text-method.html">layer_text</a></span><span class="op">(</span></span>
-<span>        <span class="va">`count normalised adjusted log`</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">sample</span> <span class="op">==</span> <span class="st">"untreated2"</span>, </span>
-<span>        .value <span class="op">=</span> <span class="va">text_content</span>,</span>
-<span>        .color <span class="op">=</span> <span class="va">text_color</span>,</span>
-<span>        .size <span class="op">=</span> <span class="va">text_size</span></span>
-<span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/layertext-complex-1.png"><!-- --></p>
-</div>
 </div>
 <div class="section level2">
 <h2 id="adding-heatmap-side-by-side">Adding heatmap side-by-side<a class="anchor" aria-label="anchor" href="#adding-heatmap-side-by-side"></a>
 </h2>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_heatmap</span> <span class="op">=</span> <span class="fu"><a href="../reference/heatmap-method.html">heatmap</a></span><span class="op">(</span><span class="va">mtcars_tidy</span>, <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>, scale <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">p_heatmap</span> <span class="op">+</span> <span class="va">p_heatmap</span> </span></code></pre></div>
@@ -790,7 +678,7 @@ functionality of <code>ComplexHeatmap</code>. This ensures that all
 objects are compatible and can be combined using ComplexHeatmap’s native
 addition functionality.</p>
 </blockquote>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as_ComplexHeatmap-method.html">as_ComplexHeatmap</a></span><span class="op">(</span><span class="va">p_heatmap</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/as_ComplexHeatmap-method.html">as_ComplexHeatmap</a></span><span class="op">(</span><span class="va">p_heatmap</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/as_ComplexHeatmap-method.html">as_ComplexHeatmap</a></span><span class="op">(</span><span class="va">p_heatmap</span><span class="op">)</span></span></code></pre></div>
@@ -800,7 +688,7 @@ addition functionality.</p>
 <h2 id="using-patchwork-to-integrate-across-heatmaps-and-including-ggplots">Using patchwork to integrate across heatmaps and including
 ggplots<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate-across-heatmaps-and-including-ggplots"></a>
 </h2>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span></span>
@@ -814,7 +702,7 @@ ggplots<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate
 <span>    <span class="op">)</span> </span></code></pre></div>
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_ggplot</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/wrap_heatmap-method.html">wrap_heatmap</a></span><span class="op">(</span><span class="va">p_heatmap</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -835,7 +723,7 @@ ggplots<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate
 <div class="section level3">
 <h3 id="add-cell-borders">Add cell borders<a class="anchor" aria-label="anchor" href="#add-cell-borders"></a>
 </h3>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="../reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    </span>
@@ -849,7 +737,7 @@ ggplots<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate
 <div class="section level3">
 <h3 id="drop-row-clustering">Drop row clustering<a class="anchor" aria-label="anchor" href="#drop-row-clustering"></a>
 </h3>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="../reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
 <span>        <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    </span>
@@ -863,7 +751,7 @@ ggplots<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate
 <div class="section level3">
 <h3 id="reorder-rows-elements">Reorder rows elements<a class="anchor" aria-label="anchor" href="#reorder-rows-elements"></a>
 </h3>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org/" class="external-link">forcats</a></span><span class="op">)</span></span>
 <span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -879,7 +767,7 @@ ggplots<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate
 <div class="section level3">
 <h3 id="size-of-dendrograms">Size of dendrograms<a class="anchor" aria-label="anchor" href="#size-of-dendrograms"></a>
 </h3>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="../reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -895,7 +783,7 @@ ggplots<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate
 <div class="section level3">
 <h3 id="size-of-rowscolumns-titles-and-names">Size of rows/columns titles and names<a class="anchor" aria-label="anchor" href="#size-of-rowscolumns-titles-and-names"></a>
 </h3>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="../reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
@@ -909,6 +797,24 @@ ggplots<a class="anchor" aria-label="anchor" href="#using-patchwork-to-integrate
 <pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
 <span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
 <p><img src="introduction_files/figure-html/sizecolumns-1.png"><!-- --></p>
+</div>
+<div class="section level3">
+<h3 id="remove-row-and-column-titles">Remove row and column titles<a class="anchor" aria-label="anchor" href="#remove-row-and-column-titles"></a>
+</h3>
+<p>You can completely remove the row and column titles by setting them
+to empty strings:</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mtcars_tidy</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>`Car name` <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">`Car name`</span>, <span class="va">`Car name`</span>, .desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../reference/heatmap-method.html">heatmap</a></span><span class="op">(</span></span>
+<span>        <span class="va">`Car name`</span>, <span class="va">Property</span>, <span class="va">Value</span>,    </span>
+<span>        scale <span class="op">=</span> <span class="st">"row"</span>, </span>
+<span>        row_title <span class="op">=</span> <span class="st">""</span>,      <span class="co"># Remove row title</span></span>
+<span>        column_title <span class="op">=</span> <span class="st">""</span>    <span class="co"># Remove column title</span></span>
+<span>    <span class="op">)</span> </span></code></pre></div>
+<pre><code><span><span class="co">## Warning in as_mapper(.f1)(.x): to_matrix says: there are NON-numerical columns,</span></span>
+<span><span class="co">## the matrix will NOT be numerical</span></span></code></pre>
+<p><img src="introduction_files/figure-html/removetitles-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="align-numeric-annotation">Align numeric annotation<a class="anchor" aria-label="anchor" href="#align-numeric-annotation"></a>
@@ -1005,7 +911,7 @@ drawing options.</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] forcats_1.0.1      patchwork_1.3.2    ggplot2_4.0.0      tidyHeatmap_1.13.0</span></span>
+<span><span class="co">## [1] forcats_1.0.1      patchwork_1.3.2    ggplot2_4.0.0      tidyHeatmap_1.12.1</span></span>
 <span><span class="co">## [5] tidyr_1.3.1        dplyr_1.1.4       </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
