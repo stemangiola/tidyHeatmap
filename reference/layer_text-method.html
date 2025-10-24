@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.12.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.0</span>
       </span>
     </div>
 
@@ -51,7 +51,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Adds a layers of texts above the heatmap tiles to a `InputHeatmap`, that on evaluation creates a `ComplexHeatmap`</h1>
-    <small class="dont-index">Source: <a href="https://github.com/stemangiola/tidyHeatmap/blob/master/R/methods.R" class="external-link"><code>R/methods.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/stemangiola/tidyHeatmap/blob/color-symbol-and-text/R/methods.R" class="external-link"><code>R/methods.R</code></a></small>
     <div class="hidden name"><code>layer_text-method.Rd</code></div>
     </div>
 
@@ -60,10 +60,10 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">layer_text</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span>, <span class="va">.value</span>, .size <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">layer_text</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span>, <span class="va">.value</span>, .size <span class="op">=</span> <span class="cn">NULL</span>, .color <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'InputHeatmap'</span></span>
-<span><span class="fu">layer_text</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span>, <span class="va">.value</span>, .size <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">layer_text</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span>, <span class="va">.value</span>, .size <span class="op">=</span> <span class="cn">NULL</span>, .color <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="source">
@@ -88,6 +88,10 @@
 
 <dt id="arg--size">.size<a class="anchor" aria-label="anchor" href="#arg--size"></a></dt>
 <dd><p>A column name or a double. The size of the elements of the layer.</p></dd>
+
+
+<dt id="arg--color">.color<a class="anchor" aria-label="anchor" href="#arg--color"></a></dt>
+<dd><p>A column name or character string. The color of the elements of the layer.</p></dd>
 
 </dl></div>
     <div id="value">
