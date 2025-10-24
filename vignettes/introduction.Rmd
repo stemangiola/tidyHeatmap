@@ -613,7 +613,7 @@ You can completely remove the row and column titles by setting them to empty str
 
 ```{r removetitles, fig.width=10, fig.height=10}
 mtcars_tidy |> 
-	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) |> 
 	heatmap(
 		`Car name`, Property, Value,	
 		scale = "row", 
