@@ -118,7 +118,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 				x[ind$index_column_wise], y[ind$index_column_wise], 
 				pch = ind$shape , 
 				size = unit(ind$size, "mm"), 
-				gp = gpar(col = NULL, fill="#161616")
+				gp = gpar(col = NULL, fill=ind$color)
 			)
 		}
 		
@@ -136,7 +136,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 				ind_text$text,
 				x[ind_text$index_column_wise],
 				y[ind_text$index_column_wise],
-				gp = gpar(fontsize = ind_text$size, col = "#000000")
+				gp = gpar(fontsize = ind_text$size, col = ind_text$color)
 			)
 		}
 		
@@ -1147,6 +1147,7 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data,...,
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
 #' @param .value A column name or character string. 
 #' @param .size A column name or a double. The size of the elements of the layer.
+#' @param .color A column name or character string. The color of the elements of the layer.
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -1179,7 +1180,8 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data,...,
 setGeneric("layer_text", function(.data,
 																	...,
 																	.value,
-																	.size = NULL)
+																	.size = NULL,
+																	.color = NULL)
 	standardGeneric("layer_text"))
 
 #' layer_text
@@ -1194,10 +1196,11 @@ setGeneric("layer_text", function(.data,
 setMethod("layer_text", "InputHeatmap", function(.data,
 																								 ...,
 																								 .value,
-																								 .size = NULL){
-	
+																								 .size = NULL,
+																								 .color = NULL){
 	.data_drame = .data@data
 	.size = enquo(.size)
+	.color = enquo(.color)
 	
 	# Comply with CRAN NOTES
 	. = NULL
@@ -1233,7 +1236,13 @@ setMethod("layer_text", "InputHeatmap", function(.data,
 					~ mutate(., size := !!.size )
 					) |> 
 				
-				select(column, row, text, size) 
+				# Add color
+				when(
+					quo_is_null(.color) ~ mutate(., color = "#000000"),
+					~ mutate(., color := !!.color)
+				) |>
+				
+				select(column, row, text, size, color) 
 				
 
 		)
