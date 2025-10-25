@@ -335,13 +335,15 @@ get_top_left_annotation_OLD = function(.data_, .column, .row, .abundance, annota
 		}))
 	
 	# Stop if annotations discrete bigger than palette
-	discrete_count <- annotation_tbl |> pull(data) |> map_chr(~ .x |> class()) %in% c("factor", "character") |> which() |> length()
+	discrete_count <- annotation_tbl |> pull(data) |> map_chr(~ .x |> class()) |> 
+		(\(x) x %in% c("factor", "character"))() |> which() |> length()
 	if(discrete_count |> gt(palette_annotation$discrete |> length())) {
 		stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available")
 	}
 	
 	# Stop if annotations continuous bigger than palette
-	continuous_count <- annotation_tbl |> pull(data) |> map_chr(~ .x |> class()) %in% c("int", "dbl", "numeric") |> which() |> length()
+	continuous_count <- annotation_tbl |> pull(data) |> map_chr(~ .x |> class()) |> 
+		(\(x) x %in% c("int", "dbl", "numeric"))() |> which() |> length()
 	if(continuous_count |> gt(palette_annotation$continuous |> length())) {
 		stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available")
 	}

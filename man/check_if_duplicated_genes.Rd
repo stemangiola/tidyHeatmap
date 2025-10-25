@@ -4,7 +4,7 @@
 \alias{check_if_duplicated_genes}
 \title{Check whether there are duplicated genes/transcripts}
 \usage{
-check_if_duplicated_genes(.data, .sample, .transcript, .abundance)
+check_if_duplicated_genes(.data, .column, .row, .value)
 }
 \arguments{
 \item{.data}{A tibble of read counts}

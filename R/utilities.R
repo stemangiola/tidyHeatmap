@@ -805,29 +805,32 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  	
 	  mutate(further_arguments = map2(
 	  	col_name, my_function,
-	  	~ dots_args |> 
-	  		
+	  	~ {
 	  		# If tile add size as further argument
-	  		if(!is_function(.y)) c(., list(simple_anno_size = size)) else (.)
-	  		
-	  )) |> 	
+	  		if(!is_function(.y)) {
+	  			c(dots_args, list(simple_anno_size = size))
+	  		} else {
+	  			dots_args
+	  		}
+	  	}
+	  ))
 	  
 	  # Stop if annotations discrete bigger than palette
-	  if((.) |>  pull(data) |> map_chr(~ .x |> class()) %in% 
-	      c("factor", "character") |> which() |> length() |>
-	      gt(palette_annotation$discrete |> length())) {
+	  discrete_count <- df |> pull(data) |> map_chr(~ .x |> class()) |> 
+	      (\(x) x %in% c("factor", "character"))() |> which() |> length()
+	  if(discrete_count |> gt(palette_annotation$discrete |> length())) {
 	    stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available")
 	  }
 	  
 	  # Stop if annotations continuous bigger than palette
-	  if((.) |>  pull(data) |> map_chr(~ .x |> class()) %in% 
-	      c("int", "dbl", "numeric") |> which() |> length() |>
-	      gt( palette_annotation$continuous |> length())) {
+	  continuous_count <- df |> pull(data) |> map_chr(~ .x |> class()) |> 
+	      (\(x) x %in% c("int", "dbl", "numeric"))() |> which() |> length()
+	  if(continuous_count |> gt( palette_annotation$continuous |> length())) {
 	    stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available")
 	  }
 	  
 	  # Return the data
-	  (.)
+	  df
       
   
 }
@@ -1207,27 +1210,27 @@ annot_to_list = function(.data){
   data = NULL
   
   
-  .data |> 
+  annot_list <- .data |> 
   	pull(annot) |>
-    set_names(.data |> pull(col_name))  |>
+    set_names(.data |> pull(col_name))
     
-    # If list is populated
-    if(length(.) > 0) {
-      (.) |> c(
-        col = list(.data |>
-                     filter(map_lgl(color, ~ .x |> is.null()  |> not())) |>
-                     (function(df) set_names(pull(df, color), pull(df, col_name)))())
-      ) |>
-      	
-      	# Add additional arguments
-      	c(
-      		.data |> 
-      			pull(further_arguments) |> 
-      			combine_elements_with_the_same_name()
-      	)
-    } else {
-      (.)
-    } 
+  # If list is populated
+  if(length(annot_list) > 0) {
+    annot_list |> c(
+      col = list(.data |>
+                   filter(map_lgl(color, ~ .x |> is.null()  |> not())) |>
+                   (function(df) set_names(pull(df, color), pull(df, col_name)))())
+    ) |>
+    	
+    	# Add additional arguments
+    	c(
+    		.data |> 
+    			pull(further_arguments) |> 
+    			combine_elements_with_the_same_name()
+    	)
+  } else {
+    annot_list
+  } 
     
 }
 

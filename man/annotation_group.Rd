@@ -44,29 +44,27 @@ useful for highlighting biological or experimental groups in your heatmap.
 \examples{
 
 # Basic usage with row grouping
-# Note: This example requires proper grouping setup
-# tidyHeatmap::N52 |>
-#   tidyHeatmap::heatmap(
-#     .row = symbol_ct,
-#     .column = UBR,
-#     .value = `read count normalised log`
-#   ) |>
-#   annotation_group(CAPRA_TOTAL)
+tidyHeatmap::N52 |>
+  tidyHeatmap::heatmap(
+    .row = symbol_ct,
+    .column = UBR,
+    .value = `read count normalised log`
+  ) |>
+  annotation_group(CAPRA_TOTAL)
 
 # With custom colors and formatting
-# Note: This example requires proper grouping setup
-# tidyHeatmap::N52 |>
-#   tidyHeatmap::heatmap(
-#     .row = symbol_ct,
-#     .column = UBR,
-#     .value = `read count normalised log`
-#   ) |>
-#   annotation_group(
-#     CAPRA_TOTAL,
-#     palette_grouping = list(c("#E64B35", "#4DBBD5")),
-#     group_label_fontsize = 10,
-#     show_group_name = FALSE
-#   )
+tidyHeatmap::N52 |>
+  tidyHeatmap::heatmap(
+    .row = symbol_ct,
+    .column = UBR,
+    .value = `read count normalised log`
+  ) |>
+  annotation_group(
+    CAPRA_TOTAL,
+    palette_grouping = list(c("#E64B35", "#4DBBD5")),
+    group_label_fontsize = 10,
+    show_group_name = FALSE
+  )
 
 # Multiple grouping variables
 tidyHeatmap::N52 |>
