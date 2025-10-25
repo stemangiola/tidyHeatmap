@@ -754,13 +754,11 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   df = df |>
 	  
 		# Add color indexes separately for each orientation
-		mutate(annot_type = map_chr(annot, ~ if(class(.x) %in% c("factor", "character", "logical")) {
-			"discrete"
-		} else if(class(.x) %in% c("integer", "numerical", "numeric", "double")) {
-			"continuous"
-		} else {
-			"other"
-		})) |>
+		mutate(annot_type = map_chr(annot, ~ case_when(
+			class(.x) %in% c("factor", "character", "logical") ~ "discrete",
+			class(.x) %in% c("integer", "numerical", "numeric", "double") ~ "continuous",
+			TRUE ~ "other"
+		))) |>
 		group_by(annot_type) |>
 		mutate(idx =  row_number()) |>
 		ungroup() |>
