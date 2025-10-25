@@ -596,14 +596,15 @@ get_x_y_annotation_columns = function(.data, .column, .row, .abundance){
   .row = enquo(.row)
   .abundance = enquo(.abundance)
   
-  .data |>
+  # Filter data to remove list columns
+  filtered_data <- .data |>
     select_if(negate(is.list)) |>
     ungroup()
   
   # Rows
   bind_rows(
-    .data |> subset(!!.column) |> colnames() |> as_tibble() |> rename(column = value) |> gather(orientation, col_name),
-    .data |> subset(!!.row) |> colnames() |> as_tibble() |> rename(row = value) |> gather(orientation, col_name)
+    filtered_data |> subset(!!.column) |> colnames() |> as_tibble() |> rename(column = value) |> gather(orientation, col_name),
+    filtered_data |> subset(!!.row) |> colnames() |> as_tibble() |> rename(row = value) |> gather(orientation, col_name)
   )
 }
 
