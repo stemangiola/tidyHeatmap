@@ -596,16 +596,14 @@ get_x_y_annotation_columns = function(.data, .column, .row, .abundance){
   .row = enquo(.row)
   .abundance = enquo(.abundance)
   
-  # Filter data to remove list columns
-  filtered_data <- .data |>
-    select_if(negate(is.list)) |>
-    ungroup()
-  
   # Rows
-  bind_rows(
-    filtered_data |> subset(!!.column) |> colnames() |> as_tibble() |> rename(column = value) |> gather(orientation, col_name),
-    filtered_data |> subset(!!.row) |> colnames() |> as_tibble() |> rename(row = value) |> gather(orientation, col_name)
-  )
+  .data |>
+    select_if(negate(is.list)) |>
+    ungroup() |>
+    (function(filtered_data) bind_rows(
+      filtered_data |> subset(!!.column) |> colnames() |> as_tibble() |> rename(column = value) |> gather(orientation, col_name),
+      filtered_data |> subset(!!.row) |> colnames() |> as_tibble() |> rename(row = value) |> gather(orientation, col_name)
+    ))()
 }
 
 #' @importFrom purrr map_chr
@@ -784,8 +782,10 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 					palette_annotation$continuous[[.y]]
 
 				# If it is a list of colors
-				else
-					colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) |> colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
+				else {
+					colors <- colorRampPalette(palette_annotation$continuous[[.y]])(length(.x))
+					colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), colors)
+				}
 				
 			}
 			else NULL
@@ -1206,7 +1206,7 @@ annot_to_list = function(.data){
     when(length(.) > 0 ~ (.) |> c(
       col = list(.data |>
                    filter(map_lgl(color, ~ .x |> is.null()  |> not())) |>
-                   (\(df) set_names(pull(df, color), pull(df, col_name)))())
+                   (function(df) set_names(pull(df, color), pull(df, col_name)))())
     ) |>
     	
     	# Add additional arguments

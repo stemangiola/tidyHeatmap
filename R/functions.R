@@ -261,7 +261,6 @@ add_grouping = function(my_input_heatmap){
 #'
 #' @import dplyr
 #' @import tidyr
-#' @importFrom magrittr "|>"
 #' @importFrom rlang enquo
 #' @importFrom rlang quo_name
 #' @importFrom circlize colorRamp2
@@ -410,7 +409,6 @@ add_annotation = function(my_input_heatmap,
 #' @description layer_symbol() from a `InputHeatmap` object, adds a symbol annotation layer.
 #'
 #' @importFrom rlang enquo
-#' @importFrom magrittr "|>"
 #' 
 #' 
 #'

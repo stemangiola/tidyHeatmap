@@ -324,10 +324,13 @@ get_top_left_annotation_OLD = function(.data_, .column, .row, .abundance, annota
 		mutate(idx =  row_number()) |>
 		ungroup() |>
 		mutate(color = map2(annot, idx,  ~ {
-			if(.x |> class() %in% c("factor", "character", "logical"))
+			if(.x |> class() %in% c("factor", "character", "logical")) {
 				colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) |> set_names(unique(.x))
-			else if (.x |> class() %in% c("integer", "numerical", "numeric", "double"))
-				colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) |> colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
+			}
+			else if (.x |> class() %in% c("integer", "numerical", "numeric", "double")) {
+				colors <- colorRampPalette(palette_annotation$continuous[[.y]])(length(.x))
+				colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), colors)
+			}
 			else NULL
 		}))
 	
