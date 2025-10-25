@@ -42,7 +42,7 @@ subset = 		function(.data,
 	.column = enquo(.column)
 	
 	# Check if column present
-if(quo_names(.column) %in% colnames(.data) |> all() |> not())
+if((quo_names(.column) %in% colnames(.data)) |> all() |> not())
 		stop("nanny says: some of the .column specified do not exist in the input data frame.")
 	
 	.data |>
