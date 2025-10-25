@@ -644,7 +644,7 @@ test_that("wrap heatmap for patchwork",{
 			.column = UBR,
 			.value = `read count normalised log`,
 			scale = "row"
-		) %>% 
+		) |> 
 		wrap_heatmap()
 	
 	vdiffr::expect_doppelganger("wrap heatmap", p + p)
@@ -679,7 +679,7 @@ test_that("tile colorRamp2 palette",{
 			.row = symbol_ct, 
 			.value = `read count normalised log`,
 			scale = "row"
-		) %>%
+		) |>
 		annotation_tile(
 			inflection,
 			palette = colorRamp2(c(0, 3,10), c("white", "green", "red"))
@@ -817,8 +817,8 @@ test_that("group ordering",{
                      "raffinoseCH", "CH", 1, -2.10)
   
   p = 
-    example %>%
-    group_by(Compound_Class) %>%
+    example |>
+    group_by(Compound_Class) |>
     heatmap(.row = Compound_Name, .col = col, .value = log2fc)
   
   vdiffr::expect_doppelganger("group ordering 2", p)
@@ -875,8 +875,8 @@ test_that("annotation ordering",{
     "versicolor", 54, "54_versicolor", "Petal.Width",  1.3
   )
   
-  p = iris_long %>%
-    heatmap(name_id, measure, value) %>%
+  p = iris_long |>
+    heatmap(name_id, measure, value) |>
     annotation_tile(Species)
   
   vdiffr::expect_doppelganger("annotation ordering", p)
@@ -994,12 +994,12 @@ test_that("NA/NaN handling in annotations", {
     value = c(1.5, 2.1, 1.8),
     status = c("active", NA, "inactive"),
     stringsAsFactors = FALSE
-  ) %>% as_tibble()
+  ) |> as_tibble()
   
   # Test that NA/NaN values are handled gracefully with warning
   expect_warning(
-    p <- test_data %>%
-      heatmap(sample, gene, value) %>%
+    p <- test_data |>
+      heatmap(sample, gene, value) |>
       annotation_tile(status),
     "tidyHeatmap says: You have NA/NaN values in your annotation data. These will be replaced with 'NA'."
   )

@@ -14,22 +14,22 @@ test_that("NA/NaN handling in discrete and grouped annotations", {
   )
 
   expect_warning(
-    p1 <- test_data %>%
-      heatmap(sample, gene, value) %>%
+    p1 <- test_data |>
+      heatmap(sample, gene, value) |>
       annotation_tile(status),
     "tidyHeatmap says: You have NA/NaN values in your annotation data. These will be replaced with 'NA'."
   )
   expect_s4_class(p1, "InputHeatmap")
 
   # Grouping with NA values
-  test_data_grouped <- test_data %>%
-    mutate(group = c("A", "A", "B", "B")) %>%
+  test_data_grouped <- test_data |>
+    mutate(group = c("A", "A", "B", "B")) |>
     mutate(group = ifelse(row_number() == 2, NA, group))
 
   expect_warning(
-    p2 <- test_data_grouped %>%
-      group_by(group) %>%
-      heatmap(sample, gene, value) %>%
+    p2 <- test_data_grouped |>
+      group_by(group) |>
+      heatmap(sample, gene, value) |>
       annotation_tile(condition),
     "tidyHeatmap says: You have NA/NaN values in your row grouping column. These will be replaced with 'NA'."
   )
@@ -47,8 +47,8 @@ test_that("NA/NaN handling in discrete and grouped annotations", {
 #     score = c(1.2, NA, 0.8, 1.5)
 #   )
 #   expect_warning(
-#     p3 <- test_data_numeric %>%
-#       heatmap(sample, gene, value) %>%
+#     p3 <- test_data_numeric |>
+#       heatmap(sample, gene, value) |>
 #       annotation_numeric(score),
 #     "tidyHeatmap says: You have NA/NaN values in your annotation data. These will be replaced with 'NA'."
 #   )

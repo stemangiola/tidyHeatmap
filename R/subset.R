@@ -10,28 +10,28 @@ get_specific_annotation_columns = function(.data, .col){
 	.col = enquo(.col)
 	
 	# x-annotation df
-	n_x = .data %>% select(!!.col) |> distinct() %>% nrow
+	n_x = .data |> select(!!.col) |> distinct() |> nrow()()
 	
 	# element wise columns
-	.data %>%
-		select(-!!.col) %>%
-		colnames %>%
+	.data |>
+		select(-!!.col) |>
+		colnames |>
 		map(
 			~
-				.x %>%
+				.x |>
 				ifelse_pipe(
-					.data %>%
+					.data |>
 					  select(!!.col, all_of(.x)) |> 
-						distinct() %>%
-						nrow %>%
+						distinct() |>
+						nrow |>
 						equals(n_x),
 					~ .x,
 					~ NULL
 				)
-		) %>%
+		) |>
 		
 		# Drop NULL
-		{	(.)[lengths((.)) != 0]	} %>%
+		{	(.)[lengths((.)) != 0]	} |>
 		unlist
 	
 }
@@ -43,13 +43,13 @@ subset = 		function(.data,
 	.column = enquo(.column)
 	
 	# Check if column present
-	if(quo_names(.column) %in% colnames(.data) %>% all %>% `!`)
+	if(quo_names(.column) %in% colnames(.data) |> all |> `!`)
 		stop("nanny says: some of the .column specified do not exist in the input data frame.")
 	
-	.data %>%
+	.data |>
 		
 		# Selecting the right columns
-		select(	!!.column,	all_of(get_specific_annotation_columns(.data, !!.column)	)) %>%
+		select(	!!.column,	all_of(get_specific_annotation_columns(.data, !!.column)	)) |>
 		distinct()
 	
 }
