@@ -659,14 +659,17 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   df = 
     quo_names(annotation) |>
 	  as_tibble() |>
-	  rename(col_name = value) |>
+	  rename(col_name = value) 
 	  
 	  # delete if annotation is NULL
-	  when(quo_is_null(annotation) ~ slice(., 0), ~ (.)) |>
+	  if(quo_is_null(annotation)) {
+	   df = df |> slice(., 0)
+	  } 
 	  
 	  # Add orientation
+	  df = df |>
 	  left_join(x_y_annot_cols,  by = "col_name") |>
-	  mutate(col_orientation = map_chr(orientation, ~ .x |> when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) 
+	  mutate(col_orientation = map_chr(orientation, ~ if(.x == "column") quo_name(.column) else if(.x == "row") quo_name(.row) else .x)) 
 
 
   return_factor_ordering_by_col_or_row_names <- function(.data, col, orient) {
@@ -798,27 +801,26 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  	~ dots_args |> 
 	  		
 	  		# If tile add size as further argument
-	  		when(!is_function(.y) ~ c(., list(simple_anno_size = size)), ~ (.))
+	  		if(!is_function(.y)) c(., list(simple_anno_size = size)) else (.)
 	  		
 	  )) |> 	
 	  
 	  # Stop if annotations discrete bigger than palette
-	  when(
-	    (.) |>  pull(data) |> map_chr(~ .x |> class()) %in% 
+	  if((.) |>  pull(data) |> map_chr(~ .x |> class()) %in% 
 	      c("factor", "character") |> which() |> length() |>
-	      gt(palette_annotation$discrete |> length()) ~
-	      stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available"),
-	    ~ (.)
-	  ) |>
+	      gt(palette_annotation$discrete |> length())) {
+	    stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available")
+	  }
 	  
 	  # Stop if annotations continuous bigger than palette
-	  when(
-	    (.) |>  pull(data) |> map_chr(~ .x |> class()) %in% 
+	  if((.) |>  pull(data) |> map_chr(~ .x |> class()) %in% 
 	      c("int", "dbl", "numeric") |> which() |> length() |>
-	      gt( palette_annotation$continuous |> length()) ~
-	      stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available"),
-	    ~ (.)
-	  )
+	      gt( palette_annotation$continuous |> length())) {
+	    stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available")
+	  }
+	  
+	  # Return the data
+	  (.)
       
   
 }
