@@ -80,7 +80,6 @@ Gu, Z., Eils, R., and Schlesner, M. 2016. "Complex heatmaps reveal patterns
 Useful links:
 \itemize{
   \item \url{https://github.com/stemangiola/tidyHeatmap}
-  \item \url{https://www.r-project.org}
   \item Report bugs at \url{https://github.com/stemangiola/tidyHeatmap/issues}
 }
 
