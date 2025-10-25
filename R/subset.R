@@ -10,12 +10,12 @@ get_specific_annotation_columns = function(.data, .col){
 	.col = enquo(.col)
 	
 	# x-annotation df
-	n_x = .data |> select(!!.col) |> distinct() |> nrow()()
+	n_x = .data |> select(!!.col) |> distinct() |> nrow()
 	
 	# element wise columns
-	.data |>
+	result <- .data |>
 		select(-!!.col) |>
-		colnames |>
+		colnames() |>
 		map(
 			~
 				.x |>
@@ -23,16 +23,15 @@ get_specific_annotation_columns = function(.data, .col){
 					.data |>
 					  select(!!.col, all_of(.x)) |> 
 						distinct() |>
-						nrow |>
+						nrow() |>
 						equals(n_x),
 					~ .x,
 					~ NULL
 				)
-		) |>
-		
-		# Drop NULL
-		{	(.)[lengths((.)) != 0]	} |>
-		unlist
+		)
+	
+	# Drop NULL
+	result <- result[lengths(result) != 0] |> unlist()
 	
 }
 
@@ -43,7 +42,7 @@ subset = 		function(.data,
 	.column = enquo(.column)
 	
 	# Check if column present
-	if(quo_names(.column) %in% colnames(.data) |> all |> `!`)
+if(quo_names(.column) %in% colnames(.data) |> all() |> not())
 		stop("nanny says: some of the .column specified do not exist in the input data frame.")
 	
 	.data |>

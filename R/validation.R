@@ -19,7 +19,7 @@ if (list_input |>
             map(~ class(.x)[1]) |>
             unlist() |>
             equals(expected_type) |>
-            `!`)
+            not())
 		stop("tidyHeatmap says: You have passed the wrong argument to the function. Please check again.")
 	
 	# If all good return original data frame
@@ -52,7 +52,7 @@ check_if_duplicated_genes <- function(.data,
 		filter(n > 1) |>
 		arrange(n |> desc())
 	
-	is_unique = duplicates |> nrow()() |> equals(0)
+	is_unique = duplicates |> nrow() |> equals(0)
 	
 	if (!is_unique) {
 		writeLines("tidyHeatmap says: Those are the duplicated elements")
@@ -69,13 +69,13 @@ check_if_column_missing = function(.data, .sample, .transcript, .abundance) {
 	.abundance = enquo(.abundance)
 	
 	# Check that the intersection is length 3
-	.data |> colnames()() |>
+	.data |> colnames() |>
 		intersect(c(
 			quo_name(.sample),
 			quo_name(.transcript),
 			quo_name(.abundance)
 		)) |>
-		length |>
+		length() |>
 		equals(3)
 }
 
@@ -85,15 +85,15 @@ column_type_checking = function(.data, .sample, .transcript, .abundance) {
 	.transcript = enquo(.transcript)
 	.abundance = enquo(.abundance)
 	
-	.data |> pull(!!.sample) |> class()() %in% c("character", "factor") &
-		.data |> pull(!!.transcript) |> class()() %in% c("character", "factor") &
-		.data |> pull(!!.abundance) |> class()() %in% c("integer", "numeric", "double")
+	.data |> pull(!!.sample) |> class() %in% c("character", "factor") &
+		.data |> pull(!!.transcript) |> class() %in% c("character", "factor") &
+		.data |> pull(!!.abundance) |> class() %in% c("integer", "numeric", "double")
 	
 }
 
 check_if_attribute_present = function(.data) {
-	"tt_internals" %in% (.data |> attributes()() |> names()()) &&
-		"tt_columns" %in% (.data |> attr("tt_internals")  |> names()())
+	"tt_internals" %in% (.data |> attributes() |> names()) &&
+		"tt_columns" %in% (.data |> attr("tt_internals")  |> names())
 }
 
 eliminate_sparse_transcripts = function(.data, .transcript){
@@ -127,7 +127,7 @@ check_if_data_rectangular = function(.data, .sample, .transcript, .abundance, ty
 		distinct(!!.sample, !!.transcript, !!.abundance) |>
 		count(!!.sample) |>
 		count(n) |>
-		nrow |>
+		nrow() |>
 		equals(1)
 	
 }
@@ -158,7 +158,7 @@ validation_default = function(.data,
 		warning(
 			sprintf("tidyHeatmap says: One or more columns %s, %s or %s are missing from your data frame.", quo_name(.sample), quo_name(.transcript), quo_name(.abundance))
 		)
-		return(.data |> tidyHeatmap_to_tbl)
+		return(.data |> tidyHeatmap_to_tbl())
 	}
 	
 	# Check if duplicated genes
@@ -173,7 +173,7 @@ validation_default = function(.data,
 			warning(
 				"tidyHeatmap says: Your dataset include duplicated row/column pairs. Please, remove redundancies before proceeding."
 			)
-			return(.data |> tidyHeatmap_to_tbl)
+			return(.data |> tidyHeatmap_to_tbl())
 		}
 	}
 	
@@ -224,7 +224,7 @@ validation.tidyHeatmap = function(.data,
 		warning(
 			"tidyHeatmap says: The object provided has tidyHeatmap class but no attribute containing the column names. The tidyHeatmap object has been converted to a `tbl`"
 		)
-		return(.data |> tidyHeatmap_to_tbl)
+		return(.data |> tidyHeatmap_to_tbl())
 	}
 	
 	# Get column names

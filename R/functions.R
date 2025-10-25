@@ -4,7 +4,6 @@
 #'
 #' @import dplyr
 #' @import tidyr
-#' @importFrom magrittr "|>"
 #' @importFrom rlang enquo
 #' @importFrom rlang quo_name
 #' @importFrom circlize colorRamp2
@@ -78,50 +77,45 @@ input_heatmap = function(.data,
 		stop("tidyHeatmap says: the arguments palette_discrete and palette_continuous must be lists. E.g., list(rep(\"#000000\", 20))")
 	
 	# Check that there have at least one value in the heatmap
-	if(.data |> filter(!!.abundance |> is.na |> not |> as.logical) |> nrow()() |> equals(0))
+	if(.data |> filter(!is.na(!!.abundance)) |> nrow() |> equals(0))
 		stop("tidyHeatmap says: your dataset does not have any non NA values")
 	
 	# Get abundance matrix
 	abundance_tbl =
 		.data |>
-		ungroup() |>
+		ungroup()
+	
+	# Check if transform is needed
+	if(is_function(transform)) {
+		abundance_tbl <- abundance_tbl |> mutate(!!.abundance := !!.abundance |> transform())
 		
-		# Check if transform is needed
-		when(
-			is_function(transform) ~ 
-				mutate(., !!.abundance := !!.abundance |> transform()) |>
-				
-				# Check if log introduced -Inf
-				when(
-					
-					# NAN produced
-					filter(., !!.abundance |> is.nan |> as.logical) |> nrow()() |> gt(0) ~ stop("tidyHeatmap says: you applied a transformation that introduced NaN."),
-					
-					# -Inf produced
-					pull(., !!.abundance) |> min |> equals(-Inf) ~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p."),
-					~(.)
-				),
-			~ (.)
-		) |>
+		# Check if log introduced -Inf
+		if(abundance_tbl |> filter(!!.abundance |> is.nan() |> as.logical()) |> nrow() |> gt(0)) {
+			stop("tidyHeatmap says: you applied a transformation that introduced NaN.")
+		}
 		
-		# If scale row
-		when(
-			scale %in% c("row", "both") ~ (.) |>
-				nest(data = -!!.vertical) |>
-				mutate(data = map(data, ~ .x |> mutate(!!.abundance := !!.abundance |> scale_robust()))) |>
-				unnest(data),
-			~ (.)
-		) |>
-		
-		# If scale column
-		when(
-			scale %in% c("column", "both") ~ (.) |>
-				nest(data = -!!.horizontal) |>
-				mutate(data = map(data, ~ .x |> mutate(!!.abundance := !!.abundance |> scale_robust()))) |>
-				unnest(data),
-			~ (.)
-		) |>
-		
+		if(abundance_tbl |> pull(!!.abundance) |> min() |> equals(-Inf)) {
+			stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p.")
+		}
+	}
+	
+	# If scale row
+	if(scale %in% c("row", "both")) {
+		abundance_tbl <- abundance_tbl |> 
+			nest(data = -!!.vertical) |>
+			mutate(data = map(data, ~ .x |> mutate(!!.abundance := scale_robust(!!.abundance)))) |>
+			unnest(data)
+	}
+	
+	# If scale column
+	if(scale %in% c("column", "both")) {
+		abundance_tbl <- abundance_tbl |> 
+			nest(data = -!!.horizontal) |>
+			mutate(data = map(data, ~ .x |> mutate(!!.abundance := scale_robust(!!.abundance)))) |>
+			unnest(data)
+	}
+	
+	abundance_tbl <- abundance_tbl |>
 		distinct(!!.vertical,!!.horizontal,!!.abundance) |>
 	  
 	  # Arrange both columns and rows
@@ -138,7 +132,7 @@ input_heatmap = function(.data,
 	colors = 
 		palette_value |>
 		when(
-			palette_value |> class()() |> equals("function") ~ (.),
+			palette_value |> class() |> equals("function") ~ (.),
 			length(palette_value) != 3 ~ stop("tidyHeatmap says: If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_value)\""	),
 			
 			# For the crazy scenario when only one value is present in the heatmap (tidyHeatmap/issues/40)
@@ -161,7 +155,7 @@ input_heatmap = function(.data,
 	# Define object
 	new(
 		"InputHeatmap",
-		data = .data |> reduce_to_tbl_if_in_class_chain,
+		data = .data |> reduce_to_tbl_if_in_class_chain(),
 		# Due to the `.homonyms="last"` parameter, additional arguments passed by the user
 		# via `...` overwrite the defaults given below (See also `?rlang::dots_list`)
 		input = rlang::dots_list(
@@ -188,7 +182,7 @@ add_grouping = function(my_input_heatmap){
 	
 	
 	# Check if there are nested column in the data frame
-	if(my_input_heatmap@data |> lapply(class)  |> equals("list") |> any)
+	if(my_input_heatmap@data |> lapply(class)  |> equals("list") |> any())
 		warning("tidyHeatmap says: nested/list column are present in your data frame and have been dropped as their unicity cannot be identified by dplyr.")
 	
 	# Column names
@@ -197,10 +191,10 @@ add_grouping = function(my_input_heatmap){
 	.abundance = my_input_heatmap@arguments$.abundance
 	
 	# Number of groups
-	how_many_groups = my_input_heatmap@data |> attr("groups") |> nrow()()
+	how_many_groups = my_input_heatmap@data |> attr("groups") |> nrow()
 	
 	# Number of grouping
-	how_many_grouping = my_input_heatmap@data |> attr("groups") |> select(-.rows) |> ncol()()
+	how_many_grouping = my_input_heatmap@data |> attr("groups") |> select(-.rows) |> ncol()
 	
 	# Add custom palette to discrete if any
 	my_input_heatmap@palette_discrete =
@@ -346,7 +340,7 @@ add_annotation = function(my_input_heatmap,
 	)
 	
 	# Check if there are nested column in the data frame
-	if(.data |> lapply(class)  |> equals("list") |> any)
+	if(.data |> lapply(class)  |> equals("list") |> any())
 		warning("tidyHeatmap says: nested/list column are present in your data frame and have been dropped as their unicity cannot be identified by dplyr.")
 	
 	# Data frame of row and column columns
@@ -374,8 +368,8 @@ add_annotation = function(my_input_heatmap,
 														 !!annotation,	palette_annotation,	type, x_y_annot_cols, size, ...)
 	
 	# Number of grouping
-	how_many_discrete = .data_annot |> filter(annot_type=="discrete") |> nrow()()
-	how_many_continuous = .data_annot |> filter(annot_type=="continuous") |> nrow()()
+	how_many_discrete = .data_annot |> filter(annot_type=="discrete") |> nrow()
+	how_many_continuous = .data_annot |> filter(annot_type=="continuous") |> nrow()
 	
 	# Eliminate used  annotations
 	my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete |> when(how_many_discrete>0 ~ tail(., -how_many_discrete) , ~ (.))

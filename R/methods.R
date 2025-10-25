@@ -330,7 +330,7 @@ heatmap_ <-
 			)		|>
 			
 			# Add group annotation if any
-			when( "groups" %in%  (attributes(.data) |> names()()) ~ 	add_grouping(.), ~ (.))
+			when( "groups" %in%  (attributes(.data) |> names()) ~ 	add_grouping(.), ~ (.))
 		
 	}
 
@@ -1139,7 +1139,6 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data,...,
 #' @description layer_text() from a `InputHeatmap` object, adds a text annotation layer.
 #'
 #' @importFrom rlang enquo
-#' @importFrom magrittr "|>"
 #' 
 #' 
 #'

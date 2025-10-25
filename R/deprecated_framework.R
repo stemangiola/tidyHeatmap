@@ -30,44 +30,39 @@ plot_heatmap = function(.data,
 	# Get abundance matrix
 	abundance_tbl =
 		.data |>
-		ungroup() |>
+		ungroup()
+	
+	# Check if transform is needed
+	if(is_function(transform)) {
+		abundance_tbl <- abundance_tbl |> mutate(!!.abundance := !!.abundance |> transform())
 		
-		# Check if transform is needed
-		when(
-			is_function(transform) ~ 
-				mutate(., !!.abundance := !!.abundance |> transform()) |>
-				
-				# Check if log introduced -Inf
-				when(
-					
-					# NAN produced
-					filter(., !!.abundance |> is.nan |> as.logical) |> nrow()() |> gt(0) ~ stop("tidyHeatmap says: you applied a transformation that introduced NaN."),
-					
-					# -Inf produced
-					pull(., !!.abundance) |> min |> equals(-Inf) ~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p."),
-					~(.)
-				),
-			~ (.)
-		) |>
+		# Check if log introduced -Inf
+		if(abundance_tbl |> filter(!!.abundance |> is.nan() |> as.logical()) |> nrow() |> gt(0)) {
+			stop("tidyHeatmap says: you applied a transformation that introduced NaN.")
+		}
 		
-		# If .scale row
-		when(
-			.scale %in% c("row", "both") ~ (.) |>
-				nest(data = -!!.vertical) |>
-				mutate(data = map(data, ~ .x |> mutate(!!.abundance := !!.abundance |> scale_robust()))) |>
-				unnest(data),
-			~ (.)
-		) |>
-		
-		# If .scale column
-		when(
-			.scale %in% c("column", "both") ~ (.) |>
-				nest(data = -!!.horizontal) |>
-				mutate(data = map(data, ~ .x |> mutate(!!.abundance := !!.abundance |> scale_robust()))) |>
-				unnest(data),
-			~ (.)
-		) |>
-		
+		if(abundance_tbl |> pull(!!.abundance) |> min() |> equals(-Inf)) {
+			stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p.")
+		}
+	}
+	
+	# If .scale row
+	if(.scale %in% c("row", "both")) {
+		abundance_tbl <- abundance_tbl |> 
+			nest(data = -!!.vertical) |>
+			mutate(data = map(data, ~ .x |> mutate(!!.abundance := !!.abundance |> scale_robust()))) |>
+			unnest(data)
+	}
+	
+	# If .scale column
+	if(.scale %in% c("column", "both")) {
+		abundance_tbl <- abundance_tbl |> 
+			nest(data = -!!.horizontal) |>
+			mutate(data = map(data, ~ .x |> mutate(!!.abundance := !!.abundance |> scale_robust()))) |>
+			unnest(data)
+	}
+	
+	abundance_tbl <- abundance_tbl |>
 		distinct(!!.vertical,!!.horizontal,!!.abundance) |>
 		spread(!!.horizontal,!!.abundance)
 	
@@ -80,7 +75,7 @@ plot_heatmap = function(.data,
 	colors = 
 		palette_value |>
 		ifelse2_pipe(
-			palette_value |> class()() |> equals("function"),
+			palette_value |> class() |> equals("function"),
 			length(palette_value) != 3,
 			~ .x,
 			~ stop("tidyHeatmap says: If palette_value is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_value)\""	),
@@ -109,7 +104,7 @@ plot_heatmap = function(.data,
 		continuous = 
 			palette_continuous |>
 			c(list(
-				brewer.pal(11, "Spectral") |> rev,
+				brewer.pal(11, "Spectral") |> rev(),
 				viridis(n = 5),
 				magma(n = 5),
 				brewer.pal(11, "PRGn"),
@@ -118,7 +113,7 @@ plot_heatmap = function(.data,
 	)
 	
 	# Check if there are nested column in the data frame
-	if(.data |> lapply(class)  |> equals("list") |> any)
+	if(.data |> lapply(class)  |> equals("list") |> any())
 		warning("tidyHeatmap says: nested/list column are present in your data frame and have been dropped as their unicity cannot be identified by dplyr.")
 	
 	# Data frame of row and column columns
@@ -127,15 +122,17 @@ plot_heatmap = function(.data,
 		get_x_y_annotation_columns(!!.horizontal,!!.vertical,!!.abundance) 
 	
 	# Check if annotation is compatible with your dataset
-	quo_names(annotation) |>
-		setdiff(x_y_annot_cols |> pull(col_name)) |>
-		when( quo_names(annotation) != "NULL" & length(.) > 0 ~ 
-						stop(
-							sprintf(
-								"tidyHeatmap says: Your annotation \"%s\" is not unique to vertical nor horizontal dimentions",
-								(.) |> paste(collapse = ", ")
-							)
-						))
+	{
+		missing_annot <- quo_names(annotation) |> setdiff(x_y_annot_cols |> pull(col_name))
+		if(quo_names(annotation) != "NULL" & length(missing_annot) > 0) {
+			stop(
+				sprintf(
+					"tidyHeatmap says: Your annotation \"%s\" is not unique to vertical nor horizontal dimentions",
+					missing_annot |> paste(collapse = ", ")
+				)
+			)
+		}
+	}
 	
 	# See if I have grouping and setup framework
 	group_annotation = get_group_annotation_OLD(
@@ -185,7 +182,7 @@ plot_heatmap = function(.data,
 		) |>
 		list_drop_null() |>
 		ifelse_pipe(
-			(.) |> length()() |> gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
+			(.) |> length() |> gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("columnAnnotation", .x ),
 			~ NULL
 		)
@@ -197,7 +194,7 @@ plot_heatmap = function(.data,
 				annot_to_list_OLD()) |>
 		list_drop_null() |>
 		ifelse_pipe(
-			(.) |> length()() |> gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
+			(.) |> length() |> gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
 			~ do.call("rowAnnotation", .x),
 			~ NULL
 		)
@@ -254,16 +251,28 @@ get_top_left_annotation_OLD = function(.data_, .column, .row, .abundance, annota
 	annotation_function = type_to_annot_function[type]
 	
 	# Create dataset
-	quo_names(annotation) |>
-		as_tibble |>
-		rename(col_name = value) |>
-		
-		# delete if annotation is NULL
-		when(quo_is_null(annotation) ~ slice(., 0), ~ (.)) |>
+	annotation_tbl <- quo_names(annotation) |>
+        as_tibble() |>
+		rename(col_name = value)
+	
+	# delete if annotation is NULL
+	if(quo_is_null(annotation)) {
+		annotation_tbl <- slice(annotation_tbl, 0)
+	}
+	
+	annotation_tbl <- annotation_tbl |>
 		
 		# Add orientation
 		left_join(x_y_annot_cols,  by = "col_name") |>
-		mutate(col_orientation = map_chr(orientation, ~ .x |> when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) |>
+		mutate(col_orientation = map_chr(orientation, ~ {
+			if(.x == "column") {
+				quo_name(.column)
+			} else if(.x == "row") {
+				quo_name(.row)
+			} else {
+				.x
+			}
+		})) |>
 		
 		# Add data
 		mutate(
@@ -302,38 +311,39 @@ get_top_left_annotation_OLD = function(.data_, .column, .row, .abundance, annota
 		# } ) |> 
 		
 		# Add color indexes separately for each orientation
-		mutate(annot_type = map_chr(annot, ~ .x |> when(class(.) %in% c("factor", "character", "logical") ~ "discrete",
-																										 class(.) %in% c("integer", "numerical", "numeric", "double") ~ "continuous",
-																										 ~ "other"
-		) )) |>
+		mutate(annot_type = map_chr(annot, ~ {
+			if(class(.x) %in% c("factor", "character", "logical")) {
+				"discrete"
+			} else if(class(.x) %in% c("integer", "numerical", "numeric", "double")) {
+				"continuous"
+			} else {
+				"other"
+			}
+		})) |>
 		group_by(annot_type) |>
 		mutate(idx =  row_number()) |>
 		ungroup() |>
 		mutate(color = map2(annot, idx,  ~ {
-			if(.x |> class()() %in% c("factor", "character", "logical"))
+			if(.x |> class() %in% c("factor", "character", "logical"))
 				colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) |> set_names(unique(.x))
-			else if (.x |> class()() %in% c("integer", "numerical", "numeric", "double"))
+			else if (.x |> class() %in% c("integer", "numerical", "numeric", "double"))
 				colorRampPalette(palette_annotation$continuous[[.y]])(length(.x)) |> colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), .)
 			else NULL
-		})) |>
-		
-		# Stop if annotations discrete bigger than palette
-		when(
-			(.) |>  pull(data) |> map_chr(~ .x |> class()()) %in% 
-				c("factor", "character") |> which |> length()() |>
-				gt(palette_annotation$discrete |> length()()) ~
-				stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available"),
-			~ (.)
-		) |>
-		
-		# Stop if annotations continuous bigger than palette
-		when(
-			(.) |>  pull(data) |> map_chr(~ .x |> class()()) %in% 
-				c("int", "dbl", "numeric") |> which |> length()() |>
-				gt( palette_annotation$continuous |> length()()) ~
-				stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available"),
-			~ (.)
-		)
+		}))
+	
+	# Stop if annotations discrete bigger than palette
+	discrete_count <- annotation_tbl |> pull(data) |> map_chr(~ .x |> class()) %in% c("factor", "character") |> which() |> length()
+	if(discrete_count |> gt(palette_annotation$discrete |> length())) {
+		stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available")
+	}
+	
+	# Stop if annotations continuous bigger than palette
+	continuous_count <- annotation_tbl |> pull(data) |> map_chr(~ .x |> class()) %in% c("int", "dbl", "numeric") |> which() |> length()
+	if(continuous_count |> gt(palette_annotation$continuous |> length())) {
+		stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available")
+	}
+	
+	annotation_tbl
 	
 	
 }
@@ -357,24 +367,23 @@ get_group_annotation_OLD = function(.data, .column, .row, .abundance, annotation
 	row_split = NULL
 	col_split = NULL
 	
-	# Column groups
-	col_group = get_grouping_columns_OLD(.data)
-	
-	if("groups" %in%  (.data |> attributes()() |> names()())) {
+		# Column groups
+		col_group = get_grouping_columns_OLD(.data)
+		
+		if("groups" %in%  (.data |> attributes() |> names())) {
+			# Build temporary nested tibble
+			tmp_df = 
+				x_y_annot_cols |>
+				nest(data = -orientation) |>
+				mutate(data = map(data, ~ .x |> pull(1)))
+			
+		# Create named list mapping orientation -> columns, then intersect with col_group
 		x_y_annotation_cols = 
-			x_y_annot_cols |>
-			nest(data = -orientation) |>
-			mutate(data = map(data, ~ .x |> pull(1))) |>
-			{
-				df = (.)
-				pull(df, data) |> set_names(pull(df, orientation))
-			} |>
-			map(
-				~ .x |> intersect(col_group)
-			)
+			set_names(tmp_df |> pull(data), tmp_df |> pull(orientation)) |>
+			map(~ .x |> intersect(col_group))
 		
 		# Check if you have more than one grouping, at the moment just one is accepted
-		if(x_y_annotation_cols |> lapply(length) |> unlist |> max |> gt(1))
+		if(x_y_annotation_cols |> lapply(length) |> unlist() |> max() |> gt(1))
 			stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
 		
 		if(length(x_y_annotation_cols$row) > 0){
@@ -394,7 +403,7 @@ get_group_annotation_OLD = function(.data, .column, .row, .abundance, annotation
 				list(
 					ct = anno_block(  
 						gp = gpar(fill = palette_fill_row ),
-						labels = row_split |> unique()() |> sort()(),
+						labels = row_split |> unique() |> sort(),
 						labels_gp = gpar(col = "white"),
 						which = "row"
 					)
@@ -423,7 +432,7 @@ get_group_annotation_OLD = function(.data, .column, .row, .abundance, annotation
 				list(
 					ct = anno_block(  
 						gp = gpar(fill = palette_fill_column ),
-						labels = col_split |> unique()() |> sort()(),
+						labels = col_split |> unique() |> sort(),
 						labels_gp = gpar(col = "white"),
 						which = "column"
 					)
@@ -442,8 +451,8 @@ get_grouping_columns_OLD = function(.data){
 	# Comply with CRAN NOTES
 	.rows = NULL
 	
-	if("groups" %in%  (.data |> attributes()() |> names()()))
-		.data |> attr("groups") |> select(-.rows) |> colnames()()
+	if("groups" %in%  (.data |> attributes() |> names()))
+		.data |> attr("groups") |> select(-.rows) |> colnames()
 	else c()
 }
 
@@ -453,14 +462,18 @@ annot_to_list_OLD = function(.data){
 	col_name = NULL
 	annot = NULL
 	
-	.data |> pull(annot) |> set_names(.data |> pull(col_name))  |>
+	{
+		result <- .data |> pull(annot) |> set_names(.data |> pull(col_name))
 		
 		# If list is populated
-		when(length(.) > 0 ~ (.) |> c(
-			col = list(.data |>
-								 	filter(map_lgl(color, ~ .x |> is.null() |> `!`)) |>
-								 	{ set_names( pull(., color),  pull(., col_name))    })
-		), ~ (.))
+		if(length(result) > 0) {
+			col_df = .data |> filter(map_lgl(color, ~ .x |> is.null() |> not()))
+			col_list = set_names(pull(col_df, color), pull(col_df, col_name))
+			result |> c(col = list(col_list))
+		} else {
+			result
+		}
+	}
 	
 }
 

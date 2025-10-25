@@ -14,7 +14,7 @@
 ifelse_pipe = function(.x, .p, .f1, .f2 = NULL) {
   switch(.p |> not() |> sum(1),
          as_mapper(.f1)(.x),
-         if (.f2 |> is.null() |> not)
+         if (.f2 |> is.null() |> not())
            as_mapper(.f2)(.x)
          else
            .x)
@@ -43,13 +43,13 @@ ifelse2_pipe = function(.x, .p1, .p2, .f1, .f2, .f3 = NULL) {
     as_mapper(.f1)(.x),
     switch(
       # Second condition
-      .p2 |> not |> sum(1),
+      .p2 |> not() |> sum(1),
       
       # Second outcome
       as_mapper(.f2)(.x),
       
       # Third outcome - if there is not .f3 just return the original data frame
-      if (.f3 |> is.null() |> not)
+      if (.f3 |> is.null() |> not())
         as_mapper(.f3)(.x)
       else
         .x
@@ -132,7 +132,7 @@ error_if_log_transformed <- function(x, .abundance) {
   
   .abundance = enquo(.abundance)
   
-  if (x |> nrow()() |> gt(0))
+  if (x |> nrow() |> gt(0))
     if (x |> pull(!!.abundance) |> max(na.rm = TRUE) < 50)
       stop(
         "tidyHeatmap says: The input was log transformed, this algorithm requires raw (un-normalised) read counts"
@@ -266,17 +266,17 @@ get_sample_transcript_counts = function(.data, .sample, .transcript, .abundance)
   }
   
   if( .sample |> quo_is_symbol() ) .sample = .sample
-  else if(".sample" %in% (.data |> attr("parameters") |> names()()))
+  else if(".sample" %in% (.data |> attr("parameters") |> names()))
     .sample =  attr(.data, "parameters")$.sample
   else my_stop()
   
   if( .transcript |> quo_is_symbol() ) .transcript = .transcript
-  else if(".transcript" %in% (.data |> attr("parameters") |> names()()))
+  else if(".transcript" %in% (.data |> attr("parameters") |> names()))
     .transcript =  attr(.data, "parameters")$.transcript
   else my_stop()
   
   if( .abundance |> quo_is_symbol() ) .abundance = .abundance
-  else if(".abundance" %in% (.data |> attr("parameters") |> names()()))
+  else if(".abundance" %in% (.data |> attr("parameters") |> names()))
     .abundance = attr(.data, "parameters")$.abundance
   else my_stop()
   
@@ -305,12 +305,12 @@ get_sample_counts = function(.data, .sample, .abundance){
   }
   
   if( .sample |> quo_is_symbol() ) .sample = .sample
-  else if(".sample" %in% (.data |> attr("parameters") |> names()()))
+  else if(".sample" %in% (.data |> attr("parameters") |> names()))
     .sample =  attr(.data, "parameters")$.sample
   else my_stop()
   
   if( .abundance |> quo_is_symbol() ) .abundance = .abundance
-  else if(".abundance" %in% (.data |> attr("parameters") |> names()()))
+  else if(".abundance" %in% (.data |> attr("parameters") |> names()))
     .abundance = attr(.data, "parameters")$.abundance
   else my_stop()
   
@@ -339,12 +339,12 @@ get_sample_transcript = function(.data, .sample, .transcript){
   }
   
   if( .sample |> quo_is_symbol() ) .sample = .sample
-  else if(".sample" %in% (.data |> attr("parameters") |> names()()))
+  else if(".sample" %in% (.data |> attr("parameters") |> names()))
     .sample =  attr(.data, "parameters")$.sample
   else my_stop()
   
   if( .transcript |> quo_is_symbol() ) .transcript = .transcript
-  else if(".transcript" %in% (.data |> attr("parameters") |> names()()))
+  else if(".transcript" %in% (.data |> attr("parameters") |> names()))
     .transcript =  attr(.data, "parameters")$.transcript
   else my_stop()
   
@@ -381,16 +381,16 @@ get_elements_features = function(.data, .element, .feature, of_samples = TRUE){
   else {
     
     # If so, take them from the attribute
-    if(.data |> attr("parameters") |> is.null() |> not)
+    if(.data |> attr("parameters") |> is.null() |> not())
       
       return(list(
         .element =  switch(
-          of_samples |> not |> sum(1),
+          of_samples |> not() |> sum(1),
           attr(.data, "parameters")$.sample,
           attr(.data, "parameters")$.transcript
         ),
         .feature = switch(
-          of_samples |> not |> sum(1),
+          of_samples |> not() |> sum(1),
           attr(.data, "parameters")$.transcript,
           attr(.data, "parameters")$.sample
         )
@@ -429,21 +429,21 @@ get_elements_features_abundance = function(.data, .element, .feature, .abundance
   }
   
   if( .element |> quo_is_symbol() ) .element = .element
-  else if(of_samples & ".sample" %in% (.data |> attr("parameters") |> names()()))
+  else if(of_samples & ".sample" %in% (.data |> attr("parameters") |> names()))
     .element =  attr(.data, "parameters")$.sample
-  else if((!of_samples) & ".transcript" %in% (.data |> attr("parameters") |> names()()))
+  else if((!of_samples) & ".transcript" %in% (.data |> attr("parameters") |> names()))
     .element =  attr(.data, "parameters")$.transcript
   else my_stop()
   
   if( .feature |> quo_is_symbol() ) .feature = .feature
-  else if(of_samples & ".transcript" %in% (.data |> attr("parameters") |> names()()))
+  else if(of_samples & ".transcript" %in% (.data |> attr("parameters") |> names()))
     .feature =  attr(.data, "parameters")$.transcript
-  else if((!of_samples) & ".sample" %in% (.data |> attr("parameters") |> names()()))
+  else if((!of_samples) & ".sample" %in% (.data |> attr("parameters") |> names()))
     .feature =  attr(.data, "parameters")$.sample
   else my_stop()
   
   if( .abundance |> quo_is_symbol() ) .abundance = .abundance
-  else if(".abundance" %in% (.data |> attr("parameters") |> names()()))
+  else if(".abundance" %in% (.data |> attr("parameters") |> names()))
     .abundance = attr(.data, "parameters")$.abundance
   else my_stop()
   
@@ -473,11 +473,11 @@ get_elements = function(.data, .element, of_samples = TRUE){
   else {
     
     # If so, take them from the attribute
-    if(.data |> attr("parameters") |> is.null() |> not)
+    if(.data |> attr("parameters") |> is.null() |> not())
       
       return(list(
         .element =  switch(
-          of_samples |> not |> sum(1),
+          of_samples |> not() |> sum(1),
           attr(.data, "parameters")$.sample,
           attr(.data, "parameters")$.transcript
         )
@@ -518,13 +518,13 @@ get_abundance_norm_if_exists = function(.data, .abundance){
   else {
     
     # If so, take them from the attribute
-    if(.data |> attr("parameters") |> is.null() |> not)
+    if(.data |> attr("parameters") |> is.null() |> not())
       
       return(list(
         .abundance =  switch(
-          (".abundance_norm" %in% (.data |> attr("parameters") |> names()()) &
-             quo_name(.data |> attr("parameters") %$% .abundance_norm) %in% (.data |> colnames()())
-          ) |> not |> sum(1),
+          (".abundance_norm" %in% (.data |> attr("parameters") |> names()) &
+             quo_name(.data |> attr("parameters") %$% .abundance_norm) %in% (.data |> colnames())
+          ) |> not() |> sum(1),
           attr(.data, "parameters")$.abundance_norm,
           attr(.data, "parameters")$.abundance
         )
@@ -555,7 +555,7 @@ select_closest_pairs = function(df) {
   
   couples <- df |> head(n = 0)
   
-  while (df |> nrow()() > 0) {
+  while (df |> nrow() > 0) {
     pair <- df |>
       arrange(dist) |>
       head(n = 1)
@@ -598,14 +598,13 @@ get_x_y_annotation_columns = function(.data, .column, .row, .abundance){
   
   .data |>
     select_if(negate(is.list)) |>
-    ungroup() |>
-    {
-      # Rows
-      bind_rows(
-        (.) |> subset(!!.column) |> colnames()() |> as_tibble()() |> rename(column = value) |> gather(orientation, col_name),
-        (.) |> subset(!!.row) |> colnames()() |> as_tibble()() |> rename(row = value) |> gather(orientation, col_name)
-      )
-    }
+    ungroup()
+  
+  # Rows
+  bind_rows(
+    .data |> subset(!!.column) |> colnames() |> as_tibble() |> rename(column = value) |> gather(orientation, col_name),
+    .data |> subset(!!.row) |> colnames() |> as_tibble() |> rename(row = value) |> gather(orientation, col_name)
+  )
 }
 
 #' @importFrom purrr map_chr
@@ -660,7 +659,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   # Create dataset
   df = 
     quo_names(annotation) |>
-	  as_tibble |>
+	  as_tibble() |>
 	  rename(col_name = value) |>
 	  
 	  # delete if annotation is NULL
@@ -762,7 +761,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 		ungroup() |>
   	
 		mutate(color = map2(annot, idx,  ~ {
-			if(.x |> class()() %in% c("factor", "character", "logical")){
+			if(.x |> class() %in% c("factor", "character", "logical")){
 				
 				# If is colorRamp 
 				if(is(palette_annotation$discrete[[.y]], "function"))
@@ -777,7 +776,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 				      colorRampPalette(palette_annotation$discrete[[.y]])(length(unique(.x))) |> set_names(unique(.x))
 				    }			
 			  
-			} else if (.x |> class()() %in% c("integer", "numerical", "numeric", "double")){
+			} else if (.x |> class() %in% c("integer", "numerical", "numeric", "double")){
 				
 				# If is colorRamp 
 				if(is(palette_annotation$continuous[[.y]], "function"))
@@ -804,18 +803,18 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  
 	  # Stop if annotations discrete bigger than palette
 	  when(
-	    (.) |>  pull(data) |> map_chr(~ .x |> class()()) %in% 
-	      c("factor", "character") |> which |> length()() |>
-	      gt(palette_annotation$discrete |> length()()) ~
+	    (.) |>  pull(data) |> map_chr(~ .x |> class()) %in% 
+	      c("factor", "character") |> which() |> length() |>
+	      gt(palette_annotation$discrete |> length()) ~
 	      stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available"),
 	    ~ (.)
 	  ) |>
 	  
 	  # Stop if annotations continuous bigger than palette
 	  when(
-	    (.) |>  pull(data) |> map_chr(~ .x |> class()()) %in% 
-	      c("int", "dbl", "numeric") |> which |> length()() |>
-	      gt( palette_annotation$continuous |> length()()) ~
+	    (.) |>  pull(data) |> map_chr(~ .x |> class()) %in% 
+	      c("int", "dbl", "numeric") |> which() |> length() |>
+	      gt( palette_annotation$continuous |> length()) ~
 	      stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available"),
 	    ~ (.)
 	  )
@@ -860,22 +859,26 @@ get_group_annotation = function(
   x_y_annotation_cols = 
     x_y_annot_cols |>
     nest(data = -orientation) |>
-    mutate(data = map(data, ~ .x |> pull(1))) |>
-    {
-      df = (.)
-      pull(df, data) |> set_names(pull(df, orientation))
-    } |>
-    map(
-      ~ .x |> intersect(col_group)
-    )
+    mutate(data = map(data, ~ .x |> pull(1)))
+  
+  # Create named list mapping orientation -> columns, then intersect with col_group
+  tmp_df <- x_y_annotation_cols
+  x_y_annotation_cols <- 
+    set_names(tmp_df |> pull(data), tmp_df |> pull(orientation)) |>
+    map(~ .x |> intersect(col_group))
    
   # Check if you have more than one grouping, at the moment just one is accepted
-  if(x_y_annotation_cols |> lapply(length) |> unlist |> max |> gt(1))
+  if(x_y_annotation_cols |> lapply(length) |> unlist() |> max() |> gt(1))
     stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
   
   # Check if annotation not specific to row or columns
   if(x_y_annotation_cols |> unlist() |> duplicated() |> any())
-  	stop(sprintf("tidyHeatmap says: the grouping %s is not specific to row or columns. Maybe you just have one grouping.", x_y_annotation_cols |> unlist() |> .[x_y_annotation_cols |> unlist() |> duplicated()]))
+  	{
+  		duplicated_cols <- x_y_annotation_cols |> unlist() |> duplicated()
+  		all_cols <- x_y_annotation_cols |> unlist()
+  		duplicated_names <- all_cols[duplicated_cols]
+  		stop(sprintf("tidyHeatmap says: the grouping %s is not specific to row or columns. Maybe you just have one grouping.", duplicated_names))
+  	}
   
   if(length(x_y_annotation_cols$row) > 0){
     
@@ -916,7 +919,7 @@ get_group_annotation = function(
         list(
           anno_block(  
             gp = gpar(fill = palette_fill_row ),
-            labels = row_split |> unique()() |> sort()(),
+            labels = row_split |> unique() |> sort(),
             labels_gp = gpar(col = palette_text_row, fontsize = group_label_fontsize),
             which = "row",
             width = group_strip_height,
@@ -972,7 +975,7 @@ get_group_annotation = function(
           list(
             anno_block(  
               gp = gpar(fill = palette_fill_column ),
-              labels = col_split |> unique()() |> sort()(),
+              labels = col_split |> unique() |> sort(),
               labels_gp = gpar(col = palette_text_column, fontsize = group_label_fontsize),
               which = "column",
               height = group_strip_height,
@@ -1034,7 +1037,7 @@ get_group_annotation = function(
 #     )
 #   
 #   # Check if you have more than one grouping, at the moment just one is accepted
-#   if(x_y_annotation_cols |> lapply(length) |> unlist |> max |> gt(1))
+#   if(x_y_annotation_cols |> lapply(length) |> unlist() |> max() |> gt(1))
 #     stop("tidyHeatmap says: At the moment just one grouping per dimension (max 1 row and 1 column) is supported.")
 #   
 #   # Create dataset
@@ -1084,7 +1087,7 @@ get_group_annotation = function(
 #       list(
 #         ct = anno_block(  
 #           gp = gpar(fill = palette_fill_row ),
-#           labels = row_split |> unique()() |> sort()(),
+#           labels = row_split |> unique() |> sort(),
 #           labels_gp = gpar(col = "white"),
 #           which = "row"
 #         )
@@ -1113,7 +1116,7 @@ get_group_annotation = function(
 #       list(
 #         ct = anno_block(  
 #           gp = gpar(fill = palette_fill_column ),
-#           labels = col_split |> unique()() |> sort()(),
+#           labels = col_split |> unique() |> sort(),
 #           labels_gp = gpar(col = "white"),
 #           which = "column"
 #         )
@@ -1132,8 +1135,8 @@ get_grouping_columns = function(.data){
   # Comply with CRAN NOTES
   .rows = NULL
   
-  if("groups" %in%  (.data |> attributes()() |> names()()))
-    .data |> attr("groups") |> select(-.rows) |> colnames()()
+  if("groups" %in%  (.data |> attributes() |> names()))
+    .data |> attr("groups") |> select(-.rows) |> colnames()
   else c()
 }
 
@@ -1172,7 +1175,7 @@ quo_names <- function(v) {
   v = quo_name(quo_squash(v))
   gsub('^c\\(|`|\\)$', '', v) |> 
     strsplit(', ') |> 
-    unlist 
+    unlist() 
 }
 
 #' annot_to_list
@@ -1201,8 +1204,8 @@ annot_to_list = function(.data){
     # If list is populated
     when(length(.) > 0 ~ (.) |> c(
       col = list(.data |>
-                   filter(map_lgl(color, ~ .x |> is.null() |> not)) |>
-                   { set_names( pull(., color),  pull(., col_name))    })
+                   filter(map_lgl(color, ~ .x |> is.null()  |> not())) |>
+                   (\(df) set_names(pull(df, color), pull(df, col_name)))())
     ) |>
     	
     	# Add additional arguments
