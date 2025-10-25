@@ -41,7 +41,7 @@ plot_heatmap = function(.data,
 				when(
 					
 					# NAN produced
-					filter(., !!.abundance %>% is.nan) %>% nrow %>% gt(0) ~ stop("tidyHeatmap says: you applied a transformation that introduced NaN."),
+					filter(., !!.abundance %>% is.nan %>% as.logical) %>% nrow %>% gt(0) ~ stop("tidyHeatmap says: you applied a transformation that introduced NaN."),
 					
 					# -Inf produced
 					pull(., !!.abundance) %>% min %>% equals(-Inf) ~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p."),

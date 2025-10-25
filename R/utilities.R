@@ -56,6 +56,20 @@ ifelse2_pipe = function(.x, .p1, .p2, .f1, .f2, .f3 = NULL) {
     ))
 }
 
+# Independent helper to check for non-numeric columns
+#' Check if a data frame has any non-numeric columns
+#'
+#' @param df A data.frame or tibble to inspect
+#'
+#' @return TRUE if any column is not numeric/integer, FALSE otherwise
+#' @keywords internal
+#' @noRd
+has_non_numeric_columns = function(df) {
+  if (ncol(df) == 0) return(FALSE)
+  column_is_numeric = vapply(df, function(col) is.numeric(col) || is.integer(col), logical(1))
+  any(!column_is_numeric)
+}
+
 #' Get matrix from tibble
 #'
 #' @import dplyr
@@ -78,24 +92,19 @@ as_matrix <- function(tbl,
   variable = NULL
   
   rownames = enquo(rownames)
+  
+  # Issue a warning if non-numeric columns are present (excluding rownames column)
+  if (do_check) {
+    tbl_to_check = tbl
+    if (!quo_is_null(rownames)) {
+      tbl_to_check = tbl_to_check[, -1, drop = FALSE]
+    }
+    if (has_non_numeric_columns(tbl_to_check)) {
+      warning("to_matrix says: there are NON-numerical columns, the matrix will NOT be numerical")
+    }
+  }
+  
   tbl %>%
-    
-    # Through warning if data frame is not numerical beside the rownames column (if present)
-    ifelse_pipe(
-      do_check &&
-        tbl %>%
-        # If rownames defined eliminate it from the data frame
-        ifelse_pipe(!quo_is_null(rownames), ~ .x[, -1], ~ .x) %>%
-        dplyr::summarise_all(class) %>%
-        tidyr::gather(variable, class) %>%
-        pull(class) %>%
-        unique() %>%
-        `%in%`(c("numeric", "integer")) %>% not() %>% any(),
-      ~ {
-        warning("to_matrix says: there are NON-numerical columns, the matrix will NOT be numerical")
-        .x
-      }
-    ) %>%
     as.data.frame() %>%
     
     # Deal with rownames column if present
@@ -124,7 +133,7 @@ error_if_log_transformed <- function(x, .abundance) {
   .abundance = enquo(.abundance)
   
   if (x %>% nrow %>% gt(0))
-    if (x %>% summarise(m = !!.abundance %>% max) %>% pull(m) < 50)
+    if (x %>% pull(!!.abundance) %>% max(na.rm = TRUE) < 50)
       stop(
         "tidyHeatmap says: The input was log transformed, this algorithm requires raw (un-normalised) read counts"
       )
