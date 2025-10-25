@@ -104,19 +104,19 @@ as_matrix <- function(tbl,
     }
   }
   
-  tbl |>
-    as.data.frame() |>
-    
-    # Deal with rownames column if present
-    ifelse_pipe(
-      !quo_is_null(rownames),
-      ~ .x |>
-        magrittr::set_rownames(tbl |> pull(!!rownames)) |>
-        select(-1)
-    ) |>
-    
-    # Convert to matrix
-    as.matrix()
+  # Convert to data frame first
+  df <- tbl |> as.data.frame()
+  
+  # Deal with rownames column if present
+  if (!quo_is_null(rownames)) {
+    rownames_col <- tbl |> pull(!!rownames)
+    df <- df |> 
+      magrittr::set_rownames(rownames_col) |>
+      select(-1)
+  }
+  
+  # Convert to matrix
+  df |> as.matrix()
 }
 
 #' Check whether a numeric vector has been log transformed
@@ -787,8 +787,14 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 
 				# If it is a list of colors
 				else {
-					colors <- colorRampPalette(palette_annotation$continuous[[.y]])(length(.x))
-					colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), colors)
+					# Ensure .x is numeric for colorRamp2
+					if(is.numeric(.x) && length(.x) > 0) {
+						colors <- colorRampPalette(palette_annotation$continuous[[.y]])(length(.x))
+						colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), colors)
+					} else {
+						# Fallback for non-numeric or empty data
+						colorRampPalette(palette_annotation$continuous[[.y]])(max(1, length(.x)))
+					}
 				}
 				
 			}
