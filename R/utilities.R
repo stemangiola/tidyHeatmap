@@ -663,11 +663,11 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 	  
 	  # delete if annotation is NULL
 	  if(quo_is_null(annotation)) {
-	   df = df |> slice(., 0)
+	   df <- df |> slice(0)
 	  } 
 	  
 	  # Add orientation
-	  df = df |>
+	  df <- df |>
 	  left_join(x_y_annot_cols,  by = "col_name") |>
 	  mutate(col_orientation = map_chr(orientation, ~ if(.x == "column") quo_name(.column) else if(.x == "row") quo_name(.row) else .x)) 
 
@@ -754,10 +754,13 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   df = df |>
 	  
 		# Add color indexes separately for each orientation
-		mutate(annot_type = map_chr(annot, ~ .x |> when(class(.) %in% c("factor", "character", "logical") ~ "discrete",
-																										class(.) %in% c("integer", "numerical", "numeric", "double") ~ "continuous",
-																										~ "other"
-		) )) |>
+		mutate(annot_type = map_chr(annot, ~ if(class(.x) %in% c("factor", "character", "logical")) {
+			"discrete"
+		} else if(class(.x) %in% c("integer", "numerical", "numeric", "double")) {
+			"continuous"
+		} else {
+			"other"
+		})) |>
 		group_by(annot_type) |>
 		mutate(idx =  row_number()) |>
 		ungroup() |>
@@ -1205,20 +1208,22 @@ annot_to_list = function(.data){
     set_names(.data |> pull(col_name))  |>
     
     # If list is populated
-    when(length(.) > 0 ~ (.) |> c(
-      col = list(.data |>
-                   filter(map_lgl(color, ~ .x |> is.null()  |> not())) |>
-                   (function(df) set_names(pull(df, color), pull(df, col_name)))())
-    ) |>
-    	
-    	# Add additional arguments
-    	c(
-    		.data |> 
-    			pull(further_arguments) |> 
-    			combine_elements_with_the_same_name()
-    	),
-    
-    ~ (.)) 
+    if(length(.) > 0) {
+      (.) |> c(
+        col = list(.data |>
+                     filter(map_lgl(color, ~ .x |> is.null()  |> not())) |>
+                     (function(df) set_names(pull(df, color), pull(df, col_name)))())
+      ) |>
+      	
+      	# Add additional arguments
+      	c(
+      		.data |> 
+      			pull(further_arguments) |> 
+      			combine_elements_with_the_same_name()
+      	)
+    } else {
+      (.)
+    } 
     
 }
 

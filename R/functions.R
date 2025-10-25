@@ -195,23 +195,23 @@ add_grouping = function(my_input_heatmap){
 	how_many_grouping = my_input_heatmap@data |> attr("groups") |> select(-.rows) |> ncol()
 	
 	# Add custom palette to discrete if any
-	my_input_heatmap@palette_discrete =
-		my_input_heatmap@arguments$palette_grouping |>
-		when(
-			length(.) < how_many_grouping ~ {
-				# Needed for piping
-				pg = .
-				
-				my_input_heatmap@arguments$palette_grouping |>
-					c(
-						rep("#ffffff", how_many_groups) |>
-							list() |>
-							rep(how_many_grouping-length(pg))
-					)
-			},
-			~ (.)
-		) |>
-		c(my_input_heatmap@palette_discrete)
+	palette_grouping <- my_input_heatmap@arguments$palette_grouping
+	
+	if(length(palette_grouping) < how_many_grouping) {
+		# Needed for piping
+		pg = palette_grouping
+		
+		my_input_heatmap@palette_discrete = my_input_heatmap@arguments$palette_grouping |>
+			c(
+				rep("#ffffff", how_many_groups) |>
+					list() |>
+					rep(how_many_grouping-length(pg))
+			) |>
+			c(my_input_heatmap@palette_discrete)
+	} else {
+		my_input_heatmap@palette_discrete = palette_grouping |>
+			c(my_input_heatmap@palette_discrete)
+	}
 	
 	# Colours annotations
 	palette_annotation = my_input_heatmap@palette_discrete |> head(how_many_grouping) 
@@ -238,16 +238,17 @@ add_grouping = function(my_input_heatmap){
 	# Isolate left annotation
 	my_input_heatmap@group_left_annotation = group_annotation$left_annotation 
 	
-	my_input_heatmap@input  =
-		my_input_heatmap@input |> 
-		when(
-			!is.null(group_annotation$row_split) ~ c(., list(row_split = group_annotation$row_split, cluster_row_slices = FALSE)),
-			~ (.)
-		) |>
-		when(
-			!is.null(group_annotation$col_split) ~ c(., list(column_split = group_annotation$col_split, cluster_column_slices = FALSE)),
-			~ (.)
-		)
+	# Add row split if present
+	if(!is.null(group_annotation$row_split)) {
+		my_input_heatmap@input <- my_input_heatmap@input |> 
+			c(list(row_split = group_annotation$row_split, cluster_row_slices = FALSE))
+	}
+	
+	# Add column split if present
+	if(!is.null(group_annotation$col_split)) {
+		my_input_heatmap@input <- my_input_heatmap@input |> 
+			c(list(column_split = group_annotation$col_split, cluster_column_slices = FALSE))
+	}
 	
 	my_input_heatmap
 }
