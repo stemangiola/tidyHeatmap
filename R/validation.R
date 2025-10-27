@@ -62,23 +62,6 @@ check_if_duplicated_genes <- function(.data,
 	is_unique
 }
 
-#' Check whether there are NA counts
-#'
-#' @import dplyr
-#' @import tidyr
-#'
-#' @param .data A tibble of read counts
-#' @param .abundance A character name of the read count column
-#'
-#' @return A tbl
-#'
-check_if_counts_is_na = function(.data, .abundance) {
-	.abundance = enquo(.abundance)
-	
-	.data %>% filter(!!.abundance %>% is.na) %>% nrow %>% equals(0)
-	
-}
-
 check_if_column_missing = function(.data, .sample, .transcript, .abundance) {
 	# Parse column names
 	.sample = enquo(.sample)

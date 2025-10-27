@@ -1,0 +1,75 @@
+#' tidyHeatmap: A Tidy Implementation of Heatmap
+#'
+#' @description
+#' tidyHeatmap is a package that introduces tidy principles to the creation of
+#' information-rich heatmaps. This package uses ComplexHeatmap as graphical engine.
+#' The goal of this package is to interface a tidy data frame with this powerful
+#' tool. Some of the advantages are: Row and/or columns colour annotations are easy
+#' to integrate just specifying one parameter (column names). Custom grouping of
+#' rows is easy to specify providing a grouped tbl. For example: df %>% group_by(...).
+#' Labels size adjusted by row and column total number. Default use of Brewer and
+#' Viridis palettes.
+#'
+#' @details
+#' The tidyHeatmap package provides a tidy interface to create information-rich
+#' heatmaps using the powerful ComplexHeatmap engine. The package integrates
+#' seamlessly with the tidyverse ecosystem, allowing you to use familiar dplyr
+#' and tidyr verbs.
+#'
+#' The main functions and methods are:
+#'
+#' \itemize{
+#' \item \code{\link{heatmap}} - Create a heatmap from a tidy data frame
+#' \item \code{\link{annotation_group}} - Add group annotation strips
+#' \item \code{\link{annotation_tile}} - Add tile annotations
+#' \item \code{\link{annotation_point}} - Add point annotations
+#' \item \code{\link{annotation_bar}} - Add bar annotations
+#' \item \code{\link{annotation_numeric}} - Add numeric annotations
+#' \item \code{\link{annotation_line}} - Add line annotations
+#' \item \code{\link{layer_text}} - Add text layers
+#' \item \code{\link{layer_point}} - Add point layers
+#' \item \code{\link{layer_square}} - Add square symbol layers
+#' \item \code{\link{layer_diamond}} - Add diamond symbol layers
+#' \item \code{\link{layer_arrow_up}} - Add arrow up symbol layers
+#' \item \code{\link{layer_arrow_down}} - Add arrow down symbol layers
+#' \item \code{\link{layer_asterisk}} - Add asterisk symbol layers
+#' \item \code{\link{layer_star}} - Add star symbol layers
+#' \item \code{\link{get_heatmap_data}} - Extract matrix and dendrograms from heatmap
+#' \item \code{\link{as_ComplexHeatmap}} - Convert to ComplexHeatmap object
+#' \item \code{\link{save_pdf}} - Save heatmap to PDF
+#' \item \code{\link{scale_robust}} - Robust scaling function
+#' \item \code{\link{split_columns}} - Split columns in heatmap
+#' }
+#'
+#' The package uses a pipe-friendly syntax that allows you to build complex
+#' heatmaps by adding layers of annotations and customizations step by step.
+#'
+#' For detailed information on usage, see the package vignette, by typing
+#' \code{vignette("introduction", package = "tidyHeatmap")}.
+#'
+#' The code can be viewed at the GitHub repository:
+#'
+#' \url{https://github.com/stemangiola/tidyHeatmap}
+#'
+#' @references
+#' Mangiola, S. and Papenfuss, A.T., 2020. "tidyHeatmap: an R package for
+#' modular heatmap production based on tidy principles." Journal of Open Source Software,
+#' 5(52), 2472. \doi{10.21105/joss.02472}
+#'
+#' Gu, Z., Eils, R., and Schlesner, M. 2016. "Complex heatmaps reveal patterns
+#' and correlations in multidimensional genomic data." Bioinformatics, 32(18), 2847-2849.
+#'
+#' @seealso
+#' Useful links:
+#' \itemize{
+#'   \item \url{https://github.com/stemangiola/tidyHeatmap}
+#'   \item Report bugs at \url{https://github.com/stemangiola/tidyHeatmap/issues}
+#' }
+#'
+#' @author Stefano Mangiola
+#'
+#' @docType package
+#' @name tidyHeatmap-package
+#' @aliases tidyHeatmap
+#' @keywords internal
+"_PACKAGE"

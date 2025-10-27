@@ -289,6 +289,9 @@ heatmap_ <-
 			options("tidyHeatmap_default_scaling_none"=FALSE) 
 		}
 		
+		# Citation reminder message, once per session
+		rlang::inform("tidyHeatmap says: If you use tidyHeatmap for scientific research, please cite: Mangiola, S. and Papenfuss, A.T., 2020. 'tidyHeatmap: an R package for modular heatmap production based on tidy principles.' Journal of Open Source Software. doi:10.21105/joss.02472.", .frequency = "once", .frequency_id = "tidyHeatmap_citation_reminder")
+		
 		.row = enquo(.row)
 		.column = enquo(.column)
 		.value <- enquo(.value)
