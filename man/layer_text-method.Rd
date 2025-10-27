@@ -9,9 +9,9 @@
 [Mangiola and Papenfuss., 2020](https://joss.theoj.org/papers/10.21105/joss.02472)
 }
 \usage{
-layer_text(.data, ..., .value, .size = NULL)
+layer_text(.data, ..., .value, .size = NULL, .color = NULL)
 
-\S4method{layer_text}{InputHeatmap}(.data, ..., .value, .size = NULL)
+\S4method{layer_text}{InputHeatmap}(.data, ..., .value, .size = NULL, .color = NULL)
 }
 \arguments{
 \item{.data}{A `InputHeatmap`}
@@ -21,6 +21,8 @@ layer_text(.data, ..., .value, .size = NULL)
 \item{.value}{A column name or character string.}
 
 \item{.size}{A column name or a double. The size of the elements of the layer.}
+
+\item{.color}{A column name or character string. The color of the elements of the layer.}
 }
 \value{
 A `InputHeatmap` object that gets evaluated to a `ComplexHeatmap`

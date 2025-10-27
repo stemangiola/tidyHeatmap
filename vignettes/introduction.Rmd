@@ -454,6 +454,56 @@ tidyHeatmap::pasilla |>
 	)
 ```
 
+## Complex layer symbol example with colors
+
+Advanced example showing different symbols with custom colors and sizes
+
+```{r layer-complex, fig.width=10, fig.height=10}
+tidyHeatmap::pasilla |>
+	
+	# filter
+	filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) |>
+	
+	# Add dynamic color and size columns
+	mutate(
+		my_color = case_when(
+			`count normalised adjusted log` > 7 ~ "#57fb77",
+			`count normalised adjusted log` > 6 ~ "darkorange", 
+			TRUE ~ "#fb7ef9"
+		),
+		my_size = runif(n(), 3, 8)
+	) |> 
+	
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row"
+	) |> 
+	layer_point(
+		`count normalised adjusted log` > 6 & sample == "untreated3",
+		.color = "red",
+		.size = 5
+	) |>
+	layer_diamond(
+		`count normalised adjusted log` > 6 & sample == "untreated1",
+		.color = "green",
+		.size = 6
+	) |>
+	layer_star(
+		`count normalised adjusted log` > 7,
+		.color = "purple",
+		.size = 4
+	) |>
+
+	# Dynamically color and size
+	layer_square(
+		`count normalised adjusted log` > 6 & sample == "untreated2",
+		.color = my_color,
+		.size = my_size
+	)
+```
+
 
 # Layer text
 
@@ -485,6 +535,67 @@ tidyHeatmap::pasilla |>
 	.value = my_text,
 	.size = my_size
 )
+```
+
+## Complex layer text example with colors
+
+Advanced example showing text layers with custom colors, sizes, and dynamic content
+
+```{r layertext-complex, fig.width=10, fig.height=10}
+tidyHeatmap::pasilla |>
+	
+	# filter
+	filter(symbol %in% head(unique(tidyHeatmap::pasilla$symbol), n = 10)) |>
+	
+	# Add dynamic text content and styling
+	mutate(
+		text_content = case_when(
+			`count normalised adjusted log` > 7 ~ "***",
+			`count normalised adjusted log` > 6 ~ "**", 
+			`count normalised adjusted log` > 5 ~ "*",
+			TRUE ~ ""
+		),
+		text_color = case_when(
+			`count normalised adjusted log` > 7 ~ "darkred",
+			`count normalised adjusted log` > 6 ~ "darkorange", 
+			`count normalised adjusted log` > 5 ~ "darkgreen",
+			TRUE ~ "darkgray"
+		),
+		text_size = case_when(
+			`count normalised adjusted log` > 7 ~ 12,
+			`count normalised adjusted log` > 6 ~ 10, 
+			`count normalised adjusted log` > 5 ~ 8,
+			TRUE ~ 6
+		)
+	) |> 
+	
+	heatmap(
+		.column = sample,
+		.row = symbol,
+		.value = `count normalised adjusted`,	
+		scale = "row"
+	) |> 
+	layer_text(
+		`count normalised adjusted log` > 6 & sample == "untreated3", 
+		.value = "HIGH",
+		.color = "red",
+		.size = 12
+	) |> 
+	layer_text(
+		`count normalised adjusted log` > 5 & sample == "untreated1", 
+		.value = "↑",
+		.color = "blue",
+		.size = 10
+	) |>
+
+	# Dynamically set text content, color and size
+	layer_text(
+		`count normalised adjusted log` > 6 & sample == "untreated2", 
+		.value = text_content,
+		.color = text_color,
+		.size = text_size
+	)
+
 ```
 
 # Adding heatmap side-by-side
