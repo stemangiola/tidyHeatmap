@@ -416,7 +416,9 @@ add_annotation = function(my_input_heatmap,
 #'
 #' @param .data A `InputHeatmap` 
 #' @param ... Expressions that return a logical value, and are defined in terms of the variables in .data. If multiple expressions are included, they are combined with the & operator. Only rows for which all conditions evaluate to TRUE are kept.
-#' @param symbol A character string of length one. The values allowed are "point" ,     "square" ,    "diamond" ,   "arrow_up" ,  "arrow_down",  "star",  "asterisk"
+#' @param symbol A character string of length one. The values allowed are "point", "square", "diamond", "arrow_up", "arrow_down", "star", "asterisk"
+#' @param .size A column name or a double. The size of the elements of the layer.
+#' @param .color A column name or character string. The color of the elements of the layer.
 #'
 #'
 #' @details It uses `ComplexHeatmap` as visualisation tool.
@@ -449,7 +451,8 @@ add_annotation = function(my_input_heatmap,
 setGeneric("layer_symbol", function(.data,
 																		...,
 																		symbol = "point",
-																		.size = NULL)
+																		.size = NULL,
+																		.color = NULL)
 	standardGeneric("layer_symbol"))
 
 #' layer_symbol
@@ -465,10 +468,12 @@ setGeneric("layer_symbol", function(.data,
 setMethod("layer_symbol", "InputHeatmap", function(.data,
 																									 ...,
 																									 symbol = "point",
-																									 .size = NULL){
+																									 .size = NULL,
+																									 .color = NULL){
 	
 	.data_drame = .data@data
 	.size = enquo(.size)
+	.color = enquo(.color)
 	
 	symbol_dictionary = 
 		list(
@@ -517,7 +522,13 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 					~ mutate(., size := !!.size )
 				) |> 
 				
-				select(column, row, shape, size) 
+				# Add color
+				when(
+					quo_is_null(.color) ~ mutate(., color = "#161616"),
+					~ mutate(., color := !!.color)
+				) |>
+				
+				select(column, row, shape, size, color) 
 		)
 	
 	.data
