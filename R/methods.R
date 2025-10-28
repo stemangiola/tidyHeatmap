@@ -311,12 +311,6 @@ heatmap_ <-
 		
 		.data |> 
 			
-			# # Check if data is rectangular
-			# ifelse_pipe(
-			# 	!check_if_data_rectangular((.), !!.column, !!.row, !!.value),
-			# 	~  eliminate_sparse_transcripts(.x, !!.row)
-			# ) |>
-			
 			# Run plotting function
 			input_heatmap(
 				.horizontal = !!.column,
@@ -1223,8 +1217,8 @@ setMethod("layer_text", "InputHeatmap", function(.data,
 			.data_drame |>
 				droplevels() |>
 				mutate(
-					column = !!.horizontal |>  as.factor()  |>  as.integer(),
-					row = !!.vertical  |>  as.factor() |> as.integer()
+					column = as.integer(as.factor(!!.horizontal)),
+					row = as.integer(as.factor(!!.vertical))
 				) |>
 				filter(...) |>
 				mutate(text := as.character( !!enquo(.value) )) |> 

@@ -18,20 +18,20 @@ get_specific_annotation_columns = function(.data, .col){
 		colnames() |>
 		map(
 			~
-				.x |>
-				ifelse_pipe(
-					.data |>
-					  select(!!.col, all_of(.x)) |> 
-						distinct() |>
-						nrow() |>
-						equals(n_x),
-					~ .x,
-					~ NULL
-				)
+				{
+					is_valid = 
+						.data |>
+						  select(!!.col, all_of(.x)) |> 
+							distinct() |>
+							nrow() |>
+							equals(n_x)
+					if (is_valid) .x else NULL
+				}
 		)
 	
 	# Drop NULL
-	result <- result[lengths(result) != 0] |> unlist()
+	result[lengths(result) != 0] |> unlist()
+
 	
 }
 

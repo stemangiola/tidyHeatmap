@@ -73,19 +73,17 @@ plot_heatmap = function(.data,
 	# Colors tiles
 	# If palette_value is a function pass it directly, otherwise check if the character array is of length 3
 	colors = 
-		palette_value |>
-		ifelse2_pipe(
-			palette_value |> class() |> equals("function"),
-			length(palette_value) != 3,
-			~ .x,
-			~ stop("tidyHeatmap says: If palette_value is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_value)\""	),
-			~ colorRamp2(
-				
+		if (is.function(palette_value)) {
+			palette_value
+		} else {
+			if (length(palette_value) != 3)
+				stop("tidyHeatmap says: If palette_value is a vector of hexadecimal colous, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_value)\"" )
+			circlize::colorRamp2(
 				# min and max and intermediates based on length of the palette
 				seq(from=min(abundance_mat), to=max(abundance_mat), length.out = length(palette_value)),
 				palette_value
 			)
-		)
+		}
 	
 	# Colors annotations
 	palette_annotation = list(
@@ -146,9 +144,8 @@ plot_heatmap = function(.data,
 	)
 	
 	# If I have grouping, eliminate the first discrete palette
-	palette_annotation$discrete =
-		palette_annotation$discrete |>
-		ifelse_pipe(length(get_grouping_columns_OLD(.data)) > 0, ~ tail(.x, -length(get_grouping_columns_OLD(.data))))
+	if (length(get_grouping_columns_OLD(.data)) > 0)
+		palette_annotation$discrete = tail(palette_annotation$discrete, -length(get_grouping_columns_OLD(.data)))
 	
 	# Get annotation
 	.data_annot = 
@@ -173,31 +170,32 @@ plot_heatmap = function(.data,
 	# 					))
 	
 	# Isolate top annotation
-	top_annot =  
+	top_annot = 
 		c(
 			group_annotation$top_annotation, 
 			.data_annot |> 
 				filter(orientation == "column") |>
 				annot_to_list_OLD()
 		) |>
-		list_drop_null() |>
-		ifelse_pipe(
-			(.) |> length() |> gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
-			~ do.call("columnAnnotation", .x ),
-			~ NULL
-		)
+		list_drop_null()
+	if (length(top_annot) > 0 && !is.null(top_annot))
+		top_annot = do.call("columnAnnotation", top_annot)
+	else
+		top_annot = NULL
 	
 	# Isolate left annotation
 	left_annot = 
-		c(group_annotation$left_annotation, .data_annot |> 
+		c(
+			group_annotation$left_annotation, 
+			.data_annot |> 
 				filter(orientation == "row") |>
-				annot_to_list_OLD()) |>
-		list_drop_null() |>
-		ifelse_pipe(
-			(.) |> length() |> gt(0) && !is.null((.)), # is.null needed for check Windows CRAN servers
-			~ do.call("rowAnnotation", .x),
-			~ NULL
-		)
+				annot_to_list_OLD()
+		) |>
+		list_drop_null()
+	if (length(left_annot) > 0 && !is.null(left_annot))
+		left_annot = do.call("rowAnnotation", left_annot)
+	else
+		left_annot = NULL
 	
 	abundance_mat |>
 		Heatmap(

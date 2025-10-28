@@ -1,60 +1,4 @@
-#' This is a generalisation of ifelse that accepts an object and return an objects
-#'
-#' @import dplyr
-#' @import tidyr
-#' @importFrom purrr as_mapper
-#' @importFrom tidyr replace_na
-#'
-#' @param .x A tibble
-#' @param .p A boolean
-#' @param .f1 A function
-#' @param .f2 A function
-#'
-#' @return A tibble
-ifelse_pipe = function(.x, .p, .f1, .f2 = NULL) {
-  switch(.p |> not() |> sum(1),
-         as_mapper(.f1)(.x),
-         if (.f2 |> is.null() |> not())
-           as_mapper(.f2)(.x)
-         else
-           .x)
-  
-}
 
-#' This is a generalisation of ifelse that accepts an object and return an objects
-#'
-#' @import dplyr
-#' @import tidyr
-#'
-#' @param .x A tibble
-#' @param .p1 A boolean
-#' @param .p2 ELSE IF condition
-#' @param .f1 A function
-#' @param .f2 A function
-#' @param .f3 A function
-#'
-#' @return A tibble
-ifelse2_pipe = function(.x, .p1, .p2, .f1, .f2, .f3 = NULL) {
-  # Nested switch
-  switch(# First condition
-    .p1 |> not() |> sum(1),
-    
-    # First outcome
-    as_mapper(.f1)(.x),
-    switch(
-      # Second condition
-      .p2 |> not() |> sum(1),
-      
-      # Second outcome
-      as_mapper(.f2)(.x),
-      
-      # Third outcome - if there is not .f3 just return the original data frame
-      if (.f3 |> is.null() |> not())
-        as_mapper(.f3)(.x)
-      else
-        .x
-    ))
-}
 
 # Independent helper to check for non-numeric columns
 #' Check if a data frame has any non-numeric columns
@@ -790,7 +734,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 					# Ensure .x is numeric for colorRamp2
 					if(is.numeric(.x) && length(.x) > 0) {
 						colors <- colorRampPalette(palette_annotation$continuous[[.y]])(length(.x))
-						colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), colors)
+						circlize::colorRamp2(seq(min(.x), max(.x), length.out = length(.x)), colors)
 					} else {
 						# Fallback for non-numeric or empty data
 						colorRampPalette(palette_annotation$continuous[[.y]])(max(1, length(.x)))
@@ -843,7 +787,7 @@ get_group_annotation = function(
   .data, .column, .row, .abundance, palette_annotation,
   group_label_fontsize = 8,
   show_group_name = TRUE,
-  group_strip_height = unit(9, "pt")
+  group_strip_height = grid::unit(9, "pt")
 ) {
   
   # Comply with CRAN NOTES

@@ -87,14 +87,14 @@ input_heatmap = function(.data,
 	
 	# Check if transform is needed
 	if(is_function(transform)) {
-		abundance_tbl <- abundance_tbl |> mutate(!!.abundance := !!.abundance |> transform())
+		abundance_tbl <- abundance_tbl |> mutate(!!.abundance := rlang::as_function(transform)(!!.abundance))
 		
-		# Check if log introduced -Inf
-		if(abundance_tbl |> filter(!!.abundance |> is.nan() |> as.logical()) |> nrow() |> gt(0)) {
+		# Check if transform introduced invalid values using direct vector checks
+		vals_after_transform <- abundance_tbl |> pull(!!.abundance)
+		if (any(is.nan(vals_after_transform))) {
 			stop("tidyHeatmap says: you applied a transformation that introduced NaN.")
 		}
-		
-		if(abundance_tbl |> pull(!!.abundance) |> min() |> equals(-Inf)) {
+		if (is.infinite(min(vals_after_transform, na.rm = TRUE)) && min(vals_after_transform, na.rm = TRUE) == -Inf) {
 			stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p.")
 		}
 	}
@@ -136,14 +136,14 @@ input_heatmap = function(.data,
 			stop("tidyHeatmap says: If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_value)\"")
 		} else if(min(abundance_mat, na.rm = T) == max(abundance_mat, na.rm = T)) {
 			# For the crazy scenario when only one value is present in the heatmap (tidyHeatmap/issues/40)
-			colorRamp2(
+			circlize::colorRamp2(
 				# min and max and intermediates based on length of the palette
 				seq(from=min(abundance_mat, na.rm = T)-1, to=max(abundance_mat, na.rm = T)+1, length.out = length(palette_value)),
 				palette_value
 			)
 		} else {
 			# In the normal situation
-			colorRamp2(
+			circlize::colorRamp2(
 				# min and max and intermediates based on length of the palette
 				seq(from=min(abundance_mat, na.rm = T), to=max(abundance_mat, na.rm = T), length.out = length(palette_value)),
 				palette_value
@@ -505,8 +505,8 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 			.data_drame |>
 				droplevels() |>
 				mutate(
-					column = !!.horizontal |>  as.factor()  |>  as.integer(),
-					row = !!.vertical  |>  as.factor() |> as.integer()
+					column = as.integer(as.factor(!!.horizontal)),
+					row = as.integer(as.factor(!!.vertical))
 				) |>
 				filter(...) |>
 				mutate(shape = symbol_dictionary[[!!symbol]]) |> 
