@@ -686,7 +686,7 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 
 	      
 	      # Invoke the correct anno_* function with do.call
-	      return(do.call(ann_fun, call_args))
+	      return(do.call(ann_fun, as.list(call_args)))
 	    }
 
 	    
@@ -1245,14 +1245,23 @@ combine_elements_with_the_same_name = function(x){
 				filter(my_class != "simpleUnit")
 		) |> 
 			nest(data = -c(name, my_class)) |> 
-			mutate(vector = map2(
-				data, my_class,
-				~ {
-					if(.y == "simpleUnit") reduce(.x$value, unit.c)
-					else if(.y == "gpar") combine_lists_with_the_same_name(.x$value) |> as.list() |> do.call(gpar, .)
-					else reduce(.x$value, c)
-				}
-			)) 
+				mutate(vector = map2(
+					data, my_class,
+					~ {
+						if(.y == "simpleUnit") {
+							reduce(.x$value, unit.c)
+						} else if(.y == "gpar") {
+							gpars <- Filter(function(v) inherits(v, "gpar"), .x$value)
+							if (length(gpars) > 0) {
+								tail(gpars, 1)[[1]]
+							} else {
+								grid::gpar()
+							}
+						} else {
+							reduce(.x$value, c)
+						}
+					}
+				)) 
 		
 			
 		list_df |> 
@@ -1266,13 +1275,24 @@ combine_elements_with_the_same_name = function(x){
 }
 
 combine_lists_with_the_same_name = function(x){
+	# Always return a list suitable for do.call
+	if (length(x) == 0) return(list())
 	
-	if(length(unlist(x))==0) return(unlist(x))
-	else {
-		x = unlist(x)
-		tapply(unlist(x, use.names = FALSE), rep(names(x), lengths(x)), FUN = c)
+	out <- list()
+	for (elem in x) {
+		if (is.null(elem)) next
+		# If element is a gpar, convert to list of arguments
+		if (inherits(elem, "gpar")) elem <- as.list(elem)
+		# Ensure list structure
+		if (!is.list(elem)) next
+		# Merge by name, later entries override earlier
+		for (nm in names(elem)) {
+			if (is.null(nm) || nm == "") next
+			out[[nm]] <- elem[[nm]]
+		}
 	}
 	
+	out
 }
 
 # Helper function to filter arguments for a specific function

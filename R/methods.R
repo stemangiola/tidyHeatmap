@@ -78,7 +78,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	
 	tidyHeatmap@input$top_annotation <- 
 	  if (length(top_annotations) > 0 && !is.null(top_annotations)) {
-	    do.call("columnAnnotation", top_annotations)
+	    do.call("columnAnnotation", as.list(top_annotations))
 	  } else {
 	    NULL
 	  }
@@ -96,7 +96,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	
 	tidyHeatmap@input$left_annotation <- 
 	  if (length(left_annotations) > 0 && !is.null(left_annotations)) {
-	    do.call("rowAnnotation", left_annotations)
+	    do.call("rowAnnotation", as.list(left_annotations))
 	  } else {
 	    NULL
 	  }
@@ -142,7 +142,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 		
 	}
 	
-	return(do.call(Heatmap, tidyHeatmap@input))
+	return(do.call(Heatmap, as.list(tidyHeatmap@input)))
 })
 
 setMethod("show", "InputHeatmap", function(object){

@@ -179,7 +179,7 @@ plot_heatmap = function(.data,
 		) |>
 		list_drop_null()
 	if (length(top_annot) > 0 && !is.null(top_annot))
-		top_annot = do.call("columnAnnotation", top_annot)
+		top_annot = do.call("columnAnnotation", as.list(top_annot))
 	else
 		top_annot = NULL
 	
@@ -193,7 +193,7 @@ plot_heatmap = function(.data,
 		) |>
 		list_drop_null()
 	if (length(left_annot) > 0 && !is.null(left_annot))
-		left_annot = do.call("rowAnnotation", left_annot)
+		left_annot = do.call("rowAnnotation", as.list(left_annot))
 	else
 		left_annot = NULL
 	
