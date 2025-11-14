@@ -78,7 +78,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	
 	tidyHeatmap@input$top_annotation <- 
 	  if (length(top_annotations) > 0 && !is.null(top_annotations)) {
-	    do.call("columnAnnotation", top_annotations)
+	    do.call("columnAnnotation", as.list(top_annotations))
 	  } else {
 	    NULL
 	  }
@@ -96,7 +96,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 	
 	tidyHeatmap@input$left_annotation <- 
 	  if (length(left_annotations) > 0 && !is.null(left_annotations)) {
-	    do.call("rowAnnotation", left_annotations)
+	    do.call("rowAnnotation", as.list(left_annotations))
 	  } else {
 	    NULL
 	  }
@@ -142,7 +142,7 @@ setMethod("as_ComplexHeatmap", "InputHeatmap", function(tidyHeatmap){
 		
 	}
 	
-	return(do.call(Heatmap, tidyHeatmap@input))
+	return(do.call(Heatmap, as.list(tidyHeatmap@input)))
 })
 
 setMethod("show", "InputHeatmap", function(object){
@@ -310,12 +310,6 @@ heatmap_ <-
 		}
 		
 		.data |> 
-			
-			# # Check if data is rectangular
-			# ifelse_pipe(
-			# 	!check_if_data_rectangular((.), !!.column, !!.row, !!.value),
-			# 	~  eliminate_sparse_transcripts(.x, !!.row)
-			# ) |>
 			
 			# Run plotting function
 			input_heatmap(
@@ -1139,7 +1133,6 @@ setMethod("layer_asterisk", "InputHeatmap", function(.data,...,
 #' @description layer_text() from a `InputHeatmap` object, adds a text annotation layer.
 #'
 #' @importFrom rlang enquo
-#' @importFrom magrittr "%>%"
 #' 
 #' 
 #'
@@ -1227,8 +1220,8 @@ setMethod("layer_text", "InputHeatmap", function(.data,
 			.data_drame |>
 				droplevels() |>
 				mutate(
-					column = !!.horizontal %>%  as.factor()  %>%  as.integer(),
-					row = !!.vertical  %>%  as.factor() %>% as.integer()
+					column = as.integer(as.factor(!!.horizontal)),
+					row = as.integer(as.factor(!!.vertical))
 				) |>
 				filter(...) |>
 				mutate(text := as.character( !!enquo(.value) )) |> 

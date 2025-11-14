@@ -15,11 +15,11 @@
 #'
 check_if_wrong_input = function(.data, list_input, expected_type) {
 	# Do the check
-	if (list_input %>%
-			map( ~ .x %>% class() %>% `[` (1)) %>%
-			unlist %>%
-			equals(expected_type) %>%
-			`!`)
+if (list_input |>
+            map(~ class(.x)[1]) |>
+            unlist() |>
+            equals(expected_type) |>
+            not())
 		stop("tidyHeatmap says: You have passed the wrong argument to the function. Please check again.")
 	
 	# If all good return original data frame
@@ -39,24 +39,25 @@ check_if_wrong_input = function(.data, list_input, expected_type) {
 #'
 #' @return A tbl
 check_if_duplicated_genes <- function(.data,
-																			.sample,
-																			.transcript,
-																			.abundance ) {
-	.sample = enquo(.sample)
-	.transcript = enquo(.transcript)
-	.abundance = enquo(.abundance)
+																			.column,
+																			.row,
+																			.value ) {
+	.column = enquo(.column)
+	.row = enquo(.row)
+	.value = enquo(.value)
 	
 	duplicates <-
-		distinct(.data,!!.sample, !!.transcript, !!.abundance) %>%
-		count(!!.sample, !!.transcript) %>%
-		filter(n > 1) %>%
-		arrange(n %>% desc())
+		.data |>
+		distinct(!!.column, !!.row, !!.value) |>
+		count(!!.column, !!.row) |>
+		filter(n > 1) |>
+		arrange(desc(n))
 	
-	is_unique = duplicates %>% nrow() %>% equals(0)
+	is_unique = duplicates |> nrow() |> equals(0)
 	
 	if (!is_unique) {
 		writeLines("tidyHeatmap says: Those are the duplicated elements")
-		duplicates %>% print()
+		duplicates |> print()
 	}
 	
 	is_unique
@@ -69,13 +70,13 @@ check_if_column_missing = function(.data, .sample, .transcript, .abundance) {
 	.abundance = enquo(.abundance)
 	
 	# Check that the intersection is length 3
-	.data %>% colnames %>%
+	.data |> colnames() |>
 		intersect(c(
 			quo_name(.sample),
 			quo_name(.transcript),
 			quo_name(.abundance)
-		)) %>%
-		length %>%
+		)) |>
+		length() |>
 		equals(3)
 }
 
@@ -85,15 +86,15 @@ column_type_checking = function(.data, .sample, .transcript, .abundance) {
 	.transcript = enquo(.transcript)
 	.abundance = enquo(.abundance)
 	
-	.data %>% pull(!!.sample) %>% class %in% c("character", "factor") &
-		.data %>% pull(!!.transcript) %>% class %in% c("character", "factor") &
-		.data %>% pull(!!.abundance) %>% class %in% c("integer", "numeric", "double")
+	.data |> pull(!!.sample) |> class() %in% c("character", "factor") &
+		.data |> pull(!!.transcript) |> class() %in% c("character", "factor") &
+		.data |> pull(!!.abundance) |> class() %in% c("integer", "numeric", "double")
 	
 }
 
 check_if_attribute_present = function(.data) {
-	"tt_internals" %in% (.data %>% attributes %>% names) &&
-		"tt_columns" %in% (.data %>% attr("tt_internals")  %>% names)
+	"tt_internals" %in% (.data |> attributes() |> names()) &&
+		"tt_columns" %in% (.data |> attr("tt_internals")  |> names())
 }
 
 eliminate_sparse_transcripts = function(.data, .transcript){
@@ -109,9 +110,9 @@ Some .row features have been omitted from the analysis because not present in ev
 If you want to impute missing data use tidybulk::impute_abundance(~1, .column, .row, .abundance)
 ")
 	
-	.data %>%
-		add_count(!!.transcript, name = "my_n") %>%
-		filter(my_n == max(my_n)) %>%
+	.data |>
+		add_count(!!.transcript, name = "my_n") |>
+		filter(my_n == max(my_n)) |>
 		select(-my_n)
 }
 
@@ -122,48 +123,48 @@ check_if_data_rectangular = function(.data, .sample, .transcript, .abundance, ty
 	.transcript = enquo(.transcript)
 	.abundance = enquo(.abundance)
 	
-	.data %>%
-		ungroup() %>%
-		distinct(!!.sample, !!.transcript, !!.abundance) %>%
-		count(!!.sample) %>%
-		count(n) %>%
-		nrow %>%
+	.data |>
+		ungroup() |>
+		distinct(!!.sample, !!.transcript, !!.abundance) |>
+		count(!!.sample) |>
+		count(n) |>
+		nrow() |>
 		equals(1)
 	
 }
 
 tidyHeatmap_to_tbl = function(.data) {
-	.data %>%	drop_class(c("tidyHeatmap", "tt"))
+	.data |>	drop_class(c("tidyHeatmap", "tt"))
 }
 
 validation_default = function(.data,
-															.sample,
-															.transcript,
-															.abundance,
+															.column,
+															.row,
+															.value,
 															type = "hard",
 															skip_dupli_check = FALSE) {
 	# Parse column names
-	.sample = enquo(.sample)
-	.transcript = enquo(.transcript)
-	.abundance = enquo(.abundance)
+	.column = enquo(.column)
+	.row = enquo(.row)
+	.value = enquo(.value)
 	
 	# Type check
-	is_missing = check_if_column_missing(.data,!!.sample,!!.transcript,!!.abundance)
+	is_missing = check_if_column_missing(.data,!!.column,!!.row,!!.value)
 	if (type == "hard" &
 			!is_missing)
 		stop(
-			sprintf("tidyHeatmap says: One or more columns %s, %s or %s are missing from your data frame.", quo_name(.sample), quo_name(.transcript), quo_name(.abundance))
+			sprintf("tidyHeatmap says: One or more columns %s, %s or %s are missing from your data frame.", quo_name(.column), quo_name(.row), quo_name(.value))
 		)
 	if (type == "soft" & !is_missing) {
 		warning(
-			sprintf("tidyHeatmap says: One or more columns %s, %s or %s are missing from your data frame.", quo_name(.sample), quo_name(.transcript), quo_name(.abundance))
+			sprintf("tidyHeatmap says: One or more columns %s, %s or %s are missing from your data frame.", quo_name(.column), quo_name(.row), quo_name(.value))
 		)
-		return(.data %>% tidyHeatmap_to_tbl)
+		return(.data |> tidyHeatmap_to_tbl())
 	}
 	
 	# Check if duplicated genes
 	if (!skip_dupli_check) {
-		is_unique = check_if_duplicated_genes(.data,!!.sample,!!.transcript,!!.abundance)
+		is_unique = check_if_duplicated_genes(.data,!!.column,!!.row,!!.value)
 		if (type == "hard" &
 				!is_unique)
 			stop(
@@ -173,7 +174,7 @@ validation_default = function(.data,
 			warning(
 				"tidyHeatmap says: Your dataset include duplicated row/column pairs. Please, remove redundancies before proceeding."
 			)
-			return(.data %>% tidyHeatmap_to_tbl)
+			return(.data |> tidyHeatmap_to_tbl())
 		}
 	}
 	
@@ -186,7 +187,7 @@ validation_default = function(.data,
 	# 	warning(
 	# 		"tidyHeatmap says: You have NA values in your counts."
 	# 	)
-	# 	return(.data %>% tidyHeatmap_to_tbl)
+	# 	return(.data |> tidyHeatmap_to_tbl)
 	# }
 	
 }
@@ -224,7 +225,7 @@ validation.tidyHeatmap = function(.data,
 		warning(
 			"tidyHeatmap says: The object provided has tidyHeatmap class but no attribute containing the column names. The tidyHeatmap object has been converted to a `tbl`"
 		)
-		return(.data %>% tidyHeatmap_to_tbl)
+		return(.data |> tidyHeatmap_to_tbl())
 	}
 	
 	# Get column names
@@ -286,7 +287,7 @@ check_and_handle_annotation_na = function(.data, annotation_cols, na_replacement
   
   # Replace NA/NaN values in the specified columns
   if (na_found) {
-    .data = .data %>%
+    .data = .data |>
       mutate(across(all_of(annotation_cols), ~replace_na(., na_replacement)))
   }
   

@@ -682,7 +682,7 @@ mtcars_tidy |>
 ```{r reorder, fig.width=10, fig.height=6}
 library(forcats)
 mtcars_tidy |> 
-	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) |> 
 	heatmap(
 		`Car name`, Property, Value,	
 		scale = "row", 
@@ -694,7 +694,7 @@ mtcars_tidy |>
 
 ```{r sizedendro, fig.width=10, fig.height=6}
 mtcars_tidy |> 
-	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) |> 
 	heatmap(
 		`Car name`, Property, Value,	
 		scale = "row", 
@@ -707,7 +707,7 @@ mtcars_tidy |>
 
 ```{r sizecolumns, fig.width=10, fig.height=10}
 mtcars_tidy |> 
-	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) |> 
 	heatmap(
 		`Car name`, Property, Value,	
 		scale = "row", 
@@ -739,7 +739,7 @@ This can be done only for `annotation_numeric` because of `ComplexHeatmap` requi
 
 ```{r align_numeric, fig.width=10, fig.height=10}
 mtcars_tidy |> 
-	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) %>% 
+	mutate(`Car name` = forcats::fct_reorder(`Car name`, `Car name`, .desc = TRUE)) |> 
 	heatmap(
 		`Car name`, Property, Value,	
 		scale = "row"
@@ -755,8 +755,8 @@ ComplexHeatmap has some graphical functionalities that are not included in the s
 
 ```{r sidelegend, fig.width=10, fig.height=6}
 
-heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) %>%
-	as_ComplexHeatmap() %>%
+heatmap(mtcars_tidy, `Car name`, Property, Value, scale = "row"	) |>
+	as_ComplexHeatmap() |>
 	ComplexHeatmap::draw(heatmap_legend_side = "left"	)
 ```
 

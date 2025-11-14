@@ -25,8 +25,13 @@ sccomp_draws_files
 .git/
 # Vignette build artifacts
 vignettes/*.html
+vignettes/*_files/
 # Documentation build artifacts
 inst/doc/
+doc/*.html
+# R CMD check artifacts
+..Rcheck/
+.Rcheck/
 # Temporary files
 *.tmp
 *.temp
