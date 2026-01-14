@@ -1219,6 +1219,10 @@ setMethod("layer_text", "InputHeatmap", function(.data,
 	# Extract the abundance matrix for dimensions of the text
 	abundance_mat = .data@input[[1]]
 
+	# Get the row and column names from the matrix to ensure correct position mapping
+	mat_rownames = rownames(abundance_mat)
+	mat_colnames = colnames(abundance_mat)
+
 	# Append which cells have to be signed
 	.data@layer_text= 
 		.data@layer_text |>
@@ -1227,8 +1231,8 @@ setMethod("layer_text", "InputHeatmap", function(.data,
 			.data_drame |>
 				droplevels() |>
 				mutate(
-					column = !!.horizontal %>%  as.factor()  %>%  as.integer(),
-					row = !!.vertical  %>%  as.factor() %>% as.integer()
+					column = match(as.character(!!.horizontal), mat_colnames),
+					row = match(as.character(!!.vertical), mat_rownames)
 				) |>
 				filter(...) |>
 				mutate(text := as.character( !!enquo(.value) )) |> 

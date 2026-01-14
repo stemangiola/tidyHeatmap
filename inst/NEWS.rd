@@ -1,6 +1,11 @@
 \name{NEWS}
 \title{News for Package \pkg{tidyHeatmap}}
 
+\section{Changes in version 1.13.2}{
+	\itemize{
+		\item Fixed bug in \code{layer_symbol()} and \code{layer_text()} functions where symbols/text were incorrectly positioned in the heatmap matrix. The issue occurred when row/column names resulted in factor level ordering that didn't match the matrix ordering, causing symbols to appear in wrong cells (see GitHub issue #162). The fix uses \code{match()} to correctly align positions with the actual matrix row/column names.
+	}}
+
 \section{Changes in version 1.13.0}{
 	\itemize{
 		\item Added color functionality to the layers of the heatmap. Now it is possible to color the layers of the heatmap by a column in the data frame.
