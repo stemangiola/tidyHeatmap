@@ -114,3 +114,74 @@ test_that("layer_asterisk visual output is correct - using issue #162 dummy_df",
   # Visual test to ensure asterisks are positioned correctly
   vdiffr::expect_doppelganger("layer_asterisk_issue_162", p)
 })
+
+test_that("layer_symbol positions work correctly with randomly generated row/column names", {
+  # Create a dataset with hash-like row and column names
+  # This ensures the fix works generally, not just with specific name patterns
+  # Note: Sequential names like R1, R2, R3 worked even before the fix
+  set.seed(42)  # For reproducibility
+  random_row_names <- replicate(5, paste(sample(c(letters, 0:9), 8, replace = TRUE), collapse = ""))
+  random_col_names <- replicate(4, paste(sample(c(letters, 0:9), 8, replace = TRUE), collapse = ""))
+  
+  test_data <- expand.grid(
+    row = random_row_names,
+    col = random_col_names,
+    stringsAsFactors = FALSE
+  ) |>
+    mutate(
+      expression = runif(n()),
+      significant = runif(n()) > 0.5
+    ) |>
+    as_tibble()
+  
+  # Create heatmap
+  hm <- heatmap(test_data, .row = row, .column = col, .value = expression)
+  
+  # Get the matrix to see actual ordering
+  mat <- hm@input[[1]]
+  mat_rownames <- rownames(mat)
+  mat_colnames <- colnames(mat)
+  
+  # Add asterisk for significant values
+  hm_with_asterisk <- hm |> layer_asterisk(significant == TRUE)
+  
+  # Check the layer_symbol slot
+  symbol_data <- hm_with_asterisk@layer_symbol
+  
+  # Verify positions are within matrix bounds
+  expect_true(all(symbol_data$row >= 1 & symbol_data$row <= nrow(mat)))
+  expect_true(all(symbol_data$column >= 1 & symbol_data$column <= ncol(mat)))
+  
+  # Get expected cells (those with significant == TRUE)
+  expected <- test_data %>% filter(significant == TRUE)
+  
+  # Verify that each expected cell has a symbol at the correct position
+  for (i in seq_len(nrow(expected))) {
+    expected_row_name <- expected$row[i]
+    expected_col_name <- expected$col[i]
+    expected_row_pos <- which(mat_rownames == expected_row_name)
+    expected_col_pos <- which(mat_colnames == expected_col_name)
+    
+    # There should be a symbol at this position
+    expect_true(any(symbol_data$row == expected_row_pos & symbol_data$column == expected_col_pos),
+                info = paste0("Expected symbol at (", expected_row_name, ", ", expected_col_name, 
+                             ") = position (", expected_row_pos, ", ", expected_col_pos, ")"))
+  }
+  
+  # Verify that cells with significant == FALSE do NOT have symbols
+  not_expected <- test_data %>% filter(significant == FALSE)
+  for (i in seq_len(nrow(not_expected))) {
+    not_expected_row_name <- not_expected$row[i]
+    not_expected_col_name <- not_expected$col[i]
+    not_expected_row_pos <- which(mat_rownames == not_expected_row_name)
+    not_expected_col_pos <- which(mat_colnames == not_expected_col_name)
+    
+    # There should NOT be a symbol at this position
+    expect_false(any(symbol_data$row == not_expected_row_pos & symbol_data$column == not_expected_col_pos),
+                 info = paste0("Should NOT have symbol at (", not_expected_row_name, ", ", not_expected_col_name, 
+                              ") = position (", not_expected_row_pos, ", ", not_expected_col_pos, ")"))
+  }
+  
+  # Verify the total number of symbols matches expected
+  expect_equal(nrow(symbol_data), nrow(expected))
+})
