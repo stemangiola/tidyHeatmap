@@ -277,18 +277,6 @@ heatmap_ <-
 		# Check if scale is of correct type
 		if(scale %in% c("none", "row", "column", "both") |> not()) stop("tidyHeatmap says: the scale parameter has to be one of c(\"none\", \"row\", \"column\", \"both\")")
 		
-		# # Message about change of style, once per session
-		# if(length(palette_grouping)==0 & getOption("tidyHeatmap_white_group_message",TRUE)) {
-		# 	message("tidyHeatmap says: (once per session) from release 1.2.3 the grouping labels have white background by default. To add color for one-ay grouping specify palette_grouping = list(c(\"red\", \"blue\"))")
-		# 	options("tidyHeatmap_white_group_message"=FALSE) 
-		# }
-		
-		# Message about change of scale, once per session
-		if(scale == "none" & getOption("tidyHeatmap_default_scaling_none",TRUE)) {
-			message("tidyHeatmap says: (once per session) from release 1.7.0 the scaling is set to \"none\" by default. Please use scale = \"row\", \"column\" or \"both\" to apply scaling")
-			options("tidyHeatmap_default_scaling_none"=FALSE) 
-		}
-		
 		# Citation reminder message, once per session
 		rlang::inform("tidyHeatmap says: If you use tidyHeatmap for scientific research, please cite: Mangiola, S. and Papenfuss, A.T., 2020. 'tidyHeatmap: an R package for modular heatmap production based on tidy principles.' Journal of Open Source Software. doi:10.21105/joss.02472.", .frequency = "once", .frequency_id = "tidyHeatmap_citation_reminder")
 		

@@ -8,9 +8,9 @@ library(dplyr)
 library(forcats)
 library(vdiffr)
 
-test_that("layer_asterisk positions match matrix structure - using issue #162 dummy_df", {
-  # Use the exact dummy_df from GitHub issue #162
-  dummy_df <- tibble(
+# Helper function to create the dummy_df from GitHub issue #162
+create_issue_162_dummy_df <- function() {
+  tibble(
     row_id = c(
       "B cells", "Basophils", "Eosinophils", "Myeloid", "NK cells",  "Neutrophils", "T cells",
       "B cells", "Basophils", "Eosinophils", "Myeloid", "NK cells",  "Neutrophils", "T cells"
@@ -29,6 +29,11 @@ test_that("layer_asterisk positions match matrix structure - using issue #162 du
     )
   ) %>% 
     mutate(col_id = fct_relevel(col_id, c("Control", "Test")))
+}
+
+test_that("layer_asterisk positions match matrix structure - using issue #162 dummy_df", {
+  # Use the exact dummy_df from GitHub issue #162
+  dummy_df <- create_issue_162_dummy_df()
   
   # Create heatmap (same as in the issue)
   hm <- heatmap(dummy_df, .row = row_id, .column = col_id, .value = value)
@@ -86,25 +91,7 @@ test_that("layer_asterisk positions match matrix structure - using issue #162 du
 
 test_that("layer_asterisk visual output is correct - using issue #162 dummy_df", {
   # Use the exact dummy_df from GitHub issue #162
-  dummy_df <- tibble(
-    row_id = c(
-      "B cells", "Basophils", "Eosinophils", "Myeloid", "NK cells",  "Neutrophils", "T cells",
-      "B cells", "Basophils", "Eosinophils", "Myeloid", "NK cells",  "Neutrophils", "T cells"
-    ),
-    col_id = c(
-      rep("Control", 7),
-      rep("Test", 7)
-    ),
-    value = c(
-      0.2000, -0.0180,  0.0983,  0.1930,  0.0934,  0.0529, -0.2090,
-      0.0831,  0.00515, 0.0413,  0.0808,  0.0123,  0.0619, -0.1550
-    ),
-    adj_p = c(
-      5.81e-10, 2.72e-01, 4.46e-04, 1.44e-06, 6.43e-08, 1.08e-01, 7.65e-07,
-      6.46e-02, 7.81e-01, 2.47e-01, 6.46e-02, 5.90e-01, 6.46e-02, 6.28e-03
-    )
-  ) %>% 
-    mutate(col_id = fct_relevel(col_id, c("Control", "Test")))
+  dummy_df <- create_issue_162_dummy_df()
   
   # Create heatmap with asterisks (same as in the issue)
   p <- dummy_df |>
