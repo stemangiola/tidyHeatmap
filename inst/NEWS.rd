@@ -1,6 +1,11 @@
 \name{NEWS}
 \title{News for Package \pkg{tidyHeatmap}}
 
+\section{Changes in version 1.13.2}{
+	\itemize{
+		\item Removed warning about incorrect symbol positioning that could occur with certain row/column name combinations.
+	}}
+
 \section{Changes in version 1.13.0}{
 	\itemize{
 		\item Added color functionality to the layers of the heatmap. Now it is possible to color the layers of the heatmap by a column in the data frame.
