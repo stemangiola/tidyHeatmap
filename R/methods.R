@@ -1255,7 +1255,6 @@ setMethod("layer_text", "InputHeatmap", function(.data,
 #'
 #' @importFrom stats hclust
 #' @importFrom dendextend cutree
-#' @importFrom purrr when
 #' 
 #'
 #' @name split_rows

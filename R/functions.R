@@ -21,7 +21,6 @@
 #' @importFrom viridis viridis
 #' @importFrom viridis magma
 #' @importFrom rlang is_function
-#' @importFrom purrr when
 #' @importFrom rlang dots_list
 #' @importFrom methods new
 #' @importFrom tidyr pivot_wider
@@ -284,7 +283,6 @@ add_grouping = function(my_input_heatmap){
 #' @importFrom viridis viridis
 #' @importFrom viridis magma
 #' @importFrom rlang is_function
-#' @importFrom purrr when
 #' @importFrom rlang dots_list
 #' @importFrom grid unit
 #'

@@ -1336,3 +1336,38 @@ filter_args <- function(all_args, target_func, force_keep = NULL, invert = FALSE
     all_args[names(all_args) %in% valid_args]
   }
 }
+
+# Local copy of purrr::when(), which is defunct in purrr >= 1.1.0
+when <- function(., ...) {
+  dots <- list(...)
+  names <- names(dots)
+  named <- if (is.null(names)) rep(FALSE, length(dots)) else names != ""
+  if (sum(!named) == 0) {
+    stop("At least one matching condition is needed.", call. = FALSE)
+  }
+  is_formula <- vapply(
+    dots,
+    function(dot) identical(class(dot), "formula"),
+    logical(1L)
+  )
+  env <- new.env(parent = parent.frame())
+  env[["."]] <- .
+  if (sum(named) > 0) {
+    for (i in which(named)) {
+      env[[names[i]]] <- dots[[i]]
+    }
+  }
+  result <- NULL
+  for (i in which(!named)) {
+    if (is_formula[i]) {
+      action <- length(dots[[i]])
+      if (action == 2 || isTRUE(eval(dots[[i]][[2]], env, env))) {
+        result <- eval(dots[[i]][[action]], env, env)
+        break
+      }
+    } else {
+      result <- dots[[i]]
+    }
+  }
+  result
+}
