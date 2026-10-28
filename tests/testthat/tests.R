@@ -914,7 +914,7 @@ test_that("annotation_group passes aesthetics and works with grouping columns", 
     ) |> 
     annotation_group(CAPRA_TOTAL)
 
-  vdiffr::expect_doppelganger("plot_annotation_group", p0)
+  vdiffr::expect_doppelganger("plot_annotation_group_groupby", p0)
   vdiffr::expect_doppelganger("plot_annotation_group", p1)
   
   expect_s4_class(p1, "InputHeatmap")

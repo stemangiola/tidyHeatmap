@@ -297,7 +297,7 @@ heatmap_ <-
 			
 		}
 		
-		.data |> 
+		hm = .data |> 
 			
 			# # Check if data is rectangular
 			# ifelse_pipe(
@@ -315,10 +315,14 @@ heatmap_ <-
 				palette_value = palette_value,
 				palette_grouping = palette_grouping,
 				...
-			)		|>
-			
-			# Add group annotation if any
-			when( "groups" %in%  (attributes(.data) |> names()) ~ 	add_grouping(.), ~ (.))
+			)
+		
+		# Add group annotation if any
+		if ("groups" %in% (attributes(.data) |> names())) {
+			hm = add_grouping(hm)
+		}
+		
+		hm
 		
 	}
 
@@ -420,26 +424,28 @@ setMethod("annotation_tile", "InputHeatmap", function(.data,
 	
 	.column = enquo(.column)
 	
+	col_class = .data@data |>
+		ungroup() |>
+		select(!!.column) |>
+		sapply(class)
+	
+	# If annotation is discrete
+	palette_discrete = list()
+	if (col_class %in% c("factor", "character", "logical") & !is.null(palette)) {
+		palette_discrete = list(palette)
+	}
+	
+	# If annotation is continuous
+	palette_continuous = list()
+	if (col_class %in% c("integer", "numerical", "numeric", "double") & !is.null(palette)) {
+		palette_continuous = list(palette)
+	}
+	
 	.data |> add_annotation(
 		!!.column,
 		type = "tile",
-		
-		# If annotation is discrete
-		palette_discrete = 
-			.data@data |> 
-			ungroup() |>
-			select(!!.column) |> 
-			sapply(class) |> 
-			when(. %in% c("factor", "character", "logical") &	!is.null(palette) ~ list(palette), ~ list()),
-		
-		# If annotation is continuous
-		palette_continuous = 
-			.data@data |> 
-			ungroup() |>
-			select(!!.column) |> 
-			sapply(class) |> 
-			when(. %in% c("integer", "numerical", "numeric", "double") &	!is.null(palette) ~ list(palette), ~ list()),
-		
+		palette_discrete = palette_discrete,
+		palette_continuous = palette_continuous,
 		size = size,
 		...
 	)
@@ -1212,35 +1218,31 @@ setMethod("layer_text", "InputHeatmap", function(.data,
 	mat_colnames = colnames(abundance_mat)
 
 	# Append which cells have to be signed
-	.data@layer_text= 
-		.data@layer_text |>
-		bind_rows(
-			
-			.data_drame |>
-				droplevels() |>
-				mutate(
-					column = match(as.character(!!.horizontal), mat_colnames),
-					row = match(as.character(!!.vertical), mat_rownames)
-				) |>
-				filter(...) |>
-				mutate(text := as.character( !!enquo(.value) )) |> 
-				
-				# Add size
-				when(
-					quo_is_null(.size) ~ mutate(., size = min(12, 320 / max(dim(abundance_mat)) )) ,
-					~ mutate(., size := !!.size )
-					) |> 
-				
-				# Add color
-				when(
-					quo_is_null(.color) ~ mutate(., color = "#000000"),
-					~ mutate(., color := !!.color)
-				) |>
-				
-				select(column, row, text, size, color) 
-				
-
-		)
+	text_df = .data_drame |>
+		droplevels() |>
+		mutate(
+			column = match(as.character(!!.horizontal), mat_colnames),
+			row = match(as.character(!!.vertical), mat_rownames)
+		) |>
+		filter(...) |>
+		mutate(text := as.character( !!enquo(.value) ))
+	
+	# Add size
+	if (quo_is_null(.size)) {
+		text_df = mutate(text_df, size = min(12, 320 / max(dim(abundance_mat))))
+	} else {
+		text_df = mutate(text_df, size := !!.size)
+	}
+	
+	# Add color
+	if (quo_is_null(.color)) {
+		text_df = mutate(text_df, color = "#000000")
+	} else {
+		text_df = mutate(text_df, color := !!.color)
+	}
+	
+	.data@layer_text = .data@layer_text |>
+		bind_rows(text_df |> select(column, row, text, size, color))
 	
 	.data
 	
@@ -1305,14 +1307,14 @@ setMethod("split_rows", "InputHeatmap", function(.data,
 																								 number_of_groups){
 	
 	# Get the same methods as the heatmap
-	distance_method = .data@input |> when(
-		"clustering_distance_rows" %in% names(.) ~ .data@input$clustering_distance_rows,
-		~ "euclidean"
-	)
-	clustering_method = .data@input |> when(
-		"clustering_method_rows" %in% names(.) ~ .data@input$clustering_method_rows,
-		~ "complete"
-	)
+	distance_method = "euclidean"
+	if ("clustering_distance_rows" %in% names(.data@input)) {
+		distance_method = .data@input$clustering_distance_rows
+	}
+	clustering_method = "complete"
+	if ("clustering_method_rows" %in% names(.data@input)) {
+		clustering_method = .data@input$clustering_method_rows
+	}
 	
 	# Get clusters
 	hr = 
@@ -1384,14 +1386,14 @@ setMethod("split_columns", "InputHeatmap", function(.data,
 																										number_of_groups){
 	
 	# Get the same methods as the heatmap
-	distance_method = .data@input |> when(
-		"clustering_distance_columns" %in% names(.) ~ .data@input$clustering_distance_columns,
-		~ "euclidean"
-	)
-	clustering_method = .data@input |> when(
-		"clustering_method_columns" %in% names(.) ~ .data@input$clustering_method_columns,
-		~ "complete"
-	)
+	distance_method = "euclidean"
+	if ("clustering_distance_columns" %in% names(.data@input)) {
+		distance_method = .data@input$clustering_distance_columns
+	}
+	clustering_method = "complete"
+	if ("clustering_method_columns" %in% names(.data@input)) {
+		clustering_method = .data@input$clustering_method_columns
+	}
 	
 	# Get clusters
 	hr = 
