@@ -21,7 +21,6 @@
 #' @importFrom viridis viridis
 #' @importFrom viridis magma
 #' @importFrom rlang is_function
-#' @importFrom purrr when
 #' @importFrom rlang dots_list
 #' @importFrom methods new
 #' @importFrom tidyr pivot_wider
@@ -62,6 +61,7 @@ input_heatmap = function(.data,
 	. = NULL
 	col_name = NULL
 	orientation = NULL
+	data = NULL
 	
 	# Make col names
 	.horizontal = enquo(.horizontal)
@@ -82,52 +82,44 @@ input_heatmap = function(.data,
 		stop("tidyHeatmap says: your dataset does not have any non NA values")
 	
 	# Get abundance matrix
-	abundance_tbl =
-		.data %>%
-		ungroup() %>%
+	abundance_tbl = .data %>% ungroup()
+	
+	# Check if transform is needed
+	if (is_function(transform)) {
+		abundance_tbl = abundance_tbl %>% mutate(!!.abundance := !!.abundance %>% transform())
 		
-		# Check if transform is needed
-		when(
-			is_function(transform) ~ 
-				mutate(., !!.abundance := !!.abundance %>% transform()) %>%
-				
-				# Check if log introduced -Inf
-				when(
-					
-					# NAN produced
-					filter(., !!.abundance %>% is.nan %>% as.logical) %>% nrow %>% gt(0) ~ stop("tidyHeatmap says: you applied a transformation that introduced NaN."),
-					
-					# -Inf produced
-					pull(., !!.abundance) %>% min %>% equals(-Inf) ~ stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p."),
-					~(.)
-				),
-			~ (.)
-		) %>%
+		# Check if log introduced NaN
+		if (filter(abundance_tbl, !!.abundance %>% is.nan %>% as.logical) %>% nrow %>% gt(0))
+			stop("tidyHeatmap says: you applied a transformation that introduced NaN.")
 		
-		# If scale row
-		when(
-			scale %in% c("row", "both") ~ (.) %>%
-				nest(data = -!!.vertical) %>%
-				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% scale_robust()))) %>%
-				unnest(data),
-			~ (.)
-		) %>%
-		
-		# If scale column
-		when(
-			scale %in% c("column", "both") ~ (.) %>%
-				nest(data = -!!.horizontal) %>%
-				mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% scale_robust()))) %>%
-				unnest(data),
-			~ (.)
-		) %>%
-		
+		# Check if log introduced -Inf
+		if (pull(abundance_tbl, !!.abundance) %>% min %>% equals(-Inf))
+			stop("tidyHeatmap says: you applied a transformation that introduced negative infinite .value, was it log? If so please use log1p.")
+	}
+	
+	# If scale row
+	if (scale %in% c("row", "both")) {
+		abundance_tbl = abundance_tbl %>%
+			nest(data = -!!.vertical) %>%
+			mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% scale_robust()))) %>%
+			unnest(data)
+	}
+	
+	# If scale column
+	if (scale %in% c("column", "both")) {
+		abundance_tbl = abundance_tbl %>%
+			nest(data = -!!.horizontal) %>%
+			mutate(data = map(data, ~ .x %>% mutate(!!.abundance := !!.abundance %>% scale_robust()))) %>%
+			unnest(data)
+	}
+	
+	abundance_tbl = abundance_tbl %>%
 		distinct(!!.vertical,!!.horizontal,!!.abundance) %>%
-	  
-	  # Arrange both columns and rows
-	  # do not leave the order of appearence dictate the order of columns and rows
-	  pivot_wider(names_from =  !!.horizontal, values_from =  !!.abundance, names_sort = TRUE) |> 
-	  arrange(!!.vertical)
+		
+		# Arrange both columns and rows
+		# do not leave the order of appearence dictate the order of columns and rows
+		pivot_wider(names_from =  !!.horizontal, values_from =  !!.abundance, names_sort = TRUE) |> 
+		arrange(!!.vertical)
 	
 	abundance_mat =
 		abundance_tbl %>%
@@ -135,28 +127,25 @@ input_heatmap = function(.data,
 	 
 	# Colors tiles
 	# If palette_value is a function pass it directly, otherwise check if the character array is of length 3
-	colors = 
-		palette_value %>%
-		when(
-			palette_value %>% class() %>% equals("function") ~ (.),
-			length(palette_value) != 3 ~ stop("tidyHeatmap says: If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_value)\""	),
-			
-			# For the crazy scenario when only one value is present in the heatmap (tidyHeatmap/issues/40)
-			min(abundance_mat, na.rm = T) == max(abundance_mat, na.rm = T) ~ colorRamp2(
-				
-				# min and max and intermediates based on length of the palette
-				seq(from=min(abundance_mat, na.rm = T)-1, to=max(abundance_mat, na.rm = T)+1, length.out = length(palette_value)),
-				palette_value
-			),
-			
-			# In the normal situation
-			~ colorRamp2(
-				
-				# min and max and intermediates based on length of the palette
-				seq(from=min(abundance_mat, na.rm = T), to=max(abundance_mat, na.rm = T), length.out = length(palette_value)),
-				palette_value
-			)
+	if (palette_value %>% class() %>% equals("function")) {
+		colors = palette_value
+	} else if (length(palette_value) != 3) {
+		stop("tidyHeatmap says: If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example \"colorRamp2(c(-2, 0, 2), palette_value)\"")
+	} else if (min(abundance_mat, na.rm = T) == max(abundance_mat, na.rm = T)) {
+		# For the crazy scenario when only one value is present in the heatmap (tidyHeatmap/issues/40)
+		colors = colorRamp2(
+			# min and max and intermediates based on length of the palette
+			seq(from=min(abundance_mat, na.rm = T)-1, to=max(abundance_mat, na.rm = T)+1, length.out = length(palette_value)),
+			palette_value
 		)
+	} else {
+		# In the normal situation
+		colors = colorRamp2(
+			# min and max and intermediates based on length of the palette
+			seq(from=min(abundance_mat, na.rm = T), to=max(abundance_mat, na.rm = T), length.out = length(palette_value)),
+			palette_value
+		)
+	}
 	
 	# Define object
 	new(
@@ -203,23 +192,16 @@ add_grouping = function(my_input_heatmap){
 	how_many_grouping = my_input_heatmap@data %>% attr("groups") %>% select(-.rows) %>% ncol
 	
 	# Add custom palette to discrete if any
-	my_input_heatmap@palette_discrete =
-		my_input_heatmap@arguments$palette_grouping %>%
-		when(
-			length(.) < how_many_grouping ~ {
-				# Needed for piping
-				pg = .
-				
-				my_input_heatmap@arguments$palette_grouping %>%
-					c(
-						rep("#ffffff", how_many_groups) %>%
-							list() %>%
-							rep(how_many_grouping-length(pg))
-					)
-			},
-			~ (.)
-		) %>%
-		c(my_input_heatmap@palette_discrete)
+	palette_grouping = my_input_heatmap@arguments$palette_grouping
+	if (length(palette_grouping) < how_many_grouping) {
+		palette_grouping = palette_grouping %>%
+			c(
+				rep("#ffffff", how_many_groups) %>%
+					list() %>%
+					rep(how_many_grouping - length(palette_grouping))
+			)
+	}
+	my_input_heatmap@palette_discrete = palette_grouping %>% c(my_input_heatmap@palette_discrete)
 	
 	# Colours annotations
 	palette_annotation = my_input_heatmap@palette_discrete %>% head(how_many_grouping) 
@@ -246,16 +228,14 @@ add_grouping = function(my_input_heatmap){
 	# Isolate left annotation
 	my_input_heatmap@group_left_annotation = group_annotation$left_annotation 
 	
-	my_input_heatmap@input  =
-		my_input_heatmap@input %>% 
-		when(
-			!is.null(group_annotation$row_split) ~ c(., list(row_split = group_annotation$row_split, cluster_row_slices = FALSE)),
-			~ (.)
-		) %>%
-		when(
-			!is.null(group_annotation$col_split) ~ c(., list(column_split = group_annotation$col_split, cluster_column_slices = FALSE)),
-			~ (.)
-		)
+	my_input = my_input_heatmap@input
+	if (!is.null(group_annotation$row_split)) {
+		my_input = c(my_input, list(row_split = group_annotation$row_split, cluster_row_slices = FALSE))
+	}
+	if (!is.null(group_annotation$col_split)) {
+		my_input = c(my_input, list(column_split = group_annotation$col_split, cluster_column_slices = FALSE))
+	}
+	my_input_heatmap@input = my_input
 	
 	my_input_heatmap
 }
@@ -284,7 +264,6 @@ add_grouping = function(my_input_heatmap){
 #' @importFrom viridis viridis
 #' @importFrom viridis magma
 #' @importFrom rlang is_function
-#' @importFrom purrr when
 #' @importFrom rlang dots_list
 #' @importFrom grid unit
 #'
@@ -355,15 +334,15 @@ add_annotation = function(my_input_heatmap,
 		get_x_y_annotation_columns(!!.horizontal,!!.vertical,!!.abundance) 
 	
 	# Check if annotation is compatible with your dataset
-	quo_names(annotation) %>%
-		setdiff(x_y_annot_cols %>% pull(col_name)) %>%
-		when( quo_names(annotation) != "NULL" & length(.) > 0 ~ 
-						stop(
-							sprintf(
-								"tidyHeatmap says: Your annotation \"%s\" is not unique to vertical nor horizontal dimentions",
-								(.) %>% paste(collapse = ", ")
-							)
-						))
+	annot_diff = quo_names(annotation) %>% setdiff(x_y_annot_cols %>% pull(col_name))
+	if (quo_names(annotation) != "NULL" & length(annot_diff) > 0) {
+		stop(
+			sprintf(
+				"tidyHeatmap says: Your annotation \"%s\" is not unique to vertical nor horizontal dimentions",
+				annot_diff %>% paste(collapse = ", ")
+			)
+		)
+	}
 	
 	# Get annotation
 	.data_annot = 
@@ -378,8 +357,12 @@ add_annotation = function(my_input_heatmap,
 	how_many_continuous = .data_annot %>% filter(annot_type=="continuous") %>% nrow
 	
 	# Eliminate used  annotations
-	my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete %>% when(how_many_discrete>0 ~ tail(., -how_many_discrete) , ~ (.))
-	my_input_heatmap@palette_continuous = my_input_heatmap@palette_continuous %>% when(how_many_continuous>0 ~ tail(., -how_many_continuous), ~ (.))
+	if (how_many_discrete > 0) {
+		my_input_heatmap@palette_discrete = my_input_heatmap@palette_discrete %>% tail(-how_many_discrete)
+	}
+	if (how_many_continuous > 0) {
+		my_input_heatmap@palette_continuous = my_input_heatmap@palette_continuous %>% tail(-how_many_continuous)
+	}
 	
 	# # Check if annotation is compatible with your dataset
 	# x_y_annot_cols %>%
@@ -517,32 +500,31 @@ setMethod("layer_symbol", "InputHeatmap", function(.data,
 	mat_colnames = colnames(abundance_mat)
 	
 	# Append which cells have to be signed
-	.data@layer_symbol= 
-		.data@layer_symbol |>
-		bind_rows(
-			.data_drame |>
-				droplevels() |>
-				mutate(
-					column = match(as.character(!!.horizontal), mat_colnames),
-					row = match(as.character(!!.vertical), mat_rownames)
-				) |>
-				filter(...) |>
-				mutate(shape = symbol_dictionary[[!!symbol]]) |> 
-				
-				# Add size
-				when(
-					quo_is_null(.size) ~ mutate(., size = min(3, 80 / max(dim(abundance_mat)) )) ,
-					~ mutate(., size := !!.size )
-				) |> 
-				
-				# Add color
-				when(
-					quo_is_null(.color) ~ mutate(., color = "#161616"),
-					~ mutate(., color := !!.color)
-				) |>
-				
-				select(column, row, shape, size, color) 
-		)
+	symbol_df = .data_drame |>
+		droplevels() |>
+		mutate(
+			column = match(as.character(!!.horizontal), mat_colnames),
+			row = match(as.character(!!.vertical), mat_rownames)
+		) |>
+		filter(...) |>
+		mutate(shape = symbol_dictionary[[!!symbol]])
+	
+	# Add size
+	if (quo_is_null(.size)) {
+		symbol_df = mutate(symbol_df, size = min(3, 80 / max(dim(abundance_mat))))
+	} else {
+		symbol_df = mutate(symbol_df, size := !!.size)
+	}
+	
+	# Add color
+	if (quo_is_null(.color)) {
+		symbol_df = mutate(symbol_df, color = "#161616")
+	} else {
+		symbol_df = mutate(symbol_df, color := !!.color)
+	}
+	
+	.data@layer_symbol = .data@layer_symbol |>
+		bind_rows(symbol_df |> select(column, row, shape, size, color))
 	
 	.data
 	

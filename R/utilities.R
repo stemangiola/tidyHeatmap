@@ -658,17 +658,19 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   annotation_function = type_to_annot_function[type]
   
   # Create dataset
-  df = 
-    quo_names(annotation) %>%
+  df = quo_names(annotation) %>%
 	  as_tibble %>%
-	  rename(col_name = value) %>%
-	  
-	  # delete if annotation is NULL
-	  when(quo_is_null(annotation) ~ slice(., 0), ~ (.)) %>%
-	  
-	  # Add orientation
+	  rename(col_name = value)
+  
+  # delete if annotation is NULL
+  if (quo_is_null(annotation)) {
+    df = slice(df, 0)
+  }
+  
+  # Add orientation
+  df = df %>%
 	  left_join(x_y_annot_cols,  by = "col_name") %>%
-	  mutate(col_orientation = map_chr(orientation, ~ .x %>% when((.) == "column" ~ quo_name(.column), (.) == "row" ~ quo_name(.row)))) 
+	  mutate(col_orientation = map_chr(orientation, ~ if (.x == "column") quo_name(.column) else if (.x == "row") quo_name(.row))) 
 
 
   return_factor_ordering_by_col_or_row_names <- function(.data, col, orient) {
@@ -753,10 +755,11 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
   df = df %>%
 	  
 		# Add color indexes separately for each orientation
-		mutate(annot_type = map_chr(annot, ~ .x %>% when(class(.) %in% c("factor", "character", "logical") ~ "discrete",
-																										class(.) %in% c("integer", "numerical", "numeric", "double") ~ "continuous",
-																										~ "other"
-		) )) %>%
+		mutate(annot_type = map_chr(annot, ~ {
+			if (class(.x) %in% c("factor", "character", "logical")) "discrete"
+			else if (class(.x) %in% c("integer", "numerical", "numeric", "double")) "continuous"
+			else "other"
+		})) %>%
 		group_by(annot_type) %>%
 		mutate(idx =  row_number()) %>%
 		ungroup() %>%
@@ -792,34 +795,33 @@ get_top_left_annotation = function(.data_, .column, .row, .abundance, annotation
 		})) 
   
   df = df %>%
-	  	
 	  mutate(further_arguments = map2(
 	  	col_name, my_function,
-	  	~ dots_args %>% 
-	  		
+	  	~ {
+	  		args = dots_args
 	  		# If tile add size as further argument
-	  		when(!is_function(.y) ~ c(., list(simple_anno_size = size)), ~ (.))
-	  		
-	  )) %>% 	
+	  		if (!is_function(.y)) {
+	  			args = c(args, list(simple_anno_size = size))
+	  		}
+	  		args
+	  	}
+	  ))
 	  
-	  # Stop if annotations discrete bigger than palette
-	  when(
-	    (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
-	      c("factor", "character") %>% which %>% length %>%
-	      gt(palette_annotation$discrete %>% length) ~
-	      stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available"),
-	    ~ (.)
-	  ) %>%
-	  
-	  # Stop if annotations continuous bigger than palette
-	  when(
-	    (.) %>%  pull(data) %>% map_chr(~ .x %>% class) %in% 
-	      c("int", "dbl", "numeric") %>% which %>% length %>%
-	      gt( palette_annotation$continuous %>% length) ~
-	      stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available"),
-	    ~ (.)
-	  )
-      
+  # Stop if annotations discrete bigger than palette
+  n_discrete = df %>% pull(data) %>% map_chr(~ .x %>% class) %in%
+    c("factor", "character") %>% which %>% length
+  if (n_discrete %>% gt(palette_annotation$discrete %>% length)) {
+    stop("tidyHeatmap says: Your discrete annotaton columns are bigger than the palette available")
+  }
+  
+  # Stop if annotations continuous bigger than palette
+  n_continuous = df %>% pull(data) %>% map_chr(~ .x %>% class) %in%
+    c("int", "dbl", "numeric") %>% which %>% length
+  if (n_continuous %>% gt(palette_annotation$continuous %>% length)) {
+    stop("tidyHeatmap says: Your continuous annotaton columns are bigger than the palette available")
+  }
+  
+  df
   
 }
 
@@ -1192,17 +1194,19 @@ annot_to_list = function(.data){
   my_cells = NULL
   name = NULL
   data = NULL
+  further_arguments = NULL
+  color = NULL
   
   
-  .data %>% 
+  result = .data %>% 
   	pull(annot) %>%
-    set_names(.data %>% pull(col_name))  %>%
-    
-    # If list is populated
-    when(length(.) > 0 ~ (.) %>% c(
-      col = list(.data %>%
-                   filter(map_lgl(color, ~ .x %>% is.null %>% not)) %>%
-                   { set_names( pull(., color),  pull(., col_name))    })
+    set_names(.data %>% pull(col_name))
+  
+  # If list is populated
+  if (length(result) > 0) {
+    color_df = .data %>% filter(map_lgl(color, ~ .x %>% is.null %>% not))
+    result = result %>% c(
+      col = list(set_names(pull(color_df, color), pull(color_df, col_name)))
     ) %>%
     	
     	# Add additional arguments
@@ -1210,23 +1214,24 @@ annot_to_list = function(.data){
     		.data %>% 
     			pull(further_arguments) %>% 
     			combine_elements_with_the_same_name()
-    	),
-    
-    ~ (.)) 
+    	)
+  }
+  
+  result
     
 }
 
 list_append = function(.list1, .list2){ .list1 %>% c(.list2) }
 
 reduce_to_tbl_if_in_class_chain = function(.obj){
-  .obj %>%
-    when(
-      
-      # Eliminate all classes until tbl
-      "tbl" %in% class(.) ~ drop_class(., class(.)[1:which(class(.) == "tbl")-1]  ),
-      ~ (.)
-    )
+  result = .obj
   
+  # Eliminate all classes until tbl
+  if ("tbl" %in% class(.obj)) {
+    result = drop_class(.obj, class(.obj)[1:which(class(.obj) == "tbl")-1])
+  }
+  
+  result
 }
 
 # Greater than
