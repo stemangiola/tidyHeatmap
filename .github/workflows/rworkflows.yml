@@ -46,7 +46,8 @@ jobs:
         run_vignettes: ${{ true }}
         has_testthat: ${{ true }}
         run_covr: ${{ true }}
-        run_pkgdown: ${{ true }}
+        # Skip pkgdown deploy on PRs (fork PRs lack write access to gh-pages)
+        run_pkgdown: ${{ github.event_name == 'push' }}
         has_runit: ${{ false }}
         has_latex: ${{ false }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
